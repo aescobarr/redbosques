@@ -1,0 +1,73 @@
+{% extends "redbosques_main/base.html" %}
+{% load static %}
+{% block extra_css %}
+<link href="{% static 'redbosques_main/Leaflet.markercluster-1.4.0/dist/MarkerCluster.css' %}" rel="stylesheet">
+<link href="{% static 'redbosques_main/Leaflet.markercluster-1.4.0/dist/MarkerCluster.Default.css' %}" rel="stylesheet">
+{% endblock %}
+{% block main %}
+<div class="container-fluid subheader">
+    <div class="row">
+        <a href="/redbosques"><h4>Inicio</h4></a>
+        <h2>{{ herramientas }}</h2>
+    </div>
+</div>
+
+<div class="container map-header">
+    <div class="row">
+        <h3>Mapa de rodales de referencia RedBosques</h3>
+
+
+    </div>
+    <div class="row mapa-selectores">
+        <div id="mapid" class="col-lg-9"></div>
+        <div class="col-lg-3">
+            <button type="btn" class="btn btn-selector-mapa">Participar</button>
+            <button type="btn" class="btn btn-selector-mapa">Comparar</button>
+
+            <div class="seleccio_rodal">
+                <h5>Selecciona un rodal</h5>
+            </div>
+
+
+            <div class="habitatd">
+                <h5>Hábitad</h5>
+                    <select class="form-control tipo_habitad">
+                        {% for habitat in dades_habitat_contenidors %}
+                        <option class="tipo_bosque" value="{{ habitat.cod }}">
+                            {{ habitat.nombre }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <select class="form-control tipo_habitad_sel"></select>
+            </div>
+
+            <div class="valoracion">
+                <h5>Valoración</h5>
+                <select class="form-control selector_valoracion"></select>
+            </div>
+
+        </div>
+
+
+        {% endblock %}
+        {% block extra_js %}
+        <script>
+        var mymap;
+        var testData;
+        var url = "{% url 'datos_mapa' %}";
+        var marker_cluster;
+        var puntuacion={};
+
+
+
+
+        </script>
+        <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
+        <script src="{% static 'redbosques_main/leaflet/leaflet.js' %}"></script>
+        <script src="{% static 'redbosques_main/Leaflet.markercluster-1.4.0/dist/leaflet.markercluster.js' %}"></script>
+
+
+        {% endblock %}
+
+
+

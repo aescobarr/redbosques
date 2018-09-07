@@ -1,0 +1,10 @@
+redbosques/settings_local.py
+redbosques/settings_local*
+*pyc
+*.egg-info
+.idea/*
+*.sublime-project
+*.sublime-workspace
+*.sublime*
+static/*
+__pycache__/
