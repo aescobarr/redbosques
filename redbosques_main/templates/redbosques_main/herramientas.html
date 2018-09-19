@@ -15,39 +15,63 @@
 <div class="container map-header">
     <div class="row">
         <h3>Mapa de rodales de referencia RedBosques</h3>
-
-
     </div>
+
     <div class="row mapa-selectores">
         <div id="mapid" class="col-lg-9"></div>
+
         <div class="col-lg-3">
             <button type="btn" class="btn btn-selector-mapa">Participar</button>
-            <button type="btn" class="btn btn-selector-mapa">Comparar</button>
+            <!--<button type="btn" class="btn btn-selector-mapa">Comparar</button>-->
+            <h5>Filtrar por: </h5>
+            <button type="btn" class="btn btn-selector-mapa selectorFiltro" onclick="changeFilter()" value="0">Valoración Humana</button>
+            <h5>Selecciona un eje</h5>
+            <select class="form-control selector_clasificacio" onclick="updateMapData()">
+                <option class="tip_clas" value="nm" selected="selected">Naturalidad</option>
+                <option class="tip_clas" value="hh">Huella humana</option>
+                <option class="tip_clas" value="ie">Integridad espacial</option>
 
-            <div class="seleccio_rodal">
+            </select>
+                <div class="seleccio_rodal">
                 <h5>Selecciona un rodal</h5>
-            </div>
-
-
-            <div class="habitatd">
-                <h5>Hábitad</h5>
-                    <select class="form-control tipo_habitad">
-                        {% for habitat in dades_habitat_contenidors %}
-                        <option class="tipo_bosque" value="{{ habitat.cod }}">
-                            {{ habitat.nombre }}
+                <select class="form-control selector_rodal" onchange="updateMapData()">
+                    <option value="" selected="selected">------</option>
+                    {% for rodal in llista_rodals %}
+                        <option class="rodal" value="{{ rodal.id }}">
+                            {{ rodal.nombre }}
                         </option>
                         {% endfor %}
-                    </select>
-                    <select class="form-control tipo_habitad_sel"></select>
+                </select>
             </div>
 
-            <div class="valoracion">
-                <h5>Valoración</h5>
-                <select class="form-control selector_valoracion"></select>
-            </div>
+            <div class="seleccio_habitat">
+                <div class="habitatd">
+                    <h5>Hábitat</h5>
+                        <select class="form-control tipo_habitad" onclick="updateMapData()">
+                            <option value="" selected="selected">------</option>
+                            {% for habitat in dades_habitat_contenidors %}
+                            <option class="tipo_bosque" value="{{ habitat.cod }}">
+                                {{ habitat.nombre }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <select class="form-control tipo_habitad_sel" onclick="updateMapData()">
 
+                        </select>
+                </div>
+
+                <div class="valoracion">
+                    <h5>Valoración</h5>
+                    <!--<select class="form-control selector_valoracion"></select>-->
+                    <form class="checkbox selector_valoracion"></form>
+                </div>
+            </div>
+            <div class="limpiarFiltros">
+                    <button type="btn" class="btn btn-selector-mapa" onclick="limpiarFiltros()">Limpiar filtros</button>
+            </div>
         </div>
-
+    </div>
+</div>
 
         {% endblock %}
         {% block extra_js %}
@@ -57,6 +81,10 @@
         var url = "{% url 'datos_mapa' %}";
         var marker_cluster;
         var puntuacion={};
+        var setMapData;
+        var url_data;
+        var treeIcon;
+        var id_tipo_habitad_sel;
 
 
 
@@ -65,7 +93,6 @@
         <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
         <script src="{% static 'redbosques_main/leaflet/leaflet.js' %}"></script>
         <script src="{% static 'redbosques_main/Leaflet.markercluster-1.4.0/dist/leaflet.markercluster.js' %}"></script>
-
 
         {% endblock %}
 

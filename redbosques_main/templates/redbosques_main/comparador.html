@@ -1,0 +1,544 @@
+{% extends "redbosques_main/base.html" %}
+{% load static %}
+{% block extra_css %}
+{% endblock %}
+{% block main %}
+<div class="container-fluid subheader">
+    <div class="row">
+        <a href="/redbosques"><h4>Inicio</h4></a>
+        <h2>{{ herramientas }}</h2>
+    </div>
+</div>
+
+<div class="container menu-header">
+    <div class="row">
+        <h3>Valoración de la madurez</h3>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row filtros">
+        <div class="col-lg-5">
+            <b>Hábitat</b>
+            <input type="text" class="form-control" placeholder="Hábitat">
+        </div>
+    </div>
+    <!--<div class="row filtros">
+        <div class="col-lg-5">
+            <b>Rodal</b>
+            <input type="text" class="form-control" placeholder="Rodal">
+        </div>
+        <div class="col-lg-5">
+            <b>Rodal de referéncia</b>
+            <input type="text" class="form-control" placeholder="Rodal de referéncia">
+        </div>
+    </div>-->
+
+    <div class="row filtros">
+        <div class="col-lg-3">
+            <b>Filtros</b>
+        </div>
+    </div>
+
+    <div class="row filtros">
+
+        <div class="col-lg-3">
+            <b>Calidad de estación</b>
+            <input type="text" class="form-control" placeholder="Calidad de estación">
+        </div>
+        <div class="col-lg-3">
+            <b>Región biogeográfica</b>
+            <input type="text" class="form-control" placeholder="Región biogeográfica">
+        </div>
+        <div class="col-lg-3">
+            <b>Comunidad Autónoma</b>
+            <input type="text" class="form-control" placeholder="Comunidad Autónoma">
+        </div>
+        <div class="col-lg-3">
+            <b>Tipo de salida</b>
+            <form>
+                <div class="radio">
+                    <input type="radio" id="valores" name="valores" class="form-control">
+                    <label for="valores">Valores</label>
+                </div>
+                <div class="radio">
+                    <input type="radio" id="grafica" name="valores" class="form-control">
+                    <label for="grafica">Gráfica</label>
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+
+
+
+
+
+</div>
+
+
+
+
+
+<div class="container data-table">
+    <div class="row">
+        <table class="table responsive">
+            <thead>
+                <th>
+                    <b>Rodal de referéncia</b>
+                    <input type="text" class="form-control" placeholder="Rodal">
+                </th>
+                <th></th>
+                <th></th>
+                <th></th>
+
+                    <th>
+                        <b>Rodal de referéncia</b>
+                        <input type="text" class="form-control" placeholder="Rodal de referéncia">
+                    </th>
+            </thead>
+            <thead>
+                <tr>
+                    <!--<th>Valores del Rodal</th>-->
+                    <th></th>
+                    <th>Eje</th>
+                    <th>Criterio</th>
+                    <th>Indicador</th>
+
+                    <!--<th>Valores de Referencia</th>-->
+                    <th></th>
+                    <th>Eje</th>
+                    <th>Criterio</th>
+                    <th>Indicador</th>
+                    <th>Diferencia</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            <!--         Naturalidad                       -->
+                <tr class="lv1 lv1Nat">
+                    <th scope="row"><i class="fas fa-caret-right fa-lg"></i><span>NATURALIDAD</span></th>
+                    <td>10</td>
+                    <td></td>
+                    <td></td>
+
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv2 lv2Nat" style="display: none">
+                    <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Composición</span></th>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+                    <td>10</td>
+
+                </tr>
+                <tr class="lv3 lv3Nat" style="display: none">
+                    <td style="text-indent: 15px;" scope="row"><span>Especies arbóreas</span></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td>10</td>
+                </tr>
+
+                <tr class="lv2 lv2Nat" style="display: none">
+                    <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Complejidad</span></th>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv3 lv3Nat" style="display: none">
+                    <td style="text-indent: 15px;"><span>Área bisimétrica</span></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv3 lv3Nat" style="display: none">
+                    <td style="text-indent: 15px;"><span>Estratificación vertical</span></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv3 lv3Nat" style="display: none">
+                    <td style="text-indent: 15px;"><span>Diversidad estructural</span></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td>10</td>
+                </tr>
+
+                <tr class="lv2 lv2Nat" style="display: none">
+                    <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Madurez</span></th>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv3 lv3Nat" style="display: none">
+                    <td style="text-indent: 15px;"><span>Àrboles de tamaño excepcional</span></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv3 lv3Nat" style="display: none">
+                    <td style="text-indent: 15px;"><span>Abundancia de madera muerta</span></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv3 lv3Nat" style="display: none">
+                    <td style="text-indent: 15px;"><span>Proporción de madera muerta</span></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td>10</td>
+                </tr>
+
+                <tr class="lv2 lv2Nat" style="display: none">
+                    <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Microhábitats</span></th>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv3 lv3Nat" style="display: none">
+                    <td style="text-indent: 15px;"><span>Microhábitats de pies vivos</span></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td>10</td>
+                </tr>
+
+                <tr class="lv2 lv2Nat" style="display: none">
+                    <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Dinámica</span></th>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv3 lv3Nat" style="display: none">
+                    <td style="text-indent: 15px;"><span>Ciclo silvogenético</span></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td>10</td>
+                </tr>
+
+            <!--         Huella Humana                     -->
+                <tr class="lv1 lv1Hh">
+                    <th scope="row"><i class="fas fa-caret-right fa-lg"></i><span>HUELLA HUMANA</span></th>
+                    <td>10</td>
+                    <td></td>
+                    <td></td>
+
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv2 lv2Hh" style="display: none">
+                    <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Antigua</span></th>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv3 lv3Hh" style="display: none">
+                    <td style="text-indent: 15px;" scope="row"><span>Continuidad temporal</span></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv3 lv3Hh" style="display: none">
+                    <td style="text-indent: 15px;" scope="row"><span>Usos agropastorales</span></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv3 lv3Hh" style="display: none">
+                    <td style="text-indent: 15px;" scope="row"><span>Usos forestales</span></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td>10</td>
+                </tr>
+
+
+                <tr class="lv2 lv2Hh" style="display: none">
+                    <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Reciente</span></th>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv3 lv3Hh" style="display: none">
+                    <td style="text-indent: 15px;" scope="row"><span>Usos forestales</span></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv3 lv3Hh" style="display: none">
+                    <td style="text-indent: 15px;" scope="row"><span>Especies invasoras</span></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv3 lv3Hh" style="display: none">
+                    <td style="text-indent: 15px;" scope="row"><span>Causas de fragmentación</span></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv3 lv3Hh" style="display: none">
+                    <td style="text-indent: 15px;" scope="row"><span>Actividad cinegética</span></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv3 lv3Hh" style="display: none">
+                    <td style="text-indent: 15px;" scope="row"><span>Herbívora y/o ramoneo</span></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv3 lv3Hh" style="display: none">
+                    <td style="text-indent: 15px;" scope="row"><span>Frecuentación</span></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv3 lv3Hh" style="display: none">
+                    <td style="text-indent: 15px;" scope="row"><span>Durabilidad de los usos</span></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td>10</td>
+                </tr>
+
+         <!--         Integridad Espacial                  -->
+
+                <tr class="lv1 lv1Ie">
+                    <th scope="row"><i class="fas fa-caret-right fa-lg"></i><span>INTEGRIDAD ESPACIAL</span></th>
+                    <td>10</td>
+                    <td></td>
+                    <td></td>
+
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv2 lv2Ie" style="display: none">
+                    <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Tamaño</span></th>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv2 lv2Ie" style="display: none">
+                    <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Contenido forestal</span></th>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv2 lv2Ie" style="display: none">
+                    <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Efecto borde</span></th>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+                    <td>10</td>
+                </tr>
+                <tr class="lv2 lv2Ie" style="display: none">
+                    <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Conectividad</span></th>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+                    <td>10</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p>{{ dades_rodal. }}</p>
+
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    var linkComparador = "{% url 'comparador_noparam' %}";
+</script>
+<script src="{% static 'redbosques_main/javascript/data_table.js' %}"></script>
+{% endblock %}
