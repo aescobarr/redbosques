@@ -85,7 +85,7 @@ class Rodal(models.Model):
         db_table = 'rodal'
 
 
-class RodalValorres(models.Model):
+'''class RodalValorres(models.Model):
     _id = models.IntegerField()
     lpeht_cod = models.CharField(max_length=10, blank=True, null=True)
     calidadesta = models.IntegerField(blank=True, null=True)
@@ -102,4 +102,25 @@ class RodalValorres(models.Model):
 
     class Meta:
         managed = False  # Created from a view. Don't remove.
-        db_table = 'rodal_valorres'
+        db_table = 'rodal_valorres' '''
+
+
+class RodalValorres2(models.Model):
+    id_indicador_rodal = models.TextField(primary_key=True)
+    id_rodal = models.IntegerField(blank=True, null=False)
+    lpeht_cod = models.CharField(max_length=10, blank=True, null=True)
+    calidadesta = models.IntegerField(blank=True, null=True)
+    regbio_cod = models.CharField(max_length=4, blank=True, null=True)
+    comautonom_cod = models.CharField(max_length=2, blank=True, null=True)
+    nivel = models.CharField(max_length=10, blank=True, null=True)
+    indicador_cod = models.TextField(blank=True, null=True)
+    version_calidadesta = models.IntegerField(blank=True, null=True)
+    version_metrica = models.IntegerField(blank=True, null=True)
+    version_indicador = models.IntegerField(blank=True, null=True)
+    valor = models.FloatField(blank=True, null=True)
+    indic_null = models.FloatField(blank=True, null=True)
+    parent_cod = models.CharField(max_length=2, blank=True, null=True)
+
+    class Meta:
+        managed = False  # Created from a view. Don't remove.
+        db_table = 'rodal_valorres_2'

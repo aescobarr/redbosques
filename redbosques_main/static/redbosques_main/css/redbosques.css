@@ -110,4 +110,17 @@ h5{
     margin-top: 10px;
 }
 
+
+.rodalRefer{
+    width: 10%;
+}
+
+.headerTabla th, td{
+    text-align: center;
+}
+
+.identValores{
+    text-align: left;
+}
+
 /*###########################################################*/

@@ -70,3 +70,147 @@ $('tr.lv2').on("click", function(){
     */
 
 });
+
+
+
+//$('.selector_rodal').on("change", function(){
+var rodalRefData = function(){
+
+    valRod = $('.selector_rodal option:selected').val();
+
+    url = 'http://127.0.0.1:8000/redbosques/valorRef';
+
+    url = url + '?vr='+valRod;
+
+    $.ajax({
+        url: url,
+        method: "GET",
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                var csrftoken = getCookie('csrftoken');
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        },
+
+        success: function( data, textStatus, jqXHR ) {
+            rodalReferencia = data.rodal_referencia;
+            $('.naturalidad').html(rodalReferencia.naturalidad.valor);
+            recorreArbre('', rodalReferencia);
+            recorreRodal('', valores_rodal_jason);
+            calcDiferencia();
+        },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(errorThrown);
+            }
+        });
+};
+
+
+
+$('.tipoSalida').on("change", function(){
+    $('td.graf').toggle();
+});
+
+
+var recorreArbre = function(nom_pare, element){
+      jQuery.each(element, function(i, actual) {
+        if(i === 'valor'){
+          return;
+        }else{
+          if(nom_pare === ''){
+            nom_complet = i;
+          }else{
+            nom_complet = nom_pare + "_" + i;
+          }
+
+          //console.log("Nom de l'element: " + nom_complet);
+          //console.log("Valor de l'element: " + element[i].valor);
+
+
+            if (isNaN(element[i].valor)){
+                //$('#' + nom_complet).html("---");
+                $('#' + nom_complet).html('---');
+                element[i].valor = (null);
+            }else{
+                $('#' + nom_complet).html(element[i].valor);
+
+            }
+          rodRef[nom_complet] = element[i].valor;
+          recorreArbre(nom_complet, actual);
+        }
+      });
+
+};
+
+
+
+
+
+
+var recorreRodal = function(nom_pare, element){
+jQuery.each(element, function(i, actual) {
+        if(i === 'valor'){
+          return;
+        }else{
+          if(nom_pare === ''){
+            nom_complet = i;
+          }else{
+            nom_complet = nom_pare + "_" + i;
+          }
+
+          if (isNaN(element[i].valor)){
+                //element[i].valor = ("---");
+                element[i].valor = ('null');
+          }
+            rodal[nom_complet] = element[i].valor;
+            recorreRodal(nom_complet, actual);
+        }
+      });
+
+};
+
+
+function calcDiferencia(){
+    console.log("rodal:" + rodal.naturalidad);
+    console.log("rodal referencia:" + rodRef.naturalidad);
+    resComp = [];
+
+
+    var test = rodal.naturalidad - rodRef.naturalidad;
+
+    //console.log(test);
+
+    for(var key in rodal) {
+        var value = rodal[key];
+        var value2 = rodRef[key];
+
+        //console.log(key +':'+ value);
+        //console.log(key +':'+ value2);
+        if(isNaN(value) || isNaN(value2)){
+            resta = null;
+            $('#' + key+'_dif').html("---");
+            $('#' + key+'_dif').css("background-color", "#CDCCC8");
+        }else{
+            resta =  value - value2;
+            $('#' + key+'_dif').html(resta);
+
+            if(resta<0){
+                $('#' + key+'_dif').css("background-color", "#EF3340");
+            }else if(resta >= 0){
+                $('#' + key+'_dif').css("background-color", "#9ac635");
+            }
+        }
+
+        /*console.log(key +':'+ value);
+        console.log(key +':'+ value2);*/
+        //resta =  value - value2;
+        console.log("resta: " + resta);
+
+        var elem = {};
+        elem[key+'_dif'] = resta;
+
+        //$('#' + key+'_dif').html(resta);
+        resComp.push(elem);
+    }
+    console.log(resComp);
+}

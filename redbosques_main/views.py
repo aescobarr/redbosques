@@ -1,7 +1,10 @@
 from django.shortcuts import render
-from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres
+from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from django.http import JsonResponse
+import decimal
+import json
 
 # Create your views here.
 def index(request):
@@ -95,7 +98,7 @@ def datos_mapa(request):
 
     context = {'llista_punts': llista_punts, 'llista_habitats': llista_habitats}
     return Response(context)
-    '''return Response(llista_punts)'''
+
 
 
 def menu(request):
@@ -107,8 +110,322 @@ def menu(request):
 def comparador(request, id=None):
     # rebem com a parametre el codir del rodal
     #codi_rodal = request.query_params.get('cr', None)
-    if id is not None:
-        dades_rodal = RodalValorres.objects.filter(_id=id)
 
-    context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'dades_rodal': dades_rodal}
+    rodals_list = WebMapa.objects.all()
+
+    selector_rodals = rodals_list.distinct('id_rodal')
+
+
+    if id is not None:
+        dades_rodal = RodalValorres2.objects.filter(id_rodal=id)
+        info_rodal = rodals_list.filter(id_rodal=id)
+
+    rodalArbol = crearArbol(dades_rodal)
+
+    ######## Valores info rodal ##############
+
+    infoRodal = {}
+    for punt in info_rodal:
+        infoRodal={
+            'id_rodal': punt.id_rodal,
+            'nombre': punt.nombre,
+            'Comunidad_autonoma': punt.ccaa_nombre,
+            'habitat_nom': punt.habitat_nom,
+        }
+
+    #########################################
+
+    listaRodales = []
+    for rodal in selector_rodals:
+            listaRodales.append({
+                'id_rodal': rodal.id_rodal,
+                'nombre': rodal.nombre
+
+    })
+
+    valores_rodal_json = json.dumps(rodalArbol)
+
+    context = {'herramientas': 'Herramienta de evaluación de rodales maduros',
+               'valores_rodal': rodalArbol,
+               'infoRodal': infoRodal,
+               'listaRodales': listaRodales,
+               'valores_rodal_json': valores_rodal_json}
     return render(request, 'redbosques_main/comparador.html', context)
+
+
+
+@api_view(['GET'])
+def valorRef(request):
+
+    test = request.query_params.get('vr', None)
+
+    if test is not None:
+        dades_rodal2 = RodalValorres2.objects.filter(id_rodal=test)
+
+    rodal_referencia = crearArbol(dades_rodal2)
+
+    context = {'rodal_referencia': rodal_referencia}
+    return Response(context)
+
+
+
+def crearArbol(dades):
+
+#######Asignación de los valores a las variables##########
+        for valor2 in dades:
+            if valor2.indicador_cod == 'nm':
+                if valor2.valor == None:
+                    nm_valor = "---"
+                else:
+                    nm_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'cp':
+                if valor2.valor == None:
+                    cp_valor = "---"
+                else:
+                    cp_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'ea':
+                if valor2.valor == None:
+                    ea_valor = "---"
+                else:
+                    ea_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'ce':
+                if valor2.valor == None:
+                    ce_valor = "---"
+                else:
+                    ce_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'ab':
+                if valor2.valor == None:
+                    ab_valor = "---"
+                else:
+                    ab_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'ev':
+                if valor2.valor == None:
+                    ev_valor = "---"
+                else:
+                    ev_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'de':
+                if valor2.valor == None:
+                    de_valor = "---"
+                else:
+                    de_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'sn':
+                if valor2.valor == None:
+                    sn_valor = "---"
+                else:
+                    sn_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'ae':
+                if valor2.valor == None:
+                    ae_valor = "---"
+                else:
+                    ae_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'mm':
+                if valor2.valor == None:
+                    mm_valor = "---"
+                else:
+                    mm_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'pm':
+                if valor2.valor == None:
+                    pm_valor = "---"
+                else:
+                    pm_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'hm':
+                if valor2.valor == None:
+                    hm_valor = "---"
+                else:
+                    hm_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'mh':
+                if valor2.valor == None:
+                    mh_valor = "---"
+                else:
+                    mh_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'dn':
+                if valor2.valor == None:
+                    dn_valor = "---"
+                else:
+                    dn_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'cs':
+                if valor2.valor == None:
+                    cs_valor = "---"
+                else:
+                    cs_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'hh':
+                if valor2.valor == None:
+                    hh_valor = "---"
+                else:
+                    hh_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'ha':
+                if valor2.valor == None:
+                    ha_valor = "---"
+                else:
+                    ha_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'tb':
+                if valor2.valor == None:
+                    tb_valor = "---"
+                else:
+                    tb_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'ua':
+                if valor2.valor == None:
+                    ua_valor = "---"
+                else:
+                    ua_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'fa':
+                if valor2.valor == None:
+                    fa_valor = "---"
+                else:
+                    fa_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'hr':
+                if valor2.valor == None:
+                    hr_valor = "---"
+                else:
+                    hr_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'fr':
+                if valor2.valor == None:
+                    fr_valor = "---"
+                else:
+                    fr_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'ei':
+                if valor2.valor == None:
+                    ei_valor = "---"
+                else:
+                    ei_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'fg':
+                if valor2.valor == None:
+                    fg_valor = "---"
+                else:
+                    fg_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'cz':
+                if valor2.valor == None:
+                    cz_valor = "---"
+                else:
+                    cz_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'hb':
+                if valor2.valor == None:
+                    hb_valor = "---"
+                else:
+                    hb_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'fc':
+                if valor2.valor == None:
+                    fc_valor = "---"
+                else:
+                    fc_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'du':
+                if valor2.valor == None:
+                    du_valor = "---"
+                else:
+                    du_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'ie':
+                if valor2.valor == None:
+                    ie_valor = "---"
+                else:
+                    ie_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'ar':
+                if valor2.valor == None:
+                    ar_valor = "---"
+                else:
+                    ar_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'cf':
+                if valor2.valor == None:
+                    cf_valor = "---"
+                else:
+                    cf_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'eb':
+                if valor2.valor == None:
+                    eb_valor = "---"
+                else:
+                    eb_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'cn':
+                if valor2.valor == None:
+                    cn_valor = "---"
+                else:
+                    cn_valor = round(valor2.valor)
+
+######   Valores del rodal    #########
+        rodal_referencia = {
+            'naturalidad': {
+                'valor': nm_valor,
+                'composicion': {
+                    'valor': cp_valor,
+                    'especies_arboreas': {'valor': ea_valor}
+                },
+                'complejidad': {
+                    'valor': ce_valor,
+                    'area_basimetrica': {'valor': ab_valor},
+                    'estratificacion_vertical': {'valor': ev_valor},
+                    'diversidad_estructural': {'valor': de_valor}
+                },
+                'senectud': {
+                    'valor': sn_valor,
+                    'arb_tam_excep': {'valor': ae_valor},
+                    'abund_mad_muerta': {'valor': mm_valor},
+                    'prop_madera_muerta': {'valor': pm_valor}
+                },
+                'micro_habitats': {
+                    'valor': hm_valor,
+                    'mh_pies_vivos': {'valor': mh_valor}
+                },
+                'dinamica': {
+                    'valor': dn_valor,
+                    'ciclo_silvogen': {'valor': cs_valor}
+                }
+            },
+            'huellaHumana': {
+                'valor': hh_valor,
+                'antigua': {
+                    'valor': ha_valor,
+                    'cont_temp': {'valor': tb_valor},
+                    'usos_agropast': {'valor': ua_valor},
+                    'usos_forestales': {'valor': fa_valor}
+                },
+                'reciente': {
+                    'valor': hr_valor,
+                    'usos_forestales': {'valor': fr_valor},
+                    'especies_inv': {'valor': ei_valor},
+                    'causa_fragment': {'valor': fg_valor},
+                    'actv_cineget': {'valor': cz_valor},
+                    'herv_rom': {'valor': hb_valor},
+                    'frecuent': {'valor': fc_valor},
+                    'durab_usos': {'valor': du_valor}
+                },
+            },
+            'integridadEspacial': {
+                'valor': ie_valor,
+                'tamano': {'valor': ar_valor},
+                'cont_forest': {'valor': cf_valor},
+                'efect_borde': {'valor': eb_valor},
+                'conect': {'valor': cn_valor}
+            }
+        }
+
+        return rodal_referencia

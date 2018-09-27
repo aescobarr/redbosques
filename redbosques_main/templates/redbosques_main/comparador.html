@@ -16,11 +16,19 @@
     </div>
 </div>
 
+<p>{{ rodalReferencia.naturalidad.valor }}</p>
+
+
+{% for v in rodal_referencia %}
+    <p>{{ v.naturalidad.valor }}</p>
+{% endfor %}
+
+
 <div class="container">
     <div class="row filtros">
         <div class="col-lg-5">
             <b>Hábitat</b>
-            <input type="text" class="form-control" placeholder="Hábitat">
+            <input type="text" class="form-control" placeholder="{{ infoRodal.habitat_nom }}" readonly>
         </div>
     </div>
     <!--<div class="row filtros">
@@ -44,62 +52,72 @@
 
         <div class="col-lg-3">
             <b>Calidad de estación</b>
-            <input type="text" class="form-control" placeholder="Calidad de estación">
+            <input type="text" class="form-control" placeholder="Calidad de estación" readonly  >
         </div>
         <div class="col-lg-3">
             <b>Región biogeográfica</b>
-            <input type="text" class="form-control" placeholder="Región biogeográfica">
+            <input type="text" class="form-control" placeholder="Región biogeográfica" readonly>
         </div>
         <div class="col-lg-3">
             <b>Comunidad Autónoma</b>
-            <input type="text" class="form-control" placeholder="Comunidad Autónoma">
+            <input type="text" class="form-control" placeholder="{{ infoRodal.Comunidad_autonoma }}" readonly>
         </div>
         <div class="col-lg-3">
             <b>Tipo de salida</b>
             <form>
                 <div class="radio">
-                    <input type="radio" id="valores" name="valores" class="form-control">
+                    <input type="radio" id="valores" name="valores" class="form-control tipoSalida" checked>
                     <label for="valores">Valores</label>
                 </div>
                 <div class="radio">
-                    <input type="radio" id="grafica" name="valores" class="form-control">
+                    <input type="radio" id="grafica" name="valores" class="form-control tipoSalida">
                     <label for="grafica">Gráfica</label>
                 </div>
             </form>
         </div>
-
-
     </div>
-
-
-
-
-
 </div>
-
-
-
-
-
 <div class="container data-table">
     <div class="row">
         <table class="table responsive">
             <thead>
-                <th>
-                    <b>Rodal de referéncia</b>
-                    <input type="text" class="form-control" placeholder="Rodal">
+            <th style="width: 25%"></th>
+                <th colspan="3"style="width:35%">
+                    <b>Rodal</b>
+                    <input type="text" class="form-control" placeholder="{{ infoRodal.nombre }}" readonly>
                 </th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th class="rodalRefer">
+                        <!--<b>Rodal de referéncia</b>
 
-                    <th>
-                        <b>Rodal de referéncia</b>
-                        <input type="text" class="form-control" placeholder="Rodal de referéncia">
+                        <select class="form-control selector_rodal">
+                            <option value="" selected="selected">Rodal de referéncia</option>
+                                {% for rodal in listaRodales %}
+                                    <option class="rodal" value="{{ rodal.id_rodal }}">
+                                        {{ rodal.nombre }}
+                                     </option>
+                                {% endfor %}
+                        </select>-->
+
+
+
+
                     </th>
+            <th colspan="3" style="width:35%">
+                <b>Rodal de referéncia</b>
+                        <!--<input type="text" class="form-control" placeholder="Rodal de referéncia">-->
+                        <select class="form-control selector_rodal" onchange="rodalRefData()">
+                            <option value="" selected="selected">Rodal de referéncia</option>
+                                {% for rodal in listaRodales %}
+                                    <option class="rodal" value="{{ rodal.id_rodal }}">
+                                        {{ rodal.nombre }}
+                                     </option>
+                                {% endfor %}
+                        </select>
+
+            </th>
             </thead>
             <thead>
-                <tr>
+                <tr class="headerTabla">
                     <!--<th>Valores del Rodal</th>-->
                     <th></th>
                     <th>Eje</th>
@@ -107,11 +125,11 @@
                     <th>Indicador</th>
 
                     <!--<th>Valores de Referencia</th>-->
-                    <th></th>
-                    <th>Eje</th>
-                    <th>Criterio</th>
-                    <th>Indicador</th>
-                    <th>Diferencia</th>
+                    <th class="graf"></th>
+                    <th class="graf">Eje</th>
+                    <th class="graf">Criterio</th>
+                    <th class="graf">Indicador</th>
+                    <th class="graf">Diferencia</th>
                 </tr>
             </thead>
             <tbody>
@@ -119,426 +137,431 @@
             <!--         Naturalidad                       -->
                 <tr class="lv1 lv1Nat">
                     <th scope="row"><i class="fas fa-caret-right fa-lg"></i><span>NATURALIDAD</span></th>
-                    <td>10</td>
+                    <td>{{ valores_rodal.naturalidad.valor }}</td>
                     <td></td>
                     <td></td>
 
-                    <td></td>
-                    <td>10</td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td id="naturalidad" class="graf">---</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="naturalidad_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv2 lv2Nat" style="display: none">
                     <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Composición</span></th>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.naturalidad.composicion.valor }}</td>
                     <td></td>
 
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td></td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="naturalidad_composicion" class="graf">---</td>
+                    <td class="graf"></td>
+                    <td id="naturalidad_composicion_dif" class="graf">---</td>
 
                 </tr>
                 <tr class="lv3 lv3Nat" style="display: none">
-                    <td style="text-indent: 15px;" scope="row"><span>Especies arbóreas</span></td>
+                    <td class="identValores" style="text-indent: 15px;" scope="row"><span>Especies arbóreas</span></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.naturalidad.composicion.especies_arboreas.valor }}</td>
 
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="naturalidad_composicion_especies_arboreas" class="especies_arboreas graf">---</td>
+                    <td id="naturalidad_composicion_especies_arboreas_dif" class="graf">---</td>
                 </tr>
 
                 <tr class="lv2 lv2Nat" style="display: none">
                     <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Complejidad</span></th>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.naturalidad.complejidad.valor }}</td>
                     <td></td>
 
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td></td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="naturalidad_complejidad" class="graf">---</td>
+                    <td class="graf"></td>
+                    <td id="naturalidad_complejidad_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv3 lv3Nat" style="display: none">
-                    <td style="text-indent: 15px;"><span>Área bisimétrica</span></td>
+                    <td class="identValores" style="text-indent: 15px;"><span>Área bisimétrica</span></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.naturalidad.complejidad.area_basimetrica.valor }}</td>
 
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="naturalidad_complejidad_area_basimetrica" class="graf">---</td>
+                    <td id="naturalidad_complejidad_area_basimetrica_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv3 lv3Nat" style="display: none">
-                    <td style="text-indent: 15px;"><span>Estratificación vertical</span></td>
+                    <td class="identValores" style="text-indent: 15px;"><span>Estratificación vertical</span></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.naturalidad.complejidad.estratificacion_vertical.valor }}</td>
 
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="naturalidad_complejidad_estratificacion_vertical" class="estratificacion_vertical graf">---</td>
+                    <td id="naturalidad_complejidad_estratificacion_vertical_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv3 lv3Nat" style="display: none">
-                    <td style="text-indent: 15px;"><span>Diversidad estructural</span></td>
+                    <td class="identValores" style="text-indent: 15px;"><span>Diversidad estructural</span></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.naturalidad.complejidad.diversidad_estructural.valor }}</td>
 
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="naturalidad_complejidad_diversidad_estructural" class="graf">---</td>
+                    <td id="naturalidad_complejidad_diversidad_estructural_dif" class="graf">---</td>
                 </tr>
 
                 <tr class="lv2 lv2Nat" style="display: none">
-                    <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Madurez</span></th>
+                    <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Senectud</span></th>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.naturalidad.senectud.valor }}</td>
                     <td></td>
 
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td></td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="naturalidad_senectud" class="senectud graf">---</td>
+                    <td class="graf"></td>
+                    <td id="naturalidad_senectud_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv3 lv3Nat" style="display: none">
-                    <td style="text-indent: 15px;"><span>Àrboles de tamaño excepcional</span></td>
+                    <td class="identValores" style="text-indent: 15px;"><span>Àrboles de tamaño excepcional</span></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.naturalidad.senectud.arb_tam_excep.valor }}</td>
 
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="naturalidad_senectud_arb_tam_excep" class="graf">---</td>
+                    <td id="naturalidad_senectud_arb_tam_excep_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv3 lv3Nat" style="display: none">
-                    <td style="text-indent: 15px;"><span>Abundancia de madera muerta</span></td>
+                    <td class="identValores" style="text-indent: 15px;"><span>Abundancia de madera muerta</span></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.naturalidad.senectud.abund_mad_muerta.valor }}</td>
 
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="naturalidad_senectud_abund_mad_muerta" class="graf">---</td>
+                    <td id="naturalidad_senectud_abund_mad_muerta_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv3 lv3Nat" style="display: none">
-                    <td style="text-indent: 15px;"><span>Proporción de madera muerta</span></td>
+                    <td class="identValores" style="text-indent: 15px;"><span>Proporción de madera muerta</span></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.naturalidad.senectud.prop_madera_muerta.valor }}</td>
 
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="naturalidad_senectud_prop_madera_muerta" class="graf">---</td>
+                    <td id="naturalidad_senectud_prop_madera_muerta_dif" class="graf">---</td>
                 </tr>
 
                 <tr class="lv2 lv2Nat" style="display: none">
                     <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Microhábitats</span></th>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.naturalidad.micro_habitats.valor }}</td>
                     <td></td>
 
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td></td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="naturalidad_micro_habitats" class="graf">---</td>
+                    <td class="graf"></td>
+                    <td id="naturalidad_micro_habitats_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv3 lv3Nat" style="display: none">
-                    <td style="text-indent: 15px;"><span>Microhábitats de pies vivos</span></td>
+                    <td class="identValores" style="text-indent: 15px;"><span>Microhábitats de pies vivos</span></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.naturalidad.micro_habitats.mh_pies_vivos.valor }}</td>
 
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="naturalidad_micro_habitats_mh_pies_vivos" class="graf">---</td>
+                    <td id="naturalidad_micro_habitats_mh_pies_vivos_dif" class="graf">---</td>
                 </tr>
 
                 <tr class="lv2 lv2Nat" style="display: none">
                     <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Dinámica</span></th>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.naturalidad.dinamica.valor }}</td>
                     <td></td>
 
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td></td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="naturalidad_dinamica" class="graf">---</td>
+                    <td class="graf"></td>
+                    <td id="naturalidad_dinamica_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv3 lv3Nat" style="display: none">
-                    <td style="text-indent: 15px;"><span>Ciclo silvogenético</span></td>
+                    <td class="identValores" style="text-indent: 15px;"><span>Ciclo silvogenético</span></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.naturalidad.dinamica.ciclo_silvogen.valor }}</td>
 
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="naturalidad_dinamica_ciclo_silvogen" class="graf">---</td>
+                    <td id="naturalidad_dinamica_ciclo_silvogen_dif" class="graf">---</td>
                 </tr>
 
             <!--         Huella Humana                     -->
                 <tr class="lv1 lv1Hh">
                     <th scope="row"><i class="fas fa-caret-right fa-lg"></i><span>HUELLA HUMANA</span></th>
-                    <td>10</td>
+                    <td>{{ valores_rodal.huellaHumana.valor }}</td>
                     <td></td>
                     <td></td>
 
-                    <td></td>
-                    <td>10</td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td id="huellaHumana" class="huellaHumana graf">---</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="huellaHumana_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv2 lv2Hh" style="display: none">
                     <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Antigua</span></th>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.huellaHumana.antigua.valor }}</td>
                     <td></td>
 
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td></td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="huellaHumana_antigua" class="antigua graf">---</td>
+                    <td class="graf"></td>
+                    <td id="huellaHumana_antigua_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv3 lv3Hh" style="display: none">
-                    <td style="text-indent: 15px;" scope="row"><span>Continuidad temporal</span></td>
+                    <td class="identValores" style="text-indent: 15px;" scope="row"><span>Continuidad temporal</span></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.huellaHumana.antigua.cont_temp.valor }}</td>
 
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="huellaHumana_antigua_cont_temp" class="graf">---</td>
+                    <td id="huellaHumana_antigua_cont_temp_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv3 lv3Hh" style="display: none">
-                    <td style="text-indent: 15px;" scope="row"><span>Usos agropastorales</span></td>
+                    <td class="identValores" style="text-indent: 15px;" scope="row"><span>Usos agropastorales</span></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.huellaHumana.antigua.usos_agropast.valor }}</td>
 
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="huellaHumana_antigua_usos_agropast" class="graf">---</td>
+                    <td id="huellaHumana_antigua_usos_agropast_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv3 lv3Hh" style="display: none">
-                    <td style="text-indent: 15px;" scope="row"><span>Usos forestales</span></td>
+                    <td class="identValores" style="text-indent: 15px;" scope="row"><span>Usos forestales</span></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.huellaHumana.antigua.usos_forestales.valor }}</td>
 
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="huellaHumana_antigua_usos_forestales" class="graf">---</td>
+                    <td id="huellaHumana_antigua_usos_forestales_dif" class="graf">---</td>
                 </tr>
 
 
                 <tr class="lv2 lv2Hh" style="display: none">
                     <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Reciente</span></th>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.huellaHumana.reciente.valor }}</td>
                     <td></td>
 
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td></td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="huellaHumana_reciente" class="graf">---</td>
+                    <td class="graf"></td>
+                    <td id="huellaHumana_reciente_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv3 lv3Hh" style="display: none">
-                    <td style="text-indent: 15px;" scope="row"><span>Usos forestales</span></td>
+                    <td class="identValores" style="text-indent: 15px;" scope="row"><span>Usos forestales</span></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.huellaHumana.reciente.usos_forestales.valor }}</td>
 
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="huellaHumana_reciente_usos_forestales" class="graf">---</td>
+                    <td id="huellaHumana_reciente_usos_forestales_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv3 lv3Hh" style="display: none">
-                    <td style="text-indent: 15px;" scope="row"><span>Especies invasoras</span></td>
+                    <td class="identValores" style="text-indent: 15px;" scope="row"><span>Especies invasoras</span></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.huellaHumana.reciente.especies_inv.valor }}</td>
 
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="huellaHumana_reciente_especies_inv" class="graf">---</td>
+                    <td id="huellaHumana_reciente_especies_inv_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv3 lv3Hh" style="display: none">
-                    <td style="text-indent: 15px;" scope="row"><span>Causas de fragmentación</span></td>
+                    <td class="identValores" style="text-indent: 15px;" scope="row"><span>Causas de fragmentación</span></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.huellaHumana.reciente.causa_fragment.valor }}</td>
 
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="huellaHumana_reciente_causa_fragment" class="graf">---</td>
+                    <td id="huellaHumana_reciente_causa_fragment_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv3 lv3Hh" style="display: none">
-                    <td style="text-indent: 15px;" scope="row"><span>Actividad cinegética</span></td>
+                    <td class="identValores" style="text-indent: 15px;" scope="row"><span>Actividad cinegética</span></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.huellaHumana.reciente.usos_forestales.valor }}</td>
 
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="huellaHumana_reciente_actv_cineget" class="graf">---</td>
+                    <td id="huellaHumana_reciente_actv_cineget_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv3 lv3Hh" style="display: none">
-                    <td style="text-indent: 15px;" scope="row"><span>Herbívora y/o ramoneo</span></td>
+                    <td class="identValores" style="text-indent: 15px;" scope="row"><span>Herbívora y/o ramoneo</span></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.huellaHumana.reciente.herv_rom.valor }}</td>
 
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="huellaHumana_reciente_herv_rom" class="graf">---</td>
+                    <td id="huellaHumana_reciente_herv_rom_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv3 lv3Hh" style="display: none">
-                    <td style="text-indent: 15px;" scope="row"><span>Frecuentación</span></td>
+                    <td class="identValores" style="text-indent: 15px;" scope="row"><span>Frecuentación</span></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.huellaHumana.reciente.frecuent.valor }}</td>
 
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="huellaHumana_reciente_frecuent" class="graf">---</td>
+                    <td id="huellaHumana_reciente_frecuent_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv3 lv3Hh" style="display: none">
-                    <td style="text-indent: 15px;" scope="row"><span>Durabilidad de los usos</span></td>
+                    <td class="identValores" style="text-indent: 15px;" scope="row"><span>Durabilidad de los usos</span></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.huellaHumana.reciente.durab_usos.valor }}</td>
 
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="huellaHumana_reciente_durab_usos" class="graf">---</td>
+                    <td id="huellaHumana_reciente_durab_usos_dif" class="graf">---</td>
                 </tr>
 
          <!--         Integridad Espacial                  -->
 
                 <tr class="lv1 lv1Ie">
                     <th scope="row"><i class="fas fa-caret-right fa-lg"></i><span>INTEGRIDAD ESPACIAL</span></th>
-                    <td>10</td>
+                    <td>{{ valores_rodal.integridadEspacial.valor }}</td>
                     <td></td>
                     <td></td>
 
-                    <td></td>
-                    <td>10</td>
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td id="integridadEspacial" class="graf">---</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="integridadEspacial_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv2 lv2Ie" style="display: none">
                     <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Tamaño</span></th>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.integridadEspacial.tamano.valor }}</td>
                     <td></td>
 
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td></td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="integridadEspacial_tamano" class="graf">---</td>
+                    <td class="graf"></td>
+                    <td id="integridadEspacial_tamano_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv2 lv2Ie" style="display: none">
                     <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Contenido forestal</span></th>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.integridadEspacial.cont_forest.valor }}</td>
                     <td></td>
 
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td></td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="integridadEspacial_cont_forest" class="graf">---</td>
+                    <td class="graf"></td>
+                    <td id="integridadEspacial_cont_forest_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv2 lv2Ie" style="display: none">
                     <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Efecto borde</span></th>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.integridadEspacial.efect_borde.valor }}</td>
                     <td></td>
 
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td></td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="integridadEspacial_efect_borde" class="graf">---</td>
+                    <td class="graf"></td>
+                    <td id="integridadEspacial_efect_borde_dif" class="graf">---</td>
                 </tr>
                 <tr class="lv2 lv2Ie" style="display: none">
                     <th style="text-indent: 15px;" scope="row"><i class="fas fa-caret-right fa-lg"></i><span>Conectividad</span></th>
                     <td></td>
-                    <td>10</td>
+                    <td>{{ valores_rodal.integridadEspacial.conect.valor }}</td>
                     <td></td>
 
-                    <td></td>
-                    <td></td>
-                    <td>10</td>
-                    <td></td>
-                    <td>10</td>
+                    <td class="graf"></td>
+                    <td class="graf"></td>
+                    <td id="integridadEspacial_conect" class="graf">---</td>
+                    <td class="graf"></td>
+                    <td id="integridadEspacial_conect_dif" class="graf">---</td>
                 </tr>
 
             </tbody>
         </table>
     </div>
 </div>
-
-<p>{{ dades_rodal. }}</p>
-
-
 {% endblock %}
 
 {% block extra_js %}
 <script>
     var linkComparador = "{% url 'comparador_noparam' %}";
+    var rodalReferencia;
+    var valores_rodal_jason = {{ valores_rodal_json | safe }};
+    var rodRef = new Array();
+    var rodal = new Array();
+    var resComp = new Array();
+
+
+
 </script>
 <script src="{% static 'redbosques_main/javascript/data_table.js' %}"></script>
+<script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
 {% endblock %}
