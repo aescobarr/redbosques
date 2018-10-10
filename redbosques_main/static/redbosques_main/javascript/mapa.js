@@ -50,8 +50,7 @@ $(document).ready(function() {
             }
 
             var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
-            '<b>Nombre habitad: </b>' + punt.habitat_nom + '<br><b>Localización: </b>' + punt.nombre + '<br><b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma +
-            '<br><a href="http://127.0.0.1:8000/redbosques/comparador/' + punt.id_rodal + '/"><b>Ver ficha</b></a>'
+            '<b>Nombre habitad: </b>' + punt.habitat_nom + '<br><b>Localización: </b>' + punt.nombre + '<br><b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma +    '<br><a href="http://127.0.0.1:8000/redbosques/comparador/' + punt.id_rodal + '/"><b>Ver ficha</b></a>'
             );
 
              //url = 'http://127.0.0.1:8000/redbosques/datos_mapa';
@@ -67,9 +66,9 @@ $(document).ready(function() {
 
     var base = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
             maxZoom: 18,
-            /*attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
                 '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',*/
+                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             id: 'mapbox.streets'
     });
 
@@ -198,7 +197,7 @@ var updateMapData = function(){
                         //console.log(data.llista_habitats);
                         selector_Habitad(data.llista_habitats);
                     }
-                    //console.log(data.llista_punts);
+                    console.log(data.llista_punts);
                     setMapData(data.llista_punts);
 
                 }

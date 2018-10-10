@@ -16,15 +16,16 @@
     <div class="row">
         <h3>Mapa de rodales de referencia RedBosques</h3>
     </div>
-
+</div>
+<div class="container">
     <div class="row mapa-selectores">
         <div id="mapid" class="col-lg-9"></div>
 
         <div class="col-lg-3">
-            <button type="btn" class="btn btn-selector-mapa">Participar</button>
+            <button class="btn btn-selector-mapa">Participar</button>
             <!--<button type="btn" class="btn btn-selector-mapa">Comparar</button>-->
             <h5>Filtrar por: </h5>
-            <button type="btn" class="btn btn-selector-mapa selectorFiltro" onclick="changeFilter()" value="0">Valoración Humana</button>
+            <button class="btn btn-selector-mapa selectorFiltro" onclick="changeFilter()" value="0">Valoración Humana</button>
             <h5>Selecciona un eje</h5>
             <select class="form-control selector_clasificacio" onclick="updateMapData()">
                 <option class="tip_clas" value="nm" selected="selected">Naturalidad</option>
@@ -67,13 +68,13 @@
                 </div>
             </div>
             <div class="limpiarFiltros">
-                    <button type="btn" class="btn btn-selector-mapa" onclick="limpiarFiltros()">Limpiar filtros</button>
+                    <button class="btn btn-selector-mapa" onclick="limpiarFiltros()">Limpiar filtros</button>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
 
-        {% endblock %}
         {% block extra_js %}
         <script>
         var mymap;

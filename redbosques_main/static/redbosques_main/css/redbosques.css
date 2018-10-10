@@ -1,13 +1,134 @@
+/*###################Estils generals###################*/
+body{
+    font-family: "Open Sans", Arial, sans-serif;
+}
 
-/*###################Estils Mapa#######################*/
+
+.search-input{
+    margin-top: 5px;
+    float: right;
+}
+
+.logo-inst{
+    padding-right: 5px;
+}
+
+.navbar-default{
+    background-color: white;
+    border-color: white;
+}
+
+.navbar-default .navbar-nav .active a{
+    background-color: white;
+}
+
+
+.navbar-default .navbar-nav .active a:hover,
+.navbar-default .navbar-nav .active a:focus{
+    background: #9ac635;
+    padding-bottom: 10px;
+    border-radius: 4px;
+}
+
+
+
+.nav.navbar-nav li.menu-options a {
+    border-radius: 4px;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px;
+    padding: 10px 13px;
+    text-transform: uppercase;
+    color: #9ac635;
+}
+
+ul.nav-pills li.active a {
+    background-color: #9ac635;
+}
+
+.header-nav-main nav ul li:hover a {
+    background: #9ac635;
+    padding-bottom: 10px;
+
+}
+
 .subheader{
     background-color: #dae6d1;
     height: 100px;
+    border-top: 2px solid black;
+    border-bottom: 4px solid #9ac635;
 }
 
 .subheader h1{
     vertical-align: text-bottom;
 }
+
+
+.subheader a h4{
+    color: #9ac635;
+}
+
+.subfield{
+    padding-right: 5%;
+    padding-left: 5%;
+}
+
+
+.nav.navbar-nav li.menu-options a:hover{
+        color: #FFF;
+}
+
+.img-colabs{
+    text-align:center;
+}
+
+#footer{
+    background: #060606;
+    border-top: 4px solid #060606;
+    margin-top: 40px;
+    padding: 25px 0 0;
+    font-size: 0.95em;
+}
+
+#block-system-user-menu ul.menu li {
+    float: right;
+    width: auto;
+    list-style: none;
+    padding: 0 0.5em;
+    text-align: center;
+    margin: 0;
+    border-right: 1px solid #8c0;
+    line-height: 1em;
+}
+
+#block-system-user-menu ul.menu li:first-child {
+    border: none;
+}
+
+#footer a{
+    color: white;
+}
+
+#footer a:hover {
+    color: #CCC;
+}
+
+#footer p{
+    color: #555;
+    margin: 0;
+    padding: 0;
+    line-height: 24px;
+}
+
+#footer .container .row{
+    margin-bottom: 25px;
+}
+
+
+
+/*###################Estils Mapa#######################*/
+
 
 .map-header{
     background-color: #9ac635;
@@ -24,6 +145,7 @@
 .mapa-selectores{
     color: black;
     margin-top: 4%;
+    text-align: center;
 }
 
 .mapa-selectores select{
@@ -90,6 +212,13 @@ h5{
 .icon_10{ color: #0033cc; }
 .icon_null{ color: gray; }
 
+
+
+.logos-colab{
+    margin-top: 3%;
+    margin-bottom: 3%;
+
+}
 /*###################FI Estils Mapa#######################*/
 
 /*#####################Estils Menú########################*/
@@ -108,6 +237,7 @@ h5{
 
 .filtros{
     margin-top: 10px;
+    margin-bottom: 15px;
 }
 
 
@@ -121,6 +251,53 @@ h5{
 
 .identValores{
     text-align: left;
+}
+
+.menu-data-show{
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+.menu-data-show a{
+    color:#9ac635;
+}
+
+.green-font{
+    color:#9ac635;
+}
+
+#filtro-valores .form-control, #filtro-grafica .form-control{
+    border: 1px solid #9ac635;
+}
+
+.data-table input, .data-table select{
+    border: 1px solid #9ac635;
+}
+
+.grafico{
+    text-align: center;
+}
+
+.js-plotly-plot{
+    display: inline-block;
+}
+
+.tabla-datos{
+    margin-top: 2%;
+}
+
+input.boolRodRef{
+    /*margin-left: 24%;*/
+    margin-top: -18%;
+}
+
+.boolRodRef{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+label .boolRodRef{
+    padding-left: 0px;
 }
 
 /*###########################################################*/

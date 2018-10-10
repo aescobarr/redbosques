@@ -124,3 +124,31 @@ class RodalValorres2(models.Model):
     class Meta:
         managed = False  # Created from a view. Don't remove.
         db_table = 'rodal_valorres_2'
+
+
+class TeRegbio(models.Model):
+    #id = models.AutoField()
+    cod = models.CharField(primary_key=True, max_length=14)
+    nombre_es = models.CharField(max_length=100, blank=True, null=True)
+    nombre_cat = models.CharField(max_length=100, blank=True, null=True)
+    nombre_en = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'te_regbio'
+
+
+
+class TeProvincia(models.Model):
+    #id = models.AutoField()
+    cod = models.CharField(primary_key=True, max_length=5)
+    codigo = models.CharField(max_length=10, blank=True, null=True)
+    parent = models.CharField(max_length=10, blank=True, null=True)
+    nivel = models.CharField(max_length=10, blank=True, null=True)
+    nombre_es = models.CharField(max_length=10, blank=True, null=True)
+    nombre_ca = models.CharField(max_length=10, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'te_provincia'
+

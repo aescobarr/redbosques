@@ -8,7 +8,7 @@ $(document).ready(function() {
 $('tr.lv1').on("click", function(){
 
     var classLvl = this.className;
-    console.log(classLvl);
+    //console.log(classLvl);
 
     if(classLvl == "lv1 lv1Nat"){
         $('.lv2Nat').toggle();
@@ -40,7 +40,7 @@ $('tr.lv1').on("click", function(){
 $('tr.lv2').on("click", function(){
 
     var classLvl2 = this.className;
-    console.log(classLvl2);
+    //console.log(classLvl2);
 
     if(classLvl2 == "lv2 lv2Nat"){
         $('.lv3Nat').toggle();
@@ -76,11 +76,30 @@ $('tr.lv2').on("click", function(){
 //$('.selector_rodal').on("change", function(){
 var rodalRefData = function(){
 
-    valRod = $('.selector_rodal option:selected').val();
 
     url = 'http://127.0.0.1:8000/redbosques/valorRef';
 
-    url = url + '?vr='+valRod;
+    valRod = $('.selector_rodal option:selected').val();
+    habSel = $('.habitatSelected').attr('value');
+
+
+    if(valRod == 'medRod'){
+        url = url + '?vr=medRod&habSel='+ habSel;
+        console.log(url);
+        $('#selector_ComAut option:first').prop('selected', 'selected');
+        $('#selector_RegBio option:first').prop('selected', 'selected');
+
+    }else if(valRod != 'medRod' ){
+        if (valRod == 'None'){
+            $('.valGraf').html('---');
+            $('.valGraf').css("background-color", "#FFFFFF");
+        }else{
+            url = url + '?vr='+valRod;
+
+        }
+    }
+
+
 
     $.ajax({
         url: url,
@@ -107,9 +126,7 @@ var rodalRefData = function(){
 
 
 
-$('.tipoSalida').on("change", function(){
-    $('td.graf').toggle();
-});
+
 
 
 var recorreArbre = function(nom_pare, element){
@@ -171,8 +188,8 @@ jQuery.each(element, function(i, actual) {
 
 
 function calcDiferencia(){
-    console.log("rodal:" + rodal.naturalidad);
-    console.log("rodal referencia:" + rodRef.naturalidad);
+    //console.log("rodal:" + rodal.naturalidad);
+    //console.log("rodal referencia:" + rodRef.naturalidad);
     resComp = [];
 
 
@@ -204,7 +221,7 @@ function calcDiferencia(){
         /*console.log(key +':'+ value);
         console.log(key +':'+ value2);*/
         //resta =  value - value2;
-        console.log("resta: " + resta);
+        //console.log("resta: " + resta);
 
         var elem = {};
         elem[key+'_dif'] = resta;
@@ -212,5 +229,74 @@ function calcDiferencia(){
         //$('#' + key+'_dif').html(resta);
         resComp.push(elem);
     }
-    console.log(resComp);
+    //console.log(resComp);
+}
+
+$('.val-graf.valores').on("click", function(){
+     $('td.graf, th.graf').show();
+     $('td.grafico').hide();
+});
+
+$('.val-graf.grafica').on("click", function(){
+    $('td.graf, th.graf').hide();
+    $('td.grafico').show();
+});
+
+
+
+var setFiltros = function(){
+
+        /*var pathArray = window.location.pathname.split('/');
+        console.log(pathArray[3]);*/
+
+        //url = 'http://127.0.0.1:8000/redbosques/comparador/'+ pathArray[3]+'/';
+
+        valIdRodal = $('p.rodalSelected').attr('value');
+        console.log(valIdRodal);
+
+
+        url = 'http://127.0.0.1:8000/redbosques/setFiltrosRodal?idR=' + valIdRodal;
+
+
+        valComAut = $('.selector_ComAut option:selected').val();
+        valRegBio = $('.selector_RegBio option:selected').val();
+
+        if(valRegBio){
+            url = url + '&rb='+valRegBio;
+        }
+
+        if(valComAut){
+            url = url + '&ca='+valComAut;
+        }
+
+
+
+        console.log(url);
+            $.ajax({
+            url: url,
+            method: "GET",
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type)) {
+                    var csrftoken = getCookie('csrftoken');
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            },
+
+            success: function( data, textStatus, jqXHR ) {
+
+                listaRodales = data.listaRodales;
+                $('.valGraf').html('---');
+                $('.valGraf').css("background-color", "#FFFFFF");
+                $('.selector_rodal .rodal').remove();
+                listaRodales.forEach(rodal => {
+                    console.log(rodal);
+                    $('.selector_rodal').append('<option class="rodal" value="'+ rodal.id_rodal +'">'+ rodal.nombre +'</option>');
+                })
+
+
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(errorThrown);
+            }
+        });
 }

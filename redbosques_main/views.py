@@ -1,10 +1,11 @@
 from django.shortcuts import render
-from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2
+from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
 import decimal
 import json
+from django.db.models import Avg
 
 # Create your views here.
 def index(request):
@@ -112,8 +113,8 @@ def comparador(request, id=None):
     #codi_rodal = request.query_params.get('cr', None)
 
     rodals_list = WebMapa.objects.all()
-
-    selector_rodals = rodals_list.distinct('id_rodal')
+    hab_cod = rodals_list.filter(id_rodal=id).values_list('habitat_cod', flat=True).first()
+    selector_rodals = rodals_list.filter(habitat_cod=hab_cod).filter(eje_cod='nm').exclude(id_rodal=id)
 
 
     if id is not None:
@@ -131,6 +132,7 @@ def comparador(request, id=None):
             'nombre': punt.nombre,
             'Comunidad_autonoma': punt.ccaa_nombre,
             'habitat_nom': punt.habitat_nom,
+            'habitat_cod': punt.habitat_cod
         }
 
     #########################################
@@ -145,26 +147,145 @@ def comparador(request, id=None):
 
     valores_rodal_json = json.dumps(rodalArbol)
 
+
+    ####### Selector Regió biogeográfica ########
+
+    RegBio_list = TeRegbio.objects.all()
+
+    listaRegBio = []
+    for regBio in RegBio_list:
+        listaRegBio.append({
+            'cod': regBio.cod,
+            'nombre': regBio.nombre_es
+        })
+
+    #############################################
+
+    ####### Selector Comunidad autonoma ########
+
+    ComAuto_list = TeProvincia.objects.filter(nivel='Com. autònoma')
+    listaComAuto = []
+    for comAut in ComAuto_list:
+        listaComAuto.append({
+            'codigo': comAut.codigo,
+            'nombre': comAut.nombre_es
+        })
+
+
+
+    #############################################
+
     context = {'herramientas': 'Herramienta de evaluación de rodales maduros',
                'valores_rodal': rodalArbol,
                'infoRodal': infoRodal,
                'listaRodales': listaRodales,
-               'valores_rodal_json': valores_rodal_json}
+               'valores_rodal_json': valores_rodal_json,
+               'listaRegBio': listaRegBio,
+               'listaComAuto': listaComAuto}
     return render(request, 'redbosques_main/comparador.html', context)
 
 
+@api_view(['GET'])
+def filtrosRodal(request, id=None):
+    rodals_list = WebMapa.objects.all()
+
+    info_rodal = rodals_list.filter(id_rodal=id)
+
+    infoRodal = {}
+    for punt in info_rodal:
+        infoRodal = {
+            'id_rodal': punt.id_rodal,
+            'nombre': punt.nombre,
+            'Comunidad_autonoma': punt.ccaa_nombre,
+            'habitat_nom': punt.habitat_nom,
+        }
+
+    return render(request, 'redbosques_main/comparador.html', infoRodal)
 
 @api_view(['GET'])
 def valorRef(request):
 
-    test = request.query_params.get('vr', None)
+    cordRod = request.query_params.get('vr', None)
+    habSel = request.query_params.get('habSel', None)
 
-    if test is not None:
-        dades_rodal2 = RodalValorres2.objects.filter(id_rodal=test)
+    if cordRod == None:
+        context = {}
 
-    rodal_referencia = crearArbol(dades_rodal2)
 
-    context = {'rodal_referencia': rodal_referencia}
+    #if test is not None:
+    if cordRod != None:
+        if cordRod != 'medRod':
+            dades_rodal2 = RodalValorres2.objects.filter(id_rodal=cordRod)
+            rodal_referencia = crearArbol(dades_rodal2)
+        if cordRod == 'medRod':
+            #dades_rodal2 = RodalValorres2.objects.all()
+            #rodals_list = RodalValorres2.objects.all()
+            #hab_cod = rodals_list.filter(id_rodal=selRod).values_list('lpeht_cod', flat=True).first()
+
+            dades_rodal2 = RodalValorres2.objects.filter(lpeht_cod=habSel).values('indicador_cod').annotate(mitjana=Avg('valor'))
+            rodal_referencia = crearArbolMedia(dades_rodal2)
+
+        #rodal_referencia = crearArbol(dades_rodal2)
+        context = {'rodal_referencia': rodal_referencia}
+
+    return Response(context)
+
+
+
+
+@api_view(['GET'])
+def setFiltrosRodal(request):
+    idRod = request.query_params.get('idR', None)
+    regBio = request.query_params.get('rb', None)
+    comAut = request.query_params.get('ca', None)
+
+    select_rodals = []
+
+    rodals_list = RodalValorres2.objects.all()
+    hab_cod = rodals_list.filter(id_rodal=idRod).values_list('lpeht_cod', flat=True).first()
+
+    if regBio is not None and comAut is not None:
+        select_rodals = rodals_list.filter(lpeht_cod=hab_cod).filter(indicador_cod='nm').filter(regbio_cod=regBio).filter(comautonom_cod=comAut).exclude(id_rodal=idRod)
+
+    elif regBio is not None:
+        select_rodals = rodals_list.filter(lpeht_cod=hab_cod).filter(indicador_cod='nm').filter(regbio_cod=regBio).exclude(id_rodal=idRod)
+
+    elif comAut is not None:
+        select_rodals = rodals_list.filter(lpeht_cod=hab_cod).filter(indicador_cod='nm').filter(comautonom_cod=comAut).exclude(id_rodal=idRod)
+    else:
+        select_rodals = rodals_list.filter(lpeht_cod=hab_cod).filter(indicador_cod='nm').exclude(id_rodal=idRod)
+
+
+
+    #listaRodales = {}
+    rodAux = []
+
+    for rodal in select_rodals:
+        rodAux.append(rodal.id_rodal)
+        #rodAux = WebMapa.objects.filter(id_rodal=rodal.id_rodal).filter(eje_cod='nm')
+
+    rodales = {}
+    listaRodales = []
+    i=0
+
+    for idList in rodAux:
+        #rodales[i] = WebMapa.objects.filter(id_rodal=idList).filter(eje_cod='nm')
+        rodales[i] = WebMapa.objects.get(id_rodal=idList,eje_cod='nm')
+        #filter(id_rodal=idList).filter(eje_cod='nm')
+        i = i+1
+
+
+    for rodal in rodales:
+        listaRodales.append({
+            #'id_rodal': rodal.id_rodal,
+            #'nombre': rodal.nombre
+            'id_rodal': rodales[rodal].id_rodal,
+            'nombre': rodales[rodal].nombre,
+        })
+
+
+    context = {'listaRodales': listaRodales}
+    #return render(request, 'redbosques_main/comparador.html', context)
     return Response(context)
 
 
@@ -429,3 +550,281 @@ def crearArbol(dades):
         }
 
         return rodal_referencia
+
+def crearArbolMedia(dades):
+
+    for indicador_cod in dades:
+        #json1 = json.dumps(indicador_cod, ensure_ascii=False)
+        #print(indicador_cod.keys(),'->', indicador_cod.values())
+        #print(indicador_cod['indicador_cod'])
+        #print(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'nm':
+            #print(indicador_cod['indicador_cod'])
+            #print(indicador_cod['mitjana'])
+            if indicador_cod['mitjana'] == None:
+                nm_valor = "---"
+            else:
+                nm_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'cp':
+            if indicador_cod['mitjana'] == None:
+                cp_valor = "---"
+            else:
+                cp_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'ea':
+            if indicador_cod['mitjana'] == None:
+                ea_valor = "---"
+            else:
+                ea_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'ce':
+            if indicador_cod['mitjana'] == None:
+                ce_valor = "---"
+            else:
+                ce_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'ab':
+            if indicador_cod['mitjana'] == None:
+                ab_valor = "---"
+            else:
+                ab_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'ev':
+            if indicador_cod['mitjana'] == None:
+                ev_valor = "---"
+            else:
+                ev_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'de':
+            if indicador_cod['mitjana'] == None:
+                de_valor = "---"
+            else:
+                de_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'sn':
+            if indicador_cod['mitjana'] == None:
+                sn_valor = "---"
+            else:
+                sn_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'ae':
+            if indicador_cod['mitjana'] == None:
+                ae_valor = "---"
+            else:
+                ae_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'mm':
+            if indicador_cod['mitjana'] == None:
+                mm_valor = "---"
+            else:
+                mm_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'pm':
+            if indicador_cod['mitjana'] == None:
+                pm_valor = "---"
+            else:
+                pm_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'hm':
+            if indicador_cod['mitjana'] == None:
+                hm_valor = "---"
+            else:
+                hm_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'mh':
+            if indicador_cod['mitjana'] == None:
+                mh_valor = "---"
+            else:
+                mh_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'dn':
+            if indicador_cod['mitjana'] == None:
+                dn_valor = "---"
+            else:
+                dn_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'cs':
+            if indicador_cod['mitjana'] == None:
+                cs_valor = "---"
+            else:
+                cs_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'hh':
+            if indicador_cod['mitjana'] == None:
+                hh_valor = "---"
+            else:
+                hh_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'ha':
+            if indicador_cod['mitjana'] == None:
+                ha_valor = "---"
+            else:
+                ha_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'tb':
+            if indicador_cod['mitjana'] == None:
+                tb_valor = "---"
+            else:
+                tb_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'ua':
+            if indicador_cod['mitjana'] == None:
+                ua_valor = "---"
+            else:
+                ua_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'fa':
+            if indicador_cod['mitjana'] == None:
+                fa_valor = "---"
+            else:
+                fa_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'hr':
+            if indicador_cod['mitjana'] == None:
+                hr_valor = "---"
+            else:
+                hr_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'fr':
+            if indicador_cod['mitjana'] == None:
+                fr_valor = "---"
+            else:
+                fr_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'ei':
+            if indicador_cod['mitjana'] == None:
+                ei_valor = "---"
+            else:
+                ei_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'fg':
+            if indicador_cod['mitjana'] == None:
+                fg_valor = "---"
+            else:
+                fg_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'cz':
+            if indicador_cod['mitjana'] == None:
+                cz_valor = "---"
+            else:
+                cz_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'hb':
+            if indicador_cod['mitjana'] == None:
+                hb_valor = "---"
+            else:
+                hb_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'fc':
+            if indicador_cod['mitjana'] == None:
+                fc_valor = "---"
+            else:
+                fc_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'du':
+            if indicador_cod['mitjana'] == None:
+                du_valor = "---"
+            else:
+                du_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'ie':
+            if indicador_cod['mitjana'] == None:
+                ie_valor = "---"
+            else:
+                ie_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'ar':
+            if indicador_cod['mitjana'] == None:
+                ar_valor = "---"
+            else:
+                ar_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'cf':
+            if indicador_cod['mitjana'] == None:
+                cf_valor = "---"
+            else:
+                cf_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'eb':
+            if indicador_cod['mitjana'] == None:
+                eb_valor = "---"
+            else:
+                eb_valor = round(indicador_cod['mitjana'])
+
+        if indicador_cod['indicador_cod'] == 'cn':
+            if indicador_cod['mitjana'] == None:
+                cn_valor = "---"
+            else:
+                cn_valor = round(indicador_cod['mitjana'])
+
+    ######   Valores del rodal    #########
+    rodal_referencia = {
+        'naturalidad': {
+            'valor': nm_valor,
+            'composicion': {
+                'valor': cp_valor,
+                'especies_arboreas': {'valor': ea_valor}
+            },
+            'complejidad': {
+                'valor': ce_valor,
+                'area_basimetrica': {'valor': ab_valor},
+                'estratificacion_vertical': {'valor': ev_valor},
+                'diversidad_estructural': {'valor': de_valor}
+            },
+            'senectud': {
+                'valor': sn_valor,
+                'arb_tam_excep': {'valor': ae_valor},
+                'abund_mad_muerta': {'valor': mm_valor},
+                'prop_madera_muerta': {'valor': pm_valor}
+            },
+            'micro_habitats': {
+                'valor': hm_valor,
+                'mh_pies_vivos': {'valor': mh_valor}
+            },
+            'dinamica': {
+                'valor': dn_valor,
+                'ciclo_silvogen': {'valor': cs_valor}
+            }
+        },
+        'huellaHumana': {
+            'valor': hh_valor,
+            'antigua': {
+                'valor': ha_valor,
+                'cont_temp': {'valor': tb_valor},
+                'usos_agropast': {'valor': ua_valor},
+                'usos_forestales': {'valor': fa_valor}
+            },
+            'reciente': {
+                'valor': hr_valor,
+                'usos_forestales': {'valor': fr_valor},
+                'especies_inv': {'valor': ei_valor},
+                'causa_fragment': {'valor': fg_valor},
+                'actv_cineget': {'valor': cz_valor},
+                'herv_rom': {'valor': hb_valor},
+                'frecuent': {'valor': fc_valor},
+                'durab_usos': {'valor': du_valor}
+            },
+        },
+        'integridadEspacial': {
+            'valor': ie_valor,
+            'tamano': {'valor': ar_valor},
+            'cont_forest': {'valor': cf_valor},
+            'efect_borde': {'valor': eb_valor},
+            'conect': {'valor': cn_valor}
+        }
+    }
+
+    return rodal_referencia
+
+    '''
+    for valor2 in json1:
+        print(valor2[0])
+
+       if valor2.indicador_cod == 'nm':
+            if valor2.valor == None:
+                nm_valor = "---"
+            else:
+                nm_valor = round(valor2.valor)
+    print(nm_valor)'''
