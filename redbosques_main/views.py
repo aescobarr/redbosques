@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from django.http import JsonResponse
 import decimal
 import json
-from django.db.models import Avg
+from django.db.models import Avg, StdDev
 
 # Create your views here.
 def index(request):
@@ -93,7 +93,8 @@ def datos_mapa(request):
             'nombre': punt.nombre,
             'Comunidad_autonoma': punt.ccaa_nombre,
             'habitat_nom': punt.habitat_nom,
-            'valor': punt.valor
+            'valor': punt.valor,
+            'imagen': punt.fotoglobo
         })
 
 
@@ -222,7 +223,7 @@ def valorRef(request):
             #rodals_list = RodalValorres2.objects.all()
             #hab_cod = rodals_list.filter(id_rodal=selRod).values_list('lpeht_cod', flat=True).first()
 
-            dades_rodal2 = RodalValorres2.objects.filter(lpeht_cod=habSel).values('indicador_cod').annotate(mitjana=Avg('valor'))
+            dades_rodal2 = RodalValorres2.objects.filter(lpeht_cod=habSel).values('indicador_cod').annotate(mitjana=Avg('valor'),stddev=StdDev('valor'))
             rodal_referencia = crearArbolMedia(dades_rodal2)
 
         #rodal_referencia = crearArbol(dades_rodal2)
@@ -558,14 +559,17 @@ def crearArbolMedia(dades):
         #print(indicador_cod.keys(),'->', indicador_cod.values())
         #print(indicador_cod['indicador_cod'])
         #print(indicador_cod['mitjana'])
-
+        #print(indicador_cod['stddev'])
         if indicador_cod['indicador_cod'] == 'nm':
-            #print(indicador_cod['indicador_cod'])
-            #print(indicador_cod['mitjana'])
             if indicador_cod['mitjana'] == None:
                 nm_valor = "---"
             else:
                 nm_valor = round(indicador_cod['mitjana'])
+
+            if indicador_cod['stddev'] == None:
+                nm_valor_desv = "---"
+            else:
+                nm_valor_desv = indicador_cod['stddev']
 
         if indicador_cod['indicador_cod'] == 'cp':
             if indicador_cod['mitjana'] == None:
@@ -573,11 +577,21 @@ def crearArbolMedia(dades):
             else:
                 cp_valor = round(indicador_cod['mitjana'])
 
+            if indicador_cod['stddev'] == None:
+                cp_valor_desv = "---"
+            else:
+                cp_valor_desv = indicador_cod['stddev']
+
         if indicador_cod['indicador_cod'] == 'ea':
             if indicador_cod['mitjana'] == None:
                 ea_valor = "---"
             else:
                 ea_valor = round(indicador_cod['mitjana'])
+
+            if indicador_cod['stddev'] == None:
+                ea_valor_desv = "---"
+            else:
+                ea_valor_desv = indicador_cod['stddev']
 
         if indicador_cod['indicador_cod'] == 'ce':
             if indicador_cod['mitjana'] == None:
@@ -585,11 +599,25 @@ def crearArbolMedia(dades):
             else:
                 ce_valor = round(indicador_cod['mitjana'])
 
+            if indicador_cod['stddev'] == None:
+                ce_valor_desv = "---"
+            else:
+                ce_valor_desv = indicador_cod['stddev']
+
+
+
         if indicador_cod['indicador_cod'] == 'ab':
             if indicador_cod['mitjana'] == None:
                 ab_valor = "---"
             else:
                 ab_valor = round(indicador_cod['mitjana'])
+
+            if indicador_cod['stddev'] == None:
+                ab_valor_desv = "---"
+            else:
+                ab_valor_desv = indicador_cod['stddev']
+
+
 
         if indicador_cod['indicador_cod'] == 'ev':
             if indicador_cod['mitjana'] == None:
@@ -597,11 +625,24 @@ def crearArbolMedia(dades):
             else:
                 ev_valor = round(indicador_cod['mitjana'])
 
+            if indicador_cod['stddev'] == None:
+                ev_valor = "---"
+            else:
+                ev_valor_desv = indicador_cod['stddev']
+
+
         if indicador_cod['indicador_cod'] == 'de':
             if indicador_cod['mitjana'] == None:
                 de_valor = "---"
             else:
                 de_valor = round(indicador_cod['mitjana'])
+
+            if indicador_cod['stddev'] == None:
+                de_valor_desv = "---"
+            else:
+                de_valor_desv = indicador_cod['stddev']
+
+
 
         if indicador_cod['indicador_cod'] == 'sn':
             if indicador_cod['mitjana'] == None:
@@ -609,11 +650,23 @@ def crearArbolMedia(dades):
             else:
                 sn_valor = round(indicador_cod['mitjana'])
 
+            if indicador_cod['stddev'] == None:
+                sn_valor_desv = "---"
+            else:
+                sn_valor_desv = indicador_cod['stddev']
+
+
+
         if indicador_cod['indicador_cod'] == 'ae':
             if indicador_cod['mitjana'] == None:
                 ae_valor = "---"
             else:
                 ae_valor = round(indicador_cod['mitjana'])
+
+            if indicador_cod['stddev'] == None:
+                ae_valor_desv = "---"
+            else:
+                ae_valor_desv = indicador_cod['stddev']
 
         if indicador_cod['indicador_cod'] == 'mm':
             if indicador_cod['mitjana'] == None:
@@ -621,11 +674,22 @@ def crearArbolMedia(dades):
             else:
                 mm_valor = round(indicador_cod['mitjana'])
 
+            if indicador_cod['stddev'] == None:
+                mm_valor_desv = "---"
+            else:
+                mm_valor_desv = indicador_cod['stddev']
+
+
         if indicador_cod['indicador_cod'] == 'pm':
             if indicador_cod['mitjana'] == None:
                 pm_valor = "---"
             else:
                 pm_valor = round(indicador_cod['mitjana'])
+
+            if indicador_cod['stddev'] == None:
+                pm_valor_desv = "---"
+            else:
+                pm_valor_desv = indicador_cod['stddev']
 
         if indicador_cod['indicador_cod'] == 'hm':
             if indicador_cod['mitjana'] == None:
@@ -633,11 +697,22 @@ def crearArbolMedia(dades):
             else:
                 hm_valor = round(indicador_cod['mitjana'])
 
+            if indicador_cod['stddev'] == None:
+                hm_valor_desv = "---"
+            else:
+                hm_valor_desv = indicador_cod['stddev']
+
         if indicador_cod['indicador_cod'] == 'mh':
             if indicador_cod['mitjana'] == None:
                 mh_valor = "---"
             else:
                 mh_valor = round(indicador_cod['mitjana'])
+
+            if indicador_cod['stddev'] == None:
+                mh_valor_desv = "---"
+            else:
+                mh_valor_desv = indicador_cod['stddev']
+
 
         if indicador_cod['indicador_cod'] == 'dn':
             if indicador_cod['mitjana'] == None:
@@ -645,11 +720,21 @@ def crearArbolMedia(dades):
             else:
                 dn_valor = round(indicador_cod['mitjana'])
 
+            if indicador_cod['stddev'] == None:
+                dn_valor_desv = "---"
+            else:
+                dn_valor_desv = indicador_cod['stddev']
+
         if indicador_cod['indicador_cod'] == 'cs':
             if indicador_cod['mitjana'] == None:
                 cs_valor = "---"
             else:
                 cs_valor = round(indicador_cod['mitjana'])
+
+            if indicador_cod['stddev'] == None:
+                cs_valor_desv = "---"
+            else:
+                cs_valor_desv = indicador_cod['stddev']
 
         if indicador_cod['indicador_cod'] == 'hh':
             if indicador_cod['mitjana'] == None:
@@ -657,11 +742,21 @@ def crearArbolMedia(dades):
             else:
                 hh_valor = round(indicador_cod['mitjana'])
 
+            if indicador_cod['stddev'] == None:
+                hh_valor_desv = "---"
+            else:
+                hh_valor_desv = indicador_cod['stddev']
+
         if indicador_cod['indicador_cod'] == 'ha':
             if indicador_cod['mitjana'] == None:
                 ha_valor = "---"
             else:
                 ha_valor = round(indicador_cod['mitjana'])
+
+            if indicador_cod['stddev'] == None:
+                ha_valor_desv = "---"
+            else:
+                ha_valor_desv = indicador_cod['stddev']
 
         if indicador_cod['indicador_cod'] == 'tb':
             if indicador_cod['mitjana'] == None:
@@ -669,11 +764,21 @@ def crearArbolMedia(dades):
             else:
                 tb_valor = round(indicador_cod['mitjana'])
 
+            if indicador_cod['stddev'] == None:
+                tb_valor_desv = "---"
+            else:
+                tb_valor_desv = indicador_cod['stddev']
+
         if indicador_cod['indicador_cod'] == 'ua':
             if indicador_cod['mitjana'] == None:
                 ua_valor = "---"
             else:
                 ua_valor = round(indicador_cod['mitjana'])
+
+            if indicador_cod['stddev'] == None:
+                ua_valor_desv = "---"
+            else:
+                ua_valor_desv = indicador_cod['stddev']
 
         if indicador_cod['indicador_cod'] == 'fa':
             if indicador_cod['mitjana'] == None:
@@ -681,11 +786,21 @@ def crearArbolMedia(dades):
             else:
                 fa_valor = round(indicador_cod['mitjana'])
 
+            if indicador_cod['stddev'] == None:
+                fa_valor_desv = "---"
+            else:
+                fa_valor_desv = indicador_cod['stddev']
+
         if indicador_cod['indicador_cod'] == 'hr':
             if indicador_cod['mitjana'] == None:
                 hr_valor = "---"
             else:
                 hr_valor = round(indicador_cod['mitjana'])
+
+            if indicador_cod['stddev'] == None:
+                hr_valor_desv = "---"
+            else:
+                hr_valor_desv = indicador_cod['stddev']
 
         if indicador_cod['indicador_cod'] == 'fr':
             if indicador_cod['mitjana'] == None:
@@ -693,11 +808,21 @@ def crearArbolMedia(dades):
             else:
                 fr_valor = round(indicador_cod['mitjana'])
 
+            if indicador_cod['stddev'] == None:
+                fr_valor_desv = "---"
+            else:
+                fr_valor_desv = indicador_cod['stddev']
+
         if indicador_cod['indicador_cod'] == 'ei':
             if indicador_cod['mitjana'] == None:
                 ei_valor = "---"
             else:
                 ei_valor = round(indicador_cod['mitjana'])
+
+            if indicador_cod['stddev'] == None:
+                ei_valor_desv = "---"
+            else:
+                ei_valor_desv = indicador_cod['stddev']
 
         if indicador_cod['indicador_cod'] == 'fg':
             if indicador_cod['mitjana'] == None:
@@ -705,11 +830,21 @@ def crearArbolMedia(dades):
             else:
                 fg_valor = round(indicador_cod['mitjana'])
 
+            if indicador_cod['stddev'] == None:
+                fg_valor_desv = "---"
+            else:
+                fg_valor_desv = indicador_cod['stddev']
+
         if indicador_cod['indicador_cod'] == 'cz':
             if indicador_cod['mitjana'] == None:
                 cz_valor = "---"
             else:
                 cz_valor = round(indicador_cod['mitjana'])
+
+            if indicador_cod['stddev'] == None:
+                cz_valor_desv = "---"
+            else:
+                cz_valor_desv = indicador_cod['stddev']
 
         if indicador_cod['indicador_cod'] == 'hb':
             if indicador_cod['mitjana'] == None:
@@ -717,11 +852,23 @@ def crearArbolMedia(dades):
             else:
                 hb_valor = round(indicador_cod['mitjana'])
 
+            if indicador_cod['stddev'] == None:
+                hb_valor_desv = "---"
+            else:
+                hb_valor_desv = indicador_cod['stddev']
+
         if indicador_cod['indicador_cod'] == 'fc':
             if indicador_cod['mitjana'] == None:
                 fc_valor = "---"
             else:
                 fc_valor = round(indicador_cod['mitjana'])
+
+            if indicador_cod['stddev'] == None:
+                fc_valor_desv = "---"
+            else:
+                fc_valor_desv = indicador_cod['stddev']
+
+
 
         if indicador_cod['indicador_cod'] == 'du':
             if indicador_cod['mitjana'] == None:
@@ -729,11 +876,21 @@ def crearArbolMedia(dades):
             else:
                 du_valor = round(indicador_cod['mitjana'])
 
+            if indicador_cod['stddev'] == None:
+                du_valor_desv = "---"
+            else:
+                du_valor_desv = indicador_cod['stddev']
+
         if indicador_cod['indicador_cod'] == 'ie':
             if indicador_cod['mitjana'] == None:
                 ie_valor = "---"
             else:
                 ie_valor = round(indicador_cod['mitjana'])
+
+            if indicador_cod['stddev'] == None:
+                ie_valor_desv = "---"
+            else:
+                ie_valor_desv = indicador_cod['stddev']
 
         if indicador_cod['indicador_cod'] == 'ar':
             if indicador_cod['mitjana'] == None:
@@ -741,11 +898,21 @@ def crearArbolMedia(dades):
             else:
                 ar_valor = round(indicador_cod['mitjana'])
 
+            if indicador_cod['stddev'] == None:
+                ar_valor_desv = "---"
+            else:
+                ar_valor_desv = indicador_cod['stddev']
+
         if indicador_cod['indicador_cod'] == 'cf':
             if indicador_cod['mitjana'] == None:
                 cf_valor = "---"
             else:
                 cf_valor = round(indicador_cod['mitjana'])
+
+            if indicador_cod['stddev'] == None:
+                cf_valor_desv = "---"
+            else:
+                cf_valor_desv = indicador_cod['stddev']
 
         if indicador_cod['indicador_cod'] == 'eb':
             if indicador_cod['mitjana'] == None:
@@ -753,78 +920,110 @@ def crearArbolMedia(dades):
             else:
                 eb_valor = round(indicador_cod['mitjana'])
 
+            if indicador_cod['stddev'] == None:
+                eb_valor_desv = "---"
+            else:
+                eb_valor_desv = indicador_cod['stddev']
+
         if indicador_cod['indicador_cod'] == 'cn':
             if indicador_cod['mitjana'] == None:
                 cn_valor = "---"
             else:
                 cn_valor = round(indicador_cod['mitjana'])
 
+            if indicador_cod['stddev'] == None:
+                cn_valor_desv = "---"
+            else:
+                cn_valor_desv = indicador_cod['stddev']
+
     ######   Valores del rodal    #########
     rodal_referencia = {
         'naturalidad': {
             'valor': nm_valor,
+            'valor_desv': nm_valor_desv,
             'composicion': {
                 'valor': cp_valor,
-                'especies_arboreas': {'valor': ea_valor}
+            'valor_desv': cp_valor_desv,
+                'especies_arboreas': {'valor': ea_valor,
+                                      'valor_desv': ea_valor_desv}
             },
             'complejidad': {
                 'valor': ce_valor,
-                'area_basimetrica': {'valor': ab_valor},
-                'estratificacion_vertical': {'valor': ev_valor},
-                'diversidad_estructural': {'valor': de_valor}
+                'valor_desv': ce_valor_desv,
+                'area_basimetrica': {'valor': ab_valor,
+                                    'valor_desv': ab_valor_desv},
+                'estratificacion_vertical': {'valor': ev_valor,
+                                            'valor_desv': ev_valor_desv},
+                'diversidad_estructural': {'valor': de_valor,
+                                            'valor_desv': de_valor_desv}
             },
             'senectud': {
                 'valor': sn_valor,
-                'arb_tam_excep': {'valor': ae_valor},
-                'abund_mad_muerta': {'valor': mm_valor},
-                'prop_madera_muerta': {'valor': pm_valor}
+                'valor_desv': sn_valor_desv,
+                'arb_tam_excep': {'valor': ae_valor,
+                                'valor_desv': ae_valor_desv},
+                'abund_mad_muerta': {'valor': mm_valor,
+                                     'valor_desv': mm_valor_desv},
+                'prop_madera_muerta': {'valor': pm_valor,
+                                    'valor_desv': pm_valor_desv}
             },
             'micro_habitats': {
                 'valor': hm_valor,
-                'mh_pies_vivos': {'valor': mh_valor}
+                'valor_desv': hm_valor_desv,
+                'mh_pies_vivos': {'valor': mh_valor,
+                                'valor_desv': mh_valor_desv}
             },
             'dinamica': {
                 'valor': dn_valor,
-                'ciclo_silvogen': {'valor': cs_valor}
+                'valor_desv': dn_valor_desv,
+                'ciclo_silvogen': {'valor': cs_valor,
+                                'valor_desv': cs_valor_desv}
             }
         },
         'huellaHumana': {
             'valor': hh_valor,
+            'valor_desv': hh_valor_desv,
             'antigua': {
                 'valor': ha_valor,
-                'cont_temp': {'valor': tb_valor},
-                'usos_agropast': {'valor': ua_valor},
-                'usos_forestales': {'valor': fa_valor}
+                'valor_desv': ha_valor_desv,
+                'cont_temp': {'valor': tb_valor,
+                            'valor_desv': tb_valor_desv},
+                'usos_agropast': {'valor': ua_valor,
+                                'valor_desv': ua_valor_desv},
+                'usos_forestales': {'valor': fa_valor,
+                                    'valor_desv': fa_valor_desv}
             },
             'reciente': {
                 'valor': hr_valor,
-                'usos_forestales': {'valor': fr_valor},
-                'especies_inv': {'valor': ei_valor},
-                'causa_fragment': {'valor': fg_valor},
-                'actv_cineget': {'valor': cz_valor},
-                'herv_rom': {'valor': hb_valor},
-                'frecuent': {'valor': fc_valor},
-                'durab_usos': {'valor': du_valor}
+                'valor_desv': hr_valor_desv,
+                'usos_forestales': {'valor': fr_valor,
+                                    'valor_desv': fr_valor_desv},
+                'especies_inv': {'valor': ei_valor,
+                                'valor_desv': ei_valor_desv},
+                'causa_fragment': {'valor': fg_valor,
+                                    'valor_desv': fg_valor_desv},
+                'actv_cineget': {'valor': cz_valor,
+                                'valor_desv': cz_valor_desv},
+                'herv_rom': {'valor': hb_valor,
+                            'valor_desv': hb_valor_desv},
+                'frecuent': {'valor': fc_valor,
+                            'valor_desv': fc_valor_desv},
+                'durab_usos': {'valor': du_valor,
+                            'valor_desv': du_valor_desv}
             },
         },
         'integridadEspacial': {
             'valor': ie_valor,
-            'tamano': {'valor': ar_valor},
-            'cont_forest': {'valor': cf_valor},
-            'efect_borde': {'valor': eb_valor},
-            'conect': {'valor': cn_valor}
+            'valor_desv': ie_valor_desv,
+            'tamano': {'valor': ar_valor,
+                        'valor_desv': ar_valor_desv},
+            'cont_forest': {'valor': cf_valor,
+                            'valor_desv': cf_valor_desv},
+            'efect_borde': {'valor': eb_valor,
+                            'valor_desv': eb_valor_desv},
+            'conect': {'valor': cn_valor,
+                        'valor_desv': cn_valor_desv}
         }
     }
 
     return rodal_referencia
-
-    '''
-    for valor2 in json1:
-        print(valor2[0])
-
-       if valor2.indicador_cod == 'nm':
-            if valor2.valor == None:
-                nm_valor = "---"
-            else:
-                nm_valor = round(valor2.valor)
-    print(nm_valor)'''

@@ -50,7 +50,10 @@ $(document).ready(function() {
             }
 
             var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
-            '<b>Nombre habitad: </b>' + punt.habitat_nom + '<br><b>Localización: </b>' + punt.nombre + '<br><b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma +    '<br><a href="http://127.0.0.1:8000/redbosques/comparador/' + punt.id_rodal + '/"><b>Ver ficha</b></a>'
+            '<b>Nombre habitad: </b>' + punt.habitat_nom + '<br><b>Localización: </b>' + punt.nombre + '<br>' +
+            '<b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br>' +
+            '<a href="http://127.0.0.1:8000/redbosques/comparador/' + punt.id_rodal + '/"><b>Ver ficha</b></a><br>' +
+            '<div class="imagenRodal"><img href="'+ punt.imagen +'" alt="'+ punt.nombre +'" width="250" height="150"></div>'
             );
 
              //url = 'http://127.0.0.1:8000/redbosques/datos_mapa';

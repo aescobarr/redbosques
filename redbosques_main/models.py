@@ -16,6 +16,8 @@ class WebMapa(models.Model):
     eje_cod = models.TextField(blank=True, null=True)
     eje_nom = models.CharField(max_length=50, blank=True, null=True)
     valor = models.FloatField(blank=True, null=True)
+    rodalref = models.BooleanField(blank=True, null=True)
+    fotoglobo = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         managed = False  # Created from a view. Don't remove.
@@ -79,6 +81,8 @@ class Rodal(models.Model):
     dateadded = models.DateTimeField(blank=True, null=True)
     volmmtotal = models.FloatField(blank=True, null=True)
     #usuario = models.ForeignKey('User', models.DO_NOTHING, db_column='usuario', blank=True, null=True)
+    rodalref = models.BooleanField(blank=True, null=True)
+    fotoglobo = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -120,6 +124,8 @@ class RodalValorres2(models.Model):
     valor = models.FloatField(blank=True, null=True)
     indic_null = models.FloatField(blank=True, null=True)
     parent_cod = models.CharField(max_length=2, blank=True, null=True)
+    rodalref = models.BooleanField(blank=True, null=True)
+    fotoglobo = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         managed = False  # Created from a view. Don't remove.
