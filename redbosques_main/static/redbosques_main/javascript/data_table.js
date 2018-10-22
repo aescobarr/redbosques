@@ -75,7 +75,7 @@ $('tr.lv2').on("click", function(){
 var rodalRefData = function(){
 
 
-    url = 'http://127.0.0.1:8000/redbosques/valorRef';
+    url = '/redbosques/valorRef';
 
     valRod = $('.selector_rodal option:selected').val();
     habSel = $('.habitatSelected').attr('value');
@@ -221,7 +221,7 @@ var setFiltros = function(){
 
         valIdRodal = $('p.rodalSelected').attr('value');
         console.log(valIdRodal);
-        url = 'http://127.0.0.1:8000/redbosques/setFiltrosRodal?idR=' + valIdRodal;
+        url = '/redbosques/setFiltrosRodal?idR=' + valIdRodal;
         valComAut = $('.selector_ComAut option:selected').val();
         valRegBio = $('.selector_RegBio option:selected').val();
 
@@ -508,7 +508,7 @@ var crearGraficos = function(testJson){
     var sizeTestJson = Object.keys(testJson).length;
 
     for (x=0; x<sizeTestJson; x++){
-        var svgContainer = d3.select("."+testJson[x].ref).append("svg").attr("width", 520).attr("height", 50).attr("top", 15).attr("left", 50);
+        var svgContainer = d3.select("."+testJson[x].ref).append("svg").attr("width", 520).attr("height", 35).attr("top", 15).attr("left", 50);
 
         var axis = svgContainer.append("line").attr("x1", 0).attr("y1", 10).attr("x2", 520).attr("y2", 10).attr("stroke-width", 1.5).attr("stroke", "#262626");
         var leftTick = svgContainer.append("line").attr("x1", 10).attr("y1", 0).attr("x2", 10).attr("y2", 20).attr("stroke-width", 2.5).attr("stroke", "#262626");
