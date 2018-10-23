@@ -248,6 +248,7 @@ var setFiltros = function(){
                 listaRodales = data.listaRodales;
                 $('.valGraf').html('---');
                 $('.valGraf').css("background-color", "#FFFFFF");
+                $('.grafico div').html('');
                 $('.selector_rodal .rodal').remove();
                 listaRodales.forEach(rodal => {
                     console.log(rodal);
