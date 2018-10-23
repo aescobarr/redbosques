@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('menu', views.menu, name='menu'),
+    path('login', views.login, name='login'),
     path('comparador', views.comparador, name='comparador_noparam'),
     path('comparador/<int:id>/', views.comparador, name='comparador'),
     path('comparador/<int:id>/filter', views.filtrosRodal, name='filtrosRodal'),

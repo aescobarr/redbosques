@@ -1,6 +1,8 @@
 
 
 $(document).ready(function() {
+    //console.log(URL_BASE);
+    //console.log(URL_BASE);
 
     setMapData = function(data){
         marker_cluster.clearLayers();

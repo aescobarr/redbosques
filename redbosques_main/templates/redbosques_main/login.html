@@ -1,0 +1,38 @@
+{% extends "redbosques_main/base.html" %}
+{% load static %}
+{% block extra_css %}
+
+{% endblock %}
+{% block main %}
+<div class="container-fluid subheader">
+    <div class="row">
+        <a href="/redbosques" ><h4>Inicio</h4></a>
+        <h2>{{ herramientas }}</h2>
+    </div>
+</div>
+
+<div class="container menu-header">
+    <div class="row">
+        <h3>Entrar a la herramienta RedBosques</h3>
+    </div>
+</div>
+<div class="container logIn">
+    <div class="row">
+        <div class="col-lg-offset-4 col-lg-4">
+            <form action="/">
+                <!--<div class="form-group">-->
+                    <input class="form-control email" type="text" name="email" placeholder="Correo electrónico">
+                    <input class="form-control password" type="text" name="email" placeholder="Contraseña">
+                <!--</div>-->
+            </form>
+            <button type="btn" class="btn btn-selector-mapa">Entrar</button>
+            <p class="forgetPass"><a href="#">No recuerdo la contraseña</a></p>
+            <button type="btn" class="btn btn-selector-mapa">Registrarse en la herramienta</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
+<script src="{% static 'redbosques_main/javascript/menu.js' %}"></script>
+{% endblock %}

@@ -16,23 +16,23 @@
         <h3>Menú principal</h3>
     </div>
 </div>
-<div class="container">
+<div class="container menuOptions">
     <div class="row">
         <div class="col-lg-offset-4 col-lg-4">
 
             <button type="btn" class="btn btn-selector-mapa">Entrada de nuevo rodal</button>
             <button type="btn" class="btn btn-selector-mapa">Importar datos desde xls? Csv?</button>
             <button type="btn" class="btn btn-selector-mapa">Editar Rodal</button>
-            <select class="form-control">
-                <option type="radio">Rodal 1</option>
-                <option type="radio">Rodal 2</option>
-                <option type="radio">Rodal 3</option>
-                <option type="radio">Rodal 4</option>
-                <option type="radio">Rodal 5</option>
+            <select class="form-control rodalSelected">
+                <option type="radio" value="875">Can Moix (411101)</option>
+                <option type="radio" value="844">Pinarisses (370271)</option>
+                <option type="radio" value="771">Bosc de Petit (260781)</option>
+                <option type="radio" value="683">La Trona (150361)</option>
+                <option type="radio" value="739">Corriol (240451)</option>
             </select>
             <button type="btn" class="btn btn-selector-mapa">Exportar (csv?, shp?, sql?)</button>
             <button type="btn" class="btn btn-selector-mapa">Crear PDF</button>
-            <button type="btn" class="btn btn-selector-mapa">Comparar</button>
+            <button type="btn" class="btn btn-selector-mapa" onclick="compararRodal()">Comparar</button>
             <button type="btn" class="btn btn-selector-mapa">Terminar</button>
         </div>
 
@@ -42,6 +42,7 @@
 {% endblock %}
 {% block extra_js %}
 <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
+<script src="{% static 'redbosques_main/javascript/menu.js' %}"></script>
 {% endblock %}
 
 

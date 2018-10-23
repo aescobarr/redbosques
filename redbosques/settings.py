@@ -131,4 +131,7 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
+MEDIA_ROOT =  BASE_DIR + '/fotos/'
+MEDIA_URL = '/media/'
+
 from redbosques.settings_local import *

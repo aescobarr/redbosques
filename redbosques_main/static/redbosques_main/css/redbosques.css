@@ -236,6 +236,29 @@ h5{
     margin-top: 1%;
 }
 
+.menuOptions{
+    margin-top: 15px;
+}
+
+.rodalSelected{
+    margin-left: 5px;
+}
+
+.forgetPass, .forgetPass a {
+    color: #8db727;
+    text-align: center;
+}
+
+input.email, input.password{
+    margin-left: 5px;
+    margin-top: 10px;
+}
+
+.forgetPass{
+    margin: 0 0 5px;
+}
+
+
 
 
 /*##################Estils Taula dades#########################*/

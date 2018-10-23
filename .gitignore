@@ -8,3 +8,5 @@ redbosques/settings_local*
 *.sublime*
 static/*
 __pycache__/
+imagenesBosques/
+fotos/

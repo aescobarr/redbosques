@@ -6,10 +6,12 @@ from django.http import JsonResponse
 import decimal
 import json
 from django.db.models import Avg, StdDev
+from redbosques.settings_local import URL_BASE
 
 # Create your views here.
 def index(request):
-    context = {'titol': 'Titol'}
+    print(URL_BASE)
+    context = {'titol': 'Titol', 'URL_BASE': URL_BASE}
     return render(request, 'redbosques_main/index.html', context)
 
 def herramientas(request):
@@ -19,7 +21,7 @@ def herramientas(request):
     ids_habitat_web = WebMapa.objects.filter(eje_cod='nm').values('id_rodal')
     llista_rodals = Rodal.objects.filter(id__in=ids_habitat_web).order_by('nombre')
 
-    context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'dades_habitat_contenidors' : dades_habitat_contenidors, 'llista_rodals':llista_rodals}
+    context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'dades_habitat_contenidors' : dades_habitat_contenidors, 'llista_rodals':llista_rodals, 'URL_BASE': URL_BASE}
     return render(request, 'redbosques_main/herramientas.html', context)
 
 
@@ -113,77 +115,83 @@ def comparador(request, id=None):
     # rebem com a parametre el codir del rodal
     #codi_rodal = request.query_params.get('cr', None)
 
-    rodals_list = WebMapa.objects.all()
-    hab_cod = rodals_list.filter(id_rodal=id).values_list('habitat_cod', flat=True).first()
-    selector_rodals = rodals_list.filter(habitat_cod=hab_cod).filter(eje_cod='nm').exclude(id_rodal=id)
 
+        rodals_list = WebMapa.objects.all()
+        hab_cod = rodals_list.filter(id_rodal=id).values_list('habitat_cod', flat=True).first()
+        selector_rodals = rodals_list.filter(habitat_cod=hab_cod).filter(eje_cod='nm').exclude(id_rodal=id)
 
-    if id is not None:
-        dades_rodal = RodalValorres2.objects.filter(id_rodal=id)
-        info_rodal = rodals_list.filter(id_rodal=id)
+        #if id is None:
+            #dades_rodal = RodalValorres2.objects.filter(id_rodal=802)
+            #info_rodal = rodals_list.filter(id_rodal=802)
 
-    rodalArbol = crearArbol(dades_rodal)
+        if id is not None:
+            dades_rodal = RodalValorres2.objects.filter(id_rodal=id)
+            info_rodal = rodals_list.filter(id_rodal=id)
 
-    ######## Valores info rodal ##############
+        rodalArbol = crearArbol(dades_rodal)
 
-    infoRodal = {}
-    for punt in info_rodal:
-        infoRodal={
-            'id_rodal': punt.id_rodal,
-            'nombre': punt.nombre,
-            'Comunidad_autonoma': punt.ccaa_nombre,
-            'habitat_nom': punt.habitat_nom,
-            'habitat_cod': punt.habitat_cod
-        }
+        ######## Valores info rodal ##############
 
-    #########################################
+        infoRodal = {}
+        for punt in info_rodal:
+            infoRodal={
+                'id_rodal': punt.id_rodal,
+                'nombre': punt.nombre,
+                'Comunidad_autonoma': punt.ccaa_nombre,
+                'habitat_nom': punt.habitat_nom,
+                'habitat_cod': punt.habitat_cod
+            }
 
-    listaRodales = []
-    for rodal in selector_rodals:
-            listaRodales.append({
-                'id_rodal': rodal.id_rodal,
-                'nombre': rodal.nombre
+        #########################################
 
-    })
+        listaRodales = []
+        for rodal in selector_rodals:
+                listaRodales.append({
+                    'id_rodal': rodal.id_rodal,
+                    'nombre': rodal.nombre
 
-    valores_rodal_json = json.dumps(rodalArbol)
-
-
-    ####### Selector Regió biogeográfica ########
-
-    RegBio_list = TeRegbio.objects.all()
-
-    listaRegBio = []
-    for regBio in RegBio_list:
-        listaRegBio.append({
-            'cod': regBio.cod,
-            'nombre': regBio.nombre_es
         })
 
-    #############################################
-
-    ####### Selector Comunidad autonoma ########
-
-    ComAuto_list = TeProvincia.objects.filter(nivel='Com. autònoma')
-    listaComAuto = []
-    for comAut in ComAuto_list:
-        listaComAuto.append({
-            'codigo': comAut.codigo,
-            'nombre': comAut.nombre_es
-        })
+        valores_rodal_json = json.dumps(rodalArbol)
 
 
+        ####### Selector Regió biogeográfica ########
 
-    #############################################
+        RegBio_list = TeRegbio.objects.all()
 
-    context = {'herramientas': 'Herramienta de evaluación de rodales maduros',
-               'valores_rodal': rodalArbol,
-               'infoRodal': infoRodal,
-               'listaRodales': listaRodales,
-               'valores_rodal_json': valores_rodal_json,
-               'listaRegBio': listaRegBio,
-               'listaComAuto': listaComAuto}
-    return render(request, 'redbosques_main/comparador.html', context)
+        listaRegBio = []
+        for regBio in RegBio_list:
+            listaRegBio.append({
+                'cod': regBio.cod,
+                'nombre': regBio.nombre_es
+            })
+
+        #############################################
+
+        ####### Selector Comunidad autonoma ########
+
+        ComAuto_list = TeProvincia.objects.filter(nivel='Com. autònoma')
+        listaComAuto = []
+        for comAut in ComAuto_list:
+            listaComAuto.append({
+                'codigo': comAut.codigo,
+                'nombre': comAut.nombre_es
+            })
+
+
+
+        #############################################
+        context = {'herramientas': 'Herramienta de evaluación de rodales maduros',
+                   'valores_rodal': rodalArbol,
+                   'infoRodal': infoRodal,
+                   'listaRodales': listaRodales,
+                   'valores_rodal_json': valores_rodal_json,
+                   'listaRegBio': listaRegBio,
+                   'listaComAuto': listaComAuto}
+
+        return render(request, 'redbosques_main/comparador.html', context)
+
+
 
 
 @api_view(['GET'])
@@ -1027,3 +1035,7 @@ def crearArbolMedia(dades):
     }
 
     return rodal_referencia
+
+def login(request):
+    context = {'herramientas': 'Herramienta de evaluación de rodales maduros'}
+    return render(request, 'redbosques_main/login.html', context)
