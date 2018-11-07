@@ -7,8 +7,11 @@
 {% block main %}
 <div class="container-fluid subheader">
     <div class="row">
-        <a href="/redbosques"><h4>Inicio</h4></a>
-        <h2>{{ herramientas }}</h2>
+        <div class="col-lg-12 subfield">
+            <a href="/redbosques"><h4>Inicio</h4></a>
+            <h2>{{ herramientas }}</h2>
+            <!--<h2>Herramienta de evaluación de rodales maduros</h2>-->
+        </div>
     </div>
 </div>
 
@@ -22,56 +25,77 @@
         <div id="mapid" class="col-lg-9"></div>
 
         <div class="col-lg-3">
-            <button class="btn btn-selector-mapa">Participar</button>
+            <button class="btn btn-selector-mapa" disabled>Participar</button>
             <!--<button type="btn" class="btn btn-selector-mapa">Comparar</button>-->
-            <h5>Filtrar por: </h5>
-            <button class="btn btn-selector-mapa selectorFiltro" onclick="changeFilter()" value="0">Valoración Humana</button>
-            <h5>Selecciona un eje</h5>
+
+            <!--<button class="btn btn-selector-mapa selectorFiltro" onclick="changeFilter()" value="0">Valoración Humana</button>-->
+
+            <!--<div class="seleccio_rodal">
+                <h5>Selecciona un rodal</h5>
+                <select class="form-control selector_rodal" onchange="updateMapData()">
+                    <option value="" selected="selected">------</option>
+                    {% for rodal in llista_punts %}
+                        <option class="rodal" value="{{ rodal.id }}">
+                            {{ rodal.nombre }}
+                        </option>
+                        {% endfor %}
+                </select>
+            </div>-->
+
+            <div class="seleccio_habitat">
+                <div class="habitatd">
+                    <h5>Hábitat:</h5>
+                        <!--<select class="form-control tipo_habitat" onclick="updateMapData()">-->
+                        <select class="form-control tipo_habitat" onchange="habitatData()">
+                            <option value="" selected="selected">------</option>
+                            {% for habitat in habitatData %}
+                            <option class="tipo_bosque" value="{{ habitat.cod }}">
+                                {{ habitat.nombre }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    <h5>Subhábitat:</h5>
+                        <select class="form-control tipo_habitat_sel" onchange="subHabitatData()">
+                            <option value="" selected="selected">------</option>
+                            {% for subHabitat in subHabitatData %}
+                            <option class="tipo_bosque" value="{{ subHabitat.cod }}">
+                                {{ subHabitat.nombre }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    <h5>Rodal:</h5>
+                        <!--<select class="form-control selector_rodal" onchange="updateMapData()">-->
+                        <select class="form-control selector_rodal" onchange="rodalData()">
+                            <option value="" selected="selected">------</option>
+                            {% for rodal in rodalesData %}
+                                <option class="rodal" value="{{ rodal.id_rodal }}">
+                                    {{ rodal.nombre }}
+                                </option>
+                                {% endfor %}
+                        </select>
+                </div>
+
+                <!--<div class="valoracion">
+                    <h5>Valoración</h5>
+                    <form class="checkbox selector_valoracion"></form>
+                </div>-->
+            </div>
+            <div class="limpiarFiltros">
+                    <button class="btn btn-selector-mapa" onclick="limpiarFiltros()">Limpiar filtros</button>
+            </div>
+
+            <h5>Opciones de visualización</h5>
             <select class="form-control selector_clasificacio" onclick="updateMapData()">
                 <option class="tip_clas" value="nm" selected="selected">Naturalidad</option>
                 <option class="tip_clas" value="hh">Huella humana</option>
                 <option class="tip_clas" value="ie">Integridad espacial</option>
 
             </select>
-                <div class="seleccio_rodal">
-                <h5>Selecciona un rodal</h5>
-                <select class="form-control selector_rodal" onchange="updateMapData()">
-                    <option value="" selected="selected">------</option>
-                    {% for rodal in llista_rodals %}
-                        <option class="rodal" value="{{ rodal.id }}">
-                            {{ rodal.nombre }}
-                        </option>
-                        {% endfor %}
-                </select>
-            </div>
-
-            <div class="seleccio_habitat">
-                <div class="habitatd">
-                    <h5>Hábitat</h5>
-                        <select class="form-control tipo_habitad" onclick="updateMapData()">
-                            <option value="" selected="selected">------</option>
-                            {% for habitat in dades_habitat_contenidors %}
-                            <option class="tipo_bosque" value="{{ habitat.cod }}">
-                                {{ habitat.nombre }}
-                            </option>
-                            {% endfor %}
-                        </select>
-                        <select class="form-control tipo_habitad_sel" onclick="updateMapData()">
-
-                        </select>
-                </div>
-
-                <div class="valoracion">
-                    <h5>Valoración</h5>
-                    <!--<select class="form-control selector_valoracion"></select>-->
-                    <form class="checkbox selector_valoracion"></form>
-                </div>
-            </div>
-            <div class="limpiarFiltros">
-                    <button class="btn btn-selector-mapa" onclick="limpiarFiltros()">Limpiar filtros</button>
-            </div>
         </div>
+
     </div>
+
+
 </div>
 {% endblock %}
 
@@ -85,7 +109,10 @@
         var setMapData;
         var url_data;
         var treeIcon;
-        var id_tipo_habitad_sel;
+        var id_tipo_habitat_sel;
+        var id_tipo_habitat;
+        var codi_rodal;
+
 
 
 
@@ -95,7 +122,7 @@
         <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
         <script src="{% static 'redbosques_main/leaflet/leaflet.js' %}"></script>
         <script src="{% static 'redbosques_main/Leaflet.markercluster-1.4.0/dist/leaflet.markercluster.js' %}"></script>
-
+        <script src="{% static 'redbosques_main/javascript/leaflet-bing-layer.min.js' %}"></script>
         {% endblock %}
 
 

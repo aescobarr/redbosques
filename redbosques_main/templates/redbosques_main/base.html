@@ -52,45 +52,55 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <div class="row">
-                <div class="col-lg-offset-1 col-lg-3" style="height: 185px">
+                <div class="col-lg-offset-1 col-lg-3 col-md-6 col-sm-6" style="height: 185px">
                     <a class="navbar-brand" href="#">
                         <img src="{% static 'redbosques_main/css/logo.png' %}">
                     </a>
                 </div>
-                <div class="col-lg-4 col-lg-offset-2">
-
+                <div class="col-lg-4 col-lg-offset-2 col-md-6 col-sm-6">
                     <form class="navbar-form navbar-right">
-                    <div class="form-group">
-                    <div class="row">
-                        <div class="col-lg-6 logo-inst">
-                            <img src="{% static 'redbosques_main/css/logo-life.jpg' %}">
-                        </div>
-                        <div class="col-lg-6 logo-inst">
-                            <img src="{% static 'redbosques_main/css/logo-rn2000.jpg' %}">
-                        </div>
-                    </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 logo-inst">
+                                    <img src="{% static 'redbosques_main/css/logo-life.jpg' %}">
+                                </div>
+                                <div class="col-lg-6 logo-inst">
+                                    <img src="{% static 'redbosques_main/css/logo-rn2000.jpg' %}">
+                                </div>
+                            </div>
+                            <input type="text" class="form-control search-input" placeholder="Search">
 
-                        <input type="text" class="form-control search-input" placeholder="Search">
-                    </div>
-                </form>
+                        </div>
+                    </form>
                 </div>
 
 
             </div>
         <div class="row">
             <div class="col-lg-9 col-lg-offset-2">
-            <ul class="nav navbar-nav">
-                <li class="menu-options active"><a href="/redbosques">INICIO<span class="sr-only">(current)</span></a></li>
-                <li class="menu-options active"><a href="#">NOVEDADES<span class="sr-only">(current)</span></a></li>
-                <li class="menu-options active"><a href="#">¿QUÉ ES REDBOSQUES?<span class="sr-only">(current)</span></a></li>
-                <li class="menu-options active"><a href="#">ACCIONES<span class="sr-only">(current)</span></a></li>
-                <li class="menu-options active"><a href="#">MATERIALES<span class="sr-only">(current)</span></a></li>
-                <li class="menu-options active"><a href="{% url 'herramientas' %}">HERRAMIENTAS<span class="sr-only">(current)</span></a></li>
-                <li class="menu-options active"><a href="#">TRABAJO EN RED<span class="sr-only">(current)</span></a></li>
-                <li class="menu-options active"><a href="#">PRENSA<span class="sr-only">(current)</span></a></li>
-                <li class="menu-options active"><a href="#">ENGLISH VERSION<span class="sr-only">(current)</span></a></li>
-            </ul>
-                </div>
+                <ul class="nav navbar-nav">
+                    <li class="menu-options active"><a href="/redbosques">INICIO<span class="sr-only">(current)</span></a></li>
+                    <li class="menu-options active"><a href="#">NOVEDADES<span class="sr-only">(current)</span></a></li>
+                    <li class="menu-options active"><a href="#">¿QUÉ ES REDBOSQUES?<span class="sr-only">(current)</span></a></li>
+                    <li class="menu-options active"><a href="#">ACCIONES<span class="sr-only">(current)</span></a></li>
+                    <li class="menu-options active"><a href="#">MATERIALES<span class="sr-only">(current)</span></a></li>
+                    <li class="menu-options active"><a href="{% url 'herramientas' %}">HERRAMIENTAS<span class="sr-only">(current)</span></a></li>
+                    <li class="menu-options active"><a href="#">TRABAJO EN RED<span class="sr-only">(current)</span></a></li>
+                    <li class="menu-options active"><a href="#">PRENSA<span class="sr-only">(current)</span></a></li>
+                    <li class="menu-options active"><a href="#">ENGLISH VERSION<span class="sr-only">(current)</span></a></li>
+                    {% if user.is_authenticated %}
+                        <li class="userLogout">
+                            <p>Hola, {{ user.first_name }} | <a href="{% url 'logout' %}">Salir <i class="fas fa-sign-out-alt"></i></a></p>
+                        </li>
+                    {% else %}
+                        <!--<ul class="nav navbar-nav">-->
+                            <li class="menu-options active"><a href="/redbosques/login/?next=/redbosques/herramientas">Iniciar sesión <i class="fas fa-sign-in-alt"></i><span class="sr-only">(current)</span></a></li>
+                        <!--</ul>-->
+                    {% endif %}
+                </ul>
+
+            </div>
+
         </div>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -103,34 +113,34 @@
 {% block footer %}
 <div class="container-fluid logos-colab">
     <div class="row">
-        <div class="col-lg-2 img-colabs">
+        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-6 img-colabs">
             <a>
-                <img src="{% static 'redbosques_main/css/FUNGOBE_2006_GRANDE.jpg' %}" alt="">
+                <img class="img-responsive collabs" src="{% static 'redbosques_main/css/FUNGOBE_2006_GRANDE.jpg' %}" alt="">
             </a>
         </div>
-        <div class="col-lg-2 img-colabs">
+        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-6 img-colabs">
             <a>
-                <img src="{% static 'redbosques_main/css/logo-europarc-espanha.png' %}" alt="">
+                <img class="img-responsive collabs" src="{% static 'redbosques_main/css/logo-europarc-espanha.png' %}" alt="">
             </a>
         </div>
-        <div class="col-lg-2 img-colabs">
+        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-6 img-colabs">
             <a>
-                <img src="{% static 'redbosques_main/css/logo-parc-natural-dels-ports.png' %}" alt="">
+                <img class="img-responsive collabs" src="{% static 'redbosques_main/css/logo-parc-natural-dels-ports.png' %}" alt="">
             </a>
         </div>
-        <div class="col-lg-2 img-colabs">
+        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-6 img-colabs">
             <a>
-                <img src="{% static 'redbosques_main/css/logo-creaf.png' %}" alt="">
+                <img class="img-responsive collabs" src="{% static 'redbosques_main/css/logo-creaf.png' %}" alt="">
             </a>
         </div>
-        <div class="col-lg-2 img-colabs">
+        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-6 img-colabs">
             <a>
-                <img src="{% static 'redbosques_main/css/logo-fundacio-catalunya-la-pedrera.png' %}" alt="">
+                <img class="img-responsive collabs" src="{% static 'redbosques_main/css/logo-fundacio-catalunya-la-pedrera.png' %}" alt="">
             </a>
         </div>
-        <div class="col-lg-2 img-colabs">
+        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-6 img-colabs">
             <a>
-                <img src="{% static 'redbosques_main/css/Ministerio_fundacion_apoyo_2.png' %}" alt="">
+                <img class="img-responsive collabs" src="{% static 'redbosques_main/css/Ministerio_fundacion_apoyo_2.png' %}" alt="">
             </a>
         </div>
     </div>

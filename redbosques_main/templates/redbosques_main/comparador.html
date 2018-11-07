@@ -20,12 +20,12 @@
     </div>
 </div>
 
-<div class="container menu-data-show">
+<!--<div class="container menu-data-show">
     <ul class="nav nav-tabs">
         <li class="active val-graf valores"><a data-toggle="tab" href="#filtro-valores">Valores</a></li>
         <li class="val-graf grafica"><a data-toggle="tab" href="#filtro-grafica">Gráfica</a></li>
     </ul>
-</div>
+</div>-->
 <div class="tab-content">
     <!--<div class="container tab-pane fade in active" id="filtro-valores">
         <div class="row filtros">
@@ -38,16 +38,22 @@
     </div>-->
     <div class="container">
         <div class="row filtros">
-            <div class="col-lg-5">
+            <div class="col-lg-4">
                 <b class="green-font" style="text-decoration: underline">Hábitat:</b><br>
                 <!--<b>{{ infoRodal.habitat_nom }}</b>-->
                 <p class="habitatSelected" style="font-weight: bold;" value="{{ infoRodal.habitat_cod }}">{{ infoRodal.habitat_nom }}</p>
                 <!--<input type="text" class="form-control" placeholder="{{ infoRodal.habitat_nom }}" readonly>-->
             </div>
 
-            <div class="col-offset-lg-2 col-lg-5">
+            <div class="col-offset-lg-2 col-lg-4">
                 <b class="green-font"  style="text-decoration: underline">Rodal:</b><br>
                     <p class="rodalSelected" style="font-weight: bold;" value="{{ infoRodal.id_rodal }}">{{ infoRodal.nombre }}</p>
+            </div>
+
+            <div class="col-offset-lg-2 col-lg-4">
+                <b class="green-font"  style="text-decoration: underline">Leyenda tabla:</b><br>
+                    <!--<p class="rodalSelected" style="font-weight: bold;" value="{{ infoRodal.id_rodal }}">{{ infoRodal.nombre }}</p>-->
+                    <p><i class="fas fa-circle colLeyRod"></i> Rodal &emsp;<i class="fas fa-circle colLeyRodComp"></i> Rodal a comparar</p>
             </div>
         </div>
 
@@ -119,6 +125,12 @@
         </div>
     </div>
 </div>
+<div class="container menu-data-show">
+    <ul class="nav nav-tabs">
+        <li class="active val-graf valores"><a data-toggle="tab" href="#filtro-valores">Valores</a></li>
+        <li class="val-graf grafica"><a data-toggle="tab" href="#filtro-grafica">Gráfica</a></li>
+    </ul>
+</div>
 
 <div class="container data-table tabla-datos">
     <div class="row">
@@ -133,14 +145,6 @@
                 <th colspan="3" style="width:35%; text-align: center;">
                     <b class="green-font">Rodal / Conjunto de rodales</b>
 
-                            <!--<select class="form-control selector_rodal" onchange="rodalRefData()">
-                                <option value="" selected="selected">Rodal / Conjunto de rodales a comparar</option>
-                                    {% for rodal in listaRodales %}
-                                        <option class="rodal" value="{{ rodal.id_rodal }}">
-                                            {{ rodal.nombre }}
-                                         </option>
-                                    {% endfor %}
-                            </select>-->
                 </th>
             </thead>
             <thead>
@@ -164,14 +168,14 @@
             <!--         Naturalidad                       -->
                 <tr class="lv1 lv1Nat">
                     <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>NATURALIDAD</span></th>
-                    <td>{{ valores_rodal.naturalidad.valor }}</td>
-                    <td></td>
-                    <td></td>
+                    <td class="bgColorRod">{{ valores_rodal.naturalidad.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
 
                     <td class="graf"></td>
-                    <td id="naturalidad" class="graf valGraf">---</td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
+                    <td id="naturalidad" class="graf valGraf bgColorRodComp">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
                     <td id="naturalidad_dif" class="graf valGraf">---</td>
 
                     <td class="grafico" colspan="5" style="display: none;">
@@ -182,15 +186,15 @@
                 </tr>
                 <tr class="lv2 lv2Nat" style="display: none">
                     <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Composición</span></th>
-                    <td></td>
-                    <td>{{ valores_rodal.naturalidad.composicion.valor }}</td>
-                    <td></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.naturalidad.composicion.valor }}</td>
+                    <td class="bgColorRod"></td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="naturalidad_composicion" class="graf valGraf">---</td>
-                    <td class="graf"></td>
-                    <td id="naturalidad_composicion_dif" class="graf valGraf">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="naturalidad_composicion" class="graf valGraf bgColorRodComp">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="naturalidad_composicion_dif" class="graf valGraf ">---</td>
 
                     <td class="grafico" colspan="5" style="display: none;">
                         <div class="composicion"></div>
@@ -199,15 +203,15 @@
 
                 </tr>
                 <tr class="lv3 lv3Nat" style="display: none">
-                    <td class="identValores" style="text-indent: 15px;" scope="row" class="green-font"><span>Especies arbóreas</span></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ valores_rodal.naturalidad.composicion.especies_arboreas.valor }}</td>
+                    <td class="identValores" style="text-indent: 15px;" scope="row"><span>Especies arbóreas</span></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.naturalidad.composicion.especies_arboreas.valor }}</td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="naturalidad_composicion_especies_arboreas" class="graf valGraf">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="naturalidad_composicion_especies_arboreas" class="graf valGraf bgColorRodComp">---</td>
                     <td id="naturalidad_composicion_especies_arboreas_dif" class="graf valGraf">---</td>
 
                     <td class="grafico" colspan="5" style="display: none;">
@@ -217,14 +221,14 @@
 
                 <tr class="lv2 lv2Nat" style="display: none">
                     <th style="text-indent: 15px;" scope="row" class="green-font"   ><i class="fas fa-caret-right fa-lg"></i><span>Complejidad</span></th>
-                    <td></td>
-                    <td>{{ valores_rodal.naturalidad.complejidad.valor }}</td>
-                    <td></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.naturalidad.complejidad.valor }}</td>
+                    <td class="bgColorRod"></td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="naturalidad_complejidad" class="graf valGraf">---</td>
-                    <td class="graf"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="naturalidad_complejidad" class="graf valGraf bgColorRodComp">---</td>
+                    <td class="graf bgColorRodComp"></td>
                     <td id="naturalidad_complejidad_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                         <div class="complejidad"></div>
@@ -232,14 +236,14 @@
                 </tr>
                 <tr class="lv3 lv3Nat" style="display: none">
                     <td class="identValores" style="text-indent: 15px;"><span>Área bisimétrica</span></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ valores_rodal.naturalidad.complejidad.area_basimetrica.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.naturalidad.complejidad.area_basimetrica.valor }}</td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="naturalidad_complejidad_area_basimetrica" class="graf valGraf">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="naturalidad_complejidad_area_basimetrica" class="graf valGraf bgColorRodComp">---</td>
                     <td id="naturalidad_complejidad_area_basimetrica_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                         <div class="area_basimetrica"></div>
@@ -247,14 +251,14 @@
                 </tr>
                 <tr class="lv3 lv3Nat" style="display: none">
                     <td class="identValores" style="text-indent: 15px;"><span>Estratificación vertical</span></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ valores_rodal.naturalidad.complejidad.estratificacion_vertical.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.naturalidad.complejidad.estratificacion_vertical.valor }}</td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="naturalidad_complejidad_estratificacion_vertical" class="graf valGraf">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="naturalidad_complejidad_estratificacion_vertical" class="graf valGraf bgColorRodComp">---</td>
                     <td id="naturalidad_complejidad_estratificacion_vertical_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                         <div class="estratificacion_vertical"></div>
@@ -263,14 +267,14 @@
                 </tr>
                 <tr class="lv3 lv3Nat" style="display: none">
                     <td class="identValores" style="text-indent: 15px;"><span>Diversidad estructural</span></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ valores_rodal.naturalidad.complejidad.diversidad_estructural.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.naturalidad.complejidad.diversidad_estructural.valor }}</td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="naturalidad_complejidad_diversidad_estructural" class="graf valGraf">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="naturalidad_complejidad_diversidad_estructural" class="graf valGraf bgColorRodComp">---</td>
                     <td id="naturalidad_complejidad_diversidad_estructural_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                         <div class="diversidad_estructural"></div>
@@ -279,14 +283,14 @@
 
                 <tr class="lv2 lv2Nat" style="display: none">
                     <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Senectud</span></th>
-                    <td></td>
-                    <td>{{ valores_rodal.naturalidad.senectud.valor }}</td>
-                    <td></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.naturalidad.senectud.valor }}</td>
+                    <td class="bgColorRod"></td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="naturalidad_senectud" class="graf valGraf">---</td>
-                    <td class="graf"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="naturalidad_senectud" class="graf valGraf bgColorRodComp">---</td>
+                    <td class="graf bgColorRodComp"></td>
                     <td id="naturalidad_senectud_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                         <div class="senectud"></div>
@@ -294,14 +298,14 @@
                 </tr>
                 <tr class="lv3 lv3Nat" style="display: none">
                     <td class="identValores" style="text-indent: 15px;"><span>Àrboles de tamaño excepcional</span></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ valores_rodal.naturalidad.senectud.arb_tam_excep.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.naturalidad.senectud.arb_tam_excep.valor }}</td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="naturalidad_senectud_arb_tam_excep" class="graf valGraf">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="naturalidad_senectud_arb_tam_excep" class="graf valGraf bgColorRodComp">---</td>
                     <td id="naturalidad_senectud_arb_tam_excep_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                         <div class="arb_tam_excep"></div>
@@ -309,14 +313,14 @@
                 </tr>
                 <tr class="lv3 lv3Nat" style="display: none">
                     <td class="identValores" style="text-indent: 15px;"><span>Abundancia de madera muerta</span></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ valores_rodal.naturalidad.senectud.abund_mad_muerta.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.naturalidad.senectud.abund_mad_muerta.valor }}</td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="naturalidad_senectud_abund_mad_muerta" class="graf valGraf">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="naturalidad_senectud_abund_mad_muerta" class="graf valGraf bgColorRodComp">---</td>
                     <td id="naturalidad_senectud_abund_mad_muerta_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                         <div class="abund_mad_muerta"></div>
@@ -324,14 +328,14 @@
                 </tr>
                 <tr class="lv3 lv3Nat" style="display: none">
                     <td class="identValores" style="text-indent: 15px;"><span>Proporción de madera muerta</span></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ valores_rodal.naturalidad.senectud.prop_madera_muerta.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.naturalidad.senectud.prop_madera_muerta.valor }}</td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="naturalidad_senectud_prop_madera_muerta" class="graf valGraf">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="naturalidad_senectud_prop_madera_muerta" class="graf valGraf bgColorRodComp">---</td>
                     <td id="naturalidad_senectud_prop_madera_muerta_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                         <div class="prop_madera_muerta"></div>
@@ -340,14 +344,14 @@
 
                 <tr class="lv2 lv2Nat" style="display: none">
                     <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Microhábitats</span></th>
-                    <td></td>
-                    <td>{{ valores_rodal.naturalidad.micro_habitats.valor }}</td>
-                    <td></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.naturalidad.micro_habitats.valor }}</td>
+                    <td class="bgColorRod"></td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="naturalidad_micro_habitats" class="graf valGraf">---</td>
-                    <td class="graf"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="naturalidad_micro_habitats" class="graf valGraf bgColorRodComp">---</td>
+                    <td class="graf bgColorRodComp"></td>
                     <td id="naturalidad_micro_habitats_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                         <div class="micro_habitats"></div>
@@ -355,14 +359,14 @@
                 </tr>
                 <tr class="lv3 lv3Nat" style="display: none">
                     <td class="identValores" style="text-indent: 15px;"><span>Microhábitats de pies vivos</span></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ valores_rodal.naturalidad.micro_habitats.mh_pies_vivos.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.naturalidad.micro_habitats.mh_pies_vivos.valor }}</td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="naturalidad_micro_habitats_mh_pies_vivos" class="graf valGraf">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="naturalidad_micro_habitats_mh_pies_vivos" class="graf valGraf bgColorRodComp">---</td>
                     <td id="naturalidad_micro_habitats_mh_pies_vivos_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                         <div class="mh_pies_vivos"></div>
@@ -371,14 +375,14 @@
 
                 <tr class="lv2 lv2Nat" style="display: none">
                     <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Dinámica</span></th>
-                    <td></td>
-                    <td>{{ valores_rodal.naturalidad.dinamica.valor }}</td>
-                    <td></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.naturalidad.dinamica.valor }}</td>
+                    <td class="bgColorRod"></td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="naturalidad_dinamica" class="graf valGraf">---</td>
-                    <td class="graf"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="naturalidad_dinamica" class="graf valGraf bgColorRodComp">---</td>
+                    <td class="graf bgColorRodComp"></td>
                     <td id="naturalidad_dinamica_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                         <div class="dinamica"></div>
@@ -386,14 +390,14 @@
                 </tr>
                 <tr class="lv3 lv3Nat" style="display: none">
                     <td class="identValores" style="text-indent: 15px;"><span>Ciclo silvogenético</span></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ valores_rodal.naturalidad.dinamica.ciclo_silvogen.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.naturalidad.dinamica.ciclo_silvogen.valor }}</td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="naturalidad_dinamica_ciclo_silvogen" class="graf valGraf">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="naturalidad_dinamica_ciclo_silvogen" class="graf valGraf bgColorRodComp">---</td>
                     <td id="naturalidad_dinamica_ciclo_silvogen_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                         <div class="ciclo_silvogen"></div>
@@ -403,14 +407,14 @@
             <!--         Huella Humana                     -->
                 <tr class="lv1 lv1Hh">
                     <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>HUELLA HUMANA</span></th>
-                    <td>{{ valores_rodal.huellaHumana.valor }}</td>
-                    <td></td>
-                    <td></td>
+                    <td class="bgColorRod">{{ valores_rodal.huellaHumana.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
 
                     <td class="graf"></td>
-                    <td id="huellaHumana" class="graf valGraf">---</td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
+                    <td id="huellaHumana" class="graf valGraf bgColorRodComp">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
                     <td id="huellaHumana_dif" class="graf valGraf">---</td>
 
                     <td class="grafico" colspan="5" style="display: none;">
@@ -419,14 +423,14 @@
                 </tr>
                 <tr class="lv2 lv2Hh" style="display: none">
                     <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Antigua</span></th>
-                    <td></td>
-                    <td>{{ valores_rodal.huellaHumana.antigua.valor }}</td>
-                    <td></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.huellaHumana.antigua.valor }}</td>
+                    <td class="bgColorRod"></td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="huellaHumana_antigua" class="graf valGraf">---</td>
-                    <td class="graf"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="huellaHumana_antigua" class="graf valGraf bgColorRodComp">---</td>
+                    <td class="graf bgColorRodComp"></td>
                     <td id="huellaHumana_antigua_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                        <div class="antigua"></div>
@@ -434,14 +438,14 @@
                 </tr>
                 <tr class="lv3 lv3Hh" style="display: none">
                     <td class="identValores" style="text-indent: 15px;" scope="row"><span>Continuidad temporal</span></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ valores_rodal.huellaHumana.antigua.cont_temp.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.huellaHumana.antigua.cont_temp.valor }}</td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="huellaHumana_antigua_cont_temp" class="graf valGraf">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="huellaHumana_antigua_cont_temp" class="graf valGraf bgColorRodComp">---</td>
                     <td id="huellaHumana_antigua_cont_temp_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                        <div class="cont_temp"></div>
@@ -449,14 +453,14 @@
                 </tr>
                 <tr class="lv3 lv3Hh" style="display: none">
                     <td class="identValores" style="text-indent: 15px;" scope="row"><span>Usos agropastorales</span></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ valores_rodal.huellaHumana.antigua.usos_agropast.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.huellaHumana.antigua.usos_agropast.valor }}</td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="huellaHumana_antigua_usos_agropast" class="graf valGraf">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="huellaHumana_antigua_usos_agropast" class="graf valGraf bgColorRodComp">---</td>
                     <td id="huellaHumana_antigua_usos_agropast_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                        <div class="usos_agropast"></div>
@@ -464,14 +468,14 @@
                 </tr>
                 <tr class="lv3 lv3Hh" style="display: none">
                     <td class="identValores" style="text-indent: 15px;" scope="row"><span>Usos forestales</span></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ valores_rodal.huellaHumana.antigua.usos_forestales.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.huellaHumana.antigua.usos_forestales.valor }}</td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="huellaHumana_antigua_usos_forestales" class="graf valGraf">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="huellaHumana_antigua_usos_forestales" class="graf valGraf bgColorRodComp">---</td>
                     <td id="huellaHumana_antigua_usos_forestales_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                        <div class="ant_usos_forestales"></div>
@@ -481,14 +485,14 @@
 
                 <tr class="lv2 lv2Hh" style="display: none">
                     <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Reciente</span></th>
-                    <td></td>
-                    <td>{{ valores_rodal.huellaHumana.reciente.valor }}</td>
-                    <td></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.huellaHumana.reciente.valor }}</td>
+                    <td class="bgColorRod"></td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="huellaHumana_reciente" class="graf valGraf">---</td>
-                    <td class="graf"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="huellaHumana_reciente" class="graf valGraf bgColorRodComp">---</td>
+                    <td class="graf bgColorRodComp"></td>
                     <td id="huellaHumana_reciente_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                        <div class="reciente"></div>
@@ -496,14 +500,14 @@
                 </tr>
                 <tr class="lv3 lv3Hh" style="display: none">
                     <td class="identValores" style="text-indent: 15px;" scope="row"><span>Usos forestales</span></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ valores_rodal.huellaHumana.reciente.usos_forestales.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.huellaHumana.reciente.usos_forestales.valor }}</td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="huellaHumana_reciente_usos_forestales" class="graf valGraf">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="huellaHumana_reciente_usos_forestales" class="graf valGraf bgColorRodComp">---</td>
                     <td id="huellaHumana_reciente_usos_forestales_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                        <div class="rec_usos_forestales"></div>
@@ -511,14 +515,14 @@
                 </tr>
                 <tr class="lv3 lv3Hh" style="display: none">
                     <td class="identValores" style="text-indent: 15px;" scope="row"><span>Especies invasoras</span></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ valores_rodal.huellaHumana.reciente.especies_inv.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.huellaHumana.reciente.especies_inv.valor }}</td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="huellaHumana_reciente_especies_inv" class="graf valGraf">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="huellaHumana_reciente_especies_inv" class="graf valGraf bgColorRodComp">---</td>
                     <td id="huellaHumana_reciente_especies_inv_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                        <div class="especies_inv"></div>
@@ -526,14 +530,14 @@
                 </tr>
                 <tr class="lv3 lv3Hh" style="display: none">
                     <td class="identValores" style="text-indent: 15px;" scope="row"><span>Causas de fragmentación</span></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ valores_rodal.huellaHumana.reciente.causa_fragment.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.huellaHumana.reciente.causa_fragment.valor }}</td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="huellaHumana_reciente_causa_fragment" class="graf valGraf">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="huellaHumana_reciente_causa_fragment" class="graf valGraf bgColorRodComp">---</td>
                     <td id="huellaHumana_reciente_causa_fragment_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                        <div class="causa_fragment"></div>
@@ -541,14 +545,14 @@
                 </tr>
                 <tr class="lv3 lv3Hh" style="display: none">
                     <td class="identValores" style="text-indent: 15px;" scope="row"><span>Actividad cinegética</span></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ valores_rodal.huellaHumana.reciente.usos_forestales.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.huellaHumana.reciente.usos_forestales.valor }}</td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="huellaHumana_reciente_actv_cineget" class="graf valGraf">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="huellaHumana_reciente_actv_cineget" class="graf valGraf bgColorRodComp">---</td>
                     <td id="huellaHumana_reciente_actv_cineget_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                        <div class="actv_cineget"></div>
@@ -556,14 +560,14 @@
                 </tr>
                 <tr class="lv3 lv3Hh" style="display: none">
                     <td class="identValores" style="text-indent: 15px;" scope="row"><span>Herbívora y/o ramoneo</span></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ valores_rodal.huellaHumana.reciente.herv_rom.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.huellaHumana.reciente.herv_rom.valor }}</td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="huellaHumana_reciente_herv_rom" class="graf valGraf">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="huellaHumana_reciente_herv_rom" class="graf valGraf bgColorRodComp">---</td>
                     <td id="huellaHumana_reciente_herv_rom_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                        <div class="herv_rom"></div>
@@ -571,14 +575,14 @@
                 </tr>
                 <tr class="lv3 lv3Hh" style="display: none">
                     <td class="identValores" style="text-indent: 15px;" scope="row"><span>Frecuentación</span></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ valores_rodal.huellaHumana.reciente.frecuent.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.huellaHumana.reciente.frecuent.valor }}</td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="huellaHumana_reciente_frecuent" class="graf valGraf">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="huellaHumana_reciente_frecuent" class="graf valGraf bgColorRodComp">---</td>
                     <td id="huellaHumana_reciente_frecuent_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                        <div class="frecuent"></div>
@@ -586,14 +590,14 @@
                 </tr>
                 <tr class="lv3 lv3Hh" style="display: none">
                     <td class="identValores" style="text-indent: 15px;" scope="row"><span>Durabilidad de los usos</span></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ valores_rodal.huellaHumana.reciente.durab_usos.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.huellaHumana.reciente.durab_usos.valor }}</td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="huellaHumana_reciente_durab_usos" class="graf valGraf">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="huellaHumana_reciente_durab_usos" class="graf valGraf bgColorRodComp">---</td>
                     <td id="huellaHumana_reciente_durab_usos_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                        <div class="durab_usos"></div>
@@ -604,14 +608,14 @@
 
                 <tr class="lv1 lv1Ie">
                     <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>INTEGRIDAD ESPACIAL</span></th>
-                    <td>{{ valores_rodal.integridadEspacial.valor }}</td>
-                    <td></td>
-                    <td></td>
+                    <td class="bgColorRod">{{ valores_rodal.integridadEspacial.valor }}</td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod"></td>
 
                     <td class="graf"></td>
-                    <td id="integridadEspacial" class="graf valGraf">---</td>
-                    <td class="graf"></td>
-                    <td class="graf"></td>
+                    <td id="integridadEspacial" class="graf valGraf bgColorRodComp">---</td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td class="graf bgColorRodComp"></td>
                     <td id="integridadEspacial_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                        <div class="integridadEspacial"></div>
@@ -619,14 +623,14 @@
                 </tr>
                 <tr class="lv2 lv2Ie" style="display: none">
                     <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Tamaño</span></th>
-                    <td></td>
-                    <td>{{ valores_rodal.integridadEspacial.tamano.valor }}</td>
-                    <td></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.integridadEspacial.tamano.valor }}</td>
+                    <td class="bgColorRod"></td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="integridadEspacial_tamano" class="graf valGraf">---</td>
-                    <td class="graf"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="integridadEspacial_tamano" class="graf valGraf bgColorRodComp">---</td>
+                    <td class="graf bgColorRodComp"></td>
                     <td id="integridadEspacial_tamano_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                        <div class="tamano"></div>
@@ -634,14 +638,14 @@
                 </tr>
                 <tr class="lv2 lv2Ie" style="display: none">
                     <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Contenido forestal</span></th>
-                    <td></td>
-                    <td>{{ valores_rodal.integridadEspacial.cont_forest.valor }}</td>
-                    <td></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.integridadEspacial.cont_forest.valor }}</td>
+                    <td class="bgColorRod"></td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="integridadEspacial_cont_forest" class="graf valGraf">---</td>
-                    <td class="graf"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="integridadEspacial_cont_forest" class="graf valGraf bgColorRodComp">---</td>
+                    <td class="graf bgColorRodComp"></td>
                     <td id="integridadEspacial_cont_forest_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                        <div class="cont_forest"></div>
@@ -649,14 +653,14 @@
                 </tr>
                 <tr class="lv2 lv2Ie" style="display: none">
                     <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Efecto borde</span></th>
-                    <td></td>
-                    <td>{{ valores_rodal.integridadEspacial.efect_borde.valor }}</td>
-                    <td></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.integridadEspacial.efect_borde.valor }}</td>
+                    <td class="bgColorRod"></td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="integridadEspacial_efect_borde" class="graf valGraf">---</td>
-                    <td class="graf"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="integridadEspacial_efect_borde" class="graf valGraf bgColorRodComp">---</td>
+                    <td class="graf bgColorRodComp"></td>
                     <td id="integridadEspacial_efect_borde_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                        <div class="efect_borde"></div>
@@ -664,14 +668,14 @@
                 </tr>
                 <tr class="lv2 lv2Ie" style="display: none">
                     <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Conectividad</span></th>
-                    <td></td>
-                    <td>{{ valores_rodal.integridadEspacial.conect.valor }}</td>
-                    <td></td>
+                    <td class="bgColorRod"></td>
+                    <td class="bgColorRod">{{ valores_rodal.integridadEspacial.conect.valor }}</td>
+                    <td class="bgColorRod"></td>
 
                     <td class="graf"></td>
-                    <td class="graf"></td>
-                    <td id="integridadEspacial_conect" class="graf valGraf">---</td>
-                    <td class="graf"></td>
+                    <td class="graf bgColorRodComp"></td>
+                    <td id="integridadEspacial_conect" class="graf valGraf bgColorRodComp">---</td>
+                    <td class="graf bgColorRodComp"></td>
                     <td id="integridadEspacial_conect_dif" class="graf valGraf">---</td>
                     <td class="grafico" colspan="5" style="display: none;">
                        <div class="conect"></div>

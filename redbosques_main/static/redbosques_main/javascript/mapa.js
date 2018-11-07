@@ -4,9 +4,10 @@ $(document).ready(function() {
     //console.log(URL_BASE);
     //console.log(URL_BASE);
 
+
     setMapData = function(data){
         marker_cluster.clearLayers();
-
+        //console.log(data);
         /*###########################Icono##########################################*/
 
         var html_icon_0 = L.divIcon({className: "icon_0", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-tree icon_0 fa-2x"></i>'});
@@ -51,12 +52,25 @@ $(document).ready(function() {
                 current_icon = html_icon_default;
             }
 
-            var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
+            /*var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
             '<b>Nombre habitad: </b>' + punt.habitat_nom + '<br><b>Localización: </b>' + punt.nombre + '<br>' +
             '<b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br>' +
             '<a href="/redbosques/comparador/' + punt.id_rodal + '/"><b>Ver ficha</b></a><br>' +
             '<div class="imagenRodal"><img href="'+ punt.imagen +'" alt="'+ punt.nombre +'" width="250" height="150"></div>'
+            );*/
+
+            console.log(punt.imagen);
+
+            var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
+            '<b>' + punt.nombre + '</b><br><b>Hábitat: </b>' + punt.habitat_nom + '<br>' +
+            '<b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br>' +
+            '<a href="/redbosques/comparador/' + punt.id_rodal + '/"><b>Comparar</b></a><br><br>' +
+            '<div class="" style="text-align: center;"><table class="table"><tr><th style="text-align: center">Ámbito</th>'+
+            '<th style="text-align: center">Valor</th></tr><tr><td>Naturalidad</td><td>'+ punt.valor_nm +'</td></tr><tr>'+
+            '<td>Huella humana</td><td>'+ punt.valor_hh +'</td></tr><tr><td>Integridad Espacial</td><td>'+ punt.valor_ie +'</td></tr></table></div>' +
+            '<div class="imagenRodal"><img src="'+ punt.imagen +'" alt="'+ punt.nombre +'" width="250" height="150"></div>'
             );
+
 
              //url = 'http://127.0.0.1:8000/redbosques/datos_mapa';
 
@@ -69,6 +83,7 @@ $(document).ready(function() {
        }
     }
 
+
     var base = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
             maxZoom: 18,
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
@@ -77,24 +92,56 @@ $(document).ready(function() {
             id: 'mapbox.streets'
     });
 
+
+    var bing = L.tileLayer.bing('AisLQm3JkrOKysYfF9FiIkwkH-kIryIOeJcEs4JV-Qb9fgdBZk3tM4NmTe-e94Zr');
+
+    var baseLayers = {
+		"Bing maps": bing,
+		"Open street map": base
+	};
+
+
     mymap = L.map('mapid', {
             center: [40.0000000, -4.0000000],
             zoom: 6,
-            layers: [base],
+            layers: [base,bing]
     });
+
+    L.control.layers(baseLayers).addTo(mymap);
+
+    var legend = L.control({position: 'bottomright'});
+
+    legend.onAdd = function (mymap) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+            puntuacion = [
+            {0: '#7030a0'},
+            {1: '#b719a0'},
+            {2: '#b719a0'},
+            {3: '#ff3300'},
+            {4: '#ff9900'},
+            {5: '#ffff00'},
+            {6: '#99cc00'},
+            {7: '#669900'},
+            {8: '#003300'},
+            {9: '#0033cc'},
+            {10:'#000066'}
+            ];
+
+        for (i=0; i<puntuacion.length; i++){
+            div.innerHTML += '<p class="leyendaValoracion"><i class="fas fa-circle" style="color:' + Object.values(puntuacion[i]) + '; margin-right: 5px;"></i>' + Object.keys(puntuacion[i]) + '</p>';
+        }
+        return div;
+    };
 
     marker_cluster = L.markerClusterGroup({
             spiderLegPolylineOptions: { weight: 1.5, color: '#222', opacity: 0.5 },
             spiderfyDistanceMultiplier: 3
     });
 
-    //setMapData(data);
+
+    legend.addTo(mymap);
     updateMapData();
-    selector_valoracion();
-
-    //$('.tipo_habitad').append('<option class="tipo_bosque" value="empty" selected="selected"></option>');
-    //$('.selector_rodal').append('<option class="rodal" value="null" selected="Selected">Selecciona un rodal</option>');
-
 });
 
 /*################Getters selectores#######################*/
@@ -106,7 +153,7 @@ var getEje = function(){
 }
 
 var getCodiRodal = function(){
-    var codi_rodal = $('.selector_rodal').val();
+    codi_rodal = $('.selector_rodal').val();
 
     if(codi_rodal == ''){
         return null;
@@ -114,8 +161,8 @@ var getCodiRodal = function(){
     return codi_rodal;
 }
 
-var getTipoHabitat = function(){
-    var tipo_habitat = $(".tipo_habitad").val();
+var getHabitat = function(){
+    var tipo_habitat = $(".tipo_habitat").val();
 
     if(tipo_habitat == ''){
         return null;
@@ -126,15 +173,14 @@ var getTipoHabitat = function(){
 }
 
 
-var getHabitatSel = function(){
-    id_tipo_habitad_sel = $('.tipo_habitad_sel').val();
-    //console.log(id_tipo_habitad_sel);
+var getSubHabitat = function(){
+    id_tipo_habitat_sel = $('.tipo_habitat_sel').val();
 
-    if(id_tipo_habitad_sel == ''){
+    if(id_tipo_habitat_sel == ''){
         return null;
     }else{
 
-        return id_tipo_habitad_sel;
+        return id_tipo_habitat_sel;
     }
 }
 
@@ -160,32 +206,44 @@ var updateMapData = function(){
         url = '/redbosques/datos_mapa';
         var eje = getEje();
         var id_rodal = getCodiRodal();
-        var codigo_habitat = getTipoHabitat();
-        var habitat_sel = getHabitatSel();
+        var codigo_habitat = getHabitat();
+        var codigo_subHabitat = getSubHabitat();
         var valoracion = getValoracion();
 
 
         url = url+'?e='+eje;
 
-        if(id_rodal){
-            id_tipo_habitad_sel = null;
+        /*if(id_rodal){
+            id_tipo_habitat_sel = null;
             url = url + '&cr=' + id_rodal;
         }else{
             if(codigo_habitat){
                 url = url + '&h=' + codigo_habitat;
-                    if(habitat_sel){
-                        url = url + '&ch=' + habitat_sel;
+                    if(codigo_subHabitat){
+                        url = url + '&ch=' + codigo_subHabitat;
+                        if(id_rodal){
+                            id_tipo_habitat_sel = null;
+                            url = url + '&cr=' + id_rodal;
+                        }
                     }
+
             }
+        }*/
 
-            if(valoracion.length != 0){
-
-                for (var i = 0; i < valoracion.length; i++){
-                    url = url + '&val_valor=' + valoracion[i];
-                }
+        if(id_rodal){
+            url = url + '&cr=' + id_rodal;
+        }else{
+            if(codigo_habitat){
+                url = url + '&h=' + codigo_habitat;
+            }
+            if(codigo_subHabitat){
+                url = url + '&csh=' + codigo_subHabitat;
+            }
+            if(id_rodal){
+                url = url + '&cr=' + id_rodal;
             }
         }
-
+        console.log(url);
         $.ajax({
             url: url,
             method: "GET",
@@ -199,15 +257,20 @@ var updateMapData = function(){
             success: function( data, textStatus, jqXHR ) {
                 if(data){
                     if(data.llista_habitats){
-                        //console.log(data.llista_habitats);
-                        selector_Habitad(data.llista_habitats);
+                        //selector_Habitat(data.llista_habitats);
+                        mymap.setView([40.0000000, -4.0000000], 6);
                     }
-                    console.log(data.llista_punts);
+
+                    //selector_rodal(data.llista_punts);
                     setMapData(data.llista_punts);
 
-                }
-                //setMapData(data);
 
+                    if(id_rodal){
+                        mymap.setView([data.llista_punts[0].y, data.llista_punts[0].x], 10);
+                    }else{
+                        mymap.setView([40.0000000, -4.0000000], 6);
+                    }
+                }
             },
             error: function(jqXHR, textStatus, errorThrown){
                 console.log(errorThrown);
@@ -216,221 +279,195 @@ var updateMapData = function(){
 }
 
 
-function selector_Habitad(data){
-    $(".tipo_habitad_sel").empty();
-    //if(data){
-        $(".tipo_habitad_sel").append('<option value="" class="tipo_habitad_seleccionada">------</option>');
+
+var habitatData = function(){
+
+    var codiHabitat = getHabitat();
+    var codiAmbito = getEje();
+    urlHabitat = '/redbosques/habitatData';
+    urlHabitat = urlHabitat+'?ch='+codiHabitat + '&ca=' + codiAmbito;
+    console.log(urlHabitat);
+    $('.tipo_habitat_sel').prop('selectedIndex',0);
+
+
+
+
+    $.ajax({
+            url: urlHabitat,
+            method: "GET",
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type)) {
+                    var csrftoken = getCookie('csrftoken');
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            },
+
+            success: function( data, textStatus, jqXHR ) {
+                //console.log(data.newRodalesData);
+                selector_subHabitat(data.newSubHabitatData);
+                selector_rodal(data.newRodalesData);
+                updateMapData();
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(errorThrown);
+            }
+        });
+}
+
+
+var subHabitatData = function(){
+
+    var codiSubHabitat = getSubHabitat();
+    var codiAmbito = getEje();
+    urlSubHabitat = '/redbosques/subHabitatData';
+    urlSubHabitat = urlSubHabitat+'?csh='+codiSubHabitat+ '&ca=' + codiAmbito;
+    console.log(urlSubHabitat);
+    //$('.tipo_habitat_sel').prop('selectedIndex',0);
+    $('.selector_rodal').prop('selectedIndex',0);
+
+    $.ajax({
+            url: urlSubHabitat,
+            method: "GET",
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type)) {
+                    var csrftoken = getCookie('csrftoken');
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            },
+
+            success: function( data, textStatus, jqXHR ) {
+                if(data){
+                    console.log(data.newRodalesData2);
+                    selector_rodal(data.newRodalesData2);
+                    updateMapData();
+
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(errorThrown);
+            }
+        });
+}
+
+
+var rodalData = function(){
+    var codiRodal = getCodiRodal();
+    var codiAmbito = getEje();
+    urlRodal = '/redbosques/rodalData';
+    urlRodal = urlRodal+'?cr='+codiRodal+'&ca='+codiAmbito;
+    console.log(urlRodal);
+
+    $.ajax({
+            url: urlRodal,
+            method: "GET",
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type)) {
+                    var csrftoken = getCookie('csrftoken');
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            },
+
+            success: function( data, textStatus, jqXHR ) {
+                if(data){
+                    console.log(data.rodalData);
+                    updateMapData();
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(errorThrown);
+            }
+        });
+}
+
+
+function selector_Habitat(data){
+    $(".tipo_habitat").empty();
+        $(".tipo_habitat").append('<option value="" selected="selected">------</option>');
         for(i=0; i<data.length; i++){
-            $(".tipo_habitad_sel").append('<option value=' + data[i].cod + ' class="tipo_habitad_seleccionada">' + data[i].nombre + '</option>');
+            $(".tipo_habitat").append('<option value=' + data[i].cod + ' class="habitat_seleccionada">' + data[i].nombre + '</option>');
         }
 
-        if(id_tipo_habitad_sel){
-            //$(".tipo_habitad_sel option[value='+ id_tipo_habitad_sel +']").attr("selected",true);
-            $(".tipo_habitad_sel").val(id_tipo_habitad_sel);
+        if(id_tipo_habitat){
+            $(".tipo_habitat").val(id_tipo_habitat);
         }
-    //}
+}
 
+function selector_subHabitat(data){
+    $(".tipo_habitat_sel").empty();
+        $(".tipo_habitat_sel").append('<option value="" selected="selected">------</option>');
+        for(i=0; i<data.length; i++){
+            $(".tipo_habitat_sel").append('<option value=' + data[i].cod + ' class="subHabitat_seleccionada">' + data[i].nombre + '</option>');
+        }
+
+        if(id_tipo_habitat_sel){
+            $(".tipo_habitat_sel").val(id_tipo_habitat_sel);
+        }
 }
 
 
-function selector_valoracion(){
-    puntuacion = [
-        {0: '#7030a0'},
-        {1: '#b719a0'},
-        {2: '#b719a0'},
-        {3: '#ff3300'},
-        {4: '#ff9900'},
-        {5: '#ffff00'},
-        {6: '#99cc00'},
-        {7: '#669900'},
-        {8: '#003300'},
-        {9: '#0033cc'},
-        {10:'#000066'}
-    ];
+function selector_rodal(data){
+    $(".selector_rodal").empty();
 
-    for (i=0; i<puntuacion.length; i++){
-        /*$(".selector_valoracion").append(
-        '<span>'+ Object.keys(puntuacion[i]) + '</span><label class="dot" style="background-color:' + Object.values(puntuacion[i]) + '"><input class="valoracion_button" type="radio" name="selector_valoracion" id="' + Object.values(puntuacion[i]) + '" value="option1"></label><br>');*/
+        $(".selector_rodal").append('<option value="" class="rodal">------</option>');
+        for(i=0; i<data.length; i++){
+            $(".selector_rodal").append('<option value=' + data[i].id_rodal + ' class="rodal">' + data[i].nombre + '</option>');
+        }
 
-        $(".selector_valoracion").append(
-        '<input class="val_button" type="checkbox" onclick="updateMapData()" name="selector_val" id="' + Object.values(puntuacion[i]) + '" value="' + Object.keys(puntuacion[i]) + '"><p class="leyendaValoracion"><i class="fas fa-circle" style="color:' + Object.values(puntuacion[i]) + '; margin-right: 5px;"></i>' + Object.keys(puntuacion[i]) + '</p>');
-    }
+        if(codi_rodal){
+            $(".selector_rodal").val(codi_rodal);
+        }
 }
 
 
-
-var changeFilter = function(){
-
-    var valorFiltro = $(".selectorFiltro").val();
-    var txtButton = $(".selectorFiltro").html();
-
-    if((valorFiltro == 0) && (txtButton == "Valoración Humana")){
-        $(".selectorFiltro").val(1);
-        $(".selectorFiltro").html("Rodal");
-        $(".seleccio_rodal").hide();
-        $(".seleccio_habitat").show();
-        //updateMapData();
-        limpiarFiltros();
-    }else{
-        $(".selectorFiltro").val(0);
-        $(".selectorFiltro").html("Valoración Humana");
-        $(".seleccio_habitat").hide();
-        $(".seleccio_rodal").show();
-        //updateMapData();
-        limpiarFiltros();
-    }
-}
 
 var limpiarFiltros = function(){
     marker_cluster.clearLayers();
-    $('.tipo_habitad_sel').empty();
-    $('input[type="checkbox"]').prop('checked', false);
+    //$('.tipo_habitat_sel').empty();
+    //$('input[type="checkbox"]').prop('checked', false);
 
 
-    $('.selector_clasificacio').prop('selectedIndex',0);
+    //$('.selector_clasificacio').prop('selectedIndex',0);
+    //$('.selector_rodal').prop('selectedIndex',0);
+
+    $('.tipo_habitat').prop('selectedIndex',0);
+    $('.tipo_habitat_sel').prop('selectedIndex',0);
     $('.selector_rodal').prop('selectedIndex',0);
-    $('.tipo_habitad').prop('selectedIndex',0);
-    $('.tipo_habitad_sel').prop('selectedIndex',0);
+
     //Per que tornin a sortir tots els registres al mapa
-    //updateMapData();
+    mymap.setView([40.0000000, -4.0000000], 6);
+    updateMapData();
+
+    urlCleaner = '/redbosques/dataCleaner';
+
+    //console.log(urlCleaner);
+    $.ajax({
+            url: urlCleaner,
+            method: "GET",
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type)) {
+                    var csrftoken = getCookie('csrftoken');
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            },
+
+            success: function( data, textStatus, jqXHR ) {
+                if(data){
+
+                    /*console.log(data);
+                    console.log(data.habitatData);
+                    console.log(data.subHabitatData);
+                    console.log(data.rodalesData);*/
+
+
+                    selector_Habitat(data.habitatData);
+                    selector_subHabitat(data.subHabitatData);
+                    selector_rodal(data.rodalesData);
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(errorThrown);
+            }
+        });
 }
-
-/*
-$('.tipo_bosque').on("click", function(){
-    var codigo = $(".tipo_habitad").val();
-    marker_cluster.clearLayers();
-
-    $.ajax({
-        url: 'http://127.0.0.1:8000/redbosques/datos_habitat?h=' + codigo,
-        //url: url+'?h='+codigo,
-        method: "GET",
-        beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type)) {
-                var csrftoken = getCookie('csrftoken');
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-        },
-
-        success: function( data, textStatus, jqXHR ) {
-            selector_Habitad(data.llista_habitats);
-            setMapData(data.llista_punts_ini)
-            //console.log(data.llista_punts_ini);
-        },
-        error: function(jqXHR, textStatus, errorThrown){
-            console.log(errorThrown);
-        }
-    });
-});
-*/
-
-/*
-$('.rodal').on("click", function(){
-
-    marker_cluster.clearLayers();
-
-    var id_rodal = $(".selector_rodal").val();
-
-    $.ajax({
-        url: 'http://127.0.0.1:8000/redbosques/datos_mapa?cr=' + id_rodal,
-        //url: url+'?h='+codigo,
-        method: "GET",
-        beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type)) {
-                var csrftoken = getCookie('csrftoken');
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-        },
-
-        success: function( data, textStatus, jqXHR ) {
-            setMapData(data);
-            //console.log(data);
-        },
-        error: function(jqXHR, textStatus, errorThrown){
-            console.log(errorThrown);
-        }
-    });
-});
-*/
-
-
-/*
-$('.tipo_habitad_sel').on("click", function(){
-    marker_cluster.clearLayers();
-    var id_tipo_habitad_sel = $('.tipo_habitad_sel').val();
-    var val_valoracion = $("input:checked").val();
-
-    if (val_valoracion == undefined){
-        url_data = 'http://127.0.0.1:8000/redbosques/datos_mapa?ch=' + id_tipo_habitad_sel;
-    }else{
-        url_data = 'http://127.0.0.1:8000/redbosques/datos_mapa?ch=' + id_tipo_habitad_sel + '&val_valor=' + val_valoracion;
-    }
-
-    console.log(url_data);
-
-    $.ajax({
-        //url: 'http://127.0.0.1:8000/redbosques/datos_mapa?ch=' + id_tipo_habitad_sel,
-        url: url_data,
-        method: "GET",
-        beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type)) {
-                var csrftoken = getCookie('csrftoken');
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-        },
-
-        success: function( data, textStatus, jqXHR ) {
-            setMapData(data);
-            //console.log(data);
-        },
-        error: function(jqXHR, textStatus, errorThrown){
-            console.log(errorThrown);
-        }
-    });
-});
-*/
-
-
-
-/*$(".selector_valoracion").change(function(){
-
-    //alert($("input:checked").val());
-    marker_cluster.clearLayers();
-    var val_valoracion = $("input:checked").val();
-    var id_tipo_habitad_sel = $('.tipo_habitad_sel').val();
-
-    //console.log(id_tipo_habitad_sel); // Puede ser null
-    //console.log(val_valoracion); // Puede ser undefined
-
-    if (id_tipo_habitad_sel == null){
-        url_data = 'http://127.0.0.1:8000/redbosques/datos_mapa?val_valor=' + val_valoracion;
-    }else{
-        url_data = 'http://127.0.0.1:8000/redbosques/datos_mapa?ch=' + id_tipo_habitad_sel + '&val_valor=' + val_valoracion;
-    }
-
-    console.log(url_data);
-
-    $.ajax({
-        //url: 'http://127.0.0.1:8000/redbosques/datos_mapa?val_valor=' + val_valoracion,
-        url: url_data,
-        method: "GET",
-        beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type)) {
-                var csrftoken = getCookie('csrftoken');
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-        },
-
-        success: function( data, textStatus, jqXHR ) {
-            setMapData(data);
-            //console.log(url);
-        },
-        error: function(jqXHR, textStatus, errorThrown){
-            console.log(errorThrown);
-        }
-    });
-});
-*/
-
-
 
 
