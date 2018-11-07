@@ -4,7 +4,7 @@ from . import views
 
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from redbosques.forms import LoginForm
+#from redbosques.forms import LoginForm
 
 urlpatterns = [
     path('', views.index, name='index'),
