@@ -9,7 +9,7 @@ from django.db.models import Avg, StdDev
 from redbosques.settings_local import URL_BASE
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from redbosques.forms import RegistrationForm, LoginForm
+#from redbosques.forms import RegistrationForm, LoginForm
 from django.contrib import messages
 from django.contrib import auth
 
@@ -1211,7 +1211,7 @@ def crearArbolMedia(dades):
 
     return rodal_referencia
 
-def login(request):
+'''def login(request):
     login_form = LoginForm()
 
     if request.user.is_authenticated:
@@ -1249,6 +1249,6 @@ def register(request):
         user_form = RegistrationForm()
 
     context = {'user_form': user_form}
-    return render(request, 'registration/registration.html', context)
+    return render(request, 'registration/registration.html', context)'''
 
 
