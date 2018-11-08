@@ -134,4 +134,8 @@ STATICFILES_FINDERS = [
 MEDIA_ROOT =  BASE_DIR + '/fotos/'
 MEDIA_URL = '/media/'
 
+LOGIN_URL = '/redbosques/login'
+LOGIN_REDIRECT_URL = '/redbosques/herramientas'
+LOGOUT_REDIRECT_URL = '/redbosques'
+
 from redbosques.settings_local import *
