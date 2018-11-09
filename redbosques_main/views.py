@@ -9,7 +9,7 @@ from django.db.models import Avg, StdDev
 from redbosques.settings_local import URL_BASE
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-#from redbosques.forms import RegistrationForm, LoginForm
+from redbosques.forms import RegistrationForm, LoginForm
 from django.contrib import messages
 from django.contrib import auth
 
@@ -18,9 +18,21 @@ from django.contrib.auth import authenticate
 
 # Create your views here.
 def index(request):
-    print(URL_BASE)
+    #print(URL_BASE)
     context = {'titol': 'Titol', 'URL_BASE': URL_BASE}
     return render(request, 'redbosques_main/index.html', context)
+
+@login_required(login_url="login/")
+def menu(request):
+    rodalesSelector = []
+    rodals_list = WebMapa.objects.filter(eje_cod='nm').order_by('nombre')
+
+    for r in rodals_list:
+        rodalesSelector.append({'id_rodal': r.id_rodal, 'nombre': r.nombre})
+
+    context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'rodalesSelector':rodalesSelector}
+    return render(request, 'redbosques_main/menu.html', context)
+
 
 
 def initialData():
@@ -30,40 +42,19 @@ def initialData():
     for h in habData:
         habitatData.append({'cod': h.cod, 'nombre': h.nombre})
 
-
-    # Carga de datos para el selector de SubHabitat
-
-    # !!!!! Como futura mejora mostrar solo los subhabitats que contengan rodales
-
-
     subHabExist = []
     subHabitatData = []
     allSub = WebMapa.objects.all()
     allSub2 = allSub.filter(eje_cod='nm').values_list('habitat_cod', flat=True)
 
-    subHabExist = Habitat.objects.filter(cod__in=allSub2.values_list('habitat_cod', flat=True))
+    subHabExist = Habitat.objects.filter(cod__in=allSub2.values_list('habitat_cod', flat=True)).order_by('nombre')
 
     for habitat in subHabExist:
         subHabitatData.append({'cod': habitat.cod, 'nombre': habitat.nombre})
 
-    print(subHabitatData)
-
-    '''subHabitatData = []
-    dades_habitat = Habitat.objects.filter(seleccion=True).filter(cod__contains='.').order_by('nombre')
-    for habitat in dades_habitat:
-        subHabitatData.append({'cod': habitat.cod, 'nombre': habitat.nombre})'''
-
-
-
-
-    '''rodals_list = WebMapa.objects.all()
-    hab_cod = rodals_list.filter(id_rodal=id).values_list('habitat_cod', flat=True).first()
-    selector_rodals = rodals_list.filter(habitat_cod=hab_cod).filter(eje_cod='nm').exclude(id_rodal=id)'''
-
-
     # Carga de datos para el selector de Rodales
     rodalesData = []
-    rodales = WebMapa.objects.filter(eje_cod='nm')
+    rodales = WebMapa.objects.filter(eje_cod='nm').order_by('nombre')
     for r in rodales:
         rodalesData.append({'id_rodal': r.id_rodal, 'nombre': r.nombre})
 
@@ -75,39 +66,9 @@ def initialData():
 
     return context
 
-#@login_required(login_url="login/")
+@login_required(login_url="login/")
 def herramientas(request):
-
-    '''
-    #Carga de datos para el selector de Habitat
-    habitatData = Habitat.objects.filter(seleccion = True).exclude(cod='4').exclude(cod__contains='.').order_by('nombre')
-
-    #Carga de datos para el selector de SubHabitat
-
-    # !!!!! Como futura mejora mostrar solo los subhabitats que contengan rodales
-
-    subHabitatData = []
-    dades_habitat = Habitat.objects.filter(seleccion=True).filter(cod__contains='.').order_by('nombre')
-    for habitat in dades_habitat:
-        subHabitatData.append({'cod': habitat.cod, 'nombre': habitat.nombre})
-
-    #Carga de datos para el selector de Rodales
-    rodalesData = []
-    rodales = WebMapa.objects.filter(eje_cod='nm')
-    for r in rodales:
-        rodalesData.append({'id_rodal': r.id_rodal, 'nombre': r.nombre})
-
-
-    #context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'habitatData': habitatData, 'llista_rodals':llista_rodals, 'URL_BASE': URL_BASE}
-    context = {'herramientas': 'Herramienta de evaluación de rodales maduros',
-               'habitatData': habitatData,
-               'subHabitatData': subHabitatData,
-               'rodalesData': rodalesData}
-            '''
-
     context = initialData()
-
-
     return render(request, 'redbosques_main/herramientas.html', context)
 
 
@@ -115,7 +76,6 @@ def herramientas(request):
 @api_view(['GET'])
 def dataCleaner(request):
     resultado = initialData()
-    #print(resultado)
     return Response(resultado)
 
 
@@ -123,40 +83,34 @@ def dataCleaner(request):
 @api_view(['GET'])
 def habitatData(request):
     #habitatData2 = Habitat.objects.filter(seleccion=True).exclude(cod='4').exclude(cod__contains='.').order_by('nombre')
-    #print(habitatData2)
 
     codiHabitat = request.query_params.get('ch', None)
     codiAmbito = request.query_params.get('ca', None)
 
     newSubHabitatData = []
-    #if not codiHabitat is None:
-    '''dades_habitat = Habitat.objects.filter(seleccion=True).filter(cod__startswith=codiHabitat).filter(
-        cod__contains='.').order_by('nombre')
-    for habitat in dades_habitat:
-        newSubHabitatData.append({'cod': habitat.cod, 'nombre': habitat.nombre})
-    '''
+    newRodalesData = []
+
 
     subHabExist = []
-    #subHabitatData = []
     allSub = WebMapa.objects.all()
     allSub2 = allSub.filter(eje_cod='nm').values_list('habitat_cod', flat=True)
 
     subHabExist = Habitat.objects.filter(cod__in=allSub2.values_list('habitat_cod', flat=True))
-    subHabExistFilter = subHabExist.filter(cod__startswith=codiHabitat).filter(cod__contains='.').order_by('nombre')
 
+    if codiHabitat == 'null':
+        subHabExistFilter = subHabExist.filter(cod__contains='.').order_by('nombre')
+        rodales = WebMapa.objects.filter(eje_cod=codiAmbito).order_by('nombre')
+    else:
+        subHabExistFilter = subHabExist.filter(cod__startswith=codiHabitat).filter(cod__contains='.').order_by('nombre')
+        rodales = WebMapa.objects.filter(eje_cod=codiAmbito).filter(habitat_cod__startswith=codiHabitat).order_by('nombre')
 
     for habitat in subHabExistFilter:
         newSubHabitatData.append({'cod': habitat.cod, 'nombre': habitat.nombre})
 
-    #print(newSubHabitatData)
-
-    newRodalesData = []
-    rodales = WebMapa.objects.filter(eje_cod=codiAmbito).filter(habitat_cod__startswith=codiHabitat)
     for r in rodales:
         newRodalesData.append({'id_rodal': r.id_rodal, 'nombre': r.nombre})
 
     context = {'newSubHabitatData': newSubHabitatData, 'newRodalesData': newRodalesData}
-    #return render(request, 'redbosques_main/herramientas.html', context)
     return Response(context)
 
 
@@ -167,7 +121,11 @@ def subHabitatData(request):
     codiAmbito = request.query_params.get('ca', None)
 
     newRodalesData2 = []
-    rodales = WebMapa.objects.filter(eje_cod=codiAmbito).filter(habitat_cod__startswith=codiSubhabitat)
+
+    if codiSubhabitat == 'null':
+        rodales = WebMapa.objects.filter(eje_cod=codiAmbito).order_by('nombre')
+    else:
+        rodales = WebMapa.objects.filter(eje_cod=codiAmbito).filter(habitat_cod__startswith=codiSubhabitat).order_by('nombre')
 
 
     for r in rodales:
@@ -177,22 +135,6 @@ def subHabitatData(request):
     return Response(context)
 
 
-
-
-
-    subHabExist = []
-    subHabitatData = []
-    allSub = WebMapa.objects.all()
-    allSub2 = allSub.filter(eje_cod='nm').values_list('habitat_cod', flat=True)
-
-    subHabExist = Habitat.objects.filter(cod__in=allSub2.values_list('habitat_cod', flat=True))
-
-    for habitat in subHabExist:
-        subHabitatData.append({'cod': habitat.cod, 'nombre': habitat.nombre})
-
-    print(subHabitatData)
-
-
 @api_view(['GET'])
 def rodalData(request):
     codiRodal = request.query_params.get('cr', None)
@@ -200,9 +142,9 @@ def rodalData(request):
     rodalData = []
 
     if codiRodal == 'null':
-        rod = WebMapa.objects.filter(eje_cod=codiAmbito)
+        rod = WebMapa.objects.filter(eje_cod=codiAmbito).order_by('nombre')
     else:
-        rod =  WebMapa.objects.filter(id_rodal=codiRodal).filter(eje_cod=codiAmbito)
+        rod =  WebMapa.objects.filter(id_rodal=codiRodal).filter(eje_cod=codiAmbito).order_by('nombre')
 
     for r in rod:
         rodalData.append({'id_rodal': r.id_rodal, 'nombre': r.nombre})
@@ -220,21 +162,13 @@ def datos_mapa(request):
     eje_selected = request.query_params.get('e', None)
     codi_rodal = request.query_params.get('cr', None)
 
-    print(codi_hab)
-    print(codi_tipus_habitat)
-    print(eje_selected)
-
-
     #Filtraje por tipo de eje
-
     #dades_punts = WebMapa.objects.filter(eje_cod=eje_selected)
     dades_punts = WebMapaValAmb.objects.filter(eje_cod=eje_selected)
-
 
     # rebem com a parametre el codir del rodal
     if codi_rodal is not None:
         dades_punts = dades_punts.filter(id_rodal=codi_rodal)
-
 
 
     codi_hab = request.query_params.get('h', None)
@@ -271,100 +205,89 @@ def datos_mapa(request):
             'valor_nm': punt.nm
         })
 
-
-    print(llista_punts)
-
-
     context = {'llista_punts': llista_punts, 'llista_habitats': llista_habitats}
     return Response(context)
 
 
-
-def menu(request):
-    context = {'herramientas': 'Herramienta de evaluación de rodales maduros'}
-    return render(request, 'redbosques_main/menu.html', context)
-
-
-'''@api_view(['GET'])'''
 def comparador(request, id=None):
     # rebem com a parametre el codir del rodal
     #codi_rodal = request.query_params.get('cr', None)
 
 
-        rodals_list = WebMapa.objects.all()
-        hab_cod = rodals_list.filter(id_rodal=id).values_list('habitat_cod', flat=True).first()
-        selector_rodals = rodals_list.filter(habitat_cod=hab_cod).filter(eje_cod='nm').exclude(id_rodal=id)
+    rodals_list = WebMapa.objects.all()
+    hab_cod = rodals_list.filter(id_rodal=id).values_list('habitat_cod', flat=True).first()
+    selector_rodals = rodals_list.filter(habitat_cod=hab_cod).filter(eje_cod='nm').exclude(id_rodal=id)
 
-        #if id is None:
-            #dades_rodal = RodalValorres2.objects.filter(id_rodal=802)
-            #info_rodal = rodals_list.filter(id_rodal=802)
+    #if id is None:
+        #dades_rodal = RodalValorres2.objects.filter(id_rodal=802)
+        #info_rodal = rodals_list.filter(id_rodal=802)
 
-        if id is not None:
-            dades_rodal = RodalValorres2.objects.filter(id_rodal=id)
-            info_rodal = rodals_list.filter(id_rodal=id)
+    if id is not None:
+        dades_rodal = RodalValorres2.objects.filter(id_rodal=id)
+        info_rodal = rodals_list.filter(id_rodal=id)
 
-        rodalArbol = crearArbol(dades_rodal)
+    rodalArbol = crearArbol(dades_rodal)
 
-        ######## Valores info rodal ##############
+    ######## Valores info rodal ##############
 
-        infoRodal = {}
-        for punt in info_rodal:
-            infoRodal={
-                'id_rodal': punt.id_rodal,
-                'nombre': punt.nombre,
-                'Comunidad_autonoma': punt.ccaa_nombre,
-                'habitat_nom': punt.habitat_nom,
-                'habitat_cod': punt.habitat_cod
-            }
+    infoRodal = {}
+    for punt in info_rodal:
+        infoRodal={
+            'id_rodal': punt.id_rodal,
+            'nombre': punt.nombre,
+            'Comunidad_autonoma': punt.ccaa_nombre,
+            'habitat_nom': punt.habitat_nom,
+            'habitat_cod': punt.habitat_cod
+        }
 
-        #########################################
+    #########################################
 
-        listaRodales = []
-        for rodal in selector_rodals:
-                listaRodales.append({
-                    'id_rodal': rodal.id_rodal,
-                    'nombre': rodal.nombre
+    listaRodales = []
+    for rodal in selector_rodals:
+            listaRodales.append({
+                'id_rodal': rodal.id_rodal,
+                'nombre': rodal.nombre
 
+    })
+
+    valores_rodal_json = json.dumps(rodalArbol)
+
+
+    ####### Selector Regió biogeográfica ########
+
+    RegBio_list = TeRegbio.objects.all()
+
+    listaRegBio = []
+    for regBio in RegBio_list:
+        listaRegBio.append({
+            'cod': regBio.cod,
+            'nombre': regBio.nombre_es
         })
 
-        valores_rodal_json = json.dumps(rodalArbol)
+    #############################################
 
+    ####### Selector Comunidad autonoma ########
 
-        ####### Selector Regió biogeográfica ########
-
-        RegBio_list = TeRegbio.objects.all()
-
-        listaRegBio = []
-        for regBio in RegBio_list:
-            listaRegBio.append({
-                'cod': regBio.cod,
-                'nombre': regBio.nombre_es
-            })
-
-        #############################################
-
-        ####### Selector Comunidad autonoma ########
-
-        ComAuto_list = TeProvincia.objects.filter(nivel='Com. autònoma')
-        listaComAuto = []
-        for comAut in ComAuto_list:
-            listaComAuto.append({
-                'codigo': comAut.codigo,
-                'nombre': comAut.nombre_es
-            })
+    ComAuto_list = TeProvincia.objects.filter(nivel='Com. autònoma')
+    listaComAuto = []
+    for comAut in ComAuto_list:
+        listaComAuto.append({
+            'codigo': comAut.codigo,
+            'nombre': comAut.nombre_es
+        })
 
 
 
-        #############################################
-        context = {'herramientas': 'Herramienta de evaluación de rodales maduros',
-                   'valores_rodal': rodalArbol,
-                   'infoRodal': infoRodal,
-                   'listaRodales': listaRodales,
-                   'valores_rodal_json': valores_rodal_json,
-                   'listaRegBio': listaRegBio,
-                   'listaComAuto': listaComAuto}
+    #############################################
+    context = {'herramientas': 'Herramienta de evaluación de rodales maduros',
+               'valores_rodal': rodalArbol,
+               'infoRodal': infoRodal,
+               'listaRodales': listaRodales,
+               'valores_rodal_json': valores_rodal_json,
+               'listaRegBio': listaRegBio,
+               'listaComAuto': listaComAuto}
 
-        return render(request, 'redbosques_main/comparador.html', context)
+    return render(request, 'redbosques_main/comparador.html', context)
 
 
 
@@ -1211,7 +1134,7 @@ def crearArbolMedia(dades):
 
     return rodal_referencia
 
-'''def login(request):
+def login(request):
     login_form = LoginForm()
 
     if request.user.is_authenticated:
@@ -1225,7 +1148,7 @@ def crearArbolMedia(dades):
         if user is not None:
             # correct username and password login the user
             auth.login(request, user)
-            return redirect('herramientas')
+            return redirect('menu')
 
         else:
             messages.error(request, 'Error wrong username/password')
@@ -1249,6 +1172,5 @@ def register(request):
         user_form = RegistrationForm()
 
     context = {'user_form': user_form}
-    return render(request, 'registration/registration.html', context)'''
-
+    return render(request, 'registration/registration.html', context)
 

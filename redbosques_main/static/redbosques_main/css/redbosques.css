@@ -74,8 +74,9 @@ ul.nav-pills li.active a {
 }
 
 
-.subheader a h4{
+.subheader h4 a, h4{
     color: #9ac635;
+
 }
 
 @media screen and (max-width: 768px) {
@@ -175,11 +176,21 @@ ul.nav-pills li.active a {
     color: black;
     margin-top: 4%;
     text-align: center;
+    height: 640px;
 }
 
 .mapa-selectores select{
     width: 100%;
     margin: 5px;
+}
+
+.map-options{
+    height: 640px;
+    position:relative;
+}
+
+.bottom-buttons{
+    margin-top: 3%;
 }
 
 .btn-selector-mapa{

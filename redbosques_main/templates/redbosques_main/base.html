@@ -88,14 +88,13 @@
                     <li class="menu-options active"><a href="#">TRABAJO EN RED<span class="sr-only">(current)</span></a></li>
                     <li class="menu-options active"><a href="#">PRENSA<span class="sr-only">(current)</span></a></li>
                     <li class="menu-options active"><a href="#">ENGLISH VERSION<span class="sr-only">(current)</span></a></li>
-                    <!--{% if user.is_authenticated %}
+                    {% if user.is_authenticated %}
                         <li class="userLogout">
                             <p>Hola, {{ user.first_name }} | <a href="{% url 'logout' %}">Salir <i class="fas fa-sign-out-alt"></i></a></p>
                         </li>
                     {% else %}
-
-                            <li class="menu-options active"><a href="/redbosques/login/?next=/redbosques/herramientas">Iniciar sesión <i class="fas fa-sign-in-alt"></i><span class="sr-only">(current)</span></a></li>
-                    {% endif %}-->
+                        <li class="menu-options active"><a href="/redbosques/login/?next=/redbosques/menu">Iniciar sesión <i class="fas fa-sign-in-alt"></i><span class="sr-only">(current)</span></a></li>
+                    {% endif %}
                 </ul>
 
             </div>

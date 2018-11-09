@@ -6,11 +6,17 @@
 {% block main %}
 <div class="container-fluid subheader">
     <div class="row">
-        <a href="/redbosques"><h4>Inicio</h4></a>
-        <h2>{{ herramientas }}</h2>
+        <div class="col-lg-12 subfield">
+
+                <h4>
+                    <a href="{% url 'index' %}">Inicio</a> /
+                    Menú
+                </h4>
+
+            <h2>{{ herramientas }}</h2>
+        </div>
     </div>
 </div>
-
 <div class="container menu-header">
     <div class="row">
         <h3>Menú principal</h3>
@@ -19,21 +25,23 @@
 <div class="container menuOptions">
     <div class="row">
         <div class="col-lg-offset-4 col-lg-4">
-
-            <button type="btn" class="btn btn-selector-mapa">Entrada de nuevo rodal</button>
-            <button type="btn" class="btn btn-selector-mapa">Importar datos desde xls? Csv?</button>
-            <button type="btn" class="btn btn-selector-mapa">Editar Rodal</button>
+            <a class="btn btn-selector-mapa" href="{% url 'herramientas' %}">Ver mapa de rodales</a>
+            <button type="btn" class="btn btn-selector-mapa" disabled>Entrada de nuevo rodal</button>
+            <button type="btn" class="btn btn-selector-mapa" disabled>Importar datos desde xls? Csv?</button>
+            <button type="btn" class="btn btn-selector-mapa" disabled>Editar Rodal</button>
             <select class="form-control rodalSelected">
-                <option type="radio" value="875">Can Moix (411101)</option>
-                <option type="radio" value="844">Pinarisses (370271)</option>
-                <option type="radio" value="771">Bosc de Petit (260781)</option>
-                <option type="radio" value="683">La Trona (150361)</option>
-                <option type="radio" value="739">Corriol (240451)</option>
+                <option value="" selected="selected">------</option>
+                    {% for rodal in rodalesSelector %}
+                        <option class="tipo_bosque" value="{{ rodal.id_rodal }}">
+                            {{ rodal.nombre }}
+                        </option>
+                    {% endfor %}
             </select>
-            <button type="btn" class="btn btn-selector-mapa">Exportar (csv?, shp?, sql?)</button>
-            <button type="btn" class="btn btn-selector-mapa">Crear PDF</button>
+            <button type="btn" class="btn btn-selector-mapa" disabled>Exportar (csv?, shp?, sql?)</button>
+            <button type="btn" class="btn btn-selector-mapa" disabled>Crear PDF</button>
             <button type="btn" class="btn btn-selector-mapa" onclick="compararRodal()">Comparar</button>
-            <button type="btn" class="btn btn-selector-mapa">Terminar</button>
+            <!--<button type="btn" class="btn btn-selector-mapa">Terminar</button>-->
+            <a class="btn btn-selector-mapa" href="{% url 'logout' %}">Salir</a>
         </div>
 
     </div>

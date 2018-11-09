@@ -8,7 +8,14 @@
 <div class="container-fluid subheader">
     <div class="row">
         <div class="col-lg-12 subfield">
-            <a href="/redbosques"><h4>Inicio</h4></a>
+            <p>
+                <h4>
+                    <a href="{% url 'index' %}">Inicio</a> /
+                    <a href="{% url 'menu' %}">Menú</a> /
+                    <!--<a href="{% url 'herramientas' %}">Mapa de rodales</a>-->
+                    Mapa de rodales
+                </h4>
+            </p>
             <h2>{{ herramientas }}</h2>
             <!--<h2>Herramienta de evaluación de rodales maduros</h2>-->
         </div>
@@ -24,7 +31,7 @@
     <div class="row mapa-selectores">
         <div id="mapid" class="col-lg-9"></div>
 
-        <div class="col-lg-3">
+        <div class="col-lg-3 map-options">
             <button class="btn btn-selector-mapa" disabled>Participar</button>
             <!--<button type="btn" class="btn btn-selector-mapa">Comparar</button>-->
 
@@ -94,36 +101,37 @@
         </div>
 
     </div>
+    <div class="row bottom-buttons">
+        <div class="col-lg-offset-2 col-lg-3">
+                <a class="btn btn-selector-mapa" href="{% url 'menu' %}">Volver al menú</a>
+        </div>
+        <div class="col-lg-offset-2 col-lg-3">
+                <a class="btn btn-selector-mapa" href="{% url 'logout' %}">Salir de la aplicación</a>
+        </div>
+    </div>
 
 
 </div>
 {% endblock %}
-
-        {% block extra_js %}
-        <script>
-        var mymap;
-        var testData;
-        var url = "{% url 'datos_mapa' %}";
-        var marker_cluster;
-        var puntuacion={};
-        var setMapData;
-        var url_data;
-        var treeIcon;
-        var id_tipo_habitat_sel;
-        var id_tipo_habitat;
-        var codi_rodal;
-
-
-
-
-
-
-        </script>
-        <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
-        <script src="{% static 'redbosques_main/leaflet/leaflet.js' %}"></script>
-        <script src="{% static 'redbosques_main/Leaflet.markercluster-1.4.0/dist/leaflet.markercluster.js' %}"></script>
-        <script src="{% static 'redbosques_main/javascript/leaflet-bing-layer.min.js' %}"></script>
-        {% endblock %}
+{% block extra_js %}
+<script>
+    var mymap;
+    var testData;
+    var url = "{% url 'datos_mapa' %}";
+    var marker_cluster;
+    var puntuacion={};
+    var setMapData;
+    var url_data;
+    var treeIcon;
+    var id_tipo_habitat_sel;
+    var id_tipo_habitat;
+    var codi_rodal;
+</script>
+<script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
+<script src="{% static 'redbosques_main/leaflet/leaflet.js' %}"></script>
+<script src="{% static 'redbosques_main/Leaflet.markercluster-1.4.0/dist/leaflet.markercluster.js' %}"></script>
+<script src="{% static 'redbosques_main/javascript/leaflet-bing-layer.min.js' %}"></script>
+{% endblock %}
 
 
 

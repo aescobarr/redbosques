@@ -243,7 +243,7 @@ var updateMapData = function(){
                 url = url + '&cr=' + id_rodal;
             }
         }
-        console.log(url);
+        //console.log(url);
         $.ajax({
             url: url,
             method: "GET",
@@ -256,10 +256,11 @@ var updateMapData = function(){
 
             success: function( data, textStatus, jqXHR ) {
                 if(data){
-                    if(data.llista_habitats){
+                    //mymap.setView([40.0000000, -4.0000000], 6);
+                    /*if(data.llista_habitats){
                         //selector_Habitat(data.llista_habitats);
-                        mymap.setView([40.0000000, -4.0000000], 6);
-                    }
+                        //mymap.setView([40.0000000, -4.0000000], 6);
+                    }*/
 
                     //selector_rodal(data.llista_punts);
                     setMapData(data.llista_punts);
@@ -267,8 +268,6 @@ var updateMapData = function(){
 
                     if(id_rodal){
                         mymap.setView([data.llista_punts[0].y, data.llista_punts[0].x], 10);
-                    }else{
-                        mymap.setView([40.0000000, -4.0000000], 6);
                     }
                 }
             },
@@ -286,10 +285,8 @@ var habitatData = function(){
     var codiAmbito = getEje();
     urlHabitat = '/redbosques/habitatData';
     urlHabitat = urlHabitat+'?ch='+codiHabitat + '&ca=' + codiAmbito;
-    console.log(urlHabitat);
+    //console.log(urlHabitat);
     $('.tipo_habitat_sel').prop('selectedIndex',0);
-
-
 
 
     $.ajax({
@@ -321,7 +318,7 @@ var subHabitatData = function(){
     var codiAmbito = getEje();
     urlSubHabitat = '/redbosques/subHabitatData';
     urlSubHabitat = urlSubHabitat+'?csh='+codiSubHabitat+ '&ca=' + codiAmbito;
-    console.log(urlSubHabitat);
+    //console.log(urlSubHabitat);
     //$('.tipo_habitat_sel').prop('selectedIndex',0);
     $('.selector_rodal').prop('selectedIndex',0);
 
@@ -337,7 +334,6 @@ var subHabitatData = function(){
 
             success: function( data, textStatus, jqXHR ) {
                 if(data){
-                    console.log(data.newRodalesData2);
                     selector_rodal(data.newRodalesData2);
                     updateMapData();
 
@@ -355,7 +351,7 @@ var rodalData = function(){
     var codiAmbito = getEje();
     urlRodal = '/redbosques/rodalData';
     urlRodal = urlRodal+'?cr='+codiRodal+'&ca='+codiAmbito;
-    console.log(urlRodal);
+
 
     $.ajax({
             url: urlRodal,
@@ -369,7 +365,7 @@ var rodalData = function(){
 
             success: function( data, textStatus, jqXHR ) {
                 if(data){
-                    console.log(data.rodalData);
+                    //console.log(data.rodalData);
                     updateMapData();
                 }
             },

@@ -135,7 +135,7 @@ MEDIA_ROOT =  BASE_DIR + '/fotos/'
 MEDIA_URL = '/media/'
 
 LOGIN_URL = '/redbosques/login'
-LOGIN_REDIRECT_URL = '/redbosques/herramientas'
+LOGIN_REDIRECT_URL = BASE_DIR + '/menu'
 LOGOUT_REDIRECT_URL = '/redbosques'
 
 from redbosques.settings_local import *

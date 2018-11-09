@@ -4,17 +4,14 @@ from . import views
 
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-#from redbosques.forms import LoginForm
+from redbosques.forms import LoginForm
 
 urlpatterns = [
     path('', views.index, name='index'),
     path('menu', views.menu, name='menu'),
-    #path('login', views.login,  kwargs={ "authentication_form": AuthenticationForm}),
-    #path('login', views.login, { "authentication_form": AuthenticationForm}, name='login'),
-    #Estos 3 de abajo son los buenos
-    #path('login', views.login, {'template_name': 'login.html', 'authentication_form': LoginForm}, name='login'),
-    #url(r'^login/$', views.login, name='login'),
-    #path('register', views.register, name='register'),
+    path('login', views.login, {'template_name': 'login.html', 'authentication_form': LoginForm}, name='login'),
+    url(r'^login/$', views.login, name='login'),
+    path('register', views.register, name='register'),
     path('comparador', views.comparador, name='comparador_noparam'),
     path('comparador/<int:id>/', views.comparador, name='comparador'),
     path('comparador/<int:id>/filter', views.filtrosRodal, name='filtrosRodal'),
@@ -26,8 +23,5 @@ urlpatterns = [
     path('rodalData', views.rodalData, name='rodalData'),
     path('dataCleaner', views.dataCleaner, name='dataCleaner'),
     path('datos_mapa', views.datos_mapa, name='datos_mapa'),
-    #Este ultimo tambien es bueno
-    #url(r'^register/$', views.register, name='register'),
-
-
+    url(r'^register/$', views.register, name='register'),
 ]
