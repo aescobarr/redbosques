@@ -1,29 +1,53 @@
 
 
 $(document).ready(function() {
-    //console.log(URL_BASE);
-    //console.log(URL_BASE);
+        var eje = eje;
 
 
-    setMapData = function(data){
-        marker_cluster.clearLayers();
-        //console.log(data);
-        /*###########################Icono##########################################*/
 
-        var html_icon_0 = L.divIcon({className: "icon_0", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-tree icon_0 fa-2x"></i>'});
-        var html_icon_1 = L.divIcon({className: "icon_1", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-tree icon_1 fa-2x"></i>'});
-        var html_icon_2 = L.divIcon({className: "icon_2", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-tree icon_2 fa-2x"></i>'});
-        var html_icon_3 = L.divIcon({className: "icon_3", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-tree icon_3 fa-2x"></i>'});
-        var html_icon_4 = L.divIcon({className: "icon_4", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-tree icon_4 fa-2x"></i>'});
-        var html_icon_5 = L.divIcon({className: "icon_5", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-tree icon_5 fa-2x"></i>'});
-        var html_icon_6 = L.divIcon({className: "icon_6", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-tree icon_6 fa-2x"></i>'});
-        var html_icon_7 = L.divIcon({className: "icon_7", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-tree icon_7 fa-2x"></i>'});
-        var html_icon_8 = L.divIcon({className: "icon_8", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-tree icon_8 fa-2x"></i>'});
-        var html_icon_9 = L.divIcon({className: "icon_9", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-tree icon_9 fa-2x"></i>'});
-        var html_icon_10 = L.divIcon({className: "icon_10", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-tree icon_10 fa-2x"></i>'});
-        var html_icon_default = L.divIcon({className: "icon_null", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-tree icon_null fa-2x"></i>'});
+    setMapData = function(data, eje){
 
-        //var html_icon_default = L.divIcon({className: "marker icon_null", iconAnchor: [0, 24], labelAnchor: [-6, 0], popupAnchor: [0, -36], html: '<span style="marker_style"></span>'});
+        //marker_cluster.clearLayers();
+        if(markerLayer){
+            markerLayer.clearLayers();
+        }
+
+        /*###########################Icono/Leyenda##########################################*/
+
+        if(eje == 'hh'){
+            legendHH.addTo(mymap);
+            mymap.removeControl(legend);
+
+            var html_icon_0 = L.divIcon({className: "iconHH_0", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_0"></i>'});
+            var html_icon_1 = L.divIcon({className: "iconHH_1", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_1"></i>'});
+            var html_icon_2 = L.divIcon({className: "iconHH_2", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_2"></i>'});
+            var html_icon_3 = L.divIcon({className: "iconHH_3", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_3"></i>'});
+            var html_icon_4 = L.divIcon({className: "iconHH_4", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_4"></i>'});
+            var html_icon_5 = L.divIcon({className: "iconHH_5", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_5"></i>'});
+            var html_icon_6 = L.divIcon({className: "iconHH_6", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_6"></i>'});
+            var html_icon_7 = L.divIcon({className: "iconHH_7", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_7"></i>'});
+            var html_icon_8 = L.divIcon({className: "iconHH_8", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_8"></i>'});
+            var html_icon_9 = L.divIcon({className: "iconHH_9", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_9"></i>'});
+            var html_icon_10 = L.divIcon({className: "iconHH_10", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_10"></i>'});
+            var html_icon_default = L.divIcon({className: "iconHH_null", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_null"></i>'});
+
+        }else{
+            legend.addTo(mymap);
+            mymap.removeControl(legendHH);
+
+            var html_icon_0 = L.divIcon({className: "icon_0", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_0"></i>'});
+            var html_icon_1 = L.divIcon({className: "icon_1", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_1"></i>'});
+            var html_icon_2 = L.divIcon({className: "icon_2", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_2"></i>'});
+            var html_icon_3 = L.divIcon({className: "icon_3", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_3"></i>'});
+            var html_icon_4 = L.divIcon({className: "icon_4", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_4"></i>'});
+            var html_icon_5 = L.divIcon({className: "icon_5", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_5"></i>'});
+            var html_icon_6 = L.divIcon({className: "icon_6", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_6"></i>'});
+            var html_icon_7 = L.divIcon({className: "icon_7", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_7"></i>'});
+            var html_icon_8 = L.divIcon({className: "icon_8", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_8"></i>'});
+            var html_icon_9 = L.divIcon({className: "icon_9", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_9"></i>'});
+            var html_icon_10 = L.divIcon({className: "icon_10", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_10"></i>'});
+            var html_icon_default = L.divIcon({className: "icon_null", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_null"></i>'});
+        }
 
         var taula_icons = {
             0: html_icon_0,
@@ -42,6 +66,8 @@ $(document).ready(function() {
         /*#####################################################################################*/
 
 
+        var llista_punts = [];
+
         for(var i = 0; i < data.length; i++){
             var punt = data[i];
 
@@ -52,18 +78,9 @@ $(document).ready(function() {
                 current_icon = html_icon_default;
             }
 
-            /*var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
-            '<b>Nombre habitad: </b>' + punt.habitat_nom + '<br><b>Localización: </b>' + punt.nombre + '<br>' +
-            '<b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br>' +
-            '<a href="/redbosques/comparador/' + punt.id_rodal + '/"><b>Ver ficha</b></a><br>' +
-            '<div class="imagenRodal"><img href="'+ punt.imagen +'" alt="'+ punt.nombre +'" width="250" height="150"></div>'
-            );*/
-
-            console.log(punt.imagen);
-
             var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
             '<b>' + punt.nombre + '</b><br><b>Hábitat: </b>' + punt.habitat_nom + '<br>' +
-            '<b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br>' +
+            '<b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br><b>Región biogeográfica: </b>' + punt.regionBiogeo + '<br>' +
             '<a href="/redbosques/comparador/' + punt.id_rodal + '/"><b>Comparar</b></a><br><br>' +
             '<div class="" style="text-align: center;"><table class="table"><tr><th style="text-align: center">Ámbito</th>'+
             '<th style="text-align: center">Valor</th></tr><tr><td>Naturalidad</td><td>'+ punt.valor_nm +'</td></tr><tr>'+
@@ -71,16 +88,18 @@ $(document).ready(function() {
             '<div class="imagenRodal"><img src="'+ punt.imagen +'" alt="'+ punt.nombre +'" width="250" height="150"></div>'
             );
 
+            llista_punts.push(marker);
 
-             //url = 'http://127.0.0.1:8000/redbosques/datos_mapa';
+            /* Tornar a activar els clusters dels punts*/
+            //marker_cluster.addLayer(marker);
+            //mymap.addLayer(marker_cluster);
 
-            marker_cluster.addLayer(marker);
-            mymap.addLayer(marker_cluster);
         }
 
-       if (testData){
-            testData.markerClusterGroup();
-       }
+        markerLayer = L.layerGroup(llista_punts);
+        mymap.addLayer(markerLayer);
+
+
     }
 
 
@@ -134,14 +153,50 @@ $(document).ready(function() {
         return div;
     };
 
-    marker_cluster = L.markerClusterGroup({
-            spiderLegPolylineOptions: { weight: 1.5, color: '#222', opacity: 0.5 },
+
+    var test = $('.selector_clasificacio').val();
+    //console.log(test);
+
+    var legendHH = L.control({position: 'bottomright'});
+
+    legendHH.onAdd = function (mymap) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+            puntuacion = [
+            {10: '#ff0000'},
+            {9: '#ff4000'},
+            {8: '#ff8000'},
+            {7: '#ffff00'},
+            {6: '#f2f200'},
+            {5: '#e5ff00'},
+            {4: '#caff00'},
+            {3: '#adff00'},
+            {2: '#8cff00'},
+            {1: '#62ff00'},
+            {0:'#00ff00'}
+            ];
+
+        for (i=0; i<puntuacion.length; i++){
+            div.innerHTML += '<p class="leyendaValoracion"><i class="fas fa-circle" style="color:' + Object.values(puntuacion[i]) + '; margin-right: 5px;"></i>' + Object.keys(puntuacion[i]) + '</p>';
+        }
+        return div;
+    };
+
+
+    /*marker_cluster = L.markerClusterGroup({
+            spiderLegPolylineOptions: { weight: 3, color: '#222', opacity: 0.5 },
             spiderfyDistanceMultiplier: 3
-    });
+    });*/
 
+    if(zoomRodal){
+        zoomCoordenadasRodal(zoomRodal);
+    }else{
+        mymap.setView([40.0000000, -4.0000000], 6);
+    }
 
-    legend.addTo(mymap);
+    //legend.addTo(mymap);
     updateMapData();
+
 });
 
 /*################Getters selectores#######################*/
@@ -243,7 +298,7 @@ var updateMapData = function(){
                 url = url + '&cr=' + id_rodal;
             }
         }
-        //console.log(url);
+    console.log(url);
         $.ajax({
             url: url,
             method: "GET",
@@ -263,11 +318,11 @@ var updateMapData = function(){
                     }*/
 
                     //selector_rodal(data.llista_punts);
-                    setMapData(data.llista_punts);
+                    setMapData(data.llista_punts, eje);
 
 
                     if(id_rodal){
-                        mymap.setView([data.llista_punts[0].y, data.llista_punts[0].x], 10);
+                        mymap.setView([data.llista_punts[0].y, data.llista_punts[0].x], 13);
                     }
                 }
             },
@@ -303,7 +358,9 @@ var habitatData = function(){
                 //console.log(data.newRodalesData);
                 selector_subHabitat(data.newSubHabitatData);
                 selector_rodal(data.newRodalesData);
-                updateMapData();
+                //updateMapData();
+
+                setMapData(data.newRodalesData, codiAmbito);
             },
             error: function(jqXHR, textStatus, errorThrown){
                 console.log(errorThrown);
@@ -335,7 +392,8 @@ var subHabitatData = function(){
             success: function( data, textStatus, jqXHR ) {
                 if(data){
                     selector_rodal(data.newRodalesData2);
-                    updateMapData();
+                    //updateMapData();
+                    setMapData(data.newRodalesData2, codiAmbito);
 
                 }
             },
@@ -352,6 +410,7 @@ var rodalData = function(){
     urlRodal = '/redbosques/rodalData';
     urlRodal = urlRodal+'?cr='+codiRodal+'&ca='+codiAmbito;
 
+    //console.log(urlRodal);
 
     $.ajax({
             url: urlRodal,
@@ -366,13 +425,49 @@ var rodalData = function(){
             success: function( data, textStatus, jqXHR ) {
                 if(data){
                     //console.log(data.rodalData);
-                    updateMapData();
+                    //ambitoData();
+                    //updateMapData();
+                    setMapData(data.rodalData, codiAmbito);
+                    if(codiRodal){
+                        mymap.setView([data.rodalData[0].y, data.rodalData[0].x], 13);
+                    }
                 }
             },
             error: function(jqXHR, textStatus, errorThrown){
                 console.log(errorThrown);
             }
         });
+}
+
+
+
+var ambitoData = function(){
+    var codiAmbito = getEje();
+    urlAmbito = '/redbosques/ambitoData';
+    urlAmbito = urlAmbito +'?ca='+codiAmbito;
+
+    console.log(urlAmbito);
+
+    $.ajax({
+            url: urlAmbito,
+            method: "GET",
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type)) {
+                    var csrftoken = getCookie('csrftoken');
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            },
+
+            success: function( data, textStatus, jqXHR ) {
+                if(data){
+                    console.log(data.rodalData);
+                    updateMapData();
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(errorThrown);
+            }
+    });
 }
 
 
@@ -417,7 +512,7 @@ function selector_rodal(data){
 
 
 var limpiarFiltros = function(){
-    marker_cluster.clearLayers();
+    markerLayer.clearLayers();
     //$('.tipo_habitat_sel').empty();
     //$('input[type="checkbox"]').prop('checked', false);
 
@@ -432,10 +527,12 @@ var limpiarFiltros = function(){
     //Per que tornin a sortir tots els registres al mapa
     mymap.setView([40.0000000, -4.0000000], 6);
     updateMapData();
+    //habitatData();
+    //subHabitatData();
+    //rodalData();
 
     urlCleaner = '/redbosques/dataCleaner';
 
-    //console.log(urlCleaner);
     $.ajax({
             url: urlCleaner,
             method: "GET",
@@ -448,13 +545,6 @@ var limpiarFiltros = function(){
 
             success: function( data, textStatus, jqXHR ) {
                 if(data){
-
-                    /*console.log(data);
-                    console.log(data.habitatData);
-                    console.log(data.subHabitatData);
-                    console.log(data.rodalesData);*/
-
-
                     selector_Habitat(data.habitatData);
                     selector_subHabitat(data.subHabitatData);
                     selector_rodal(data.rodalesData);
@@ -464,6 +554,16 @@ var limpiarFiltros = function(){
                 console.log(errorThrown);
             }
         });
+}
+
+
+function zoomCoordenadasRodal(zoomRodal){
+    //alert("hola zoom");
+    console.log(zoomRodal[0].nombre);
+    //if(id_rodal){
+        mymap.setView([zoomRodal[0].y, zoomRodal[0].x], 13);
+    //}
+
 }
 
 

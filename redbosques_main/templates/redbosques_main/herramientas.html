@@ -51,20 +51,20 @@
 
             <div class="seleccio_habitat">
                 <div class="habitatd">
-                    <h5>Hábitat:</h5>
+                    <h5>Tipo de bosque:</h5>
                         <!--<select class="form-control tipo_habitat" onclick="updateMapData()">-->
                         <select class="form-control tipo_habitat" onchange="habitatData()">
                             <option value="" selected="selected">------</option>
-                            {% for habitat in habitatData %}
+                            {% for habitat in initial_data.habitatData %}
                             <option class="tipo_bosque" value="{{ habitat.cod }}">
                                 {{ habitat.nombre }}
                             </option>
                             {% endfor %}
                         </select>
-                    <h5>Subhábitat:</h5>
+                    <h5>Hábitat:</h5>
                         <select class="form-control tipo_habitat_sel" onchange="subHabitatData()">
                             <option value="" selected="selected">------</option>
-                            {% for subHabitat in subHabitatData %}
+                            {% for subHabitat in initial_data.subHabitatData %}
                             <option class="tipo_bosque" value="{{ subHabitat.cod }}">
                                 {{ subHabitat.nombre }}
                             </option>
@@ -74,7 +74,7 @@
                         <!--<select class="form-control selector_rodal" onchange="updateMapData()">-->
                         <select class="form-control selector_rodal" onchange="rodalData()">
                             <option value="" selected="selected">------</option>
-                            {% for rodal in rodalesData %}
+                            {% for rodal in initial_data.rodalesData %}
                                 <option class="rodal" value="{{ rodal.id_rodal }}">
                                     {{ rodal.nombre }}
                                 </option>
@@ -92,7 +92,8 @@
             </div>
 
             <h5>Opciones de visualización</h5>
-            <select class="form-control selector_clasificacio" onclick="updateMapData()">
+            <!--<select class="form-control selector_clasificacio" onclick="updateMapData()">-->
+            <select class="form-control selector_clasificacio" onclick="ambitoData()">
                 <option class="tip_clas" value="nm" selected="selected">Naturalidad</option>
                 <option class="tip_clas" value="hh">Huella humana</option>
                 <option class="tip_clas" value="ie">Integridad espacial</option>
@@ -110,12 +111,12 @@
         </div>
     </div>
 
-
 </div>
 {% endblock %}
 {% block extra_js %}
 <script>
     var mymap;
+    var markerLayer;
     var testData;
     var url = "{% url 'datos_mapa' %}";
     var marker_cluster;
@@ -126,6 +127,13 @@
     var id_tipo_habitat_sel;
     var id_tipo_habitat;
     var codi_rodal;
+    var markers = L.layerGroup();
+    var zoomRodal = {{ coordenadas_rodal | safe }};
+
+
+
+
+
 </script>
 <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
 <script src="{% static 'redbosques_main/leaflet/leaflet.js' %}"></script>

@@ -1,0 +1,173 @@
+{% extends "redbosques_main/base.html" %}
+{% load static %}
+{% block extra_css %}
+<link href="{% static 'redbosques_main/Leaflet.draw-develop/src/leaflet.draw.css' %}">
+{% endblock %}
+{% block main %}
+<div class="container-fluid subheader">
+    <div class="row">
+        <div class="col-lg-12 subfield">
+            <p>
+                <h4>
+                    <a href="{% url 'index' %}">Inicio</a> /
+                    <a href="{% url 'menu' %}">Menú</a> /
+                    <!--<a href="{% url 'herramientas' %}">Mapa de rodales</a>-->
+                    Información rodal
+                </h4>
+            </p>
+            <h2>{{ herramientas }}</h2>
+            <!--<h2>Herramienta de evaluación de rodales maduros</h2>-->
+        </div>
+    </div>
+</div>
+<div class="container menu-header">
+    <div class="row">
+            <h3>Datos obligatorios del rodal</h3>
+        </div>
+    </div>
+</div>
+
+<div class="container form-rodal">
+    <div class="row">
+        <div class="col-lg-offset-3 col-lg-6">
+            <h4>DATOS GENERALES Y ADMINISTRATIVOS</h4>
+        </div>
+    </div>
+    <form action="role">
+        <div class="row form-group restrData">
+            <div class="col-lg-offset-3 col-lg-6">
+                <input id="datosRestringidos" type="checkbox">
+                <label for="datosRestringidos">Datos restringidos</label>
+            </div>
+        </div>
+        <div class="row form-group green-font-bold">
+            <div class="col-lg-offset-3 col-lg-6">
+                <label>Tipo de muestreo</label>
+                <input name="tipoMuestreo" id="porParcelas" type="radio">
+                <label for="porParcelas">Por parcelas</label>
+                <input name="tipoMuestreo" id="porTransecto" type="radio">
+                <label for="portransecto">Por transecto</label>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-offset-3 col-lg-6">
+                <div class="nombreRodal">
+                    <input class="form-control" type="text" placeholder="Nombre del rodal">
+                </div>
+                <div class="comAut">
+                    <select class="form-control">
+                        <option value="" selected="selected">Comuidad autónoma</option>
+                        <option value="catalunya">Catalunya</option>
+                        <option value="paisVasco">País Vasco</option>
+                    </select>
+                </div>
+                <div class="provincia">
+                    <select class="form-control">
+                        <option value="" selected="selected">Provincia</option>
+                        <option value="catalunya">Barcelona</option>
+                        <option value="paisVasco">Girona</option>
+                    </select>
+                </div>
+                <div class="terminoMunicipal">
+                    <select class="form-control">
+                        <option value="" selected="selected">Termino municipal</option>
+                        <option value="catalunya">Barcelona</option>
+                        <option value="paisVasco">Girona</option>
+                    </select>
+                </div>
+                <div class="propietario">
+                    <input class="form-control" type="text" placeholder="Propietario">
+                </div>
+
+                <div class="subirLimites">
+                    <a class="btn btn-selector-mapa" href="#">Subir limites (shp, Kml...)</a>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-offset-3 col-lg-6">
+                <div id="mapDraw" class="mapaPoligonos" style="width: 560px; height: 450px;"></div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-offset-3 col-lg-6">
+                <h4>Muestreo</h4>
+                <div class="fecha">
+                    <input class="form-control" type="date" placeholder="Fecha">
+                </div>
+                <div class="equipoDeCampo">
+                    <input class="form-control" type="text" placeholder="Equipo de campo">
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-offset-3 col-lg-6">
+                <h4>Hábitat</h4>
+                <div class="habitatCorine">
+                    <select class="form-control">
+                        <option value="" selected="selected">Hábitat CORINE(LPHE)</option>
+                        <option value="catalunya">AAAAA</option>
+                        <option value="paisVasco">BBBBB</option>
+                    </select>
+                </div>
+                <div class="habitatHIC">
+                    <select class="form-control">
+                        <option value="" selected="selected">Hábitat de interés comunitario HIC</option>
+                        <option value="catalunya">AAAAA</option>
+                        <option value="paisVasco">BBBBB</option>
+                    </select>
+                </div>
+                <div class="regionBiogeo">
+                    <select class="form-control">
+                        <option value="" selected="selected">Región biogeográfica</option>
+                        <option value="catalunya">AAAAA</option>
+                        <option value="paisVasco">BBBBB</option>
+                    </select>
+                </div>
+                <div class="especiePrincipal">
+                    <select class="form-control">
+                        <option value="" selected="selected">Especie principal</option>
+                        <option value="catalunya">AAAAA</option>
+                        <option value="paisVasco">BBBBB</option>
+                    </select>
+                </div>
+                <div class="altDominante">
+                    <label for="altDomEspPrin">Altura dominante de la especie principal</label>
+                    <input type="text" id="altDomEspPrin" class="alturaDominanteEspeciePrincipal form-control">
+                    <label for="altDomEspPrin">m</label>
+                </div>
+                <div class="principalAcompan">
+                    <select class="form-control">
+                        <option value="" selected="selected">Principal especie acompañante</option>
+                        <option value="catalunya">AAAAA</option>
+                        <option value="paisVasco">BBBBB</option>
+                    </select>
+                </div>
+                <div class="altDominanteAcomp">
+                    <label for="altDomEspPrinAcomp">Altura dominante de la especie principal acompañante</label>
+                    <input id="altDomEspPrinAcomp" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">
+                    <label for="altDomEspPrinAcomp">m</label>
+                </div>
+                <a class="btn btn-selector-mapa" href="#">Siguiente</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
+
+
+
+{% endblock %}
+{% block extra_js %}
+<script>
+    var mymap;
+</script>
+<script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
+<script src="{% static 'redbosques_main/javascript/leaflet-bing-layer.min.js' %}"></script>
+<script src="{% static 'redbosques_main/Leaflet.draw-develop/src/leaflet.draw.js' %}"></script>
+
+<script src="{% static 'redbosques_main/javascript/rodalesForm.js' %}"></script>
+{% endblock %}

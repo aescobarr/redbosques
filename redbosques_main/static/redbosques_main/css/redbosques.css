@@ -252,7 +252,18 @@ h5{
 .icon_10{ color: #0033cc; }
 .icon_null{ color: gray; }
 
-
+.iconHH_0{ color: #00ff00; }
+.iconHH_1{ color: #62ff00; }
+.iconHH_2{ color: #8cff00; }
+.iconHH_3{ color: #adff00; }
+.iconHH_4{ color: #caff00; }
+.iconHH_5{ color: #e5ff00; }
+.iconHH_6{ color: #f2f200; }
+.iconHH_7{ color: #ffff00; }
+.iconHH_8{ color: #ff8000; }
+.iconHH_9{ color: #ff4000; }
+.iconHH_10{ color: #ff0000; }
+.iconHH_null{ color: gray; }
 
 .logos-colab{
     margin-top: 3%;
@@ -342,6 +353,8 @@ input.email, input.password{
 .filtros{
     margin-top: 10px;
     margin-bottom: 15px;
+    border-bottom: 3px solid #9ac635;
+    padding-bottom: 10px;
 }
 
 
@@ -433,6 +446,23 @@ label .boolRodRef{
     color: #FF6600;
 }
 
+.divGraf {
+    padding: 6px;
+}
+
+.tabla-datos .table tr th{
+    vertical-align: middle;
+}
+
+.tabla-datos .table tr td{
+    vertical-align: middle;
+}
+
+.inputsFiltComp{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 /*###########################################################*/
 
 /*##################Estils Formulario Registro#########################*/
@@ -447,3 +477,44 @@ label .boolRodRef{
     margin-left: 5px;
 }
 
+/*#####################Estils Formulari Rodal#################*/
+.form-rodal{
+    margin-top: 1%;
+}
+
+.restrData{
+    margin-bottom: 0px;
+}
+
+.form-rodal input, .form-rodal select{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-color: #9ac635;
+    border-width: 2px;
+}
+
+.form-rodal input[type="date"].form-control,
+.form-rodal input[type="time"].form-control,
+.form-rodal input[type="datetime-local"].form-control,
+.form-rodal input[type="month"].form-control{
+    line-height: 20px;
+}
+
+.form-rodal .alturaDominanteEspeciePrincipalAcomp, .form-rodal .alturaDominanteEspeciePrincipal{
+    display: inline;
+    width: 10%;
+    margin-left: 50px;
+}
+
+.form-rodal label{
+    font-weight: normal;
+}
+
+.green-font-bold label{
+    color:#9ac635;
+    font-weight: bold;
+}
+
+.form-rodal .btn-selector-mapa{
+    margin: 5px 0px 5px 0px;
+}

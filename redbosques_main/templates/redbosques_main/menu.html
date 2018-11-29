@@ -25,7 +25,8 @@
 <div class="container menuOptions">
     <div class="row">
         <div class="col-lg-offset-4 col-lg-4">
-            <a class="btn btn-selector-mapa" href="{% url 'herramientas' %}">Ver mapa de rodales</a>
+            <a class="btn btn-selector-mapa" onclick="zoomRodalMapa()">Ver mapa de rodales</a>
+            <!--<a class="btn btn-selector-mapa" href="{% url 'herramientas' %}" onclick="zoomRodalMapa()">Ver mapa de rodales</a>-->
             <button type="btn" class="btn btn-selector-mapa" disabled>Entrada de nuevo rodal</button>
             <button type="btn" class="btn btn-selector-mapa" disabled>Importar datos desde xls? Csv?</button>
             <button type="btn" class="btn btn-selector-mapa" disabled>Editar Rodal</button>
@@ -51,6 +52,7 @@
 {% block extra_js %}
 <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
 <script src="{% static 'redbosques_main/javascript/menu.js' %}"></script>
+<script src="{% static 'redbosques_main/javascript/mapa.js' %}"></script>
 {% endblock %}
 
 

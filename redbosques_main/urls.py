@@ -16,12 +16,26 @@ urlpatterns = [
     path('comparador/<int:id>/', views.comparador, name='comparador'),
     path('comparador/<int:id>/filter', views.filtrosRodal, name='filtrosRodal'),
     path('valorRef', views.valorRef, name='valorRef'),
+    path('valorRodal', views.valorRodal, name='valorRodal'),
     path('setFiltrosRodal', views.setFiltrosRodal, name='setFiltrosRodal'),
     path('herramientas', views.herramientas, name='herramientas'),
+    path('herramientas/<int:id>/', views.herramientas, name='herramientas'),
     path('habitatData', views.habitatData, name='habitatData'),
     path('subHabitatData', views.subHabitatData, name='subHabitatData'),
     path('rodalData', views.rodalData, name='rodalData'),
+    path('ambitoData', views.ambitoData, name='ambitoData'),
     path('dataCleaner', views.dataCleaner, name='dataCleaner'),
     path('datos_mapa', views.datos_mapa, name='datos_mapa'),
     url(r'^register/$', views.register, name='register'),
+    path('rodalForm', views.rodalForm, name='rodalForm'),
+    path('filtraxhabitat', views.filtraxhabitat, name='filtraxhabitat'),
+    path('filtrarxComAut', views.filtrarxComAut, name='filtrarxComAut'),
+    path('filtrarxRegBiogeo', views.filtrarxRegBiogeo, name='filtrarxRegBiogeo'),
+    path('filtrarxRodRef', views.filtrarxRodRef, name='filtrarxRodRef')
+
 ]
+
+
+
+
+

@@ -18,7 +18,6 @@ from django.contrib.auth import authenticate
 
 # Create your views here.
 def index(request):
-    #print(URL_BASE)
     context = {'titol': 'Titol', 'URL_BASE': URL_BASE}
     return render(request, 'redbosques_main/index.html', context)
 
@@ -44,7 +43,7 @@ def initialData():
 
     subHabExist = []
     subHabitatData = []
-    allSub = WebMapa.objects.all()
+    allSub = WebMapaValAmb.objects.all()
     allSub2 = allSub.filter(eje_cod='nm').values_list('habitat_cod', flat=True)
 
     subHabExist = Habitat.objects.filter(cod__in=allSub2.values_list('habitat_cod', flat=True)).order_by('nombre')
@@ -54,7 +53,7 @@ def initialData():
 
     # Carga de datos para el selector de Rodales
     rodalesData = []
-    rodales = WebMapa.objects.filter(eje_cod='nm').order_by('nombre')
+    rodales = WebMapaValAmb.objects.filter(eje_cod='nm').order_by('nombre')
     for r in rodales:
         rodalesData.append({'id_rodal': r.id_rodal, 'nombre': r.nombre})
 
@@ -67,9 +66,36 @@ def initialData():
     return context
 
 @login_required(login_url="login/")
-def herramientas(request):
-    context = initialData()
+def herramientas(request, id=None):
+
+    if id is None:
+        #context = initialData()
+        data = initialData()
+        context = {'initial_data': data, 'coordenadas_rodal': 'null'}
+    else:
+        coordenadas_rodal = cordRodal(id)
+        data = initialData()
+        context = {'initial_data': data, 'coordenadas_rodal': coordenadas_rodal}
+
     return render(request, 'redbosques_main/herramientas.html', context)
+
+
+def cordRodal(id):
+
+    rodal = WebMapaValAmb.objects.filter(id_rodal=id).filter(eje_cod='nm')
+
+    coordenadas_rodal = []
+    for punt in rodal:
+        coordenadas_rodal.append({
+            'id_rodal': punt.id_rodal,
+            'x': punt.geom.x,
+            'y': punt.geom.y,
+            'nombre': punt.nombre
+        })
+
+    return coordenadas_rodal
+
+
 
 
 
@@ -92,23 +118,36 @@ def habitatData(request):
 
 
     subHabExist = []
-    allSub = WebMapa.objects.all()
+    allSub = WebMapaValAmb.objects.all()
     allSub2 = allSub.filter(eje_cod='nm').values_list('habitat_cod', flat=True)
 
     subHabExist = Habitat.objects.filter(cod__in=allSub2.values_list('habitat_cod', flat=True))
 
     if codiHabitat == 'null':
         subHabExistFilter = subHabExist.filter(cod__contains='.').order_by('nombre')
-        rodales = WebMapa.objects.filter(eje_cod=codiAmbito).order_by('nombre')
+        rodales = WebMapaValAmb.objects.filter(eje_cod=codiAmbito).order_by('nombre')
     else:
         subHabExistFilter = subHabExist.filter(cod__startswith=codiHabitat).filter(cod__contains='.').order_by('nombre')
-        rodales = WebMapa.objects.filter(eje_cod=codiAmbito).filter(habitat_cod__startswith=codiHabitat).order_by('nombre')
+        rodales = WebMapaValAmb.objects.filter(eje_cod=codiAmbito).filter(habitat_cod__startswith=codiHabitat).order_by('nombre')
 
     for habitat in subHabExistFilter:
         newSubHabitatData.append({'cod': habitat.cod, 'nombre': habitat.nombre})
 
     for r in rodales:
-        newRodalesData.append({'id_rodal': r.id_rodal, 'nombre': r.nombre})
+        newRodalesData.append({
+            'id_rodal':r.id_rodal,
+            'x':r.geom.x,
+            'y':r.geom.y,
+            'nombre': r.nombre,
+            'Comunidad_autonoma': r.ccaa_nombre,
+            'habitat_nom': r.habitat_nom,
+            'valor': r.valor,
+            'imagen': r.fotoglobo,
+            'valor_hh': r.hh,
+            'valor_ie': r.ie,
+            'valor_nm': r.nm,
+            'regionBiogeo': r.nombre_es
+        })
 
     context = {'newSubHabitatData': newSubHabitatData, 'newRodalesData': newRodalesData}
     return Response(context)
@@ -123,13 +162,26 @@ def subHabitatData(request):
     newRodalesData2 = []
 
     if codiSubhabitat == 'null':
-        rodales = WebMapa.objects.filter(eje_cod=codiAmbito).order_by('nombre')
+        rodales = WebMapaValAmb.objects.filter(eje_cod=codiAmbito).order_by('nombre')
     else:
-        rodales = WebMapa.objects.filter(eje_cod=codiAmbito).filter(habitat_cod__startswith=codiSubhabitat).order_by('nombre')
+        rodales = WebMapaValAmb.objects.filter(eje_cod=codiAmbito).filter(habitat_cod__startswith=codiSubhabitat).order_by('nombre')
 
 
     for r in rodales:
-        newRodalesData2.append({'id_rodal': r.id_rodal, 'nombre': r.nombre})
+        newRodalesData2.append({
+            'id_rodal':r.id_rodal,
+            'x':r.geom.x,
+            'y':r.geom.y,
+            'nombre': r.nombre,
+            'Comunidad_autonoma': r.ccaa_nombre,
+            'habitat_nom': r.habitat_nom,
+            'valor': r.valor,
+            'imagen': r.fotoglobo,
+            'valor_hh': r.hh,
+            'valor_ie': r.ie,
+            'valor_nm': r.nm,
+            'regionBiogeo': r.nombre_es
+        })
 
     context = {'newRodalesData2': newRodalesData2}
     return Response(context)
@@ -142,15 +194,46 @@ def rodalData(request):
     rodalData = []
 
     if codiRodal == 'null':
-        rod = WebMapa.objects.filter(eje_cod=codiAmbito).order_by('nombre')
+        rod = WebMapaValAmb.objects.filter(eje_cod=codiAmbito).order_by('nombre')
     else:
-        rod =  WebMapa.objects.filter(id_rodal=codiRodal).filter(eje_cod=codiAmbito).order_by('nombre')
+        rod = WebMapaValAmb.objects.filter(id_rodal=codiRodal).filter(eje_cod=codiAmbito).order_by('nombre')
+
+    for r in rod:
+        rodalData.append({
+            'id_rodal':r.id_rodal,
+            'x':r.geom.x,
+            'y':r.geom.y,
+            'nombre': r.nombre,
+            'Comunidad_autonoma': r.ccaa_nombre,
+            'habitat_nom': r.habitat_nom,
+            'valor': r.valor,
+            'imagen': r.fotoglobo,
+            'valor_hh': r.hh,
+            'valor_ie': r.ie,
+            'valor_nm': r.nm,
+            'regionBiogeo': r.nombre_es
+        })
+
+    context = {'rodalData': rodalData}
+    return Response(context)
+
+
+
+@api_view(['GET'])
+def ambitoData(request):
+
+    codiAmbito = request.query_params.get('ca', None)
+    print(codiAmbito)
+
+    rodalData = []
+    rod = WebMapa.objects.filter(eje_cod=codiAmbito).order_by('nombre')
 
     for r in rod:
         rodalData.append({'id_rodal': r.id_rodal, 'nombre': r.nombre})
 
     context = {'rodalData': rodalData}
     return Response(context)
+
 
 
 
@@ -202,7 +285,8 @@ def datos_mapa(request):
             'imagen': punt.fotoglobo,
             'valor_hh': punt.hh,
             'valor_ie': punt.ie,
-            'valor_nm': punt.nm
+            'valor_nm': punt.nm,
+            'regionBiogeo': punt.nombre_es
         })
 
     context = {'llista_punts': llista_punts, 'llista_habitats': llista_habitats}
@@ -213,79 +297,147 @@ def comparador(request, id=None):
     # rebem com a parametre el codir del rodal
     #codi_rodal = request.query_params.get('cr', None)
 
+    habitatData = []
+    habData = Habitat.objects.filter(seleccion=True).exclude(cod='4').exclude(cod__contains='.').order_by('nombre')
+    for h in habData:
+        habitatData.append({'cod': h.cod, 'nombre': h.nombre})
+
+
 
     rodals_list = WebMapa.objects.all()
-    hab_cod = rodals_list.filter(id_rodal=id).values_list('habitat_cod', flat=True).first()
-    selector_rodals = rodals_list.filter(habitat_cod=hab_cod).filter(eje_cod='nm').exclude(id_rodal=id)
+    #hab_cod_test = rodals_list.values_list('habitat_cod', flat=True)
 
-    #if id is None:
-        #dades_rodal = RodalValorres2.objects.filter(id_rodal=802)
-        #info_rodal = rodals_list.filter(id_rodal=802)
+    #habitats_list = Habitat.objects.filter(cod__in=hab_cod_test)
+    #habitats = Habitat.filter(habitat_cod=hab_cod_test)
 
-    if id is not None:
-        dades_rodal = RodalValorres2.objects.filter(id_rodal=id)
-        info_rodal = rodals_list.filter(id_rodal=id)
 
-    rodalArbol = crearArbol(dades_rodal)
 
-    ######## Valores info rodal ##############
 
-    infoRodal = {}
-    for punt in info_rodal:
-        infoRodal={
-            'id_rodal': punt.id_rodal,
-            'nombre': punt.nombre,
-            'Comunidad_autonoma': punt.ccaa_nombre,
-            'habitat_nom': punt.habitat_nom,
-            'habitat_cod': punt.habitat_cod
-        }
-
-    #########################################
-
-    listaRodales = []
-    for rodal in selector_rodals:
-            listaRodales.append({
-                'id_rodal': rodal.id_rodal,
-                'nombre': rodal.nombre
-
-    })
-
-    valores_rodal_json = json.dumps(rodalArbol)
 
 
     ####### Selector Regió biogeográfica ########
 
-    RegBio_list = TeRegbio.objects.all()
+    RegBio_list = WebMapaValAmb.objects.filter(eje_cod='nm').distinct().values('regbio_cod', 'nombre_es')
+    #RegBio_list = TeRegbio.objects.all()
 
     listaRegBio = []
     for regBio in RegBio_list:
         listaRegBio.append({
-            'cod': regBio.cod,
-            'nombre': regBio.nombre_es
+            'cod': regBio['regbio_cod'],
+            'nombre': regBio['nombre_es']
         })
 
     #############################################
+
 
     ####### Selector Comunidad autonoma ########
 
-    ComAuto_list = TeProvincia.objects.filter(nivel='Com. autònoma')
+    ComAuto_list = WebMapaValAmb.objects.filter(eje_cod='nm').distinct().values('ccaa_nom', 'ccaa_nombre')
+    #ComAuto_list = TeProvincia.objects.filter(nivel='Com. autònoma')
+
     listaComAuto = []
     for comAut in ComAuto_list:
         listaComAuto.append({
-            'codigo': comAut.codigo,
-            'nombre': comAut.nombre_es
+            'codigo': comAut['ccaa_nom'],
+            'nombre': comAut['ccaa_nombre']
         })
 
-
-
     #############################################
-    context = {'herramientas': 'Herramienta de evaluación de rodales maduros',
-               'valores_rodal': rodalArbol,
-               'infoRodal': infoRodal,
-               'listaRodales': listaRodales,
-               'valores_rodal_json': valores_rodal_json,
-               'listaRegBio': listaRegBio,
-               'listaComAuto': listaComAuto}
+
+
+
+    if id is not None:
+
+        hab_cod = rodals_list.filter(id_rodal=id).values_list('habitat_cod', flat=True).first()
+        #selector_rodals = rodals_list.filter(habitat_cod=hab_cod).filter(eje_cod='nm').exclude(id_rodal=id)
+        selector_rodals = rodals_list.filter(eje_cod='nm').order_by('nombre')
+        selector_rodals_comp = rodals_list.filter(rodalref=False).filter(eje_cod='nm').order_by('nombre')
+
+        listaRodales = []
+        for rodal in selector_rodals:
+            listaRodales.append({
+                'id_rodal': rodal.id_rodal,
+                'nombre': rodal.nombre
+
+        })
+
+        listaRodalesComp = []
+        for rodal in selector_rodals_comp:
+            listaRodales.append({
+                'id_rodal': rodal.id_rodal,
+                'nombre': rodal.nombre
+
+            })
+
+
+
+        dades_rodal = RodalValorres2.objects.filter(id_rodal=id)
+        info_rodal = rodals_list.filter(id_rodal=id)
+
+        rodalArbol = crearArbol(dades_rodal)
+
+        ######## Valores info rodal ##############
+
+        infoRodal = {}
+        for punt in info_rodal:
+            infoRodal = {
+                'id_rodal': punt.id_rodal,
+                'nombre': punt.nombre,
+                'Comunidad_autonoma': punt.ccaa_nombre,
+                'habitat_nom': punt.habitat_nom,
+                'habitat_cod': punt.habitat_cod
+            }
+
+        #########################################
+
+
+
+        valores_rodal_json = json.dumps(rodalArbol)
+
+        context = {'herramientas': 'Herramienta de evaluación de rodales maduros',
+                   'habitats': habitatData,
+                   'valores_rodal': rodalArbol,
+                   'infoRodal': infoRodal,
+                   'listaRodales': listaRodales,
+                   'listaRodalesComp': listaRodalesComp,
+                   'valores_rodal_json': valores_rodal_json,
+                   'listaRegBio': listaRegBio,
+                   'listaComAuto': listaComAuto}
+
+    else:
+
+        #hab_cod = rodals_list.filter(id_rodal=id).values_list('habitat_cod', flat=True).first()
+        #selector_rodals = rodals_list.filter(habitat_cod=hab_cod).filter(eje_cod='nm').exclude(id_rodal=id)
+        selector_rodals = rodals_list.filter(eje_cod='nm').filter(eje_cod='nm').order_by('nombre')
+        selector_rodals_comp = rodals_list.filter(eje_cod='nm').filter(rodalref=False).filter(eje_cod='nm').order_by('nombre')
+
+        listaRodales = []
+        for rodal in selector_rodals:
+            listaRodales.append({
+                'id_rodal': rodal.id_rodal,
+                'nombre': rodal.nombre
+
+            })
+
+        listaRodalesComp = []
+        for rodal in selector_rodals_comp:
+            listaRodalesComp.append({
+                'id_rodal': rodal.id_rodal,
+                'nombre': rodal.nombre
+
+            })
+
+        context = {'herramientas': 'Herramienta de evaluación de rodales maduros',
+                   'habitats': habitatData,
+                   'valores_rodal': '',
+                   'infoRodal': 'null',
+                   'listaRodales': listaRodales,
+                   'listaRodalesComp': listaRodalesComp,
+                   'valores_rodal_json': 'null',
+                   'listaRegBio': listaRegBio,
+                   'listaComAuto': listaComAuto}
+
+
 
     return render(request, 'redbosques_main/comparador.html', context)
 
@@ -315,6 +467,40 @@ def valorRef(request):
     cordRod = request.query_params.get('vr', None)
     habSel = request.query_params.get('habSel', None)
 
+    print(habSel)
+
+    if cordRod == None:
+        context = {}
+
+
+    #if test is not None:
+    if cordRod != None:
+        if cordRod != 'medRod':
+            dades_rodal2 = RodalValorres2.objects.filter(id_rodal=cordRod)
+            rodal_referencia = crearArbol(dades_rodal2)
+        if cordRod == 'medRod':
+            if habSel == 'null':
+                dades_rodal2 = RodalValorres2.objects.values('indicador_cod').annotate(mitjana=Avg('valor'),stddev=StdDev('valor'))
+                #rodal_referencia = crearArbolMedia(dades_rodal2)
+            else:
+                dades_rodal2 = RodalValorres2.objects.filter(lpeht_cod__startswith=habSel).filter(lpeht_cod__contains='.')\
+                    .values('indicador_cod')\
+                    .annotate(mitjana=Avg('valor'), stddev=StdDev('valor'))
+
+            rodal_referencia = crearArbolMedia(dades_rodal2)
+
+        #rodal_referencia = crearArbol(dades_rodal2)
+        context = {'rodal_referencia': rodal_referencia}
+
+    return Response(context)
+
+
+@api_view(['GET'])
+def valorRodal(request):
+
+    cordRod = request.query_params.get('vr', None)
+    habSel = request.query_params.get('habSel', None)
+
     if cordRod == None:
         context = {}
 
@@ -333,11 +519,9 @@ def valorRef(request):
             rodal_referencia = crearArbolMedia(dades_rodal2)
 
         #rodal_referencia = crearArbol(dades_rodal2)
-        context = {'rodal_referencia': rodal_referencia}
+        context = {'rodal': rodal_referencia}
 
     return Response(context)
-
-
 
 
 @api_view(['GET'])
@@ -405,13 +589,13 @@ def crearArbol(dades):
                 if valor2.valor == None:
                     nm_valor = "---"
                 else:
-                    nm_valor = round(valor2.valor)
+                    nm_valor = round(valor2.valor, 20)
 
             if valor2.indicador_cod == 'cp':
                 if valor2.valor == None:
                     cp_valor = "---"
                 else:
-                    cp_valor = round(valor2.valor)
+                    cp_valor = round(valor2.valor, 2)
 
             if valor2.indicador_cod == 'ea':
                 if valor2.valor == None:
@@ -423,7 +607,7 @@ def crearArbol(dades):
                 if valor2.valor == None:
                     ce_valor = "---"
                 else:
-                    ce_valor = round(valor2.valor)
+                    ce_valor = round(valor2.valor, 2)
 
             if valor2.indicador_cod == 'ab':
                 if valor2.valor == None:
@@ -447,7 +631,7 @@ def crearArbol(dades):
                 if valor2.valor == None:
                     sn_valor = "---"
                 else:
-                    sn_valor = round(valor2.valor)
+                    sn_valor = round(valor2.valor, 2)
 
             if valor2.indicador_cod == 'ae':
                 if valor2.valor == None:
@@ -471,7 +655,7 @@ def crearArbol(dades):
                 if valor2.valor == None:
                     hm_valor = "---"
                 else:
-                    hm_valor = round(valor2.valor)
+                    hm_valor = round(valor2.valor, 2)
 
             if valor2.indicador_cod == 'mh':
                 if valor2.valor == None:
@@ -483,7 +667,7 @@ def crearArbol(dades):
                 if valor2.valor == None:
                     dn_valor = "---"
                 else:
-                    dn_valor = round(valor2.valor)
+                    dn_valor = round(valor2.valor, 2)
 
             if valor2.indicador_cod == 'cs':
                 if valor2.valor == None:
@@ -495,13 +679,13 @@ def crearArbol(dades):
                 if valor2.valor == None:
                     hh_valor = "---"
                 else:
-                    hh_valor = round(valor2.valor)
+                    hh_valor = round(valor2.valor, 2)
 
             if valor2.indicador_cod == 'ha':
                 if valor2.valor == None:
                     ha_valor = "---"
                 else:
-                    ha_valor = round(valor2.valor)
+                    ha_valor = round(valor2.valor, 2)
 
             if valor2.indicador_cod == 'tb':
                 if valor2.valor == None:
@@ -525,7 +709,7 @@ def crearArbol(dades):
                 if valor2.valor == None:
                     hr_valor = "---"
                 else:
-                    hr_valor = round(valor2.valor)
+                    hr_valor = round(valor2.valor, 2)
 
             if valor2.indicador_cod == 'fr':
                 if valor2.valor == None:
@@ -573,31 +757,31 @@ def crearArbol(dades):
                 if valor2.valor == None:
                     ie_valor = "---"
                 else:
-                    ie_valor = round(valor2.valor)
+                    ie_valor = round(valor2.valor, 2)
 
             if valor2.indicador_cod == 'ar':
                 if valor2.valor == None:
                     ar_valor = "---"
                 else:
-                    ar_valor = round(valor2.valor)
+                    ar_valor = round(valor2.valor, 2)
 
             if valor2.indicador_cod == 'cf':
                 if valor2.valor == None:
                     cf_valor = "---"
                 else:
-                    cf_valor = round(valor2.valor)
+                    cf_valor = round(valor2.valor, 2)
 
             if valor2.indicador_cod == 'eb':
                 if valor2.valor == None:
                     eb_valor = "---"
                 else:
-                    eb_valor = round(valor2.valor)
+                    eb_valor = round(valor2.valor, 2)
 
             if valor2.indicador_cod == 'cn':
                 if valor2.valor == None:
                     cn_valor = "---"
                 else:
-                    cn_valor = round(valor2.valor)
+                    cn_valor = round(valor2.valor, 2)
 
 ######   Valores del rodal    #########
         rodal_referencia = {
@@ -659,7 +843,7 @@ def crearArbol(dades):
         return rodal_referencia
 
 def crearArbolMedia(dades):
-
+    print(dades)
     for indicador_cod in dades:
         #json1 = json.dumps(indicador_cod, ensure_ascii=False)
         #print(indicador_cod.keys(),'->', indicador_cod.values())
@@ -670,7 +854,7 @@ def crearArbolMedia(dades):
             if indicador_cod['mitjana'] == None:
                 nm_valor = "---"
             else:
-                nm_valor = round(indicador_cod['mitjana'])
+                nm_valor = round(indicador_cod['mitjana'], 2)
 
             if indicador_cod['stddev'] == None:
                 nm_valor_desv = "---"
@@ -1134,7 +1318,9 @@ def crearArbolMedia(dades):
 
     return rodal_referencia
 
+
 def login(request):
+
     login_form = LoginForm()
 
     if request.user.is_authenticated:
@@ -1153,10 +1339,8 @@ def login(request):
         else:
             messages.error(request, 'Error wrong username/password')
 
-
     context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'login_form': login_form}
     return render(request, 'registration/login.html', context)
-
 
 
 def register(request):
@@ -1164,7 +1348,7 @@ def register(request):
         user_form = RegistrationForm(request.POST or None)
         if user_form.is_valid():
             user = user_form.save(commit=False)
-            #username = user_form.cleaned_data.get('email')
+            # username = user_form.cleaned_data.get('email')
             user.set_password(user.password)
             user.save()
             return redirect('/redbosques')
@@ -1173,4 +1357,273 @@ def register(request):
 
     context = {'user_form': user_form}
     return render(request, 'registration/registration.html', context)
+
+
+def rodalForm(request):
+    context = {'herramientas': 'Herramienta de evaluación de rodales maduros'}
+    return render(request, 'redbosques_main/rodalesForm.html', context)
+
+
+######################## Filtres data table rodales ##################################
+
+@api_view(['GET'])
+def filtraxhabitat(request):
+    codiHabitat = request.query_params.get('idHab', None)
+    rodalReferencia = request.query_params.get('rodRef', None)
+
+    rodalesTable = WebMapaValAmb.objects.all()
+    print(rodalReferencia)
+
+    if(codiHabitat == 'null'):
+        comunAut = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('ccaa_nom', 'ccaa_nombre')
+        rbgeo = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('regbio_cod', 'nombre_es')
+        rod = rodalesTable.filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+        rodComp = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('id_rodal', 'nombre')
+    else:
+        comunAut = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('ccaa_nom', 'ccaa_nombre')
+
+        rbgeo = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('regbio_cod', 'nombre_es')
+
+        rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('id_rodal', 'nombre')
+
+        rodComp = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+
+    comAut = []
+    for c in comunAut:
+        comAut.append({
+            'ccaa_nom': c['ccaa_nom'],
+            'ccaa_nombre': c['ccaa_nombre']
+        })
+
+    regBiogeo = []
+    for r in rbgeo:
+        regBiogeo.append({
+            'regbio_cod': r['regbio_cod'],
+            'nombre_es': r['nombre_es']
+        })
+
+
+    rodales = []
+    for x in rod:
+        rodales.append({
+            'id_rodal': x['id_rodal'],
+            'nombre': x['nombre']
+        })
+
+    rodalesComp = []
+    for x in rod:
+        rodalesComp.append({
+            'id_rodal': x['id_rodal'],
+            'nombre': x['nombre']
+        })
+
+    context = {'comAuto': comAut, 'regBiogeo': regBiogeo, 'rodales': rodales, 'rodalesComp': rodalesComp}
+    return Response(context)
+
+
+@api_view(['GET'])
+def filtrarxComAut(request):
+    codiHabitat = request.query_params.get('idHab', None)
+    codiComaut = request.query_params.get('comAut', None)
+    rodalReferencia = request.query_params.get('rodRef', None)
+
+    print(rodalReferencia)
+    rodalesTable = WebMapaValAmb.objects.all()
+
+    if rodalReferencia == None:
+        if codiHabitat == None:
+            if codiComaut == 'null' or codiComaut == 'all':
+                rbgeo = rodalesTable.filter(eje_cod='nm').distinct().values('regbio_cod','nombre_es')
+                rod = rodalesTable.filter(eje_cod='nm').distinct().values('id_rodal','nombre')
+            else:
+                rbgeo = rodalesTable.filter(ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('regbio_cod', 'nombre_es')
+                rod = rodalesTable.filter(ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+        else:
+            if codiComaut == 'null' or codiComaut == 'all':
+                # comunAut = rodalesTable.filter(eje_cod='nm').distinct().values('ccaa_nom', 'ccaa_nombre')
+                rbgeo = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').distinct().values('regbio_cod','nombre_es')
+                rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').distinct().values('id_rodal','nombre')
+            else:
+                rbgeo = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('regbio_cod', 'nombre_es')
+                rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+    else:
+        if codiHabitat == None:
+            if codiComaut == 'null' or codiComaut == 'all':
+                rbgeo = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('regbio_cod','nombre_es')
+                rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre')
+            else:
+                rbgeo = rodalesTable.filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('regbio_cod', 'nombre_es')
+                rod = rodalesTable.filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+        else:
+            if codiComaut == 'null' or codiComaut == 'all':
+                # comunAut = rodalesTable.filter(eje_cod='nm').distinct().values('ccaa_nom', 'ccaa_nombre')
+                rbgeo = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('regbio_cod','nombre_es')
+                rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre')
+            else:
+                rbgeo = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('regbio_cod', 'nombre_es')
+                rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('id_rodal', 'nombre')
+
+
+    regBiogeo = []
+    for r in rbgeo:
+        regBiogeo.append({
+            'regbio_cod': r['regbio_cod'],
+            'nombre_es': r['nombre_es']
+        })
+
+    rodales = []
+    for x in rod:
+        rodales.append({
+            'id_rodal': x['id_rodal'],
+            'nombre': x['nombre']
+        })
+
+    context = {'regBiogeo': regBiogeo, 'rodales': rodales}
+
+    return Response(context)
+
+
+
+@api_view(['GET'])
+def filtrarxRegBiogeo(request):
+    codiHabitat = request.query_params.get('idHab', None)
+    codiComaut = request.query_params.get('comAut', None)
+    codiregBiogeo = request.query_params.get('regBiogeo', None)
+    rodalReferencia = request.query_params.get('rodRef', None)
+
+    rodalesTable = WebMapaValAmb.objects.all()
+
+    if rodalReferencia == None:
+        if codiregBiogeo == 'null' or codiregBiogeo == 'all':
+            if codiHabitat == None and codiComaut == None :
+                rod = rodalesTable.filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+            elif codiHabitat == None :
+                rod = rodalesTable.filter(ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+            elif codiComaut == None :
+                rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+            else:
+                rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+        else:
+            if codiHabitat == None and codiComaut == None :
+                rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+            elif codiHabitat == None :
+                rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+            elif codiComaut == None :
+                rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+            else:
+                rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(
+                    ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+
+    else:
+        if codiregBiogeo == 'null' or codiregBiogeo == 'all':
+            if codiHabitat == None and codiComaut == None :
+                rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+            elif codiHabitat == None :
+                rod = rodalesTable.filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+            elif codiComaut == None :
+                rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+            else:
+                rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+        else:
+            if codiHabitat == None and codiComaut == None:
+                rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+            elif codiHabitat == None:
+                rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+            elif codiComaut == None:
+                rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+            else:
+                rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+
+    '''if codiregBiogeo == 'null':
+        #comunAut = rodalesTable.filter(eje_cod='nm').distinct().values('ccaa_nom', 'ccaa_nombre')
+        #rbgeo = rodalesTable.filter(eje_cod='nm').distinct().values('regbio_cod', 'nombre_es')
+        rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')'''
+
+    rodales = []
+    for x in rod:
+        rodales.append({
+            'id_rodal': x['id_rodal'],
+            'nombre': x['nombre']
+        })
+
+
+    #context = {'regBiogeo': regBiogeo, 'rodales': rodales}
+    context = {'rodales': rodales}
+    return Response(context)
+
+@api_view(['GET'])
+def filtrarxRodRef(request):
+    codiHabitat = request.query_params.get('idHab', None)
+    codiComaut = request.query_params.get('comAut', None)
+    codiregBiogeo = request.query_params.get('regBiogeo', None)
+    rodalReferencia = request.query_params.get('rodRef', None)
+
+    print(codiHabitat)
+    print(codiComaut)
+    print(codiregBiogeo)
+    print(rodalReferencia)
+
+
+    rodalesTable = WebMapaValAmb.objects.all()
+
+    if codiHabitat == None and codiComaut == None and codiregBiogeo == None :
+        rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+
+    elif codiHabitat == None and codiComaut == None :
+        if codiregBiogeo == 'null' or codiregBiogeo == 'all':
+            rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+        else:
+            rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+
+    elif codiHabitat == None and codiregBiogeo == None :
+        if codiComaut == 'null' or codiComaut == 'all':
+            rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+        else:
+            rod = rodalesTable.filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+
+    elif codiComaut == None and codiregBiogeo == None:
+
+        rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+
+    elif codiHabitat == None:
+        '''if codiComaut == 'null' or codiComaut == 'all' or codiregBiogeo == 'null' or codiregBiogeo == 'all':
+            rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+        el'''
+        if codiregBiogeo == 'null' or codiregBiogeo == 'all':
+            rod = rodalesTable.filter(eje_cod='nm').filter(ccaa_nom=codiComaut).filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre')
+        elif codiComaut == 'null' or codiComaut == 'all':
+            rod = rodalesTable.filter(eje_cod='nm').filter(regbio_cod=codiregBiogeo).filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+        else:
+            rod = rodalesTable.filter(eje_cod='nm').filter(ccaa_nom=codiComaut).filter(regbio_cod=codiregBiogeo).filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+
+    elif codiComaut == None:
+
+        if codiregBiogeo == 'null' or codiregBiogeo == 'all':
+            rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+        else:
+            rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(regbio_cod=codiregBiogeo).filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+
+    elif codiregBiogeo == None:
+        if codiComaut == 'null' or codiComaut == 'all':
+            rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre')
+        else:
+            rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(ccaa_nom=codiComaut).filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre')
+    else:
+        if codiComaut == 'null' or codiComaut == 'all' or codiregBiogeo == 'null' or codiregBiogeo == 'all':
+            rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+        else:
+            rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(ccaa_nom=codiComaut).filter(regbio_cod=codiregBiogeo).filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre')
+
+    rodales = []
+    for r in rod:
+        rodales.append({
+            'id_rodal': r['id_rodal'],
+            'nombre': r['nombre']
+        })
+
+
+    #context = {'regBiogeo': regBiogeo, 'rodales': rodales}
+    context = {'rodales': rodales}
+    return Response(context)
+
 

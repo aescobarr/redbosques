@@ -189,6 +189,9 @@ class WebMapaValAmb(models.Model):
     hh = models.FloatField(blank=True, null=True)
     ie = models.FloatField(blank=True, null=True)
     nm = models.FloatField(blank=True, null=True)
+    regbio_cod = models.CharField(max_length=100, blank=True, null=True)
+    nombre_es = models.CharField(max_length=100, blank=True, null=True)
+
 
     class Meta:
         managed = False  # Created from a view. Don't remove.
