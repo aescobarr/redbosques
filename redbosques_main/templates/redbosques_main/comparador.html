@@ -25,89 +25,6 @@
         </div>
     </div>
 </div>
-
-<!--<div class="tab-content">
-    <div class="container">
-        <div class="row filtros">
-            <div class="col-lg-4">
-                <b class="green-font" style="text-decoration: underline">Hábitat:</b><br>
-                <p class="habitatSelected" style="font-weight: bold;" value="{{ infoRodal.habitat_cod }}">{{ infoRodal.habitat_nom }}</p>
-            </div>
-
-            <div class="col-offset-lg-2 col-lg-4">
-                <b class="green-font"  style="text-decoration: underline">Rodal:</b><br>
-                    <p class="rodalSelected" style="font-weight: bold;" value="{{ infoRodal.id_rodal }}">{{ infoRodal.nombre }}</p>
-            </div>
-
-            <div class="col-offset-lg-2 col-lg-4">
-                <b class="green-font"  style="text-decoration: underline">Leyenda tabla:</b><br>
-                    <p><i class="fas fa-circle colLeyRod"></i> Rodal &emsp;<i class="fas fa-circle colLeyRodComp"></i> Rodal a comparar</p>
-            </div>
-        </div>
-
-        <div class="row filtros">
-            <div class="col-lg-3">
-                <b class="green-font">Filtros</b>
-            </div>
-        </div>
-
-        <div class="row filtros">
-            <div class="col-lg-3">
-                <b class="green-font">Región biogeográfica</b>
-                <select id="selector_RegBio" class="form-control selector_RegBio" name="RegioBiogeo" id="RegioBiogeo" onchange="setFiltros()">
-                    <option value="" selected="selected">Seleccione Región biogeográfica</option>
-                    {% for regBio in listaRegBio %}
-                        <option value="{{ regBio.cod }}">
-                            {{ regBio.nombre }}
-                        </option>
-                    {% endfor %}
-
-                </select>
-            </div>
-            <div class="col-lg-3">
-                <b class="green-font">Comunidad Autónoma</b>
-                <select id="selector_ComAut" class="form-control selector_ComAut" name="ComunidadAutonoma" id="ComunidadAutonoma" onchange="setFiltros()">
-                    <option value="" selected="selected">Seleccione Comunidad autónoma</option>
-                    {% for comAuto in listaComAuto %}
-                    <option value="{{ comAuto.codigo }}">
-                        {{ comAuto.nombre }}
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col-lg-4">
-                <b class="green-font">Rodal / Conjunto de rodales a comparar</b>
-
-                    <select class="form-control selector_rodal" onchange="rodalRefData()">
-                        <option value=None selected="selected">Rodal / Conjunto de rodales a comparar</option>
-                        <option value="medRod">Media del conjunto de rodales</option>
-                            {% for rodal in listaRodales %}
-                                <option class="rodal" value="{{ rodal.id_rodal }}">
-                                    {{ rodal.nombre }}
-                                 </option>
-                            {% endfor %}
-                    </select>
-            </div>
-            <div class="col-lg-2" style="text-align: center;">
-                <b class="green-font" style="display:inline-block;">Rodal de referéncia</b>
-                <form class="checkbox">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-1 boolRodRef">
-                                <label for="boolRodRefSI">Si</label>
-                                <input type="radio" name="boolRodRef" id="boolRodRefSI" value=true class="boolRodRef" checked="checked" />
-                            </div>
-                            <div class="col-lg-1 boolRodRef">
-                                <label for="boolRodRefNO">No</label>
-                                <input type="radio" name="boolRodRef" id="boolRodRefNO" value=false class="boolRodRef" />
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>-->
 <div class="tab-content">
         <div class="container">
             <div class="row filtros">
@@ -170,7 +87,7 @@
                 <div class="col-lg-offset-1 col-lg-4">
                     <label class="green-font">Rodal de comparación   <i class="fas fa-circle colLeyRodComp"></i></label>
                     <select id="selector_ComAut_Comp" class="form-control selector_ComAut inputsFiltComp" name="ComunidadAutonoma" onchange="comunidadAutFilterComp()">
-                        <option value="null" selected="selected">Seleccione una Comunidad autónoma</option>
+                        <option value="null" selected="selected">Seleccione Comunidad autónoma</option>
                         <option value="all">Todas las comunidades autónomas</option>
                             {% for comAuto in listaComAuto %}
                         <option value="{{ comAuto.codigo }}">
@@ -180,7 +97,7 @@
                     </select>
 
                     <select id="selector_RegBio_Comp" class="form-control selector_RegBio inputsFiltComp" name="RegioBiogeo" onchange="regionBiogeoFilterComp()">
-                        <option value="null" selected="selected">Seleccione una Región biogeográficas</option>
+                        <option value="null" selected="selected">Seleccione Región biogeográfica</option>
                         <option value="all">Todas las Regiones biogeográficas</option>
                             {% for regBio in listaRegBio %}
                                 <option value="{{ regBio.cod }}">
@@ -192,9 +109,9 @@
                     <form id="selector_rodalRef" class="checkbox" onchange="rodalRefFilterComp()">
                         <b class="green-font" style="display:inline-block;">Mostrar rodales de referéncia (*)</b>
                         <label for="boolRodRefSI">Si</label>
-                        <input type="radio" name="boolRodRef" id="boolRodRefSI" value="True" class="boolRodRef" checked="checked" />
+                        <input type="radio" name="boolRodRef" id="boolRodRefSI" value="True" class="boolRodRef" />
                         <label for="boolRodRefNO">No</label>
-                        <input type="radio" name="boolRodRef" id="boolRodRefNO" value="False" class="boolRodRef" />
+                        <input type="radio" name="boolRodRef" id="boolRodRefNO" value="False" class="boolRodRef" checked="checked" />
                     </form>
 
                     <select id="selector_rodales_comp" class="form-control selector_rodal_Comp inputsFiltComp" onchange="rodalRefData()">

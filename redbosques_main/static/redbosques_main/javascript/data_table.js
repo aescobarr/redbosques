@@ -959,7 +959,7 @@ var rodalesNewData = function(rodales){
 var regionBiogeoNewDataComp = function(regionesBiogeo){
 
     $("#selector_RegBio_Comp").empty();
-    $("#selector_RegBio_Comp").append('<option value="null" selected="selected">Seleccione una Región biogeográfica</option>');
+    $("#selector_RegBio_Comp").append('<option value="null" selected="selected">Seleccione Región biogeográfica</option>');
     $("#selector_RegBio_Comp").append('<option value="all">Todas las Regiones Biogeográficas</option>');
 
     for(i=0; i<regionesBiogeo.length; i++){
@@ -970,7 +970,8 @@ var regionBiogeoNewDataComp = function(regionesBiogeo){
 var rodalesNewDataComp = function(rodales){
 
     $("#selector_rodales_comp").empty();
-    $("#selector_rodales_comp").append('<option value="medRod" selected="selected">Todos los rodales</option>');
+    $("#selector_rodales_comp").append('<option value="null" selected="selected">Rodal / Conjunto de rodales a comparar</option>');
+    $("#selector_rodales_comp").append('<option value="medRod">Todos los Rodales</option>');
 
     for(i=0; i<rodales.length; i++){
         $("#selector_rodales_comp").append('<option value=' + rodales[i].id_rodal + '>' + rodales[i].nombre + '</option>');
