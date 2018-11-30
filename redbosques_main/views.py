@@ -306,13 +306,8 @@ def comparador(request, id=None):
 
     rodals_list = WebMapa.objects.all()
     #hab_cod_test = rodals_list.values_list('habitat_cod', flat=True)
-
     #habitats_list = Habitat.objects.filter(cod__in=hab_cod_test)
     #habitats = Habitat.filter(habitat_cod=hab_cod_test)
-
-
-
-
 
 
     ####### Selector Regió biogeográfica ########
@@ -345,7 +340,6 @@ def comparador(request, id=None):
     #############################################
 
 
-
     if id is not None:
 
         hab_cod = rodals_list.filter(id_rodal=id).values_list('habitat_cod', flat=True).first()
@@ -362,10 +356,10 @@ def comparador(request, id=None):
         })
 
         listaRodalesComp = []
-        for rodal in selector_rodals_comp:
-            listaRodales.append({
-                'id_rodal': rodal.id_rodal,
-                'nombre': rodal.nombre
+        for rodalComp in selector_rodals_comp:
+            listaRodalesComp.append({
+                'id_rodal': rodalComp.id_rodal,
+                'nombre': rodalComp.nombre
 
             })
 
@@ -408,7 +402,7 @@ def comparador(request, id=None):
 
         #hab_cod = rodals_list.filter(id_rodal=id).values_list('habitat_cod', flat=True).first()
         #selector_rodals = rodals_list.filter(habitat_cod=hab_cod).filter(eje_cod='nm').exclude(id_rodal=id)
-        selector_rodals = rodals_list.filter(eje_cod='nm').filter(eje_cod='nm').order_by('nombre')
+        selector_rodals = rodals_list.filter(eje_cod='nm').order_by('nombre')
         selector_rodals_comp = rodals_list.filter(eje_cod='nm').filter(rodalref=False).filter(eje_cod='nm').order_by('nombre')
 
         listaRodales = []
@@ -467,7 +461,7 @@ def valorRef(request):
     cordRod = request.query_params.get('vr', None)
     habSel = request.query_params.get('habSel', None)
 
-    print(habSel)
+    #print(habSel)
 
     if cordRod == None:
         context = {}
