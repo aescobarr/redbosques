@@ -351,7 +351,8 @@ def comparador(request, id=None):
         for rodal in selector_rodals:
             listaRodales.append({
                 'id_rodal': rodal.id_rodal,
-                'nombre': rodal.nombre
+                'nombre': rodal.nombre,
+                'rodalref': rodal.rodalref
 
         })
 
@@ -359,7 +360,8 @@ def comparador(request, id=None):
         for rodalComp in selector_rodals_comp:
             listaRodalesComp.append({
                 'id_rodal': rodalComp.id_rodal,
-                'nombre': rodalComp.nombre
+                'nombre': rodalComp.nombre,
+                'rodalref': rodal.rodalref
 
             })
 
@@ -409,7 +411,8 @@ def comparador(request, id=None):
         for rodal in selector_rodals:
             listaRodales.append({
                 'id_rodal': rodal.id_rodal,
-                'nombre': rodal.nombre
+                'nombre': rodal.nombre,
+                'rodalref': rodal.rodalref
 
             })
 
@@ -417,7 +420,8 @@ def comparador(request, id=None):
         for rodal in selector_rodals_comp:
             listaRodalesComp.append({
                 'id_rodal': rodal.id_rodal,
-                'nombre': rodal.nombre
+                'nombre': rodal.nombre,
+                'rodalref': rodal.rodalref
 
             })
 
@@ -1371,16 +1375,16 @@ def filtraxhabitat(request):
     if(codiHabitat == 'null'):
         comunAut = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('ccaa_nom', 'ccaa_nombre')
         rbgeo = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('regbio_cod', 'nombre_es')
-        rod = rodalesTable.filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
-        rodComp = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('id_rodal', 'nombre')
+        rod = rodalesTable.filter(eje_cod='nm').distinct().values('id_rodal', 'nombre', 'rodalref')
+        rodComp = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('id_rodal', 'nombre', 'rodalref')
     else:
         comunAut = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('ccaa_nom', 'ccaa_nombre')
 
         rbgeo = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('regbio_cod', 'nombre_es')
 
-        rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('id_rodal', 'nombre')
+        rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('id_rodal', 'nombre', 'rodalref')
 
-        rodComp = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+        rodComp = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').distinct().values('id_rodal', 'nombre', 'rodalref')
 
     comAut = []
     for c in comunAut:
@@ -1401,14 +1405,16 @@ def filtraxhabitat(request):
     for x in rod:
         rodales.append({
             'id_rodal': x['id_rodal'],
-            'nombre': x['nombre']
+            'nombre': x['nombre'],
+            'rodalref': x['rodalref']
         })
 
     rodalesComp = []
     for x in rod:
         rodalesComp.append({
             'id_rodal': x['id_rodal'],
-            'nombre': x['nombre']
+            'nombre': x['nombre'],
+            'rodalref': x['rodalref']
         })
 
     context = {'comAuto': comAut, 'regBiogeo': regBiogeo, 'rodales': rodales, 'rodalesComp': rodalesComp}
@@ -1421,41 +1427,41 @@ def filtrarxComAut(request):
     codiComaut = request.query_params.get('comAut', None)
     rodalReferencia = request.query_params.get('rodRef', None)
 
-    print(rodalReferencia)
+    #print(rodalReferencia)
     rodalesTable = WebMapaValAmb.objects.all()
 
     if rodalReferencia == None:
         if codiHabitat == None:
             if codiComaut == 'null' or codiComaut == 'all':
                 rbgeo = rodalesTable.filter(eje_cod='nm').distinct().values('regbio_cod','nombre_es')
-                rod = rodalesTable.filter(eje_cod='nm').distinct().values('id_rodal','nombre')
+                rod = rodalesTable.filter(eje_cod='nm').distinct().values('id_rodal','nombre', 'rodalref')
             else:
                 rbgeo = rodalesTable.filter(ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('regbio_cod', 'nombre_es')
-                rod = rodalesTable.filter(ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+                rod = rodalesTable.filter(ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('id_rodal','nombre', 'rodalref')
         else:
             if codiComaut == 'null' or codiComaut == 'all':
                 # comunAut = rodalesTable.filter(eje_cod='nm').distinct().values('ccaa_nom', 'ccaa_nombre')
                 rbgeo = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').distinct().values('regbio_cod','nombre_es')
-                rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').distinct().values('id_rodal','nombre')
+                rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').distinct().values('id_rodal','nombre', 'rodalref')
             else:
                 rbgeo = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('regbio_cod', 'nombre_es')
-                rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+                rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('id_rodal','nombre', 'rodalref')
     else:
         if codiHabitat == None:
             if codiComaut == 'null' or codiComaut == 'all':
                 rbgeo = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('regbio_cod','nombre_es')
-                rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre')
+                rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
             else:
                 rbgeo = rodalesTable.filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('regbio_cod', 'nombre_es')
-                rod = rodalesTable.filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+                rod = rodalesTable.filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
         else:
             if codiComaut == 'null' or codiComaut == 'all':
                 # comunAut = rodalesTable.filter(eje_cod='nm').distinct().values('ccaa_nom', 'ccaa_nombre')
                 rbgeo = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('regbio_cod','nombre_es')
-                rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre')
+                rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
             else:
                 rbgeo = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('regbio_cod', 'nombre_es')
-                rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('id_rodal', 'nombre')
+                rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('id_rodal','nombre', 'rodalref')
 
 
     regBiogeo = []
@@ -1469,7 +1475,8 @@ def filtrarxComAut(request):
     for x in rod:
         rodales.append({
             'id_rodal': x['id_rodal'],
-            'nombre': x['nombre']
+            'nombre': x['nombre'],
+            'rodalref': x['rodalref']
         })
 
     context = {'regBiogeo': regBiogeo, 'rodales': rodales}
@@ -1490,63 +1497,63 @@ def filtrarxRegBiogeo(request):
     if rodalReferencia == None:
         if codiregBiogeo == 'null' or codiregBiogeo == 'all':
             if codiHabitat == None and codiComaut == None :
-                rod = rodalesTable.filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+                rod = rodalesTable.filter(eje_cod='nm').distinct().values('id_rodal','nombre', 'rodalref')
             elif codiHabitat == None :
-                rod = rodalesTable.filter(ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+                rod = rodalesTable.filter(ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('id_rodal','nombre', 'rodalref')
             elif codiComaut == None :
-                rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+                rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').distinct().values('id_rodal','nombre', 'rodalref')
             else:
-                rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+                rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('id_rodal','nombre', 'rodalref')
         else:
             if codiHabitat == None and codiComaut == None :
-                rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+                rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(eje_cod='nm').distinct().values('id_rodal','nombre', 'rodalref')
             elif codiHabitat == None :
-                rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+                rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('id_rodal','nombre', 'rodalref')
             elif codiComaut == None :
-                rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+                rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').distinct().values('id_rodal','nombre', 'rodalref')
             else:
                 rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(
-                    ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('id_rodal', 'nombre')
+                    ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('id_rodal','nombre', 'rodalref')
 
     else:
         if codiregBiogeo == 'null' or codiregBiogeo == 'all':
             if codiComaut == 'null' or codiComaut == 'all':
                 if codiHabitat == None and codiComaut == None :
-                    rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+                    rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
                 elif codiHabitat == None :
-                    rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+                    rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
                 elif codiComaut == None :
-                    rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+                    rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
                 else:
-                    rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+                    rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
             else:
                 if codiHabitat == None and codiComaut == None :
-                    rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+                    rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
                 elif codiHabitat == None :
-                    rod = rodalesTable.filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+                    rod = rodalesTable.filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
                 elif codiComaut == None :
-                    rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+                    rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
                 else:
-                    rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+                    rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
         else:
             if codiComaut == 'null' or codiComaut == 'all':
                 if codiHabitat == None and codiComaut == None:
-                    rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+                    rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
                 elif codiHabitat == None:
-                    rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+                    rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
                 elif codiComaut == None:
-                    rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+                    rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
                 else:
-                    rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+                    rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
             else:
                 if codiHabitat == None and codiComaut == None:
-                    rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+                    rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
                 elif codiHabitat == None:
-                    rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+                    rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
                 elif codiComaut == None:
-                    rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+                    rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
                 else:
-                    rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+                    rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
 
     '''if codiregBiogeo == 'null':
         #comunAut = rodalesTable.filter(eje_cod='nm').distinct().values('ccaa_nom', 'ccaa_nombre')
@@ -1557,7 +1564,9 @@ def filtrarxRegBiogeo(request):
     for x in rod:
         rodales.append({
             'id_rodal': x['id_rodal'],
-            'nombre': x['nombre']
+            'nombre': x['nombre'],
+            'rodalref': x['rodalref']
+
         })
 
 
@@ -1581,58 +1590,59 @@ def filtrarxRodRef(request):
     rodalesTable = WebMapaValAmb.objects.all()
 
     if codiHabitat == None and codiComaut == None and codiregBiogeo == None :
-        rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+        rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
 
     elif codiHabitat == None and codiComaut == None :
         if codiregBiogeo == 'null' or codiregBiogeo == 'all':
-            rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+            rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
         else:
-            rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+            rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
 
     elif codiHabitat == None and codiregBiogeo == None :
         if codiComaut == 'null' or codiComaut == 'all':
-            rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+            rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
         else:
-            rod = rodalesTable.filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+            rod = rodalesTable.filter(ccaa_nom=codiComaut).filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
 
     elif codiComaut == None and codiregBiogeo == None:
 
-        rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+        rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
 
     elif codiHabitat == None:
         '''if codiComaut == 'null' or codiComaut == 'all' or codiregBiogeo == 'null' or codiregBiogeo == 'all':
             rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
         el'''
         if codiregBiogeo == 'null' or codiregBiogeo == 'all':
-            rod = rodalesTable.filter(eje_cod='nm').filter(ccaa_nom=codiComaut).filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre')
+            rod = rodalesTable.filter(eje_cod='nm').filter(ccaa_nom=codiComaut).filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
         elif codiComaut == 'null' or codiComaut == 'all':
-            rod = rodalesTable.filter(eje_cod='nm').filter(regbio_cod=codiregBiogeo).filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+            rod = rodalesTable.filter(eje_cod='nm').filter(regbio_cod=codiregBiogeo).filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
         else:
-            rod = rodalesTable.filter(eje_cod='nm').filter(ccaa_nom=codiComaut).filter(regbio_cod=codiregBiogeo).filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+            rod = rodalesTable.filter(eje_cod='nm').filter(ccaa_nom=codiComaut).filter(regbio_cod=codiregBiogeo).filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
 
     elif codiComaut == None:
 
         if codiregBiogeo == 'null' or codiregBiogeo == 'all':
-            rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+            rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
         else:
-            rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(regbio_cod=codiregBiogeo).filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+            rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(regbio_cod=codiregBiogeo).filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
 
     elif codiregBiogeo == None:
         if codiComaut == 'null' or codiComaut == 'all':
-            rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre')
+            rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
         else:
-            rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(ccaa_nom=codiComaut).filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre')
+            rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(ccaa_nom=codiComaut).filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
     else:
         if codiComaut == 'null' or codiComaut == 'all' or codiregBiogeo == 'null' or codiregBiogeo == 'all':
-            rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal', 'nombre')
+            rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
         else:
-            rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(ccaa_nom=codiComaut).filter(regbio_cod=codiregBiogeo).filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre')
+            rod = rodalesTable.filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').filter(ccaa_nom=codiComaut).filter(regbio_cod=codiregBiogeo).filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')
 
     rodales = []
     for r in rod:
         rodales.append({
             'id_rodal': r['id_rodal'],
-            'nombre': r['nombre']
+            'nombre': r['nombre'],
+            'rodalref': r['rodalref']
         })
 
 

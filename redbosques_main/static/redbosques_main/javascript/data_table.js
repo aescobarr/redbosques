@@ -2,7 +2,6 @@ $(document).ready(function() {
 
 initialRodal();
 
-
 });
 
 
@@ -220,8 +219,8 @@ jQuery.each(element, function(i, actual) {
 function calcDiferencia(){
     resComp = [];
     var test = rodal.naturalidad - rodRef.naturalidad;
-    console.log(rodal);
-    console.log(rodRef);
+    //console.log(rodal);
+    //console.log(rodRef);
 
     for(var key in rodRef) {
         var value = rodal["_"+key];
@@ -847,48 +846,23 @@ var rodalRefFilterComp = function(){
     console.log(idRegBiogeo);
 
     if(idHabitat == "null" && idComAut == "null" && idRegBiogeo == "null"){
-
-        console.log("1");
         urlComunidad = url + '?rodRef=' + rodRef;
-
     }else if(idHabitat == "null" && idComAut == "null"){
-
-        console.log("2");
         urlComunidad = url + '?regBiogeo=' + idRegBiogeo + '&rodRef=' + rodRef;
-
     }else if (idHabitat == "null" && idRegBiogeo == "null"){
-
-        console.log("3");
         urlComunidad = url + '?comAut='+ idComAut + '&rodRef=' + rodRef;
-
     }else if(idComAut == "null" && idRegBiogeo == "null"){
-
-        console.log("4");
         urlComunidad = url + '?idHab='+ idHabitat  + '&rodRef=' + rodRef;
-
     }else if (idHabitat == "null"){
-
-        console.log("5");
         urlComunidad = url + '?regBiogeo=' + idRegBiogeo + '&comAut=' + idComAut + '&rodRef=' + rodRef;
-
     }else if (idComAut == "null"){
-
-        console.log("6");
         urlComunidad = url + '?idHab='+ idHabitat +'&regBiogeo=' + idRegBiogeo + '&rodRef=' + rodRef;
-
     }else if (idRegBiogeo == "null"){
-
-        console.log("7");
         urlComunidad = url + '?idHab='+ idHabitat + '&comAut=' + idComAut + '&rodRef=' + rodRef;
-
     }else{
-
-        console.log("8");
         urlComunidad = url + '?idHab='+ idHabitat +'&regBiogeo=' + idRegBiogeo + '&comAut=' + idComAut + '&rodRef=' + rodRef;
     }
-
-    console.log(urlComunidad);
-
+    //console.log(urlComunidad);
      $.ajax({
             url: urlComunidad,
             method: "GET",
@@ -898,7 +872,6 @@ var rodalRefFilterComp = function(){
                     xhr.setRequestHeader("X-CSRFToken", csrftoken);
                 }
             },
-
             success: function( data, textStatus, jqXHR ) {
                     rodales = data.rodales;
                     rodalesNewDataComp(rodales);
@@ -951,7 +924,13 @@ var rodalesNewData = function(rodales){
     $("#selector_rodales").append('<option value="null" selected="selected">Seleccione Rodal</option>');
 
     for(i=0; i<rodales.length; i++){
-        $("#selector_rodales").append('<option value=' + rodales[i].id_rodal + '>' + rodales[i].nombre + '</option>');
+        if(rodales[i].rodalref == true){
+            //console.log("true");
+            $("#selector_rodales").append('<option value=' + rodales[i].id_rodal + '>' + rodales[i].nombre + '(*)</option>');
+        }else{
+            //console.log("false");
+            $("#selector_rodales").append('<option value=' + rodales[i].id_rodal + '>' + rodales[i].nombre + '</option>');
+        }
     }
 }
 
@@ -973,8 +952,29 @@ var rodalesNewDataComp = function(rodales){
     $("#selector_rodales_comp").append('<option value="null" selected="selected">Rodal / Conjunto de rodales a comparar</option>');
     $("#selector_rodales_comp").append('<option value="medRod">Todos los Rodales</option>');
 
+
+
+
     for(i=0; i<rodales.length; i++){
-        $("#selector_rodales_comp").append('<option value=' + rodales[i].id_rodal + '>' + rodales[i].nombre + '</option>');
+        if(rodales[i].rodalref == true){
+            $("#selector_rodales_comp").append('<option value=' + rodales[i].id_rodal + '>' + rodales[i].nombre + '(*)</option>');
+        }else{
+            $("#selector_rodales_comp").append('<option value=' + rodales[i].id_rodal + '>' + rodales[i].nombre + '</option>');
+        }
     }
 
 }
+
+/*var rodalFilterlist = function(iniListaRodales){
+
+    console.log(iniListaRodales[0].nombre);
+
+    $("#selector_rodales").empty();
+    $("#selector_rodales").append('<option value="null" selected="selected">Seleccione Rodal</option>');
+
+    for(i=0; i<iniListaRodales.length; i++){
+        $("#selector_rodales").append('<option value=' + iniListaRodales[i].id_rodal + '>' + iniListaRodales[i].nombre + '</option>');
+    }
+
+
+}*/

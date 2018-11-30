@@ -77,7 +77,11 @@
                         <!--<option value="medRod">Media del conjunto de rodales</option>-->
                             {% for rodal in listaRodales %}
                                 <option class="rodal" value="{{ rodal.id_rodal }}">
-                                    {{ rodal.nombre }}
+                                    {% if rodal.rodalref %}
+                                        {{ rodal.nombre }} (*)
+                                    {% else %}
+                                        {{ rodal.nombre }}
+                                    {% endif %}
                                  </option>
                             {% endfor %}
                     </select>
@@ -119,7 +123,11 @@
                         <option value="medRod">Todos los rodales</option>
                             {% for rodal in listaRodalesComp %}
                                 <option class="rodal" value="{{ rodal.id_rodal }}">
-                                    {{ rodal.nombre }}
+                                    {% if rodal.rodalref %}
+                                        {{ rodal.nombre }} (*)
+                                    {% else %}
+                                        {{ rodal.nombre }}
+                                    {% endif %}
                                  </option>
                             {% endfor %}
                     </select>
@@ -773,12 +781,15 @@
 <script>
     var rodRef = new Array();
     var rodal = new Array();
+    var iniListaRodales = {{ listaRodales | safe }};
+    var iniListaRodalesComp = {{ listaRodalesComp | safe }};
     var rodalSelData;
     var linkComparador = "{% url 'comparador_noparam' %}";
     var rodalReferencia;
     var resComp = new Array();
     var rodalselected = {{ infoRodal | safe }};
     var valores_rodal_json = {{ valores_rodal_json | safe }};
+
 
     var rodalSelData_ini;
     {% if valores_rodal %}
