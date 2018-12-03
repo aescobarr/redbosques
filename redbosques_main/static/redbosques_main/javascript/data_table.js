@@ -113,21 +113,63 @@ var rodalData = function(){
 //$('.selector_rodal').on("change", function(){
 var rodalRefData = function(){
 
+    var idComAut = $('#selector_ComAut_Comp').val();
+    var idHabitat = $('#habitat').val();
+    var rodRef = $('input[name=boolRodRef]:checked').val();
+    var idRegBiogeo = $('#selector_RegBio_Comp').val();
+
+    /*console.log(idHabitat);
+    console.log(idComAut);
+    console.log(idRegBiogeo);
+    console.log(rodRef);*/
+
     url = '/redbosques/valorRef';
     valRod = $('.selector_rodal_Comp option:selected').val();
     //habSel = $('.habitatSelected').attr('value');
     habSel = $('#habitat option:selected').val();
-    //console.log(habSel);
+
+
+    //console.log(valRod);
+
+
     if(valRod == 'medRod'){
-        url = url + '?vr=medRod&habSel='+ habSel;
+        //url = url + '?vr=medRod&habSel='+ habSel;
+        //console.log(url);
+
+        //$('#selector_ComAut_Comp option:first').prop('selected', 'selected');
+        //$('#selector_RegBio_Comp option:first').prop('selected', 'selected');
+
+
+        if(idHabitat == "null" && idComAut == "null" && idRegBiogeo == "null"){
+            url = url + '?vr=medRod' + '&rodRef=' + rodRef;
+        }else if (idHabitat == "null" && idComAut == "null"){
+            url = url + '?vr=medRod' + '&regBiogeo=' + idRegBiogeo + '&rodRef=' + rodRef;
+        }else if(idHabitat == "null" && idRegBiogeo == "null"){
+            url = url + '?vr=medRod' + '&comAut='+ idComAut + '&rodRef=' + rodRef;
+        }else if (idComAut == "null" && idRegBiogeo == "null" ){
+            url = url + '?vr=medRod' + '&idHab='+ idHabitat  + '&rodRef=' + rodRef;
+        }else if (idHabitat == "null"){
+            url = url + '?vr=medRod' + '&regBiogeo=' + idRegBiogeo + '&comAut=' + idComAut + '&rodRef=' + rodRef;
+        }else if (idComAut == "null"){
+            url = url + '?vr=medRod' + '&idHab='+ idHabitat +'&regBiogeo=' + idRegBiogeo + '&rodRef=' + rodRef;
+        }else if (idRegBiogeo == "null"){
+            url = url + '?vr=medRod' + '&idHab='+ idHabitat + '&comAut=' + idComAut + '&rodRef=' + rodRef;
+        }else{
+            url = url + '?vr=medRod' + '&idHab='+ idHabitat +'&regBiogeo=' + idRegBiogeo + '&comAut=' + idComAut + '&rodRef=' + rodRef;
+        }
+
         console.log(url);
-        $('#selector_ComAut_Comp option:first').prop('selected', 'selected');
-        $('#selector_RegBio_Comp option:first').prop('selected', 'selected');
+
 
     }else if(valRod != 'medRod' ){
-        if (valRod == 'None'){
+        if (valRod == "null"){
+            $('td.diff-col').html('---');
+            $('td.col-diff').html('---');
+            console.log("hola");
             $('.valGraf').html('---');
             $('.valGraf').css("background-color", "#FFFFFF");
+
+
         }else{
             url = url + '?vr='+valRod;
         }
@@ -147,10 +189,27 @@ var rodalRefData = function(){
             recorreArbre('', rodalReferencia);
             //recorreRodal('', rodalSelData);
 
+            console.log(rodalReferencia);
+
             if(rodalSelData){
-                calcDiferencia();
-                $('.grafico div').html('');
-                dataGraph(rodalSelData, rodalReferencia);
+                if(rodalReferencia != null){
+                    calcDiferencia();
+                    $('.grafico div').html('');
+                    dataGraph(rodalSelData, rodalReferencia);
+                }else{
+                    $('.grafico div').html('');
+                    $('td.diff-col').html('---');
+                    $('td.col-diff').html('---');
+                    $('td.col-diff').css("background-color", "#FFFFFF");
+                    $('td.diff-col').css("background-color", "#FFFFFF");
+                    $('.valGraf').html('---');
+                    $('.valGraf').css("background-color", "#FFFFFF");
+                }
+            }
+
+            if (valRod == "null"){
+                $('td.diff-col').html('---');
+                $('td.col-diff').html('---');
             }
         },
             error: function(jqXHR, textStatus, errorThrown){
@@ -225,7 +284,7 @@ function calcDiferencia(){
     for(var key in rodRef) {
         var value = rodal["_"+key];
         var value2 = rodRef[key];
-        console.log(rodal["_"+key]);
+        //console.log(rodal["_"+key]);
 
 
 
@@ -233,10 +292,10 @@ function calcDiferencia(){
             resta = null;
             $('#' + key+'_dif').html("---");
             $('#' + key+'_dif').css("background-color", "#CDCCC8");
-            console.log(value +"-"+ value2);
+            //console.log(value +"-"+ value2);
         }else{
             resta =  value - value2;
-            console.log(value +"-"+ value2);
+            //console.log(value +"-"+ value2);
 
             var resta_str = resta.toFixed(2);
             $('#' + key+'_dif').html(resta_str);
@@ -646,6 +705,8 @@ var habitatFilter = function(){
 
                     regionBiogeoNewDataComp(regionesBiogeo);
                     rodalesNewDataComp(rodalesComp);
+
+                    $('#boolRodRefNO').prop("checked", true);
             },
             error: function(jqXHR, textStatus, errorThrown){
                 console.log(errorThrown);
@@ -758,7 +819,8 @@ var regionBiogeoFilter = function(){
      }else if(idComAut == "null"){
             urlComunidad = url + '?idHab='+ idHabitat +'&regBiogeo=' + idRegBiogeo;
      }else{
-        urlComunidad = url + '?codiHabitat='+ idHabitat +'&regBiogeo=' + idRegBiogeo + '&comAut=' + idComAut;
+        //urlComunidad = url + '?codiHabitat='+ idHabitat +'&regBiogeo=' + idRegBiogeo + '&comAut=' + idComAut;
+        urlComunidad = url + '?idHab='+ idHabitat +'&regBiogeo=' + idRegBiogeo + '&comAut=' + idComAut;
      }
 
 
@@ -804,7 +866,7 @@ var regionBiogeoFilterComp = function(){
      }else if(idComAut == "null"){
             urlComunidad = url + '?idHab='+ idHabitat +'&regBiogeo=' + idRegBiogeo + '&rodRef=' + rodRef;
      }else{
-        urlComunidad = url + '?codiHabitat='+ idHabitat +'&regBiogeo=' + idRegBiogeo + '&comAut=' + idComAut + '&rodRef=' + rodRef;
+        urlComunidad = url + '?idHab='+ idHabitat +'&regBiogeo=' + idRegBiogeo + '&comAut=' + idComAut + '&rodRef=' + rodRef;
      }
 
     console.log(urlComunidad);
@@ -843,7 +905,7 @@ var rodalRefFilterComp = function(){
 
     var url = '/redbosques/filtrarxRodRef'
 
-    console.log(idRegBiogeo);
+    //console.log(idRegBiogeo);
 
     if(idHabitat == "null" && idComAut == "null" && idRegBiogeo == "null"){
         urlComunidad = url + '?rodRef=' + rodRef;
@@ -891,7 +953,7 @@ var rodalRefFilterComp = function(){
 var comAutNewData  =function(comAuto){
 
         $("#selector_ComAut").empty();
-        $("#selector_ComAut").append('<option value="" selected="selected">Seleccione Comunidad autónoma</option>');
+        $("#selector_ComAut").append('<option value="null" selected="selected">Seleccione Comunidad autónoma</option>');
 
         $("#selector_ComAut_Comp").empty();
         $("#selector_ComAut_Comp").append('<option value="null" selected="selected">Seleccione Comunidad autónoma</option>');

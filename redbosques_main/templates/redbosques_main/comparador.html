@@ -119,7 +119,7 @@
                     </form>
 
                     <select id="selector_rodales_comp" class="form-control selector_rodal_Comp inputsFiltComp" onchange="rodalRefData()">
-                        <option value=None selected="selected">Rodal / Conjunto de rodales a comparar</option>
+                        <option value="null" selected="selected">Rodal / Conjunto de rodales a comparar</option>
                         <option value="medRod">Todos los rodales</option>
                             {% for rodal in listaRodalesComp %}
                                 <option class="rodal" value="{{ rodal.id_rodal }}">
@@ -781,8 +781,6 @@
 <script>
     var rodRef = new Array();
     var rodal = new Array();
-    var iniListaRodales = {{ listaRodales | safe }};
-    var iniListaRodalesComp = {{ listaRodalesComp | safe }};
     var rodalSelData;
     var linkComparador = "{% url 'comparador_noparam' %}";
     var rodalReferencia;
@@ -806,3 +804,6 @@
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 {% endblock %}
+
+<!--var iniListaRodales = {{ listaRodales | safe }};
+var iniListaRodalesComp = {{ listaRodalesComp | safe }};-->

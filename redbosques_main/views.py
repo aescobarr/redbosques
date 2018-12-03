@@ -463,9 +463,10 @@ def filtrosRodal(request, id=None):
 def valorRef(request):
 
     cordRod = request.query_params.get('vr', None)
-    habSel = request.query_params.get('habSel', None)
-
-    #print(habSel)
+    idHab = request.query_params.get('idHab', None)
+    idComAut = request.query_params.get('comAut', None)
+    idRegBiogeo = request.query_params.get('regBiogeo', None)
+    rodRef = request.query_params.get('rodRef', None)
 
     if cordRod == None:
         context = {}
@@ -476,19 +477,44 @@ def valorRef(request):
         if cordRod != 'medRod':
             dades_rodal2 = RodalValorres2.objects.filter(id_rodal=cordRod)
             rodal_referencia = crearArbol(dades_rodal2)
-        if cordRod == 'medRod':
-            if habSel == 'null':
-                dades_rodal2 = RodalValorres2.objects.values('indicador_cod').annotate(mitjana=Avg('valor'),stddev=StdDev('valor'))
-                #rodal_referencia = crearArbolMedia(dades_rodal2)
+
+            context = {'rodal_referencia': rodal_referencia}
+
+        elif cordRod == 'medRod':
+
+            if idHab == None and idComAut == None and idRegBiogeo == None:
+                dades_rodal2 = RodalValorres2.objects.filter(rodalref=rodRef).values('indicador_cod').annotate(mitjana=Avg('valor'), stddev=StdDev('valor'))
+
+            elif idHab == None and idComAut == None:
+                dades_rodal2 = RodalValorres2.objects.filter(rodalref=rodRef).filter(regbio_cod=idRegBiogeo).values('indicador_cod').annotate(mitjana=Avg('valor'), stddev=StdDev('valor'))
+
+            elif idHab == None and idRegBiogeo == None:
+                dades_rodal2 = RodalValorres2.objects.filter(rodalref=rodRef).filter(comautonom_cod=idComAut).values('indicador_cod').annotate(mitjana=Avg('valor'), stddev=StdDev('valor'))
+
+            elif idComAut == None and idRegBiogeo == None:
+
+                dades_rodal2 = RodalValorres2.objects.filter(rodalref=rodRef).filter(lpeht_cod__startswith=idHab).filter(lpeht_cod__contains='.').values('indicador_cod').annotate(mitjana=Avg('valor'), stddev=StdDev('valor'))
+
+            elif idHab == None:
+                dades_rodal2 = RodalValorres2.objects.filter(rodalref=rodRef).filter(comautonom_cod=idComAut).filter(regbio_cod=idRegBiogeo).values('indicador_cod').annotate(mitjana=Avg('valor'), stddev=StdDev('valor'))
+
+            elif idComAut == None:
+                dades_rodal2 = RodalValorres2.objects.filter(rodalref=rodRef).filter(lpeht_cod__startswith=idHab).filter(lpeht_cod__contains='.').filter(regbio_cod=idRegBiogeo).values('indicador_cod').annotate(mitjana=Avg('valor'), stddev=StdDev('valor'))
+
+            elif idRegBiogeo == None:
+                dades_rodal2 = RodalValorres2.objects.filter(rodalref=rodRef).filter(lpeht_cod__startswith=idHab).filter(lpeht_cod__contains='.').filter(comautonom_cod=idComAut).values('indicador_cod').annotate(mitjana=Avg('valor'), stddev=StdDev('valor'))
             else:
-                dades_rodal2 = RodalValorres2.objects.filter(lpeht_cod__startswith=habSel).filter(lpeht_cod__contains='.')\
-                    .values('indicador_cod')\
-                    .annotate(mitjana=Avg('valor'), stddev=StdDev('valor'))
+                dades_rodal2 = RodalValorres2.objects.filter(rodalref=rodRef).filter(lpeht_cod__startswith=idHab).filter(lpeht_cod__contains='.').filter(comautonom_cod=idComAut).filter(regbio_cod=idRegBiogeo).values('indicador_cod').annotate(mitjana=Avg('valor'), stddev=StdDev('valor'))
 
-            rodal_referencia = crearArbolMedia(dades_rodal2)
 
-        #rodal_referencia = crearArbol(dades_rodal2)
-        context = {'rodal_referencia': rodal_referencia}
+            if not dades_rodal2:
+                print(dades_rodal2)
+                context = {'rodal_referencia': "No hay resultados"}
+            else:
+                rodal_referencia = crearArbolMedia(dades_rodal2)
+                #rodal_referencia = crearArbol(dades_rodal2)
+                context = {'rodal_referencia': rodal_referencia}
+
 
     return Response(context)
 
@@ -1512,8 +1538,7 @@ def filtrarxRegBiogeo(request):
             elif codiComaut == None :
                 rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(eje_cod='nm').distinct().values('id_rodal','nombre', 'rodalref')
             else:
-                rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(
-                    ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('id_rodal','nombre', 'rodalref')
+                rod = rodalesTable.filter(regbio_cod=codiregBiogeo).filter(habitat_cod__startswith=codiHabitat).filter(habitat_cod__contains='.').filter(ccaa_nom=codiComaut).filter(eje_cod='nm').distinct().values('id_rodal','nombre', 'rodalref')
 
     else:
         if codiregBiogeo == 'null' or codiregBiogeo == 'all':
