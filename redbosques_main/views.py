@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb
+from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb, WebCompData, WebCompDataValAmb
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
@@ -304,7 +304,7 @@ def comparador(request, id=None):
 
 
 
-    rodals_list = WebMapa.objects.all()
+    rodals_list = WebCompData.objects.all()
     #hab_cod_test = rodals_list.values_list('habitat_cod', flat=True)
     #habitats_list = Habitat.objects.filter(cod__in=hab_cod_test)
     #habitats = Habitat.filter(habitat_cod=hab_cod_test)
@@ -312,7 +312,7 @@ def comparador(request, id=None):
 
     ####### Selector Regió biogeográfica ########
 
-    RegBio_list = WebMapaValAmb.objects.filter(eje_cod='nm').distinct().values('regbio_cod', 'nombre_es')
+    RegBio_list = WebCompDataValAmb.objects.filter(eje_cod='nm').distinct().values('regbio_cod', 'nombre_es')
     #RegBio_list = TeRegbio.objects.all()
 
     listaRegBio = []
@@ -327,7 +327,7 @@ def comparador(request, id=None):
 
     ####### Selector Comunidad autonoma ########
 
-    ComAuto_list = WebMapaValAmb.objects.filter(eje_cod='nm').distinct().values('ccaa_nom', 'ccaa_nombre')
+    ComAuto_list = WebCompDataValAmb.objects.filter(eje_cod='nm').distinct().values('ccaa_nom', 'ccaa_nombre')
     #ComAuto_list = TeProvincia.objects.filter(nivel='Com. autònoma')
 
     listaComAuto = []
@@ -444,7 +444,7 @@ def comparador(request, id=None):
 
 @api_view(['GET'])
 def filtrosRodal(request, id=None):
-    rodals_list = WebMapa.objects.all()
+    rodals_list = WebCompData.objects.all()
 
     info_rodal = rodals_list.filter(id_rodal=id)
 
@@ -585,7 +585,7 @@ def setFiltrosRodal(request):
 
     for idList in rodAux:
         #rodales[i] = WebMapa.objects.filter(id_rodal=idList).filter(eje_cod='nm')
-        rodales[i] = WebMapa.objects.get(id_rodal=idList,eje_cod='nm')
+        rodales[i] = WebCompData.objects.get(id_rodal=idList,eje_cod='nm')
         #filter(id_rodal=idList).filter(eje_cod='nm')
         i = i+1
 
@@ -1394,9 +1394,9 @@ def rodalForm(request):
 def filtraxhabitat(request):
     codiHabitat = request.query_params.get('idHab', None)
     rodalReferencia = request.query_params.get('rodRef', None)
+    rodalesTable = WebCompDataValAmb.objects.all()
 
-    rodalesTable = WebMapaValAmb.objects.all()
-    print(rodalReferencia)
+    #print(rodalReferencia)
 
     if(codiHabitat == 'null'):
         comunAut = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('ccaa_nom', 'ccaa_nombre')
@@ -1454,7 +1454,7 @@ def filtrarxComAut(request):
     rodalReferencia = request.query_params.get('rodRef', None)
 
     #print(rodalReferencia)
-    rodalesTable = WebMapaValAmb.objects.all()
+    rodalesTable = WebCompDataValAmb.objects.all()
 
     if rodalReferencia == None:
         if codiHabitat == None:
@@ -1518,7 +1518,7 @@ def filtrarxRegBiogeo(request):
     codiregBiogeo = request.query_params.get('regBiogeo', None)
     rodalReferencia = request.query_params.get('rodRef', None)
 
-    rodalesTable = WebMapaValAmb.objects.all()
+    rodalesTable = WebCompDataValAmb.objects.all()
 
     if rodalReferencia == None:
         if codiregBiogeo == 'null' or codiregBiogeo == 'all':
@@ -1612,7 +1612,7 @@ def filtrarxRodRef(request):
     print(rodalReferencia)
 
 
-    rodalesTable = WebMapaValAmb.objects.all()
+    rodalesTable = WebCompDataValAmb.objects.all()
 
     if codiHabitat == None and codiComaut == None and codiregBiogeo == None :
         rod = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia).distinct().values('id_rodal','nombre', 'rodalref')

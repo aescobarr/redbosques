@@ -298,7 +298,7 @@ var updateMapData = function(){
                 url = url + '&cr=' + id_rodal;
             }
         }
-    console.log(url);
+    //console.log(url);
         $.ajax({
             url: url,
             method: "GET",
@@ -446,7 +446,7 @@ var ambitoData = function(){
     urlAmbito = '/redbosques/ambitoData';
     urlAmbito = urlAmbito +'?ca='+codiAmbito;
 
-    console.log(urlAmbito);
+    //console.log(urlAmbito);
 
     $.ajax({
             url: urlAmbito,
@@ -460,7 +460,7 @@ var ambitoData = function(){
 
             success: function( data, textStatus, jqXHR ) {
                 if(data){
-                    console.log(data.rodalData);
+                    //console.log(data.rodalData);
                     updateMapData();
                 }
             },

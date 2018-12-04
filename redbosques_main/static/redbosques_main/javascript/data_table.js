@@ -11,9 +11,9 @@ var initialRodal = function(){
 
     if(rodalselected != null){
         rodalSelData = rodalSelData_ini;
-        console.log(rodalSelData_ini);
+        //console.log(rodalSelData_ini);
         recorreRodal('', rodalSelData_ini);
-        console.log(rodalselected.id_rodal);
+        //console.log(rodalselected.id_rodal);
         var id_rodal = rodalselected.id_rodal;
         $('.selector_rodal option[value='+id_rodal+']').prop('selected', true);
     }else{
@@ -158,7 +158,7 @@ var rodalRefData = function(){
             url = url + '?vr=medRod' + '&idHab='+ idHabitat +'&regBiogeo=' + idRegBiogeo + '&comAut=' + idComAut + '&rodRef=' + rodRef;
         }
 
-        console.log(url);
+        //console.log(url);
 
 
     }else if(valRod != 'medRod' ){
@@ -189,7 +189,7 @@ var rodalRefData = function(){
             recorreArbre('', rodalReferencia);
             //recorreRodal('', rodalSelData);
 
-            console.log(rodalReferencia);
+            //console.log(rodalReferencia);
 
             if(rodalSelData){
                 if(rodalReferencia != null){
@@ -675,12 +675,12 @@ var habitatFilter = function(){
 
     var rodRef = $('input[name=boolRodRef]:checked').val();
 
-    console.log(rodRef);
+    //console.log(rodRef);
 
     var urlHabitat = '/redbosques/'
 
     url = '/redbosques/filtraxhabitat?idHab=' + idHabitat + '&rodRef=' + rodRef;
-    console.log(url);
+    //console.log(url);
 
     $.ajax({
             url: url,

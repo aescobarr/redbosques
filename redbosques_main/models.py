@@ -196,3 +196,53 @@ class WebMapaValAmb(models.Model):
     class Meta:
         managed = False  # Created from a view. Don't remove.
         db_table = 'web_mapa_val_amb'
+
+
+class WebCompData(models.Model):
+    id_view = models.BigIntegerField(blank=True, null=True)
+    id_rodal = models.IntegerField(blank=True, null=False,primary_key=True)
+    geom = models.GeometryField(blank=True, null=True)
+    datosrestringidos = models.BooleanField(blank=True, null=True)
+    nombre = models.CharField(max_length=150, blank=True, null=True)
+    ccaa_nom = models.CharField(max_length=5, blank=True, null=True)
+    ccaa_nombre = models.CharField(max_length=100, blank=True, null=True)
+    habitat_cod = models.CharField(max_length=10, blank=True, null=True)
+    habitat_nom = models.CharField(max_length=255, blank=True, null=True)
+    nivel = models.CharField(max_length=100, blank=True, null=True)
+    eje_cod = models.TextField(blank=True, null=True)
+    eje_nom = models.CharField(max_length=50, blank=True, null=True)
+    valor = models.FloatField(blank=True, null=True)
+    rodalref = models.BooleanField(blank=True, null=True)
+    fotoglobo = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False  # Created from a view. Don't remove.
+        db_table = 'web_comp_data'
+
+
+
+class WebCompDataValAmb(models.Model):
+    id_rodal = models.IntegerField(blank=True, null=False, primary_key=True)
+    geom = models.GeometryField(blank=True, null=True)
+    datosrestringidos = models.BooleanField(blank=True, null=True)
+    nombre = models.CharField(max_length=150, blank=True, null=True)
+    ccaa_nom = models.CharField(max_length=100, blank=True, null=True)
+    ccaa_nombre = models.CharField(max_length=100, blank=True, null=True)
+    habitat_cod = models.CharField(max_length=10, blank=True, null=True)
+    habitat_nom = models.CharField(max_length=255, blank=True, null=True)
+    nivel = models.CharField(max_length=100, blank=True, null=True)
+    eje_cod = models.TextField(blank=True, null=True)
+    eje_nom = models.CharField(max_length=50, blank=True, null=True)
+    valor = models.FloatField(blank=True, null=True)
+    rodalref = models.BooleanField(blank=True, null=True)
+    fotoglobo = models.CharField(max_length=150, blank=True, null=True)
+    hh = models.FloatField(blank=True, null=True)
+    ie = models.FloatField(blank=True, null=True)
+    nm = models.FloatField(blank=True, null=True)
+    regbio_cod = models.CharField(max_length=100, blank=True, null=True)
+    nombre_es = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False  # Created from a view. Don't remove.
+        db_table = 'web_comp_data_val_amb'
+
