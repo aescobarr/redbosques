@@ -91,7 +91,7 @@ var rodalData = function(){
             rodalSelData = data.rodal;
             //console.log(rodalReferencia);
             //recorreArbre('', rodalReferencia);
-            //console.log(valores_rodal_json);
+            console.log(rodalSelData);
             recorreRodal('', rodalSelData);
 
 
@@ -238,7 +238,22 @@ var recorreArbre = function(nom_pare, element){
             $('#' + nom_complet).html('---');
             element[i].valor = (null);
         }else{
-            $('#' + nom_complet).html(element[i].valor);
+            //var test1 = $('#' + nom_complet).parent()[0];
+            var thirdColumnComp = $('#' + nom_complet).parent(".lv3").length;
+            //var test = $('#' + nom_complet).parent()[0].attributes[0];
+
+            /*console.log(test);
+            console.log(test1);
+            console.log(test2);*/
+
+
+            if (thirdColumnComp == 1){
+                $('#' + nom_complet).html(element[i].valor);
+            }else{
+                $('#' + nom_complet).html((element[i].valor).toFixed(1));
+            }
+
+            //$('#' + nom_complet).html(element[i].valor);
 
         }
           rodRef[nom_complet] = element[i].valor;
@@ -250,6 +265,7 @@ var recorreArbre = function(nom_pare, element){
 
 /* Recorre l'arbre de dades del rodal */
 var recorreRodal = function(nom_pare, element){
+//console.log(element);
 jQuery.each(element, function(i, actual) {
         if(i === 'valor'){
           return;
@@ -265,7 +281,21 @@ jQuery.each(element, function(i, actual) {
             $('#' + nom_complet).html('---');
             element[i].valor = ('null');
           }else{
-             $('#' + nom_complet).html(element[i].valor);
+            //var test1 = $('#' + nom_complet).parent()[0];
+            var thirdColumn = $('#' + nom_complet).parent(".lv3").length;
+            //var test = $('#' + nom_complet).parent()[0].attributes[0];
+
+            /*console.log(test);
+            console.log(test1);
+            console.log(test2);*/
+
+
+            if (thirdColumn == 1){
+                $('#' + nom_complet).html(element[i].valor);
+            }else{
+                $('#' + nom_complet).html((element[i].valor).toFixed(1));
+            }
+             //$('#' + nom_complet).html(element[i].valor);
           }
             rodal[nom_complet] = element[i].valor;
             recorreRodal(nom_complet, actual);

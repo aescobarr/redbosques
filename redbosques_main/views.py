@@ -613,7 +613,7 @@ def crearArbol(dades):
                 if valor2.valor == None:
                     nm_valor = "---"
                 else:
-                    nm_valor = round(valor2.valor, 20)
+                    nm_valor = round(valor2.valor, 2)
 
             if valor2.indicador_cod == 'cp':
                 if valor2.valor == None:
@@ -863,7 +863,7 @@ def crearArbol(dades):
                 'conect': {'valor': cn_valor}
             }
         }
-
+        print(rodal_referencia)
         return rodal_referencia
 
 def crearArbolMedia(dades):
