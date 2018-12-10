@@ -1,0 +1,482 @@
+{% extends "redbosques_main/base.html" %}
+{% load static %}
+{% block extra_css %}
+{% endblock %}
+{% block main %}
+<div class="container-fluid subheader">
+    <div class="row">
+        <div class="col-lg-12 subfield">
+            <p>
+                <h4>
+                    <a href="{% url 'index' %}">Inicio</a> /
+                    <a href="{% url 'menu' %}">Menú</a> /
+                    <!--<a href="{% url 'herramientas' %}">Mapa de rodales</a>-->
+                    Información rodal
+                </h4>
+            </p>
+            <h2>{{ herramientas }}</h2>
+            <!--<h2>Herramienta de evaluación de rodales maduros</h2>-->
+        </div>
+    </div>
+</div>
+<div class="container menu-header">
+    <div class="row">
+            <h3>Datos obligatorios del rodal</h3>
+        </div>
+    </div>
+</div>
+
+<div class="container form-rodal2">
+    <div class="row form-group">
+        <div class="col-lg-offset-3 col-lg-6">
+            <form id="selector_rodalRef" class="checkbox" onchange="rodalRefFilterComp()">
+                <table>
+                    <tr>
+                        <td>
+                            <b style="display:inline-block; font-weight: normal;">Bosque de referencia</b>
+                        </td>
+                        <td>
+                            <label for="boolRodRefSI">Sí</label>
+                            <input type="radio" name="boolRodRef" id="boolRodRefSI" value="True" class="boolRodRef" />
+                        </td>
+                        <td>
+                            <label for="boolRodRefNO">No</label>
+                            <input type="radio" name="boolRodRef" id="boolRodRefNO" value="False" class="boolRodRef" checked="checked" />
+                        </td>
+                    </tr>
+                </table>
+
+            </form>
+        </div>
+        <div class="col-lg-offset-3 col-lg-6">
+            <form id="calidad_esta" class="checkbox" onchange="rodalRefFilterComp()">
+                <table>
+                    <tr>
+                        <td style="width: 146px;">
+                            <b style="display:inline-block; font-weight: normal;">Calidad de estación</b>
+                        </td>
+                        <td>
+                            <label for="boolRodRefSI">Baja</label>
+                            <input type="radio" name="boolRodRef" id="boolCalEstBaja" value="True" class="boolRodRef" />
+                        </td>
+                        <td>
+                            <label for="boolRodRefNO">Alta</label>
+                            <input type="radio" name="boolRodRef" id="boolCalEstAlta" value="False" class="boolRodRef" checked="checked" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <div class="col-lg-offset-3 col-lg-6">
+            <table>
+                <tr>
+                    <td>
+                         <h4>NATURALIDAD</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <h5>Composición</h5>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="rodal_label">
+                        <label for="numEspArbDos">Número de especies arbóreas en el dosel</label>
+                    </td>
+                    <td class="rodal_data">
+                        <input id="numEspArbDos" type="text" class="numEspArbDos form-control">
+                    </td>
+                    <td class="rodal_unidades">
+                       <span>   </span>
+                    </td>
+                </tr>
+    <!-- ######################################################################################## -->
+                <tr>
+                    <td colspan="3">
+                        <h5>Complejidad</h5>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="areaBasimMed">Área basimétrica media</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="areaBasimMed" type="text" class="numEspArbDos form-control">
+                    </td>
+                    <td class="rodal_unidades">
+                        <label class="test-label" for="areaBasimMed">m<sup>2</sup>/ha</label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="volMadPie">Volumen de madera en pie</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="volMadPie" type="text" class="numEspArbDos form-control">
+                    </td>
+                    <td class="rodal_unidades">
+                        <label class="test-label" for="areaBasimMed">m<sup>3</sup>/ha</label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="numEstVert">Número de estratos verticales de vegetación arbolada del dosel</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="numEstVert" type="text" class="numEspArbDos form-control">
+                    </td>
+                    <td class="rodal_unidades">
+                        <!--<label class="test-label" for="areaBasimMed">m<sup>2</sup>/ha</label>-->
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="numClasDiam">Número de clases diamétricas</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="numClasDiam" type="text" class="numEspArbDos form-control">
+                    </td>
+                    <td class="rodal_unidades">
+                        <!--<label class="test-label" for="areaBasimMed">m<sup>2</sup>/ha</label>-->
+                    </td>
+                </tr>
+    <!-- ######################################################################################## -->
+                <tr>
+                    <td colspan="3">
+                        <h5>Madurez</h5>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="rodal_label">
+                        <label for="abundPiesExcep">Abundancia de pies excepcionales</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="abundPiesExcep" type="text" class="numEspArbDos form-control">
+                    </td>
+                    <td class="rodal_unidades">
+                        <label class="test-label" for="areaBasimMed">n/ha</label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="volMadMuertaPie">Volumen de madera muerta medio/gruesa en pie</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="volMadMuertaPie" type="text" class="numEspArbDos form-control">
+                    </td>
+                    <td class="rodal_unidades">
+                        <label class="test-label" for="areaBasimMed">m<sup>3</sup>/ha</label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="volMadMuertaSuelo">Volumen de madera muerta medio/gruesa en suelo</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="volMadMuertaSuelo" type="text" class="numEspArbDos form-control">
+                    </td>
+                    <td class="rodal_unidades">
+                        <label class="test-label" for="areaBasimMed">m<sup>3</sup>/ha</label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="propMadMuertaMedGru">Proporción de madera muerta medio/gruesa</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="propMadMuertaMedGru" type="text" class="numEspArbDos form-control" disabled>
+                    </td>
+                    <td class="rodal_unidades">
+                        <label class="test-label" for="areaBasimMed">%</label>
+                    </td>
+                </tr>
+    <!-- ######################################################################################## -->
+                <tr>
+                    <td colspan="3">
+                        <h5>Microhábitats</h5>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="numTipMicMasPie">Número de tipos de microhábitats en más de un pie/ha</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="numTipMicMasPie" type="text" class="numEspArbDos form-control">
+                    </td>
+                    <td class="rodal_unidades">
+                        <!--<label class="test-label" for="areaBasimMed">%</label>-->
+                    </td>
+                </tr>
+    <!-- ######################################################################################## -->
+                <tr>
+                    <td colspan="3">
+                        <h5>Dinámica</h5>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="fasesSilvogen">Fases silvogenéticas presentes en el rodal</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="fasesSilvogen" type="text" class="numEspArbDos form-control">
+                    </td>
+                    <td class="rodal_unidades">
+                        <!--<label class="test-label" for="areaBasimMed">%</label>-->
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <input id="claros" type="checkbox"> Claros
+                            </div>
+                            <div class="col-lg-4">
+                                <input id="regeneracion" type="checkbox"> Regeneración
+                            </div>
+                            <div class="col-lg-4">
+                                <input id="ocupacion" type="checkbox"> Ocupación
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <input id="exclusion" type="checkbox"> Exclusión
+                            </div>
+                            <div class="col-lg-4">
+                                <input id="maduracion" type="checkbox"> Maduración
+                            </div>
+                            <div class="col-lg-4">
+                                <input id="senescencia" type="checkbox"> Senescencia
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+    <!-- ######################################################################################## -->
+                <tr>
+                    <td>
+                         <h4>HUELLA HUMANA</h4>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <h4>Antigua</h4>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="continTempProp1956">Continuidad temporal como proporción de bosque en 1956</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="continTempProp1956" type="text" class="numEspArbDos form-control">
+                    </td>
+                    <td class="rodal_unidades">
+                        <!--<label class="test-label" for="areaBasimMed">%</label>-->
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="valoresAgroPast">Valores de usos agropastorales</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="valoresAgroPast" type="text" class="numEspArbDos form-control">
+                    </td>
+                    <td class="rodal_unidades">
+                        <label class="test-label" for="areaBasimMed">%</label> <a href="#">(?)</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="valoresUsosForestHH">Valores de usos forestales</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="valoresUsosForestHH" type="text" class="numEspArbDos form-control">
+                    </td>
+                    <td class="rodal_unidades">
+                        <!--<label class="test-label" for="areaBasimMed">%</label>-->
+                    </td>
+                </tr>
+    <!-- ######################################################################################## -->
+                <tr>
+                    <td>
+                        <h4>Reciente</h4>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="valoresUsosForestREC">Valor de usos forestales</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="valoresUsosForestREC" type="text" class="numEspArbDos form-control">
+                    </td>
+                    <td class="rodal_unidades">
+                        <!--<label class="test-label" for="areaBasimMed">%</label>-->
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="valEspInv">Valor de especies invasoras</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="valEspInv" type="text" class="numEspArbDos form-control">
+                    </td>
+                    <td class="rodal_unidades">
+                        <!--<label class="test-label" for="areaBasimMed">%</label>-->
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="ValCausFrag">Valor de causas de fragmentación</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="ValCausFrag" type="text" class="numEspArbDos form-control">
+                    </td>
+                    <td class="rodal_unidades">
+                        <!--<label class="test-label" for="areaBasimMed">%</label>-->
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="valorActCineget">Valor de actividad cinegética</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="valorActCineget" type="text" class="numEspArbDos form-control">
+                    </td>
+                    <td class="rodal_unidades">
+                        <!--<label class="test-label" for="areaBasimMed">%</label>-->
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="valHerbRamoneo">Valor de herbívora y/o ramoneo</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="valHerbRamoneo" type="text" class="numEspArbDos form-control">
+                    </td>
+                    <td class="rodal_unidades">
+                        <!--<label class="test-label" for="areaBasimMed">%</label>-->
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="valorFrecuent">Valor de frecuentación</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="valorFrecuent" type="text" class="numEspArbDos form-control">
+                    </td>
+                    <td class="rodal_unidades">
+                        <!--<label class="test-label" for="areaBasimMed">%</label>-->
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="valorDurabUsos">Valor de durabilidad de los usos</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="valorDurabUsos" type="text" class="numEspArbDos form-control">
+                    </td>
+                    <td class="rodal_unidades">
+                        <!--<label class="test-label" for="areaBasimMed">%</label>-->
+                    </td>
+                </tr>
+    <!-- ######################################################################################## -->
+                <tr>
+                    <td>
+                         <h4>INTEGRIDAD ESPACIAL</h4>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="tamRodal">Tamaño del rodal</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="tamRodal" type="text" class="numEspArbDos form-control" disabled>
+                    </td>
+                    <td class="rodal_unidades">
+                        <label class="test-label" for="areaBasimMed">ha</label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="contManchaForest">Continuidad de la mancha forestal</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="contManchaForest" type="text" class="numEspArbDos form-control" disabled>
+                    </td>
+                    <td class="rodal_unidades">
+                        <label class="test-label" for="areaBasimMed">Km<sup>2</sup></label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="densidadBosque">Densidad de bosque</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="densidadBosque" type="text" class="numEspArbDos form-control" disabled>
+                    </td>
+                    <td class="rodal_unidades">
+                        <label class="test-label" for="areaBasimMed">%</label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="rodal_label">
+                        <label for="distCoreArea">Distancia a la core área</label>
+                    </td>
+                    <td class="rodal_data">
+                       <input id="distCoreArea" type="text" class="numEspArbDos form-control" disabled>
+                    </td>
+                    <td class="rodal_unidades">
+                        <label class="test-label" for="areaBasimMed">Km</label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <a class="btn btn-selector-mapa" href="#">Siguiente</a>
+                    </td>
+                    <td> </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block extra_js %}
+<!--<script>
+    var mymap;
+</script>
+<script src="{% static 'redbosques_main/javascript/leaflet-bing-layer.min.js' %}"></script>
+<script src="{% static 'redbosques_main/Leaflet.draw-develop/src/leaflet.draw.js' %}"></script>-->
+<script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
+
+<script src="{% static 'redbosques_main/javascript/rodalesForm.js' %}"></script>
+{% endblock %}

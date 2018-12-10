@@ -1388,6 +1388,17 @@ def rodalForm(request):
     return render(request, 'redbosques_main/rodalesForm.html', context)
 
 
+def rodalForm2(request):
+    context = {'herramientas': 'Herramienta de evaluación de rodales maduros'}
+    return render(request, 'redbosques_main/rodalesForm2.html', context)
+
+
+def rodalForm3(request):
+    context = {'herramientas': 'Herramienta de evaluación de rodales maduros'}
+    return render(request, 'redbosques_main/rodalesForm3.html', context)
+
+
+
 ######################## Filtres data table rodales ##################################
 
 @api_view(['GET'])

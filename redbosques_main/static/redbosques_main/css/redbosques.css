@@ -515,6 +515,49 @@ label .boolRodRef{
     font-weight: bold;
 }
 
-.form-rodal .btn-selector-mapa{
+.form-rodal .btn-selector-mapa, .form-rodal2 .btn-selector-mapa{
     margin: 5px 0px 5px 0px;
+}
+
+
+
+.form-rodal2 td{
+    text-align: left;
+}
+
+.form-rodal2 td label{
+    text-align: left;
+    margin-bottom: 0px;
+    font-weight: normal;
+}
+
+h5{
+    color: #9ac635;
+}
+
+td.rodal_data{
+   text-align: right;
+   width: 10%;
+}
+
+td.rodal_label{
+    width: 80%;
+}
+
+td.rodal_unidades{
+    width:20%;
+    text-align: left;
+}
+
+td.rodal_unidades label{
+    margin-left:8px;
+}
+
+.form-rodal2 input{
+    text-align: center;
+}
+
+.form-rodal2 td{
+    padding-top: 3px;
+    padding-bottom: 3px;
 }

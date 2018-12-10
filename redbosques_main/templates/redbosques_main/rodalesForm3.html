@@ -1,0 +1,61 @@
+{% extends "redbosques_main/base.html" %}
+{% load static %}
+{% block extra_css %}
+{% endblock %}
+{% block main %}
+<div class="container-fluid subheader">
+    <div class="row">
+        <div class="col-lg-12 subfield">
+            <p>
+                <h4>
+                    <a href="{% url 'index' %}">Inicio</a> /
+                    <a href="{% url 'menu' %}">Menú</a> /
+                    <!--<a href="{% url 'herramientas' %}">Mapa de rodales</a>-->
+                    Información rodal
+                </h4>
+            </p>
+            <h2>{{ herramientas }}</h2>
+            <!--<h2>Herramienta de evaluación de rodales maduros</h2>-->
+        </div>
+    </div>
+</div>
+<div class="container menu-header">
+    <div class="row">
+            <h3>Datos opcionales del rodal</h3>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row form-group">
+        <div class="col-lg-offset-3 col-lg-6">
+            <h4>INFORMACIÓN COMPLEMENTARIA</h4>
+                <textarea class="form-control" type="text" placeholder="Otras especies de flora acompañante" cols="67" rows="3"></textarea>
+                <textarea class="form-control" type="text" placeholder="Otras hábitats de interés comunitario" cols="67" rows="3"></textarea>
+                <textarea class="form-control" type="text" placeholder="Historial de usos del rodal" cols="67" rows="3"></textarea>
+                <textarea class="form-control" type="text" placeholder="Otra información relevante" cols="67" rows="3"></textarea>
+            <h4>FOTOGRAFÍAS</h4>
+            <a class="btn btn-selector-mapa" href="#">Subir fotografias ilustrativas del rodal</a>
+            <input type="file" name="imagenesRodal" accept="image/*" />
+
+            <h4>OTROS DOCUMENTOS</h4>
+            <a class="btn btn-selector-mapa" href="#">Subir documentos relevantes</a>
+            <input type="file" name="documentosRodal"/>
+
+            <a class="btn btn-selector-mapa" href="#">Terminar</a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block extra_js %}
+<script>
+
+</script>
+<script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
+<!--<script src="{% static 'redbosques_main/javascript/leaflet-bing-layer.min.js' %}"></script>
+<script src="{% static 'redbosques_main/Leaflet.draw-develop/src/leaflet.draw.js' %}"></script>-->
+
+<script src="{% static 'redbosques_main/javascript/rodalesForm.js' %}"></script>
+{% endblock %}
