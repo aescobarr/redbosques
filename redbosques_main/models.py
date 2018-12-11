@@ -246,3 +246,25 @@ class WebCompDataValAmb(models.Model):
         managed = False  # Created from a view. Don't remove.
         db_table = 'web_comp_data_val_amb'
 
+
+
+class TeHic(models.Model):
+    #id = models.AutoField()
+    cod = models.CharField(primary_key=True, max_length=5)
+    corine_cod = models.ForeignKey('TeLpeht', models.DO_NOTHING, db_column='corine_cod')
+    nombre_es = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'te_hic'
+
+
+class TeLpeht(models.Model):
+    #id = models.AutoField()
+    cod = models.CharField(primary_key=True, max_length=50)
+    nombre = models.CharField(max_length=255, blank=True, null=True)
+    seleccion = models.BooleanField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'te_lpeht'

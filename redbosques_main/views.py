@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb, WebCompData, WebCompDataValAmb
+from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
@@ -607,7 +607,7 @@ def setFiltrosRodal(request):
 
 def crearArbol(dades):
 
-#######Asignación de los valores a las variables##########
+    #######Asignación de los valores a las variables##########
         for valor2 in dades:
             if valor2.indicador_cod == 'nm':
                 if valor2.valor == None:
@@ -807,7 +807,7 @@ def crearArbol(dades):
                 else:
                     cn_valor = round(valor2.valor, 2)
 
-######   Valores del rodal    #########
+    ######   Valores del rodal    #########
         rodal_referencia = {
             'naturalidad': {
                 'valor': nm_valor,
@@ -1384,7 +1384,41 @@ def register(request):
 
 
 def rodalForm(request):
-    context = {'herramientas': 'Herramienta de evaluación de rodales maduros'}
+
+    rb = TeRegbio.objects.filter().order_by('nombre_es');
+    regionesBiogeo = []
+    for r in rb:
+        regionesBiogeo.append({'codRegBio': r.cod, 'nombreRegBio': r.nombre_es})
+
+    ca = TeProvincia.objects.filter(nivel='Com. autònoma').order_by('nombre_es')
+    comunidadesAutonomas = []
+    for c in ca:
+        comunidadesAutonomas.append({'codComAut': c.codigo, 'nombreCodAcomAut': c.nombre_es})
+
+    prov = TeProvincia.objects.filter(nivel='Província').order_by('nombre_es')
+    provincias = []
+    for p in prov:
+        provincias.append({'codProv': p.codigo, 'nombreProv': p.nombre_es})
+
+
+    hab1 = TeLpeht.objects.filter(seleccion='True').order_by('nombre')
+    habLPHE = []
+    for hl in hab1:
+        habLPHE.append({'habCorineCod': hl.cod, 'habNombre': hl.nombre})
+
+
+    hab2 = TeHic.objects.filter().order_by('nombre_es')
+    habHIC = []
+    for hc in hab2:
+        habHIC.append({'habCod': hc.cod, 'habNombre': hc.nombre_es})
+
+
+    context = {'herramientas': 'Herramienta de evaluación de rodales maduros',
+               'regionesBiogeo': regionesBiogeo,
+               'provincias': provincias,
+               'comunidadesAuto': comunidadesAutonomas,
+               'habLPHE': habLPHE,
+               'habHIC': habHIC }
     return render(request, 'redbosques_main/rodalesForm.html', context)
 
 

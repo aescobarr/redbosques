@@ -43,7 +43,7 @@
         <div class="row form-group green-font-bold">
             <div class="col-lg-offset-3 col-lg-6">
                 <label>Tipo de muestreo</label>
-                <input name="tipoMuestreo" id="porParcelas" type="radio">
+                <input name="tipoMuestreo" id="porParcelas" type="radio" checked>
                 <label for="porParcelas">Por parcelas</label>
                 <input name="tipoMuestreo" id="porTransecto" type="radio">
                 <label for="portransecto">Por transecto</label>
@@ -57,23 +57,21 @@
                 <div class="comAut">
                     <select class="form-control">
                         <option value="" selected="selected">Comuidad autónoma</option>
-                        <option value="catalunya">Catalunya</option>
-                        <option value="paisVasco">País Vasco</option>
+                        {% for comAut in comunidadesAuto %}
+                            <option value="{{ comAut.codComAut }}">{{ comAut.nombreCodAcomAut }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="provincia">
                     <select class="form-control">
                         <option value="" selected="selected">Provincia</option>
-                        <option value="catalunya">Barcelona</option>
-                        <option value="paisVasco">Girona</option>
+                        {% for prov in provincias %}
+                            <option value="{{ prov.codProv }}">{{ prov.nombreProv }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="terminoMunicipal">
-                    <select class="form-control">
-                        <option value="" selected="selected">Termino municipal</option>
-                        <option value="catalunya">Barcelona</option>
-                        <option value="paisVasco">Girona</option>
-                    </select>
+                    <input class="form-control" type="text" placeholder="Termino municipal">
                 </div>
                 <div class="propietario">
                     <input class="form-control" type="text" placeholder="Propietario">
@@ -105,23 +103,26 @@
                 <h4>Hábitat</h4>
                 <div class="habitatCorine">
                     <select class="form-control">
-                        <option value="" selected="selected">Hábitat CORINE(LPHE)</option>
-                        <option value="catalunya">AAAAA</option>
-                        <option value="paisVasco">BBBBB</option>
+                        <option value="null" selected="selected">Selecciona Hábitat CORINE(LPHE)</option>
+                        {% for hab in habLPHE %}
+                            <option value="{{ hab.habCorineCod }}">{{ hab.habNombre }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="habitatHIC">
                     <select class="form-control">
-                        <option value="" selected="selected">Hábitat de interés comunitario HIC</option>
-                        <option value="catalunya">AAAAA</option>
-                        <option value="paisVasco">BBBBB</option>
+                        <option value="null" selected="selected">Selecciona Hábitat de interés comunitario HIC</option>
+                        {% for hab in habHIC %}
+                            <option value="{{ hab.habCod }}">{{ hab.habNombre }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="regionBiogeo">
                     <select class="form-control">
-                        <option value="" selected="selected">Región biogeográfica</option>
-                        <option value="catalunya">AAAAA</option>
-                        <option value="paisVasco">BBBBB</option>
+                        <option value="null" selected="selected">Selecciona Región biogeográfica</option>
+                        {% for regBio in regionesBiogeo %}
+                            <option value="{{ regBio.codRegBio }}">{{ regBio.nombreRegBio }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="especiePrincipal">
