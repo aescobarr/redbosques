@@ -1,8 +1,9 @@
 {% extends "redbosques_main/base.html" %}
 {% load static %}
 {% block extra_css %}
-<link href="{% static 'redbosques_main/Leaflet.markercluster-1.4.0/dist/MarkerCluster.css' %}" rel="stylesheet">
-<link href="{% static 'redbosques_main/Leaflet.markercluster-1.4.0/dist/MarkerCluster.Default.css' %}" rel="stylesheet">
+    <link href="{% static 'redbosques_main/leaflet/leaflet.css' %}" rel="stylesheet">
+    <link href="{% static 'redbosques_main/Leaflet.markercluster-1.4.0/dist/MarkerCluster.css' %}" rel="stylesheet">
+    <link href="{% static 'redbosques_main/Leaflet.markercluster-1.4.0/dist/MarkerCluster.Default.css' %}" rel="stylesheet">
 {% endblock %}
 {% block main %}
 <div class="container-fluid subheader">

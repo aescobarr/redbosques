@@ -1,7 +1,9 @@
 {% extends "redbosques_main/base.html" %}
 {% load static %}
 {% block extra_css %}
-<link href="{% static 'redbosques_main/Leaflet.draw-develop/src/leaflet.draw.css' %}">
+    <link href="{% static 'redbosques_main/leaflet/leaflet.css' %}" rel="stylesheet">
+    <link href="{% static 'redbosques_main/Leaflet.Draw.static/src/leaflet.draw.css' %}" rel="stylesheet">
+    <!--<link href="{% static 'redbosques_main/leaflet.draw.css' %}">-->
 {% endblock %}
 {% block main %}
 <div class="container-fluid subheader">
@@ -84,7 +86,8 @@
         </div>
         <div class="row form-group">
             <div class="col-lg-offset-3 col-lg-6">
-                <div id="mapDraw" class="mapaPoligonos" style="width: 560px; height: 450px;"></div>
+                <div id="map" class="mapaPoligonos" style="width: 560px; height: 450px;"></div>
+                <input id="geometria" name="geometria" type="hidden" value=""/>
             </div>
         </div>
         <div class="row form-group">
@@ -155,7 +158,7 @@
                         <!--</div>
                     </div>-->
                 </div>
-                <a class="btn btn-selector-mapa" href="#">Siguiente</a>
+                <a onclick="sendData()" class="btn btn-selector-mapa" href="#">Siguiente</a>
             </div>
         </div>
     </form>
@@ -169,12 +172,39 @@
 
 {% endblock %}
 {% block extra_js %}
-<script>
-    var mymap;
-</script>
-<script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
-<script src="{% static 'redbosques_main/javascript/leaflet-bing-layer.min.js' %}"></script>
-<script src="{% static 'redbosques_main/Leaflet.draw-develop/src/leaflet.draw.js' %}"></script>
+    <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
+    <script src="{% static 'redbosques_main/jquery/dist/jquery.min.js' %}"></script>
 
-<script src="{% static 'redbosques_main/javascript/rodalesForm.js' %}"></script>
+    <script src="{% static 'redbosques_main/leaflet/leaflet.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/Leaflet.draw.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/Leaflet.Draw.Event.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/Toolbar.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/Tooltip.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/ext/GeometryUtil.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/ext/LatLngUtil.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/ext/LineUtil.Intersect.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/ext/Polygon.Intersect.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/ext/Polyline.Intersect.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/ext/TouchEvents.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/DrawToolbar.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.Feature.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.SimpleShape.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.Polyline.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.Marker.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.Circle.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.CircleMarker.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.Polygon.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.Rectangle.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/EditToolbar.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/EditToolbar.Edit.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/EditToolbar.Delete.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/Control.Draw.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.Poly.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.SimpleShape.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.Rectangle.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.Marker.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.CircleMarker.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.Circle.js' %}"></script>
+
+    <script src="{% static 'redbosques_main/javascript/rodalesForm.js' %}"></script>
 {% endblock %}

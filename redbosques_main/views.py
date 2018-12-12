@@ -12,6 +12,7 @@ from django.contrib.auth.forms import UserCreationForm
 from redbosques.forms import RegistrationForm, LoginForm
 from django.contrib import messages
 from django.contrib import auth
+from django.contrib.gis.geos import GEOSGeometry
 
 
 from django.contrib.auth import authenticate
@@ -1420,6 +1421,26 @@ def rodalForm(request):
                'habLPHE': habLPHE,
                'habHIC': habHIC }
     return render(request, 'redbosques_main/rodalesForm.html', context)
+
+
+def rodalFormData(request):
+    test = request.POST.get('test')
+    print(test)
+
+    testJson = json.loads(test)
+    print(testJson['features'][0]['geometry'])
+    testJson2 = testJson['features'][0]['geometry']
+
+    testGEOSGEM = []
+
+    #geoms.append(GEOSGeometry(feature_geom))
+    testGEOSGEM.append(GEOSGeometry(json.dumps(testJson2)))
+
+
+    print(testGEOSGEM)
+
+    return True
+
 
 
 def rodalForm2(request):

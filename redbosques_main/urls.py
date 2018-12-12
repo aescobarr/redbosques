@@ -28,6 +28,7 @@ urlpatterns = [
     path('datos_mapa', views.datos_mapa, name='datos_mapa'),
     url(r'^register/$', views.register, name='register'),
     path('rodalForm', views.rodalForm, name='rodalForm'),
+    path('rodalFormData', views.rodalFormData, name='rodalFormData'),
     path('rodalForm2', views.rodalForm2, name='rodalForm2'),
     path('rodalForm3', views.rodalForm3, name='rodalForm3'),
     path('filtraxhabitat', views.filtraxhabitat, name='filtraxhabitat'),
