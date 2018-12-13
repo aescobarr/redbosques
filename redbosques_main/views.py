@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht
+from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht, Tesaurus
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
@@ -13,6 +13,11 @@ from redbosques.forms import RegistrationForm, LoginForm
 from django.contrib import messages
 from django.contrib import auth
 from django.contrib.gis.geos import GEOSGeometry
+
+import pyproj
+from shapely.geometry import shape
+from shapely.ops import transform
+from functools import partial
 
 
 from django.contrib.auth import authenticate
@@ -1386,6 +1391,11 @@ def register(request):
 
 def rodalForm(request):
 
+    met = Tesaurus.objects.filter().order_by('nombre_es')
+    metodos = []
+    for m in met:
+        metodos.append({'metCod': m.cod, 'metNombre': m.nombre_es})
+
     rb = TeRegbio.objects.filter().order_by('nombre_es');
     regionesBiogeo = []
     for r in rb:
@@ -1399,7 +1409,7 @@ def rodalForm(request):
     prov = TeProvincia.objects.filter(nivel='Província').order_by('nombre_es')
     provincias = []
     for p in prov:
-        provincias.append({'codProv': p.codigo, 'nombreProv': p.nombre_es})
+        provincias.append({'codProv': p.cod, 'nombreProv': p.nombre_es})
 
 
     hab1 = TeLpeht.objects.filter(seleccion='True').order_by('nombre')
@@ -1419,7 +1429,9 @@ def rodalForm(request):
                'provincias': provincias,
                'comunidadesAuto': comunidadesAutonomas,
                'habLPHE': habLPHE,
-               'habHIC': habHIC }
+               'habHIC': habHIC,
+               'metodos': metodos}
+
     return render(request, 'redbosques_main/rodalesForm.html', context)
 
 
@@ -1436,8 +1448,19 @@ def rodalFormData(request):
     #geoms.append(GEOSGeometry(feature_geom))
     testGEOSGEM.append(GEOSGeometry(json.dumps(testJson2)))
 
+    fig = shape(testJson2)
+    proj = partial(pyproj.transform, pyproj.Proj(init='epsg:4326'), pyproj.Proj(init='epsg:3857'))
+
+    fig_new = transform(proj, fig)
+
+    area = transform(proj, fig).area
+
+    print(area)
 
     print(testGEOSGEM)
+
+
+
 
     return True
 

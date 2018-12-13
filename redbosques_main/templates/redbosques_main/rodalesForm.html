@@ -53,6 +53,14 @@
         </div>
         <div class="row form-group">
             <div class="col-lg-offset-3 col-lg-6">
+                <div class="metodo">
+                    <select class="form-control">
+                        <option value="" selected="selected">Método</option>
+                        {% for met in metodos %}
+                            <option value="{{ met.metCod }}">{{ met.metNombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
                 <div class="nombreRodal">
                     <input class="form-control" type="text" placeholder="Nombre del rodal">
                 </div>
@@ -135,11 +143,36 @@
                         <option value="paisVasco">BBBBB</option>
                     </select>
                 </div>
-                <div class="altDominante">
-                    <label for="altDomEspPrin">Altura dominante de la especie principal</label>
-                    <input type="text" id="altDomEspPrin" class="alturaDominanteEspeciePrincipal form-control">
-                    <label for="altDomEspPrin">m</label>
-                </div>
+
+                <table>
+                    <tr>
+                    <!--<div class="altDominante">-->
+                        <td class="rodal_label">
+                            <label for="altDomEspPrin">Altura dominante de la especie principal</label>
+                        </td>
+                        <td class="rodal_data">
+                            <input type="text" id="altDomEspPrin" class="alturaDominanteEspeciePrincipal form-control">
+                        </td>
+                        <td class="rodal_unidades">
+                            <label for="altDomEspPrin">m</label>
+                        </td>
+                        <!--</div>-->
+                    </tr>
+                    <tr>
+                        <!--<div class="cavCubespPrin">-->
+                            <td class="rodal_label">
+                                <label for="cavCubespPrin">Fracción de cavidad cubierta de la especie principal</label>
+                            </td>
+                            <td class="rodal_data">
+                                <input id="cavCubespPrin" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">
+                            </td>
+                            <td class="rodal_unidades">
+                                <label for="cavCubespPrin">%</label>
+                            </td>
+                        <!--</div>-->
+                    </tr>
+                </table>
+
                 <div class="principalAcompan">
                     <select class="form-control">
                         <option value="" selected="selected">Principal especie acompañante</option>
@@ -147,17 +180,30 @@
                         <option value="paisVasco">BBBBB</option>
                     </select>
                 </div>
-                <div class="altDominanteAcomp">
-                    <!--<div class="row">
-                        <div class="col-lg-8">-->
+                <table>
+                    <tr>
+                        <td class="rodal_label">
                             <label for="altDomEspPrinAcomp">Altura dominante de la especie principal acompañante</label>
-                        <!--</div>-->
-                        <!--<div class="col-lg-4">-->
+                        </td>
+                        <td class="rodal_data">
                             <input id="altDomEspPrinAcomp" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">
+                        </td>
+                        <td class="rodal_unidades">
                             <label for="altDomEspPrinAcomp">m</label>
-                        <!--</div>
-                    </div>-->
-                </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="rodal_label">
+                            <label for="cavCubespPrinAcomp">Fracción de cavidad cubierta de la especie acompañante</label>
+                        </td>
+                        <td class="rodal_data">
+                            <input id="cavCubespPrinAcomp" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">
+                        </td>
+                        <td>
+                            <label for="cavCubespPrinAcomp">%</label>
+                        </td>
+                    </tr>
+                </table>
                 <a onclick="sendData()" class="btn btn-selector-mapa" href="#">Siguiente</a>
             </div>
         </div>
