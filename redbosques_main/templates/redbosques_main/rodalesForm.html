@@ -54,15 +54,19 @@
         <div class="row form-group">
             <div class="col-lg-offset-3 col-lg-6">
                 <div class="metodo">
-                    <select class="form-control">
-                        <option value="" selected="selected">Método</option>
+                    {{ form.metodo_cod }}
+                    {{ form.metodo_cod.errors }}
+                    <!--<select class="form-control">
+                        <option value="" selected="selected">Selecciona método</option>
                         {% for met in metodos %}
                             <option value="{{ met.metCod }}">{{ met.metNombre }}</option>
                         {% endfor %}
-                    </select>
+                    </select>-->
                 </div>
                 <div class="nombreRodal">
-                    <input class="form-control" type="text" placeholder="Nombre del rodal">
+                    <!--<input class="form-control" type="text" placeholder="Nombre del rodal">-->
+                    {{ form.nombre }}
+                    {{ form.nombre.errors }}
                 </div>
                 <div class="comAut">
                     <select class="form-control">
@@ -79,12 +83,17 @@
                             <option value="{{ prov.codProv }}">{{ prov.nombreProv }}</option>
                         {% endfor %}
                     </select>
+
                 </div>
                 <div class="terminoMunicipal">
-                    <input class="form-control" type="text" placeholder="Termino municipal">
+                    <!--<input class="form-control" type="text" placeholder="Termino municipal">-->
+                    {{ form.municipio }}
+                    {{ form.municipio.errores }}
                 </div>
                 <div class="propietario">
-                    <input class="form-control" type="text" placeholder="Propietario">
+                    <!--<input class="form-control" type="text" placeholder="Propietario">-->
+                    {{ form.propietario }}
+                    {{ form.propietario.errores }}
                 </div>
 
                 <div class="subirLimites">
@@ -102,7 +111,9 @@
             <div class="col-lg-offset-3 col-lg-6">
                 <h4>Muestreo</h4>
                 <div class="fecha">
-                    <input class="form-control" type="date" placeholder="Fecha">
+                    <!--<input class="form-control" type="date" placeholder="Fecha">-->
+                    {{ form.fecha }}
+                    {{ form.fecha.errors }}
                 </div>
                 <div class="equipoDeCampo">
                     <input class="form-control" type="text" placeholder="Equipo de campo">
@@ -206,6 +217,11 @@
                 </table>
                 <a onclick="sendData()" class="btn btn-selector-mapa" href="#">Siguiente</a>
             </div>
+
+
+            {{ form.test }}
+            {{ form.test.errors }}
+
         </div>
     </form>
 </div>

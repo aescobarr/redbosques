@@ -9,10 +9,11 @@ from django.db.models import Avg, StdDev
 from redbosques.settings_local import URL_BASE
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from redbosques.forms import RegistrationForm, LoginForm
+from redbosques.forms import RegistrationForm, LoginForm, rodalFormFields
 from django.contrib import messages
 from django.contrib import auth
 from django.contrib.gis.geos import GEOSGeometry
+from django.contrib.auth import authenticate
 
 import pyproj
 from shapely.geometry import shape
@@ -20,7 +21,6 @@ from shapely.ops import transform
 from functools import partial
 
 
-from django.contrib.auth import authenticate
 
 # Create your views here.
 def index(request):
@@ -1390,6 +1390,11 @@ def register(request):
 
 
 def rodalForm(request):
+    if request.method == 'POST':
+        form = rodalFormFields(request.POST or None)
+        #form = rodalFormFields()
+    else:
+        form = rodalFormFields()
 
     met = Tesaurus.objects.filter().order_by('nombre_es')
     metodos = []
@@ -1424,13 +1429,16 @@ def rodalForm(request):
         habHIC.append({'habCod': hc.cod, 'habNombre': hc.nombre_es})
 
 
+
+
     context = {'herramientas': 'Herramienta de evaluación de rodales maduros',
                'regionesBiogeo': regionesBiogeo,
                'provincias': provincias,
                'comunidadesAuto': comunidadesAutonomas,
                'habLPHE': habLPHE,
                'habHIC': habHIC,
-               'metodos': metodos}
+               'metodos': metodos,
+               'form': form}
 
     return render(request, 'redbosques_main/rodalesForm.html', context)
 

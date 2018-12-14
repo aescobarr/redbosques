@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'redbosques_main',
-    'corsheaders'
+    'corsheaders',
+    'bootstrap_datepicker'
 ]
 
 MIDDLEWARE = [

@@ -168,6 +168,9 @@ class Rodal(models.Model):
     usuario = models.ForeignKey('User', models.DO_NOTHING, db_column='usuario', blank=True, null=True)
     rodalref = models.BooleanField(blank=True, null=True)
     fotoglobo = models.CharField(max_length=100, blank=True, null=True)
+    espprinc_fcc = models.IntegerField(blank=True, null=True)
+    espcomp_fcc = models.IntegerField(blank=True, null=True)
+
 
     class Meta:
         managed = False
