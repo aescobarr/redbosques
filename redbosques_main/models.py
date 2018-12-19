@@ -314,4 +314,29 @@ class WebCompDataValAmb(models.Model):
         db_table = 'web_comp_data_val_amb'
 
 
+class BosqueCf(models.Model):
+    rid = models.AutoField(primary_key=True)
+    rast = models.RasterField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'bosque_cf'
+
+
+class BosqueSf(models.Model):
+    rid = models.AutoField(primary_key=True)
+    rast = models.RasterField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'bosque_sf'
+
+
+class BosquePs(models.Model):
+    rid = models.AutoField(primary_key=True)
+    rast = models.RasterField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'bosque_ps'
 

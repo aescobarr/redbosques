@@ -1,9 +1,10 @@
 from django import forms
+from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms import DateTimeField
-#from datetimewidget.widgets import DateWidget, TimeWidget
+from bootstrap_datepicker_plus import DatePickerInput
 from redbosques_main.models import Rodal, Tesaurus
 
 from bootstrap_datepicker.widgets import DatePicker
@@ -75,7 +76,7 @@ class LoginForm(AuthenticationForm):
     ))
 
 
-class rodalFormFields(forms.ModelForm):
+class rodalFormFields(ModelForm):
     geometria = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
     #datosrestringidos = forms.BooleanField(widget=forms.BooleanField(attrs={'class': 'form-control'}), required=True)
     nombre = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del rodal'}), required=True)
@@ -83,9 +84,23 @@ class rodalFormFields(forms.ModelForm):
     provincia_cod = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
     municipio = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Termino municipal'}), required=True)
     propietario = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Propietario'}), required=True)
-    fecha = forms.DateField(widget=forms.widgets.TextInput(attrs={'class': 'datepicker'}))
 
-    #fecha = forms.DateField(widget=DatePicker())
+    #fecha = forms.DateField(widget=forms.widgets.TextInput(attrs={'class': 'datepicker'}))
+
+    fecha = forms.DateField(widget=DatePickerInput(format='%m/%d/%Y'))
+
+    '''dateTimeOptions = {
+        'format': 'dd/mm/yyyy',
+        'clearBtn': 'true',
+        'todayBtn': 'true',
+        'todayHighlight': 'true'
+    }
+
+    fecha = forms.DateField(input_formats=['%d/%m/%Y'], widget=DateWidget(bootstrap_version=3, options=dateTimeOptions))'''
+
+    #fecha = forms.DateInput(attrs={'id': 'datetimepicker'})
+
+
 
     equipo = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Equipo de campo'}), required=True)
     lpeht = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
@@ -130,9 +145,9 @@ class rodalFormFields(forms.ModelForm):
         metodos.append({m.nombre_es, m.cod})
     meto = [('null', 'Selecciona método')] + metodos
 
-    metodo_cod = forms.ChoiceField(choices=meto,widget=forms.Select(attrs={'class': 'form-control'}))
+    metodo_cod = forms.ChoiceField(choices=meto, widget=forms.Select(attrs={'class': 'form-control'}))
 
-    # viento_inicio = forms.ChoiceField(choices=CHOICES_WIND,widget=forms.Select(attrs={'class': 'form-control'}))
+
 
     class Meta:
         model = Rodal

@@ -57,7 +57,7 @@ $(document).ready(function() {
 
 });
 
-var sendData = function(){
+/*var sendData = function(){
 
     var test = $('#geometria').val();
     //console.log(test['geometry']);
@@ -81,7 +81,7 @@ var sendData = function(){
     error: function(jqXHR, textStatus, errorThrown){
         console.log(errorThrown);
     }
-});
+});*/
 
 
 

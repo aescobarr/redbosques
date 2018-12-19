@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'redbosques_main',
     'corsheaders',
+    'bootstrap_datepicker_plus',
     'bootstrap_datepicker'
+
 ]
 
 MIDDLEWARE = [

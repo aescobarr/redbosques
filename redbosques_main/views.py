@@ -19,6 +19,21 @@ import pyproj
 from shapely.geometry import shape
 from shapely.ops import transform
 from functools import partial
+import shapely.wkt
+
+from django.db import connection
+from collections import namedtuple
+
+
+
+
+def namedtuplefetchall(cursor):
+    #Return all rows from a cursor as a namedtuple
+    desc = cursor.description
+    nt_result = namedtuple('Result', [col[0] for col in desc])
+    return [nt_result(*row) for row in cursor.fetchall()]
+
+
 
 
 
@@ -1442,13 +1457,10 @@ def rodalForm(request):
 
     return render(request, 'redbosques_main/rodalesForm.html', context)
 
-
+@api_view(['POST'])
 def rodalFormData(request):
     test = request.POST.get('test')
-    print(test)
-
     testJson = json.loads(test)
-    print(testJson['features'][0]['geometry'])
     testJson2 = testJson['features'][0]['geometry']
 
     testGEOSGEM = []
@@ -1457,19 +1469,60 @@ def rodalFormData(request):
     testGEOSGEM.append(GEOSGeometry(json.dumps(testJson2)))
 
     fig = shape(testJson2)
+    print(fig)
+
     proj = partial(pyproj.transform, pyproj.Proj(init='epsg:4326'), pyproj.Proj(init='epsg:3857'))
 
+    # Encontrado aquí https://gist.github.com/robinkraft/c6de2f988c9d3f01af3c
+    # https://gist.github.com/drmalex07/5a54fc4f1db06a66679e
+
     fig_new = transform(proj, fig)
-
-    area = transform(proj, fig).area
-
-    print(area)
-
-    print(testGEOSGEM)
+    #area = transform(proj, fig).area
+    area = fig_new.area
 
 
+    ######## Continuidad mancha forestal #########
+
+    cursor = connection.cursor()
+    contManchForest = cursor.execute('select avg(sq.gv) from (SELECT (ST_Intersection(rast, ST_Transform(ST_GeomFromText(%s, 4326), 25830))).val AS gv '
+        'FROM carto.bosque_cf '
+        'WHERE ST_Intersects(rast, ST_Transform(ST_GeomFromText(%s, 4326),25830) )) as sq', [fig.wkt, fig.wkt])
 
 
+    contManchForest = cursor.fetchall()
+    #contManchForest = namedtuplefetchall(cursor)
+    print(contManchForest[0])
+    ##############################################
+
+    '''
+    ######## Densidad de bosque #########
+
+    densBosque = cursor.execute('select avg(sq.gv) from (SELECT (ST_Intersection(rast, ST_Transform(ST_GeomFromText(%s, 4326), 25830))).val AS gv '
+        'FROM carto.bosque_sf '
+        'WHERE ST_Intersects(rast, ST_Transform(ST_GeomFromText(%s, 4326),25830) )) as sq', [fig.wkt, fig.wkt])
+
+    densBosque = cursor.fetchall()
+    #print(densBosque)
+    ##############################################
+    '''
+
+    ######## Distancia a la core área #########
+
+    distCoreArea = cursor.execute(
+        'select avg(sq.gv) from (SELECT (ST_Intersection(rast, ST_Transform(ST_GeomFromText(%s, 4326), 25830))).val AS gv '
+        'FROM carto.bosque_ps '
+        'WHERE ST_Intersects(rast, ST_Transform(ST_GeomFromText(%s, 4326),25830) )) as sq', [fig.wkt, fig.wkt])
+
+    ##############################################
+    distCoreArea = cursor.fetchall()
+
+    areaHectareas = area/10000
+    contManchForestKM2 = contManchForest[0][0]/1000
+    distCoreAreaKM = distCoreArea[0][0]/1000
+
+    print("Área: " + str(areaHectareas) + " ha")
+    print("Continuidad mancha forestal: " + str(contManchForestKM2) + " km2")
+    print("Distancia a la core área: " + str(distCoreAreaKM) + " Km")
     return True
 
 
