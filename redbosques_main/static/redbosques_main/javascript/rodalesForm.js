@@ -57,7 +57,7 @@ $(document).ready(function() {
 
 });
 
-/*var sendData = function(){
+var sendData = function(){
 
     var test = $('#geometria').val();
     //console.log(test['geometry']);
@@ -65,27 +65,23 @@ $(document).ready(function() {
     url = '/redbosques/rodalFormData'
 
     $.ajax({
-    url: url,
-    method: "POST",
-    data: { test },
-    beforeSend: function(xhr, settings) {
-        if (!csrfSafeMethod(settings.type)) {
-            var csrftoken = getCookie('csrftoken');
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        url: url,
+        method: "POST",
+        data: { test },
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                var csrftoken = getCookie('csrftoken');
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        },
+
+        success: function( data, textStatus, jqXHR ) {
+            console.log("Tot OK !!!!")
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            console.log(errorThrown);
         }
-    },
-
-    success: function( data, textStatus, jqXHR ) {
-        console.log("Tot OK !!!!")
-    },
-    error: function(jqXHR, textStatus, errorThrown){
-        console.log(errorThrown);
-    }
-});*/
-
-
-
-
+    });
 }
 
 

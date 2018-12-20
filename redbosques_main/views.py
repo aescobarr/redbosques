@@ -1473,6 +1473,9 @@ def rodalFormData(request):
 
     proj = partial(pyproj.transform, pyproj.Proj(init='epsg:4326'), pyproj.Proj(init='epsg:3857'))
 
+    projTEST = partial(pyproj.transform, pyproj.Proj(init='epsg:4326'), pyproj.Proj(init='epsg:25830'))
+    fig_newTEST = transform(projTEST, fig)
+
     # Encontrado aquí https://gist.github.com/robinkraft/c6de2f988c9d3f01af3c
     # https://gist.github.com/drmalex07/5a54fc4f1db06a66679e
 
@@ -1494,17 +1497,19 @@ def rodalFormData(request):
     print(contManchForest[0])
     ##############################################
 
-    '''
+
     ######## Densidad de bosque #########
 
-    densBosque = cursor.execute('select avg(sq.gv) from (SELECT (ST_Intersection(rast, ST_Transform(ST_GeomFromText(%s, 4326), 25830))).val AS gv '
+    densBosque = cursor.execute(
+        'select avg(sq.gv) from (SELECT '
+        '(ST_Intersection(rast, ST_Transform(ST_GeomFromText(%s, 25830), 25830))).val AS gv '
         'FROM carto.bosque_sf '
-        'WHERE ST_Intersects(rast, ST_Transform(ST_GeomFromText(%s, 4326),25830) )) as sq', [fig.wkt, fig.wkt])
+        'WHERE ST_Intersects(rast, ST_Transform(ST_GeomFromText(%s, 25830), 25830))) as sq', [fig_newTEST.wkt, fig_newTEST.wkt])
 
     densBosque = cursor.fetchall()
     #print(densBosque)
     ##############################################
-    '''
+
 
     ######## Distancia a la core área #########
 

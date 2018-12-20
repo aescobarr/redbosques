@@ -35,7 +35,7 @@
             <h4>DATOS GENERALES Y ADMINISTRATIVOS</h4>
         </div>
     </div>
-    <form action="/rodalFormData/" method="post">
+    <form action="rodalFormData" method="post">
         <div class="row form-group restrData">
             <div class="col-lg-offset-3 col-lg-6">
                 <input id="datosRestringidos" type="checkbox">
@@ -215,9 +215,12 @@
                         </td>
                     </tr>
                 </table>
-                <a type="submit" class="btn btn-selector-mapa" href="#">Siguiente</a>
+                <a type="submit" onclick="sendData()" class="btn btn-selector-mapa" href="#">Siguiente</a>
             </div>
 
+
+            <!--         {% csrf_token %}
+        <input type="submit" class="btn btn-selector-mapa" value="Siguiente">-->
 
             {{ form.test }}
             {{ form.test.errors }}
