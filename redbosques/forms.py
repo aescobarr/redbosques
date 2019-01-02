@@ -87,7 +87,7 @@ class rodalFormFields(ModelForm):
 
     #fecha = forms.DateField(widget=forms.widgets.TextInput(attrs={'class': 'datepicker'}))
 
-    fecha = forms.DateField(widget=DatePickerInput(format='%m/%d/%Y'))
+    fecha = forms.DateField(label="Fecha", widget=DatePickerInput(format='%d/%m/%Y'))
 
     '''dateTimeOptions = {
         'format': 'dd/mm/yyyy',

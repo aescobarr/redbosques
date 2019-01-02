@@ -4,6 +4,7 @@
     <link href="{% static 'redbosques_main/leaflet/leaflet.css' %}" rel="stylesheet">
     <link href="{% static 'redbosques_main/Leaflet.Draw.static/src/leaflet.draw.css' %}" rel="stylesheet">
     <!--<link href="{% static 'redbosques_main/leaflet.draw.css' %}">-->
+    {{ form.media.css }}
 {% endblock %}
 {% block main %}
 <div class="container-fluid subheader">
@@ -112,6 +113,7 @@
                 <h4>Muestreo</h4>
                 <div class="fecha">
                     <!--<input class="form-control" type="date" placeholder="Fecha">-->
+                    {{ form.media }}
                     {{ form.fecha }}
                     {{ form.fecha.errors }}
                 </div>
@@ -210,7 +212,7 @@
                         <td class="rodal_data">
                             <input id="cavCubespPrinAcomp" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">
                         </td>
-                        <td>
+                        <td class="rodal_unidades">
                             <label for="cavCubespPrinAcomp">%</label>
                         </td>
                     </tr>
@@ -237,6 +239,7 @@
 
 {% endblock %}
 {% block extra_js %}
+    {{ form.media.js }}
     <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
     <script src="{% static 'redbosques_main/jquery/dist/jquery.min.js' %}"></script>
 

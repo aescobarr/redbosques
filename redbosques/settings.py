@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'redbosques_main',
     'corsheaders',
     'bootstrap_datepicker_plus',
-    'bootstrap_datepicker'
+
 
 ]
 
@@ -88,7 +88,9 @@ DATABASES = {
    }
 }
 
-
+'''BOOTSTRAP3 = {
+    'include_jquery': True,
+}'''
 
 
 # Password validation

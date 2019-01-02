@@ -561,3 +561,7 @@ td.rodal_unidades label{
     padding-top: 3px;
     padding-bottom: 3px;
 }
+
+.input-group .form-control#id_fecha{
+    margin-top: 0;
+}
