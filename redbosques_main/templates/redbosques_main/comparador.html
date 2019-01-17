@@ -13,14 +13,12 @@
                     Comparador de rodales
                 </h4>
             </p>
-            <h2>{{ herramientas }}</h2>
-
+            <!--<h2>{{ herramientas }}</h2>-->
         </div>
     </div>
 </div>
 <div class="container menu-header">
     <div class="row">
-
             <h3>Valoración de la madurez</h3>
         </div>
     </div>
@@ -28,11 +26,26 @@
 <div class="tab-content">
         <div class="container">
             <div class="row filtros">
-                <div class="col-lg-8">
-                    <div class="col-lg-1">
+                <div class="col-lg-5">
+                    <div class="col-lg-4">
+                        <label for="habitat" class="green-font" style="margin-top: 8px">Típo de bosque</label>
+                    </div>
+                    <div class="col-lg-8">
+                        <select class="form-control" name="habitat" id="tipoBosque" onchange="tipoBosqueFilter()">
+                            <option value="null" selected="selected">Seleccione un típo de bosque</option>
+                                {% for tb in tiposDeBosque %}
+                                    <option value="{{ tb.tipobosque_cod }}">{{ tb.tipobosque_nombre }}</option>
+                                {% endfor %}
+                        </select>
+                        <!--<input id="nombreHabitat" type="text" class="form-control" placeholder="{{ infoRodal.habitat_nom }}">-->
+
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="col-lg-3">
                         <label for="habitat" class="green-font" style="margin-top: 8px">Hábitat</label>
                     </div>
-                    <div class="col-lg-11">
+                    <div class="col-lg-9">
                         <select class="form-control" name="habitat" id="habitat" onchange="habitatFilter()">
                             <option value="null" selected="selected">Seleccione un hábitat</option>
                                 {% for habitat in habitats %}
@@ -43,7 +56,8 @@
 
                     </div>
                 </div>
-                <div class="col-lg-3">
+
+                <div class="col-lg-2">
                     <b class="green-font" style="margin-top: 8px; display: inline-block">Rodal de referéncia = (*)</b>
                 </div>
             </div>

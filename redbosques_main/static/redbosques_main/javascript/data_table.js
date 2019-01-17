@@ -11,7 +11,8 @@ var initialRodal = function(){
 
     if(rodalselected != null){
         rodalSelData = rodalSelData_ini;
-        //console.log(rodalSelData_ini);
+        console.log(rodalSelData_ini);
+        console.log(rodalselected);
         recorreRodal('', rodalSelData_ini);
         //console.log(rodalselected.id_rodal);
         var id_rodal = rodalselected.id_rodal;
@@ -69,10 +70,13 @@ var rodalData = function(){
         $('#selector_ComAut_Comp option:first').prop('selected', 'selected');
         $('#selector_RegBio_Comp option:first').prop('selected', 'selected');
 
-    }else*/ if(valRod != 'medRod' ){
-        if (valRod == 'None'){
+    }else*/
+
+    if(valRod != 'medRod' ){
+        if (valRod == 'null'){
             //$('.valGraf').html('---');
             //$('.valGraf').css("background-color", "#FFFFFF");
+            console.log('null');
         }else{
             url = url + '?vr='+valRod;
         }
@@ -700,6 +704,57 @@ var crearGraficos = function(testJson){
 
 /* ########################## Filtros ################################*/
 
+var tipoBosqueFilter = function(){
+    var tipoBosque = $('#tipoBosque').val();
+
+    var rodRef = $('input[name=boolRodRef]:checked').val();
+
+    //console.log(rodRef);
+
+    var urlHabitat = '/redbosques/'
+
+    url = '/redbosques/filtraxtipobosque?idTipoBosque=' + tipoBosque + '&rodRef=' + rodRef;
+    console.log(url);
+
+    $.ajax({
+            url: url,
+            method: "GET",
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type)) {
+                    var csrftoken = getCookie('csrftoken');
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            },
+
+            success: function( data, textStatus, jqXHR ) {
+
+                    codigoHab = data.codigoHab
+                    comunidadesAutonomas = data.comAuto;
+                    regionesBiogeo = data.regBiogeo;
+                    rodales = data.rodales;
+                    rodalesComp = data.rodalesComp;
+
+                    habNewData(codigoHab)
+
+                    comAutNewData(comunidadesAutonomas);
+
+                    regionBiogeoNewData(regionesBiogeo);
+                    rodalesNewData(rodales);
+
+                    regionBiogeoNewDataComp(regionesBiogeo);
+                    rodalesNewDataComp(rodalesComp);
+
+                    $('#boolRodRefNO').prop("checked", true);
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(errorThrown);
+            }
+        });
+}
+
+
+
+
 var habitatFilter = function(){
     var idHabitat = $('#habitat').val();
 
@@ -980,6 +1035,29 @@ var rodalRefFilterComp = function(){
 
 /* ################ Act. controles filtros ################*/
 
+
+var habNewData  = function(codigoHab){
+
+        $("#habitat").empty();
+        $("#habitat").append('<option value="null" selected="selected">Seleccione un Hábitat</option>');
+
+        /*$("#selector_ComAut_Comp").empty();
+        $("#selector_ComAut_Comp").append('<option value="null" selected="selected">Seleccione Comunidad autónoma</option>');
+        $("#selector_ComAut_Comp").append('<option value="all">Todas las Comunidades autónomas</option>');*/
+
+        for(i=0; i<codigoHab.length; i++){
+            $("#habitat").append('<option value=' + codigoHab[i].habitat_cod + '>' + codigoHab[i].tipobosque_nombre + '</option>');
+            //$("#selector_ComAut_Comp").append('<option value=' + comAuto[i].ccaa_nom + '>' + comAuto[i].ccaa_nombre + '</option>');
+        }
+
+        /*if(id_tipo_habitat){
+            $(".tipo_habitat").val(id_tipo_habitat);
+        }*/
+}
+
+
+
+
 var comAutNewData  =function(comAuto){
 
         $("#selector_ComAut").empty();
@@ -1013,7 +1091,7 @@ var regionBiogeoNewData = function(regionesBiogeo){
 var rodalesNewData = function(rodales){
 
     $("#selector_rodales").empty();
-    $("#selector_rodales").append('<option value="null" selected="selected">Seleccione Rodal</option>');
+    $("#selector_rodales").append('<option value="null" selected="selected">Rodal a comparar</option>');
 
     for(i=0; i<rodales.length; i++){
         if(rodales[i].rodalref == true){

@@ -6,6 +6,9 @@
     <!--<link href="{% static 'redbosques_main/leaflet.draw.css' %}">-->
     {{ form.media.css }}
 {% endblock %}
+{% block extrahead %}
+    <script src="{% static 'redbosques_main/jquery/dist/jquery.min.js' %}"></script>
+{% endblock %}
 {% block main %}
 <div class="container-fluid subheader">
     <div class="row">
@@ -36,10 +39,12 @@
             <h4>DATOS GENERALES Y ADMINISTRATIVOS</h4>
         </div>
     </div>
-    <form action="rodalFormData" method="post">
+    <form action="{% url 'rodalForm' %}" method="POST">
         <div class="row form-group restrData">
             <div class="col-lg-offset-3 col-lg-6">
-                <input id="datosRestringidos" type="checkbox">
+                <!--<input id="datosRestringidos" type="checkbox">-->
+                {{ form.datosrestringidos }}
+                {{ form.datosrestringidos.errors }}
                 <label for="datosRestringidos">Datos restringidos</label>
             </div>
         </div>
@@ -57,42 +62,25 @@
                 <div class="metodo">
                     {{ form.metodo_cod }}
                     {{ form.metodo_cod.errors }}
-                    <!--<select class="form-control">
-                        <option value="" selected="selected">Selecciona método</option>
-                        {% for met in metodos %}
-                            <option value="{{ met.metCod }}">{{ met.metNombre }}</option>
-                        {% endfor %}
-                    </select>-->
                 </div>
                 <div class="nombreRodal">
-                    <!--<input class="form-control" type="text" placeholder="Nombre del rodal">-->
                     {{ form.nombre }}
                     {{ form.nombre.errors }}
                 </div>
                 <div class="comAut">
-                    <select class="form-control">
-                        <option value="" selected="selected">Comuidad autónoma</option>
-                        {% for comAut in comunidadesAuto %}
-                            <option value="{{ comAut.codComAut }}">{{ comAut.nombreCodAcomAut }}</option>
-                        {% endfor %}
-                    </select>
+                    {{ form.comautonom_cod }}
+                    {{ form.comautonom_cod.errors }}
                 </div>
                 <div class="provincia">
-                    <select class="form-control">
-                        <option value="" selected="selected">Provincia</option>
-                        {% for prov in provincias %}
-                            <option value="{{ prov.codProv }}">{{ prov.nombreProv }}</option>
-                        {% endfor %}
-                    </select>
+                    {{ form.provincia_cod }}
+                    {{ form.provincia_cod.errors }}
 
                 </div>
                 <div class="terminoMunicipal">
-                    <!--<input class="form-control" type="text" placeholder="Termino municipal">-->
                     {{ form.municipio }}
                     {{ form.municipio.errores }}
                 </div>
                 <div class="propietario">
-                    <!--<input class="form-control" type="text" placeholder="Propietario">-->
                     {{ form.propietario }}
                     {{ form.propietario.errores }}
                 </div>
@@ -105,7 +93,7 @@
         <div class="row form-group">
             <div class="col-lg-offset-3 col-lg-6">
                 <div id="map" class="mapaPoligonos" style="width: 560px; height: 450px;"></div>
-                <input id="geometria" name="geometria" type="hidden" value=""/>
+                <input id="geometria_string" name="geometria_string" type="hidden" value=""/>
             </div>
         </div>
         <div class="row form-group">
@@ -118,7 +106,8 @@
                     {{ form.fecha.errors }}
                 </div>
                 <div class="equipoDeCampo">
-                    <input class="form-control" type="text" placeholder="Equipo de campo">
+                    {{ form.equipo }}
+                    {{ form.equipo.errors }}
                 </div>
             </div>
         </div>
@@ -126,35 +115,26 @@
             <div class="col-lg-offset-3 col-lg-6">
                 <h4>Hábitat</h4>
                 <div class="habitatCorine">
-                    <select class="form-control">
-                        <option value="null" selected="selected">Selecciona Hábitat CORINE(LPHE)</option>
-                        {% for hab in habLPHE %}
-                            <option value="{{ hab.habCorineCod }}">{{ hab.habNombre }}</option>
-                        {% endfor %}
-                    </select>
+                    {{ form.lpeht_cod }}
+                    {{ form.lpeht_cod.errors }}
                 </div>
                 <div class="habitatHIC">
-                    <select class="form-control">
-                        <option value="null" selected="selected">Selecciona Hábitat de interés comunitario HIC</option>
-                        {% for hab in habHIC %}
-                            <option value="{{ hab.habCod }}">{{ hab.habNombre }}</option>
-                        {% endfor %}
-                    </select>
+                    {{ form.hic_cod }}
+                    {{ form.hic_cod.errors }}
+
                 </div>
                 <div class="regionBiogeo">
-                    <select class="form-control">
-                        <option value="null" selected="selected">Selecciona Región biogeográfica</option>
-                        {% for regBio in regionesBiogeo %}
-                            <option value="{{ regBio.codRegBio }}">{{ regBio.nombreRegBio }}</option>
-                        {% endfor %}
-                    </select>
+                    {{ form.regbio_cod }}
+                    {{ form.regbio_cod.errors }}
                 </div>
                 <div class="especiePrincipal">
-                    <select class="form-control">
+                    <!--<select class="form-control">
                         <option value="" selected="selected">Especie principal</option>
                         <option value="catalunya">AAAAA</option>
                         <option value="paisVasco">BBBBB</option>
-                    </select>
+                    </select>-->
+                    {{ form.espprinc_cod }}
+                    {{ form.espprinc_cod.errors }}
                 </div>
 
                 <table>
@@ -164,7 +144,9 @@
                             <label for="altDomEspPrin">Altura dominante de la especie principal</label>
                         </td>
                         <td class="rodal_data">
-                            <input type="text" id="altDomEspPrin" class="alturaDominanteEspeciePrincipal form-control">
+                            <!--<input type="text" id="altDomEspPrin" class="alturaDominanteEspeciePrincipal form-control">-->
+                            {{ form.espprincip_h0 }}
+                            {{ form.espprincip_h0.errors }}
                         </td>
                         <td class="rodal_unidades">
                             <label for="altDomEspPrin">m</label>
@@ -177,7 +159,9 @@
                                 <label for="cavCubespPrin">Fracción de cavidad cubierta de la especie principal</label>
                             </td>
                             <td class="rodal_data">
-                                <input id="cavCubespPrin" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">
+                                <!--<input id="cavCubespPrin" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">-->
+                                {{ form.espprinc_fcc }}
+                                {{ form.espprinc_fcc.errors }}
                             </td>
                             <td class="rodal_unidades">
                                 <label for="cavCubespPrin">%</label>
@@ -187,11 +171,13 @@
                 </table>
 
                 <div class="principalAcompan">
-                    <select class="form-control">
+                    <!--<select class="form-control">
                         <option value="" selected="selected">Principal especie acompañante</option>
                         <option value="catalunya">AAAAA</option>
                         <option value="paisVasco">BBBBB</option>
-                    </select>
+                    </select>-->
+                    {{ form.espcomp_cod }}
+                    {{ form.espcomp_cod.errors }}
                 </div>
                 <table>
                     <tr>
@@ -199,7 +185,10 @@
                             <label for="altDomEspPrinAcomp">Altura dominante de la especie principal acompañante</label>
                         </td>
                         <td class="rodal_data">
-                            <input id="altDomEspPrinAcomp" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">
+                            <!--<input id="altDomEspPrinAcomp" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">-->
+                            {{ form.espcomp_h0 }}
+                            {{ form.espcomp_h0.errors }}
+
                         </td>
                         <td class="rodal_unidades">
                             <label for="altDomEspPrinAcomp">m</label>
@@ -210,38 +199,36 @@
                             <label for="cavCubespPrinAcomp">Fracción de cavidad cubierta de la especie acompañante</label>
                         </td>
                         <td class="rodal_data">
-                            <input id="cavCubespPrinAcomp" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">
+                            <!--<input id="cavCubespPrinAcomp" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">-->
+                            {{ form.espcomp_fcc }}
+                            {{ form.espcomp_fcc.errors }}
+
                         </td>
                         <td class="rodal_unidades">
                             <label for="cavCubespPrinAcomp">%</label>
                         </td>
                     </tr>
+                    <tr>
+                        <td colspan="2">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-selector-mapa" value="Siguiente">
+                        </td>
+
+                    </tr>
                 </table>
-                <a type="submit" onclick="sendData()" class="btn btn-selector-mapa" href="#">Siguiente</a>
+                </table>
             </div>
-
-
-            <!--         {% csrf_token %}
+                     <!--{% csrf_token %}
         <input type="submit" class="btn btn-selector-mapa" value="Siguiente">-->
-
-            {{ form.test }}
-            {{ form.test.errors }}
-
         </div>
     </form>
 </div>
-
-
-
-
-
-
 
 {% endblock %}
 {% block extra_js %}
     {{ form.media.js }}
     <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
-    <script src="{% static 'redbosques_main/jquery/dist/jquery.min.js' %}"></script>
+
 
     <script src="{% static 'redbosques_main/leaflet/leaflet.js' %}"></script>
     <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/Leaflet.draw.js' %}"></script>

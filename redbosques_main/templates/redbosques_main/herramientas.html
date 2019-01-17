@@ -33,7 +33,7 @@
         <div id="mapid" class="col-lg-9"></div>
 
         <div class="col-lg-3 map-options">
-            <button class="btn btn-selector-mapa" disabled>Participar</button>
+            <a class="btn btn-selector-mapa" href="{% url 'menu' %}">Menú</a>
             <!--<button type="btn" class="btn btn-selector-mapa">Comparar</button>-->
 
             <!--<button class="btn btn-selector-mapa selectorFiltro" onclick="changeFilter()" value="0">Valoración Humana</button>-->
@@ -103,14 +103,14 @@
         </div>
 
     </div>
-    <div class="row bottom-buttons">
+    <!--<div class="row bottom-buttons">
         <div class="col-lg-offset-2 col-lg-3">
                 <a class="btn btn-selector-mapa" href="{% url 'menu' %}">Volver al menú</a>
         </div>
         <div class="col-lg-offset-2 col-lg-3">
                 <a class="btn btn-selector-mapa" href="{% url 'logout' %}">Salir de la aplicación</a>
         </div>
-    </div>
+    </div>-->
 
 </div>
 {% endblock %}

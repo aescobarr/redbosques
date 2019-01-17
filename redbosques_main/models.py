@@ -3,6 +3,7 @@
 from django.contrib.gis.db import models
 
 
+
 class WebMapa(models.Model):
     id_rodal = models.IntegerField(blank=True, null=False,primary_key=True)
     geom = models.GeometryField(blank=True, null=True)
@@ -34,6 +35,9 @@ class Habitat(models.Model):
         managed = False
         db_table = 'te_lpeht'
 
+    def __str__(self):
+        return '%s' % (self.nombre)
+
 
 class TeProvincia(models.Model):
     #id = models.AutoField()
@@ -48,6 +52,9 @@ class TeProvincia(models.Model):
         managed = False
         db_table = 'te_provincia'
 
+    def __str__(self):
+        return '%s' % (self.nombre_es)
+
 
 
 
@@ -61,6 +68,9 @@ class TeHic(models.Model):
         managed = False
         db_table = 'te_hic'
 
+    def __str__(self):
+        return '%s' % (self.nombre_es)
+
 
 class TeLpeht(models.Model):
     #id = models.AutoField()
@@ -72,6 +82,9 @@ class TeLpeht(models.Model):
         managed = False
         db_table = 'te_lpeht'
 
+    def __str__(self):
+        return '%s' % (self.nombre)
+
 class TeRegbio(models.Model):
     #id = models.AutoField()
     cod = models.CharField(primary_key=True, max_length=14)
@@ -82,6 +95,9 @@ class TeRegbio(models.Model):
     class Meta:
         managed = False
         db_table = 'te_regbio'
+
+    def __str__(self):
+        return '%s' % (self.nombre_es)
 
 
 
@@ -96,6 +112,9 @@ class TeTaxon(models.Model):
         managed = False
         db_table = 'te_taxon'
 
+    def __str__(self):
+        return '%s' % (self.nombre)
+
 
 class Tesaurus(models.Model):
     #id = models.AutoField()
@@ -107,6 +126,9 @@ class Tesaurus(models.Model):
     class Meta:
         managed = False
         db_table = 'tesaurus'
+
+    def __str__(self):
+        return '%s' % (self.nombre_es)
 
 class User(models.Model):
     #id = models.AutoField()
@@ -120,13 +142,17 @@ class User(models.Model):
 
 
 class Rodal(models.Model):
-    geom = models.GeometryField(blank=True, null=True)
+    #id = models.AutoField(primary_key=True, max_length=100)
+    geom = models.GeometryField(blank=True, null=True, srid=25830)
     datosrestringidos = models.BooleanField(blank=True, null=True)
     metodo_cod = models.ForeignKey(Tesaurus, models.DO_NOTHING, db_column='metodo_cod')
     nombre = models.CharField(max_length=150)
     #comautonom_cod = models.ForeignKey(TeProvincia, models.DO_NOTHING, db_column='cod')
-    comautonom_cod = models.ForeignKey(TeProvincia, related_name='TeProvincia_comautonom_cod', on_delete=models.CASCADE)
-    provincia_cod = models.ForeignKey(TeProvincia, related_name='TeProvincia_prvincia_cod', on_delete=models.CASCADE, blank=True, null=True)
+
+    #comautonom_cod = models.ForeignKey(TeProvincia, db_column=TeProvincia.cod, related_name='TeProvincia_comautonom_cod', on_delete=models.CASCADE)
+
+    comautonom_cod = models.ForeignKey(TeProvincia, db_column='comautonom_cod', related_name='TeProvincia_comautonom_cod', on_delete=models.CASCADE)
+    provincia_cod = models.ForeignKey(TeProvincia, db_column='provincia_cod', related_name='TeProvincia_prvincia_cod', on_delete=models.CASCADE, blank=True, null=True)
     municipio = models.CharField(max_length=150, blank=True, null=True)
     propietario = models.CharField(max_length=150, blank=True, null=True)
     fecha = models.DateField(blank=True, null=True)
@@ -134,8 +160,10 @@ class Rodal(models.Model):
     lpeht_cod = models.ForeignKey(TeLpeht, models.DO_NOTHING, db_column='lpeht_cod')
     hic_cod = models.ForeignKey(TeHic, models.DO_NOTHING, db_column='hic_cod', blank=True, null=True)
     regbio_cod = models.ForeignKey(TeRegbio, models.DO_NOTHING, db_column='regbio_cod', blank=True, null=True)
-    espprinc_cod = models.ForeignKey(TeTaxon, related_name='TeTaxon_espprinc_cod', on_delete=models.CASCADE, blank=True, null=True)
-    espcomp_cod = models.ForeignKey(TeTaxon, related_name='TeTaxon_espcomp_cod', on_delete=models.CASCADE, blank=True, null=True)
+
+    espprinc_cod = models.ForeignKey(TeTaxon, db_column='espprinc_cod', related_name='TeTaxon_espprinc_cod', on_delete=models.CASCADE, blank=True, null=True)
+    espcomp_cod = models.ForeignKey(TeTaxon, db_column='espcomp_cod', related_name='TeTaxon_espcomp_cod', on_delete=models.CASCADE, blank=True, null=True)
+
     espprincip_h0 = models.IntegerField()
     espcomp_h0 = models.IntegerField(blank=True, null=True)
     numesparb = models.IntegerField(blank=True, null=True)
@@ -168,8 +196,8 @@ class Rodal(models.Model):
     usuario = models.ForeignKey('User', models.DO_NOTHING, db_column='usuario', blank=True, null=True)
     rodalref = models.BooleanField(blank=True, null=True)
     fotoglobo = models.CharField(max_length=100, blank=True, null=True)
-    espprinc_fcc = models.IntegerField(blank=True, null=True)
-    espcomp_fcc = models.IntegerField(blank=True, null=True)
+    espprinc_fcc = models.IntegerField(db_column='espprinc_fcc', blank=True, null=True)
+    espcomp_fcc = models.IntegerField(db_column='espcomp_fcc', blank=True, null=True)
 
 
     class Meta:
@@ -247,6 +275,8 @@ class WebMapaValAmb(models.Model):
     ccaa_nombre = models.CharField(max_length=100, blank=True, null=True)
     habitat_cod = models.CharField(max_length=10, blank=True, null=True)
     habitat_nom = models.CharField(max_length=255, blank=True, null=True)
+    tipobosque_cod = models.TextField(blank=True, null=True)
+    tipobosque_nombre = models.CharField(max_length=255, blank=True, null=True)
     nivel = models.CharField(max_length=100, blank=True, null=True)
     eje_cod = models.TextField(blank=True, null=True)
     eje_nom = models.CharField(max_length=50, blank=True, null=True)
@@ -274,6 +304,8 @@ class WebCompData(models.Model):
     ccaa_nom = models.CharField(max_length=5, blank=True, null=True)
     ccaa_nombre = models.CharField(max_length=100, blank=True, null=True)
     habitat_cod = models.CharField(max_length=10, blank=True, null=True)
+    tipobosque_cod = models.TextField(blank=True, null=True)
+    tipobosque_nombre = models.CharField(max_length=150, blank=True, null=True)
     habitat_nom = models.CharField(max_length=255, blank=True, null=True)
     nivel = models.CharField(max_length=100, blank=True, null=True)
     eje_cod = models.TextField(blank=True, null=True)
@@ -297,6 +329,8 @@ class WebCompDataValAmb(models.Model):
     ccaa_nombre = models.CharField(max_length=100, blank=True, null=True)
     habitat_cod = models.CharField(max_length=10, blank=True, null=True)
     habitat_nom = models.CharField(max_length=255, blank=True, null=True)
+    tipobosque_cod = models.TextField(blank=True, null=True)
+    tipobosque_nombre = models.CharField(max_length=255, blank=True, null=True)
     nivel = models.CharField(max_length=100, blank=True, null=True)
     eje_cod = models.TextField(blank=True, null=True)
     eje_nom = models.CharField(max_length=50, blank=True, null=True)

@@ -64,7 +64,7 @@ ul.nav-pills li.active a {
 
 .subheader{
     background-color: #dae6d1;
-    height: 100px;
+    height: 50px;
     border-top: 2px solid black;
     border-bottom: 4px solid #9ac635;
 }
@@ -157,12 +157,20 @@ ul.nav-pills li.active a {
     margin-left: 10px;
 }
 
+
+.navbar-brand img{
+    height: 150px;
+}
+
+.logoCont{
+    height:150px;
+}
 /*###################Estils Mapa#######################*/
 
 
 .map-header{
     background-color: #9ac635;
-    height: 100px;
+    height: 65px;
     text-align: center;
     color: white;
     margin-top: 1%;
@@ -174,7 +182,7 @@ ul.nav-pills li.active a {
 
 .mapa-selectores{
     color: black;
-    margin-top: 4%;
+    margin-top: 2%;
     text-align: center;
     height: 640px;
 }
@@ -239,7 +247,7 @@ h5{
     font-weight: 900;
 }
 
-.icon_0{ color: #7030a0; }
+/*.icon_0{ color: #7030a0; }
 .icon_1{ color: #b719a0; }
 .icon_2{ color: #b719a0; }
 .icon_3{ color: #ff3300; }
@@ -250,19 +258,33 @@ h5{
 .icon_8{ color: #003300; }
 .icon_9{ color: #0033cc; }
 .icon_10{ color: #0033cc; }
+.icon_null{ color: gray; }*/
+
+.icon_0{ color: #a50026; }
+.icon_1{ color: #d73027; }
+.icon_2{ color: #f46d43; }
+.icon_3{ color: #fdae61; }
+.icon_4{ color: #fee08b; }
+.icon_5{ color: #ffffbf; }
+.icon_6{ color: #d9ef8b; }
+.icon_7{ color: #a6d96a; }
+.icon_8{ color: #66bd63; }
+.icon_9{ color: #1a9850; }
+.icon_10{ color: #006837; }
 .icon_null{ color: gray; }
 
-.iconHH_0{ color: #00ff00; }
-.iconHH_1{ color: #62ff00; }
-.iconHH_2{ color: #8cff00; }
-.iconHH_3{ color: #adff00; }
-.iconHH_4{ color: #caff00; }
-.iconHH_5{ color: #e5ff00; }
-.iconHH_6{ color: #f2f200; }
-.iconHH_7{ color: #ffff00; }
-.iconHH_8{ color: #ff8000; }
-.iconHH_9{ color: #ff4000; }
-.iconHH_10{ color: #ff0000; }
+
+.iconHH_0{ color: #006837; }
+.iconHH_1{ color: #1a9850; }
+.iconHH_2{ color: #66bd63; }
+.iconHH_3{ color: #a6d96a; }
+.iconHH_4{ color: #d9ef8b; }
+.iconHH_5{ color: #ffffbf; }
+.iconHH_6{ color: #fee08b; }
+.iconHH_7{ color: #fdae61; }
+.iconHH_8{ color: #f46d43; }
+.iconHH_9{ color: #d73027; }
+.iconHH_10{ color: #a50026; }
 .iconHH_null{ color: gray; }
 
 .logos-colab{
@@ -306,8 +328,19 @@ h5{
     background-color: #b4b1b3;
 }
 
+body .mapa-selectores #mapid .leaflet-popup-content{
+    width: auto !important;
+}
 
+.mapa-selectores .headerTabla th, td{
+    text-align: left;
+}
 
+.popup-table{
+    width: 100%;
+    margin: auto;
+
+}
 
 
 
@@ -537,7 +570,7 @@ h5{
 
 td.rodal_data{
    text-align: right;
-   width: 10%;
+   width: 17%;
 }
 
 td.rodal_label{

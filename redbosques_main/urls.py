@@ -28,13 +28,14 @@ urlpatterns = [
     path('datos_mapa', views.datos_mapa, name='datos_mapa'),
     url(r'^register/$', views.register, name='register'),
     path('rodalForm', views.rodalForm, name='rodalForm'),
-    path('rodalFormData', views.rodalFormData, name='rodalFormData'),
-    path('rodalForm2', views.rodalForm2, name='rodalForm2'),
-    path('rodalForm3', views.rodalForm3, name='rodalForm3'),
+    path('rodalForm2/<int:id>/', views.rodalForm2, name='rodalForm2'),
+    path('rodalForm3/<int:id>/', views.rodalForm3, name='rodalForm3'),
     path('filtraxhabitat', views.filtraxhabitat, name='filtraxhabitat'),
     path('filtrarxComAut', views.filtrarxComAut, name='filtrarxComAut'),
     path('filtrarxRegBiogeo', views.filtrarxRegBiogeo, name='filtrarxRegBiogeo'),
-    path('filtrarxRodRef', views.filtrarxRodRef, name='filtrarxRodRef')
+    path('filtrarxRodRef', views.filtrarxRodRef, name='filtrarxRodRef'),
+    path('filtraxtipobosque', views.filtraxtipobosque, name='filtraxtipobosque')
+
 
 ]
 

@@ -48,16 +48,28 @@ $(document).ready(function() {
 
   map.on(L.Draw.Event.CREATED, function (e) {
     var type = e.layerType,layer = e.layer;
-    console.log(e.layerType);
     editableLayers.addLayer(layer);
+
+    console.log(layer);
+    console.log(e.layerType);
     console.log(editableLayers.toGeoJSON());
-    $('#geometria').val(JSON.stringify(editableLayers.toGeoJSON()));
-    console.log(JSON.stringify(editableLayers.toGeoJSON()));
+
+    test = editableLayers.toGeoJSON();
+
+    console.log(test);
+
+
+
+    var string_json = JSON.stringify(editableLayers.toGeoJSON());
+    //var latLng = map.layerPointToLatLng(string_json);
+    console.log(string_json);
+    $('#geometria_string').val(string_json);
+    console.log(string_json);
   });
 
 });
 
-var sendData = function(){
+/*var sendData = function(){
 
     var test = $('#geometria').val();
     //console.log(test['geometry']);
@@ -75,14 +87,14 @@ var sendData = function(){
             }
         },
 
-        success: function( data, textStatus, jqXHR ) {
+        success: function(data) {
             console.log("Tot OK !!!!")
         },
         error: function(jqXHR, textStatus, errorThrown){
             console.log(errorThrown);
         }
     });
-}
+}*/
 
 
 

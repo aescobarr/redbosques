@@ -29,20 +29,25 @@
 <div class="container">
     <div class="row form-group">
         <div class="col-lg-offset-3 col-lg-6">
-            <h4>INFORMACIÓN COMPLEMENTARIA</h4>
-                <textarea class="form-control" type="text" placeholder="Otras especies de flora acompañante" cols="67" rows="3"></textarea>
-                <textarea class="form-control" type="text" placeholder="Otras hábitats de interés comunitario" cols="67" rows="3"></textarea>
-                <!--<textarea class="form-control" type="text" placeholder="Historial de usos del rodal" cols="67" rows="3"></textarea>-->
-                <textarea class="form-control" type="text" placeholder="Otra información relevante" cols="67" rows="3"></textarea>
-            <h4>FOTOGRAFÍAS</h4>
-            <a class="btn btn-selector-mapa" href="#">Subir fotografias ilustrativas del rodal</a>
-            <input type="file" name="imagenesRodal" accept="image/*" />
+            <form action="{% url 'rodalForm3' id %}" method="POST">
+                <h4>INFORMACIÓN COMPLEMENTARIA</h4>
+                    {{ form.otroespflora }}
+                    {{ form.otrohics }}
+                    {{ form.otroinfo }}
+                    <!--<textarea class="form-control" type="text" placeholder="Otras especies de flora acompañante" cols="67" rows="3"></textarea>
+                    <textarea class="form-control" type="text" placeholder="Otras hábitats de interés comunitario" cols="67" rows="3"></textarea>
+                    <textarea class="form-control" type="text" placeholder="Otra información relevante" cols="67" rows="3"></textarea>-->
+                <h4>FOTOGRAFÍAS</h4>
+                <a class="btn btn-selector-mapa" href="#">Subir fotografias ilustrativas del rodal</a>
+                <input type="file" name="imagenesRodal" accept="image/*" />
 
-            <h4>OTROS DOCUMENTOS</h4>
-            <a class="btn btn-selector-mapa" href="#">Subir documentos relevantes</a>
-            <input type="file" name="documentosRodal"/>
+                <h4>OTROS DOCUMENTOS</h4>
+                <a class="btn btn-selector-mapa" href="#">Subir documentos relevantes</a>
+                <input type="file" name="documentosRodal"/>
 
-            <a class="btn btn-selector-mapa" href="#">Terminar</a>
+                {% csrf_token %}
+                <input type="submit" class="btn btn-selector-mapa" value="Terminar">
+            </form>
         </div>
     </div>
 </div>

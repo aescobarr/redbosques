@@ -68,23 +68,28 @@ $(document).ready(function() {
 
         var llista_punts = [];
 
+
+
         for(var i = 0; i < data.length; i++){
             var punt = data[i];
 
             var current_icon;
             if (punt.valor){
-                current_icon = taula_icons[punt.valor];
+                current_icon = taula_icons[(punt.valor).toFixed(0)];
+
             }else{
                 current_icon = html_icon_default;
             }
 
+
+
             var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
-            '<b>' + punt.nombre + '</b><br><b>Hábitat: </b>' + punt.habitat_nom + '<br>' +
-            '<b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br><b>Región biogeográfica: </b>' + punt.regionBiogeo + '<br>' +
-            '<a href="/redbosques/comparador/' + punt.id_rodal + '/"><b>Comparar</b></a><br><br>' +
-            '<div class="" style="text-align: center;"><table class="table"><tr><th style="text-align: center">Ámbito</th>'+
-            '<th style="text-align: center">Valor</th></tr><tr><td>Naturalidad</td><td>'+ punt.valor_nm +'</td></tr><tr>'+
-            '<td>Huella humana</td><td>'+ punt.valor_hh +'</td></tr><tr><td>Integridad Espacial</td><td>'+ punt.valor_ie +'</td></tr></table></div>' +
+            '<b>' + punt.nombre + '</b><br><b>Hábitat: </b>' + punt.habitat_nom + '<br>' + '<b>Tipo de Bosque: </b>' + punt.tipobosque_nombre +
+            '<br><b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br><b>Región biogeográfica: </b>' + punt.regionBiogeo + '<br>' +
+            '<a href="#"><b>Ficha </b></a>&nbsp;<a href="/redbosques/comparador/' + punt.id_rodal + '/"><b> Comparar</b></a><br><br>' +
+            '<div class="popup-table" style="text-align: center; width: 250px;"><table class="table"><tr><th>Ámbito</th>'+
+            '<th style="text-align: center;">Valor</th></tr><tr><td style="text-align: left;">Naturalidad</td><td>'+ punt.valor_nm +'</td></tr><tr>'+
+            '<td style="text-align: left;">Huella humana</td><td>'+ punt.valor_hh +'</td></tr><tr><td style="text-align: left;">Integridad Espacial</td><td>'+ punt.valor_ie +'</td></tr></table></div>' +
             '<div class="imagenRodal"><img src="'+ punt.imagen +'" alt="'+ punt.nombre +'" width="250" height="150"></div>'
             );
 
@@ -134,17 +139,17 @@ $(document).ready(function() {
 
         var div = L.DomUtil.create('div', 'info legend'),
             puntuacion = [
-            {0: '#7030a0'},
-            {1: '#b719a0'},
-            {2: '#b719a0'},
-            {3: '#ff3300'},
-            {4: '#ff9900'},
-            {5: '#ffff00'},
-            {6: '#99cc00'},
-            {7: '#669900'},
-            {8: '#003300'},
-            {9: '#0033cc'},
-            {10:'#000066'}
+            {0: '#a50026'},
+            {1: '#d73027'},
+            {2: '#f46d43'},
+            {3: '#fdae61'},
+            {4: '#fee08b'},
+            {5: '#ffffbf'},
+            {6: '#d9ef8b'},
+            {7: '#a6d96a'},
+            {8: '#66bd63'},
+            {9: '#1a9850'},
+            {10:'#006837'}
             ];
 
         for (i=0; i<puntuacion.length; i++){
@@ -163,17 +168,17 @@ $(document).ready(function() {
 
         var div = L.DomUtil.create('div', 'info legend'),
             puntuacion = [
-            {10: '#ff0000'},
-            {9: '#ff4000'},
-            {8: '#ff8000'},
-            {7: '#ffff00'},
-            {6: '#f2f200'},
-            {5: '#e5ff00'},
-            {4: '#caff00'},
-            {3: '#adff00'},
-            {2: '#8cff00'},
-            {1: '#62ff00'},
-            {0:'#00ff00'}
+            {10: '#a50026'},
+            {9: '#d73027'},
+            {8: '#f46d43'},
+            {7: '#fdae61'},
+            {6: '#fee08b'},
+            {5: '#ffffbf'},
+            {4: '#d9ef8b'},
+            {3: '#a6d96a'},
+            {2: '#66bd63'},
+            {1: '#1a9850'},
+            {0:'#006837'}
             ];
 
         for (i=0; i<puntuacion.length; i++){
