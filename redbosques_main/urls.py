@@ -14,6 +14,8 @@ urlpatterns = [
     path('register', views.register, name='register'),
     path('comparador', views.comparador, name='comparador_noparam'),
     path('comparador/<int:id>/', views.comparador, name='comparador'),
+    path('comparador_new/', views.comparador_new, name='comparador_new'),
+    path('comparador_new/<int:id>/', views.comparador_new, name='comparador_new'),
     path('comparador/<int:id>/filter', views.filtrosRodal, name='filtrosRodal'),
     path('valorRef', views.valorRef, name='valorRef'),
     path('valorRodal', views.valorRodal, name='valorRodal'),
@@ -34,8 +36,12 @@ urlpatterns = [
     path('filtrarxComAut', views.filtrarxComAut, name='filtrarxComAut'),
     path('filtrarxRegBiogeo', views.filtrarxRegBiogeo, name='filtrarxRegBiogeo'),
     path('filtrarxRodRef', views.filtrarxRodRef, name='filtrarxRodRef'),
-    path('filtraxtipobosque', views.filtraxtipobosque, name='filtraxtipobosque')
-
+    path('filtraxtipobosque', views.filtraxtipobosque, name='filtraxtipobosque'),
+    path('habitats_ajax',views.habitats_ajax,name="habitats_ajax"),
+    path('ccaa_ajax',views.ccaa_ajax,name="ccaa_ajax"),
+    path('regbiogeo_ajax',views.regbiogeo_ajax,name="regbiogeo_ajax"),
+    path('rodals_ajax',views.rodals_ajax,name="rodals_ajax"),
+    path('valorref_ajax',views.valorref_ajax,name="valorref_ajax"),
 
 ]
 

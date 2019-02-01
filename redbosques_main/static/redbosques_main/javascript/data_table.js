@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-initialRodal();
+//initialRodal();
 
 });
 
@@ -9,7 +9,7 @@ initialRodal();
 
 var initialRodal = function(){
 
-    if(rodalselected != null){
+    if(rodalselected){
         rodalSelData = rodalSelData_ini;
         console.log(rodalSelData_ini);
         console.log(rodalselected);
