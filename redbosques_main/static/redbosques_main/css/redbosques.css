@@ -598,3 +598,13 @@ td.rodal_unidades label{
 .input-group .form-control#id_fecha{
     margin-top: 0;
 }
+
+.asyncload {
+    background-image: url(/static/redbosques_main/css/indicator.white.gif);
+    background-repeat: no-repeat;background-position: left;
+}
+
+.asyncload-big {
+    background-image: url(/static/redbosques_main/css/loader_128.gif);
+    background-repeat: no-repeat;background-position: center;
+}
