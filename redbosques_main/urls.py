@@ -1,6 +1,8 @@
 from django.urls import path
 from django.conf.urls import url, include
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
@@ -30,6 +32,12 @@ urlpatterns = [
     path('rodalForm', views.rodalForm, name='rodalForm'),
     path('rodalForm2/<int:id>/', views.rodalForm2, name='rodalForm2'),
     path('rodalForm3/<int:id>/', views.rodalForm3, name='rodalForm3'),
+    path('uploadImage/<int:id>/', views.uploadImage, name='uploadImage'),
+    path('eliminarImagen/<int:id>/', views.deleteImage, name='eliminarImagen'),
+
+    path('uploadDocs/<int:id>/', views.uploadDocs, name='uploadDocs'),
+    path('eliminarDoc/<int:id>/', views.deleteDoc, name='eliminarDoc'),
+
     path('filtraxhabitat', views.filtraxhabitat, name='filtraxhabitat'),
     path('filtrarxComAut', views.filtrarxComAut, name='filtrarxComAut'),
     path('filtrarxRegBiogeo', views.filtrarxRegBiogeo, name='filtrarxRegBiogeo'),
@@ -38,6 +46,9 @@ urlpatterns = [
 
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 

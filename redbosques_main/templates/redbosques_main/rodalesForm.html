@@ -142,11 +142,16 @@
                     <!--<div class="altDominante">-->
                         <td class="rodal_label">
                             <label for="altDomEspPrin">Altura dominante de la especie principal</label>
+                            {% if form.espprincip_h0.errors %}
+                            <div class="alert alert-danger small">
+                                {{ form.espprincip_h0.errors }}
+                            </div>
+                            {% endif %}
                         </td>
                         <td class="rodal_data">
                             <!--<input type="text" id="altDomEspPrin" class="alturaDominanteEspeciePrincipal form-control">-->
                             {{ form.espprincip_h0 }}
-                            {{ form.espprincip_h0.errors }}
+                            <!--{{ form.espprincip_h0.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <label for="altDomEspPrin">m</label>
@@ -157,11 +162,14 @@
                         <!--<div class="cavCubespPrin">-->
                             <td class="rodal_label">
                                 <label for="cavCubespPrin">Fracción de cavidad cubierta de la especie principal</label>
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.espprinc_fcc.errors }}
+                                </div>
                             </td>
                             <td class="rodal_data">
                                 <!--<input id="cavCubespPrin" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">-->
                                 {{ form.espprinc_fcc }}
-                                {{ form.espprinc_fcc.errors }}
+                                <!--{{ form.espprinc_fcc.errors }}-->
                             </td>
                             <td class="rodal_unidades">
                                 <label for="cavCubespPrin">%</label>
@@ -183,12 +191,16 @@
                     <tr>
                         <td class="rodal_label">
                             <label for="altDomEspPrinAcomp">Altura dominante de la especie principal acompañante</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.espcomp_h0.errors }}
+                            <div>
                         </td>
                         <td class="rodal_data">
                             <!--<input id="altDomEspPrinAcomp" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">-->
                             {{ form.espcomp_h0 }}
-                            {{ form.espcomp_h0.errors }}
-
+                            <!--<div class="form-group has-errors text-danger small">
+                                {{ form.espcomp_h0.errors }}
+                            <div>-->
                         </td>
                         <td class="rodal_unidades">
                             <label for="altDomEspPrinAcomp">m</label>
@@ -197,12 +209,16 @@
                     <tr>
                         <td class="rodal_label">
                             <label for="cavCubespPrinAcomp">Fracción de cavidad cubierta de la especie acompañante</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.espcomp_fcc.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
                             <!--<input id="cavCubespPrinAcomp" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">-->
                             {{ form.espcomp_fcc }}
-                            {{ form.espcomp_fcc.errors }}
-
+                            <!--<div class="form-group has-errors text-danger small">
+                                {{ form.espcomp_fcc.errors }}
+                            </div>-->
                         </td>
                         <td class="rodal_unidades">
                             <label for="cavCubespPrinAcomp">%</label>

@@ -1,6 +1,12 @@
 {% extends "redbosques_main/base.html" %}
 {% load static %}
 {% block extra_css %}
+
+<link href="{% static 'redbosques_main/jQuery-File-Upload-9.28.0/css/jquery.fileupload-ui.css' %}" rel="stylesheet">
+<link href="{% static 'redbosques_main/jQuery-File-Upload-9.28.0/css/jquery.fileupload.css' %}" rel="stylesheet">
+<link href="{% static 'redbosques_main/jQuery-File-Upload-9.28.0/css/style.css' %}" rel="stylesheet">
+<link href="{% static 'redbosques_main/jQuery-File-Upload-9.28.0/css/github/blueimp-gallery.min.css' %}" rel="stylesheet">
+
 {% endblock %}
 {% block main %}
 <div class="container-fluid subheader">
@@ -14,7 +20,7 @@
                     Información rodal
                 </h4>
             </p>
-            <h2>{{ herramientas }}</h2>
+            <!--<h2>{{ herramientas }}</h2>-->
             <!--<h2>Herramienta de evaluación de rodales maduros</h2>-->
         </div>
     </div>
@@ -29,38 +35,84 @@
 <div class="container">
     <div class="row form-group">
         <div class="col-lg-offset-3 col-lg-6">
+
+                <h4>FOTOGRAFÍAS</h4>
+
+                <!--{# 1. BUTTON TO TRIGGER THE ACTION #}-->
+                <button type="button" class="btn btn-primary js-upload-photos">
+                    <span class="glyphicon glyphicon-cloud-upload"></span> Subir fotografias ilustrativas del rodal
+                </button>
+                <p>{{ data.result.error_imagen }}</p>
+                <input id="fileupload" type="file" name="foto" style="display: none" multiple data-url="{% url 'uploadImage' id %}" data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
+                <table id="gallery" class="table table-bordered" style="margin-top: 15px;">
+                  <thead>
+                    <tr>
+                      <th colspan="2" style="text-align: center;">Fotos del rodal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for f in listaFotos %}
+                      <tr>
+                          <td>
+                              <a target="_blank" href="{{ f.foto.url }}"><img style="height: 150px;" src="{{ f.foto.url }}"></a>
+                          </td>
+                          <td>
+                                <p>Nombre: {{ f.nombre_foto }}</p>
+                                <p>{{ f.id_foto }}</p>
+                                <!--<form method="post" enctype="multipart/form-data" action="{% url 'eliminarImagen' f.id_foto %}">-->
+                                {% csrf_token %}
+                                <button class="btn btn-danger btn-sm btn-del-img" id="{{ f.id_foto }}" type="submit" onclick="deleteFile()">Eliminar</button>
+                                <!--</form>-->
+                          </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                {% csrf_token %}
+                <h4>OTROS DOCUMENTOS</h4>
+                <!--<a class="btn btn-selector-mapa" href="#">Subir documentos relevantes</a>
+                <input type="file" name="documentosRodal"/>-->
+
+                <!--{# 1. BUTTON TO TRIGGER THE ACTION #}-->
+                <button type="button" class="btn btn-primary js-upload-photos">
+                    <span class="glyphicon glyphicon-cloud-upload"></span> Subir documentos relevantes
+                </button>
+
+                <input id="docupload" type="file" name="foto" style="display: none" multiple data-url="{% url 'uploadImage' id %}" data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
+
+                <table id="library" class="table table-bordered" style="margin-top: 15px;">
+                  <thead>
+                    <tr>
+                      <th  style="text-align: center;">Documentos del rodal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for d in listaDocs %}
+                      <tr>
+                          <td>
+                              <a target="_blank" href="{{ d.doc.url }}"><img style="height: 150px;" src="{{ f.doc.url }}"></a>
+                              <p>Nombre: {{ d.nombre_doc }}</p>
+                              <button class="btn btn-danger btn-sm btn-del-img" id="{{ d.id_doc }}" type="submit" onclick="deleteFile()">Eliminar</button>
+                          </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
             <form action="{% url 'rodalForm3' id %}" method="POST">
                 <h4>INFORMACIÓN COMPLEMENTARIA</h4>
                     {{ form.otroespflora }}
                     {{ form.otrohics }}
                     {{ form.otroinfo }}
-                    <!--<textarea class="form-control" type="text" placeholder="Otras especies de flora acompañante" cols="67" rows="3"></textarea>
-                    <textarea class="form-control" type="text" placeholder="Otras hábitats de interés comunitario" cols="67" rows="3"></textarea>
-                    <textarea class="form-control" type="text" placeholder="Otra información relevante" cols="67" rows="3"></textarea>-->
-                <h4>FOTOGRAFÍAS</h4>
-                <a class="btn btn-selector-mapa" href="#">Subir fotografias ilustrativas del rodal</a>
-                <input type="file" name="imagenesRodal" accept="image/*" />
-
-                <h4>OTROS DOCUMENTOS</h4>
-                <a class="btn btn-selector-mapa" href="#">Subir documentos relevantes</a>
-                <input type="file" name="documentosRodal"/>
-
-                {% csrf_token %}
                 <input type="submit" class="btn btn-selector-mapa" value="Terminar">
             </form>
         </div>
     </div>
 </div>
-
-
 {% endblock %}
 {% block extra_js %}
-<script>
-
-</script>
 <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
-<!--<script src="{% static 'redbosques_main/javascript/leaflet-bing-layer.min.js' %}"></script>
-<script src="{% static 'redbosques_main/Leaflet.draw-develop/src/leaflet.draw.js' %}"></script>-->
-
-<script src="{% static 'redbosques_main/javascript/rodalesForm.js' %}"></script>
+<script src="{% static 'redbosques_main/javascript/rodalesForm3.js' %}"></script>
+<script src="{% static 'redbosques_main/jQuery-File-Upload-9.28.0/js/vendor/jquery.ui.widget.js' %}"></script>
+<script src="{% static 'redbosques_main/jQuery-File-Upload-9.28.0/js/jquery.iframe-transport.js' %}"></script>
+<script src="{% static 'redbosques_main/jQuery-File-Upload-9.28.0/js/jquery.fileupload.js' %}"></script>
 {% endblock %}

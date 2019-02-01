@@ -1,6 +1,12 @@
 Django==2.1.1
+django-bootstrap-datepicker-plus==3.0.5
+django-bootstrap-datepicker-widget==0.1
 django-cors-headers==2.4.0
 djangorestframework==3.8.2
+Pillow==5.4.1
 pkg-resources==0.0.0
 psycopg2==2.7.5
+pyproj==1.9.5.1
 pytz==2018.5
+Shapely==1.6.4.post2
+

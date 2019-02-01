@@ -5,9 +5,12 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms import DateTimeField
 from bootstrap_datepicker_plus import DatePickerInput
-from redbosques_main.models import Rodal, Tesaurus, TeProvincia, Habitat, TeLpeht, TeHic, TeRegbio, TeTaxon
-
+from redbosques_main.models import Rodal, Tesaurus, TeProvincia, Habitat, TeLpeht, TeHic, TeRegbio, TeTaxon, TeCategoria, TeIndicador, FotosRodal, DocsRodal
+from redbosques_main import validators
+from django.core.exceptions import ValidationError
 from bootstrap_datepicker.widgets import DatePicker
+from django.contrib import messages
+from redbosques.settings import MAX_UPLOAD_SIZE
 
 #from django.utils.translation import gettext as _
 
@@ -89,8 +92,10 @@ class rodalFormFields(ModelForm):
     equipo = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Equipo de campo'}), required=True)
     #espprinc_cod = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
     #espcomp_cod = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
-    espprincip_h0 = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control alturaDominanteEspeciePrincipal', 'id': 'altDomEspPrin'}), required=True)
-    espcomp_h0 = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control alturaDominanteEspeciePrincipalAcomp', 'id': 'altDomEspPrinAcomp'}), required=True)
+
+    espprincip_h0 = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control alturaDominanteEspeciePrincipal', 'id': 'altDomEspPrin'}), required=True)
+
+    espcomp_h0 = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control alturaDominanteEspeciePrincipalAcomp', 'id': 'altDomEspPrinAcomp'}), required=True)
     espprinc_fcc = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control alturaDominanteEspeciePrincipalAcomp', 'id': 'cavCubespPrin'}), required=True)
     espcomp_fcc = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control alturaDominanteEspeciePrincipalAcomp', 'id': 'cavCubespPrinAcomp'}), required=True)
     #usuario = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -104,7 +109,7 @@ class rodalFormFields(ModelForm):
     provincias = TeProvincia.objects.filter(nivel='Província').order_by('cod', 'nombre_es')
     provincia_cod = forms.ModelChoiceField(queryset=provincias, widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Provincia", required=True)
 
-    habLPEHT = TeLpeht.objects.filter(seleccion='True').order_by('nombre')
+    habLPEHT = TeLpeht.objects.filter(seleccion='True').filter(cod__contains='.').order_by('nombre')
     lpeht_cod = forms.ModelChoiceField(queryset=habLPEHT, widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Hábitat CORINE (LPHE)", required=True)
 
     habitatsHIC = TeHic.objects.order_by('nombre_es')
@@ -119,6 +124,64 @@ class rodalFormFields(ModelForm):
 
     #fotoglobo = forms.FileInput(widget=forms.FileInput(attrs={'class': 'form-control'}), required=True)
 
+    def clean_espprincip_h0(self):
+        cleaned_data = self.cleaned_data
+        espprincip_h0_val = cleaned_data.get('espprincip_h0')
+
+        espprincip_h0 = TeIndicador.objects.get(variable_rodal='espprincip_h0')
+
+        if espprincip_h0_val < espprincip_h0.val_minimo:
+            raise ValidationError('El valor es inferior al permitido. valores permitidos(' + str(espprincip_h0.val_minimo) + '-' + str(espprincip_h0.val_maximo) + ')')
+        elif espprincip_h0_val == espprincip_h0.val_alerta:
+            messages.warning(espprincip_h0_val, 'OJO CUIDAO !!')
+        elif espprincip_h0_val > espprincip_h0.val_maximo:
+            raise ValidationError("El valor es mayor al permitido.")
+        else:
+            return espprincip_h0_val
+
+    def clean_espprinc_fcc(self):
+        cleaned_data = self.cleaned_data
+        espprinc_fcc_val = cleaned_data.get('espprinc_fcc')
+
+        espprinc_fcc = TeIndicador.objects.get(variable_rodal='espprinc_fcc')
+
+        if espprinc_fcc_val < espprinc_fcc.val_minimo:
+            raise ValidationError("El valor es inferior al permitido.")
+        elif espprinc_fcc_val > espprinc_fcc.val_maximo:
+            raise ValidationError("El valor es mayor al permitido.")
+        else:
+            return espprinc_fcc_val
+
+    def clean_espcomp_fcc(self):
+        cleaned_data = self.cleaned_data
+        espcomp_fcc_val = cleaned_data.get('espcomp_fcc')
+
+        espcomp_fcc = TeIndicador.objects.get(variable_rodal='espcomp_fcc')
+
+        if espcomp_fcc_val < espcomp_fcc.val_minimo:
+            raise ValidationError("El valor es inferior al permitido.")
+        elif espcomp_fcc_val > espcomp_fcc.val_maximo:
+            raise ValidationError("El valor es mayor al permitido.")
+        else:
+            return espcomp_fcc_val
+
+    def clean_espcomp_h0(self):
+        cleaned_data = self.cleaned_data
+        espcomp_h0_val = cleaned_data.get('espcomp_h0')
+
+        espcomp_h0 = TeIndicador.objects.get(variable_rodal='espcomp_h0')
+
+        if espcomp_h0_val < espcomp_h0.val_minimo:
+            raise ValidationError("El valor es inferior al permitido.")
+        elif espcomp_h0_val == espcomp_h0.val_alerta:
+            messages.warning(espcomp_h0_val, 'OJO CUIDAO !!')
+        elif espcomp_h0_val > espcomp_h0.val_maximo:
+            raise ValidationError("El valor es mayor al permitido.")
+        else:
+            return espcomp_h0_val
+
+
+
     class Meta:
         model = Rodal
         fields = ('datosrestringidos', 'nombre', 'comautonom_cod', 'provincia_cod', 'municipio', 'propietario',
@@ -129,45 +192,206 @@ class rodalFormFields(ModelForm):
 
 
 
-class rodalFormFields2(ModelForm):
+class rodalFormFields2(forms.ModelForm):
 
     numesparb = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
-
-    areabasal = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
-    volmadvivo = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
-    numestratos = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
-    numclasdiam = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
-
-    abundpiesexcep = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
-    volmmpie = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
-    volmmsuelo = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
-    volmmprop = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
-
-    nummicrohab = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
-
-    numfasessil = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
-
-    valagropasant = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
-    valforestant = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
-
-    valforestrec = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
-    valespinvas = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
-    valfragment = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
-    valcaza = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
-    valherbiv = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
-    valfrecuent = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
-    valdurabusos = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
+    areabasal = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
+    volmadvivo = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
+    numestratos = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
+    numclasdiam = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
+    abundpiesexcep = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
+    volmmpie = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
+    volmmsuelo = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
+    volmmprop = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
+    nummicrohab = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
+    numfasessil = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
 
     rodalref = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'boolRodRef'}), required=False)
 
+    valagropasant = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control id_valagropasant', 'type':'hidden', 'value': ''}), required=True)
+    valforestant = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control id_valforestant', 'type': 'hidden', 'value': ''}), required=True)
+    valforestrec = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control id_valforestrec', 'type': 'hidden', 'value': ''}), required=True)
+    valespinvas = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control id_valespinvas', 'type': 'hidden', 'value': ''}), required=True)
+    valfragment = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control id_valfragment', 'type': 'hidden', 'value': ''}), required=True)
+    valcaza = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control id_valcaza', 'type': 'hidden', 'value': ''}), required=True)
+    valherbiv = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control id_valherbiv', 'type': 'hidden', 'value': ''}), required=True)
+    valdurabusos = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control id_valdurabusos', 'type': 'hidden', 'value': ''}), required=True)
+    valfrecuent = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control id_valfrecuent', 'type': 'hidden', 'value': ''}), required=True)
+    valpropbosc56 = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control id_valpropbosc56', 'type': 'hidden', 'value': ''}), required=True)
+
+
+
+
+    def clean_numesparb(self):
+        cleaned_data = self.cleaned_data
+        numesparb_val = cleaned_data.get('numesparb')
+
+        #numesparb = TeIndicador.objects.get(variable_rodal='numesparb').values('val_minimo', 'val_alerta', 'val_maximo')
+        numesparb1 = TeIndicador.objects.get(variable_rodal='numesparb')
+
+        #numesparb_limits = []
+        #for i in numesparb:
+            #numesparb_limits.append({'min': i['val_minimo'], 'alerta': i['val_alerta'], 'max': i['val_maximo']})
+        if numesparb_val < numesparb1.val_minimo:
+            raise ValidationError("El valor es inferior al permitido.")
+        #elif numesparb_val == numesparb1.val_alerta:
+            #messages.warning(numesparb_val, 'OJO CUIDAO !!')
+        elif numesparb_val > numesparb1.val_maximo:
+            raise ValidationError("El valor es mayor al permitido.")
+        else:
+            return numesparb_val
+
+    def clean_areabasal(self):
+        cleaned_data = self.cleaned_data
+        areabasal_val = cleaned_data.get('areabasal')
+
+        areabasal = TeIndicador.objects.get(variable_rodal='areabasal')
+
+        if areabasal_val < areabasal.val_minimo:
+            raise ValidationError("El valor es inferior al permitido.")
+        #elif areabasal_val == areabasal.val_alerta:
+            #messages.warning(areabasal, 'OJO CUIDAO !!')
+        elif areabasal_val > areabasal.val_maximo:
+            raise ValidationError("El valor es mayor al permitido.")
+        else:
+            return areabasal_val
+
+    def clean_volmadvivo(self):
+        cleaned_data = self.cleaned_data
+        volmadvivo_val = cleaned_data.get('volmadvivo')
+
+        volmadvivo = TeIndicador.objects.get(variable_rodal='volmadvivo')
+
+        if volmadvivo_val < volmadvivo.val_minimo:
+            raise ValidationError("El valor es inferior al permitido.")
+        else:
+            return volmadvivo_val
+
+    def clean_numestratos(self):
+        cleaned_data = self.cleaned_data
+        numestratos_val = cleaned_data.get('numestratos')
+
+        numestratos = TeIndicador.objects.get(variable_rodal='numestratos')
+
+        if numestratos_val < numestratos.val_minimo:
+            raise ValidationError("El valor es inferior al permitido.")
+        elif numestratos_val > numestratos.val_maximo:
+            raise ValidationError("El valor es mayor al permitido.")
+        else:
+            return numestratos_val
+
+    def clean_numclasdiam(self):
+        cleaned_data = self.cleaned_data
+        numclasdiam_val = cleaned_data.get('numclasdiam')
+
+        numclasdiam = TeIndicador.objects.get(variable_rodal='numclasdiam')
+
+        if numclasdiam_val < numclasdiam.val_minimo:
+            raise ValidationError("El valor es inferior al permitido.")
+        #elif numclasdiam_val == numclasdiam.val_alerta:
+            #messages.warning(numclasdiam, 'OJO CUIDAO !!')
+        elif numclasdiam_val > numclasdiam.val_maximo:
+            raise ValidationError("El valor es mayor al permitido.")
+        else:
+            return numclasdiam_val
+
+    def clean_abundpiesexcep(self):
+        cleaned_data = self.cleaned_data
+        abundpiesexcep_val = cleaned_data.get('abundpiesexcep')
+
+        abundpiesexcep = TeIndicador.objects.get(variable_rodal='abundpiesexcep')
+
+        if abundpiesexcep_val < abundpiesexcep.val_minimo:
+            raise ValidationError("El valor es inferior al permitido.")
+        #elif abundpiesexcep_val == abundpiesexcep.val_alerta:
+            #messages.warning(abundpiesexcep_val, 'OJO CUIDAO !!')
+        elif abundpiesexcep_val > abundpiesexcep.val_maximo:
+            raise ValidationError("El valor es mayor al permitido.")
+        else:
+            return abundpiesexcep_val
+
+    def clean_volmmpie(self):
+        cleaned_data = self.cleaned_data
+        volmmpie_val = cleaned_data.get('volmmpie')
+
+        volmmpie = TeIndicador.objects.get(variable_rodal='volmmpie')
+
+        if volmmpie_val < volmmpie.val_minimo:
+            raise ValidationError("El valor es inferior al permitido.")
+        #elif volmmpie_val == volmmpie.val_alerta:
+            #messages.warning(volmmpie, 'OJO CUIDAO !!')
+        elif volmmpie_val > volmmpie.val_maximo:
+            raise ValidationError("El valor es mayor al permitido.")
+        else:
+            return volmmpie_val
+
+    def clean_volmmsuelo(self):
+        cleaned_data = self.cleaned_data
+        volmmsuelo_val = cleaned_data.get('volmmsuelo')
+
+        volmmsuelo = TeIndicador.objects.get(variable_rodal='volmmsuelo')
+
+        if volmmsuelo_val < volmmsuelo.val_minimo:
+            raise ValidationError("El valor es inferior al permitido.")
+        #elif volmmsuelo_val == volmmsuelo.val_alerta:
+            #messages.warning(volmmsuelo, 'OJO CUIDAO !!')
+        elif volmmsuelo_val > volmmsuelo.val_maximo:
+            raise ValidationError("El valor es mayor al permitido.")
+        else:
+            return volmmsuelo_val
+
+    def clean_volmmprop(self):
+        cleaned_data = self.cleaned_data
+        volmmprop_val = cleaned_data.get('volmmprop')
+
+        volmmprop=TeIndicador.objects.get(variable_rodal='volmmprop')
+
+        if volmmprop_val < volmmprop.val_minimo:
+            raise ValidationError("El valor es inferior al permitido.")
+        #elif volmmprop_val == volmmprop.val_alerta:
+            #messages.warning(volmmprop, 'OJO CUIDAO !!')
+        elif volmmprop_val > volmmprop.val_maximo:
+            raise ValidationError("El valor es mayor al permitido.")
+        else:
+            return volmmprop_val
+
+
+    def clean_nummicrohab(self):
+        cleaned_data = self.cleaned_data
+        nummicrohab_val = cleaned_data.get('nummicrohab')
+
+        nummicrohab = TeIndicador.objects.get(variable_rodal='nummicrohab')
+
+        if nummicrohab_val < nummicrohab.val_minimo:
+            raise ValidationError("El valor es inferior al permitido.")
+        elif nummicrohab_val > nummicrohab.val_maximo:
+            raise ValidationError("El valor es mayor al permitido.")
+        else:
+            return nummicrohab_val
+
+
+    def clean_numfasessil(self):
+        cleaned_data = self.cleaned_data
+        numfasessil_val = cleaned_data.get('numfasessil')
+
+        numfasessil=TeIndicador.objects.get(variable_rodal='numfasessil')
+
+        if numfasessil_val < numfasessil.val_minimo:
+            raise ValidationError("El valor es inferior al permitido.")
+        elif numfasessil_val > numfasessil.val_maximo:
+            raise ValidationError("El valor es mayor al permitido.")
+        else:
+            return numfasessil_val
 
 
     class Meta:
         model = Rodal
         fields = ('numesparb', 'areabasal', 'volmadvivo', 'numestratos', 'numclasdiam', 'abundpiesexcep', 'volmmpie',
-                  'volmmsuelo', 'volmmprop', 'nummicrohab', 'numfasessil', 'valagropasant', 'valforestant',
+                  'volmmsuelo', 'volmmprop', 'nummicrohab', 'numfasessil', 'valagropasant', 'valforestant', 'valpropbosc56',
                   'valforestrec', 'valespinvas', 'valfragment', 'valcaza', 'valherbiv', 'valfrecuent', 'valdurabusos',
                   'rodalref')
+
+
 
 
 
@@ -179,3 +403,24 @@ class rodalFormFields3(ModelForm):
     class Meta:
         model = Rodal
         fields = ('otroespflora', 'otrohics', 'otroinfo')
+
+
+class rodalFormFields3Foto(ModelForm):
+    class Meta:
+        model = FotosRodal
+        fields = ('foto', )
+
+    def clean_foto(self):
+        foto = self.cleaned_data.get('foto', False)
+        if foto:
+            if foto.size > MAX_UPLOAD_SIZE:
+                raise ValidationError("Imagen demasiado grande ( > 2mb )")
+            return foto
+        else:
+            raise ValidationError("No se pudo leer la imagen cargada")
+
+
+class rodalFormFields3Doc(ModelForm):
+    class Meta:
+        model = DocsRodal
+        fields = ('doc', )

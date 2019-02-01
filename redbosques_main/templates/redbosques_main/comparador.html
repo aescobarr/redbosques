@@ -19,7 +19,7 @@
 </div>
 <div class="container menu-header">
     <div class="row">
-            <h3>Valoración de la madurez</h3>
+            <h3>Comparación de la madurez</h3>
         </div>
     </div>
 </div>
@@ -120,12 +120,12 @@
                             {% for regBio in listaRegBio %}
                                 <option value="{{ regBio.cod }}">
                             {{ regBio.nombre }}
-                        </option>
+                                </option>
                             {% endfor %}
                     </select>
 
                     <form id="selector_rodalRef" class="checkbox" onchange="rodalRefFilterComp()">
-                        <b class="green-font" style="display:inline-block;">Mostrar rodales de referéncia (*)</b>
+                        <b class="green-font" style="display:inline-block;">Mostrar sólo rodales de referéncia (*)</b>
                         <label for="boolRodRefSI">Si</label>
                         <input type="radio" name="boolRodRef" id="boolRodRefSI" value="True" class="boolRodRef" />
                         <label for="boolRodRefNO">No</label>
@@ -159,6 +159,11 @@
         <li class="val-graf valores"><a data-toggle="tab" href="#filtro-valores">Valores</a></li>
         <li class="val-metr metrica"><a data-toggle="tab" href="#filtro-metrica">Valores métricos</a></li>
     </ul>
+</div>
+<div class="container">
+    <a class="btn btn-selector-mapa showAll" href="#">Desplegar todo</a>
+    <a class="btn btn-selector-mapa hideAll" href="#">Colapsar todo</a>
+
 </div>
 
 <div class="container data-table tabla-datos">
@@ -269,7 +274,7 @@
 
 
                 <tr class="lv3 lv3Nat" style="display: none">
-                    <td class="identValores" style="text-indent: 15px;"><span>Área bisimétrica</span></td>
+                    <td class="identValores" style="text-indent: 15px;"><span>Área basimétrica</span></td>
                     <td class="bgColorRod"></td>
                     <td class="bgColorRod"></td>
                     <td id="_naturalidad_complejidad_area_basimetrica" class="bgColorRod">---</td>
@@ -713,7 +718,7 @@
                     <td id="integridadEspacial_tamano_dif" class="col-diff">---</td>
                 </tr>
                 <tr class="lv2 lv2Ie" style="display: none">
-                    <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Contenido forestal</span></th>
+                    <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Continuidad forestal</span></th>
                     <td class="bgColorRod"></td>
 
                         <td id="_integridadEspacial_cont_forest" class="bgColorRod">---</td>

@@ -14,7 +14,7 @@
                     Información rodal
                 </h4>
             </p>
-            <h2>{{ herramientas }}</h2>
+            <!--<h2>{{ herramientas }}</h2>-->
             <!--<h2>Herramienta de evaluación de rodales maduros</h2>-->
         </div>
     </div>
@@ -68,11 +68,14 @@
                     </tr>
                     <tr>
                         <td class="rodal_label">
-                            <label for="id_numesparb">Número de especies arbóreas en el dosel</label>
+                            <label for="id_numesparb">Número de especies arbóreas en el dosel
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.numesparb.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
                             {{ form.numesparb }}
-                            {{ form.numesparb.errors }}
+                            <!--{{ form.numesparb.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                            <span>   </span>
@@ -88,11 +91,14 @@
                     <tr>
                         <td class="rodal_label">
                             <label for="id_areabasal">Área basimétrica media</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.areabasal.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
                            <!--<input id="areaBasimMed" type="text" class="numEspArbDos form-control">-->
                             {{ form.areabasal }}
-                            {{ form.areabasal.errors }}
+                            <!--{{ form.areabasal.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <label class="test-label" for="id_areabasal">m<sup>2</sup>/ha</label>
@@ -102,11 +108,14 @@
                     <tr>
                         <td class="rodal_label">
                             <label for="id_volmadvivo">Volumen de madera en pie</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.volmadvivo.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
                            <!--<input id="volMadPie" type="text" class="numEspArbDos form-control">-->
                             {{ form.volmadvivo }}
-                            {{ form.volmadvivo.errors }}
+                            <!--{{ form.volmadvivo.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <label class="test-label" for="id_volmadvivo">m<sup>3</sup>/ha</label>
@@ -116,11 +125,14 @@
                     <tr>
                         <td class="rodal_label">
                             <label for="id_numestratos">Número de estratos verticales de vegetación arbolada del dosel</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.numestratos.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
                            <!--<input id="numEstVert" type="text" class="numEspArbDos form-control">-->
                             {{ form.numestratos }}
-                            {{ form.numestratos.errors }}
+                            <!--{{ form.numestratos.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <label class="test-label" for="id_numestratos">m<sup>2</sup>/ha</label>
@@ -130,11 +142,14 @@
                     <tr>
                         <td class="rodal_label">
                             <label for="id_numclasdiam">Número de clases diamétricas</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.numclasdiam.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
                            <!--<input id="numClasDiam" type="text" class="numEspArbDos form-control">-->
                             {{ form.numclasdiam }}
-                            {{ form.numclasdiam.errors }}
+                            <!--{{ form.numclasdiam.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <label class="test-label" for="id_numclasdiam">m<sup>2</sup>/ha</label>
@@ -149,11 +164,14 @@
                     <tr>
                         <td class="rodal_label">
                             <label for="id_abundpiesexcep">Abundancia de pies excepcionales</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.abundpiesexcep.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
                            <!--<input id="abundPiesExcep" type="text" class="numEspArbDos form-control">-->
                             {{ form.abundpiesexcep }}
-                            {{ form.abundpiesexcep.errors }}
+                            <!--{{ form.abundpiesexcep.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <label class="test-label" for="id_abundpiesexcep">n/ha</label>
@@ -163,11 +181,14 @@
                     <tr>
                         <td class="rodal_label">
                             <label for="id_volmmpie">Volumen de madera muerta medio/gruesa en pie</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.volmmpie.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
                            <!--<input id="volMadMuertaPie" type="text" class="numEspArbDos form-control">-->
                             {{ form.volmmpie }}
-                            {{ form.volmmpie.errors }}
+                            <!--{{ form.volmmpie.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <label class="test-label" for="id_volmmpie">m<sup>3</sup>/ha</label>
@@ -177,11 +198,14 @@
                     <tr>
                         <td class="rodal_label">
                             <label for="id_volmmsuelo">Volumen de madera muerta medio/gruesa en suelo</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.volmmsuelo.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
                            <!--<input id="volMadMuertaSuelo" type="text" class="numEspArbDos form-control">-->
                             {{ form.volmmsuelo }}
-                            {{ form.volmmsuelo.errors }}
+                            <!--{{ form.volmmsuelo.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <label class="test-label" for="id_volmmsuelo">m<sup>3</sup>/ha</label>
@@ -191,11 +215,14 @@
                     <tr>
                         <td class="rodal_label">
                             <label for="idvolmmprop">Proporción de madera muerta medio/gruesa</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.volmmprop.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
                            <!--<input id="propMadMuertaMedGru" type="text" class="numEspArbDos form-control">-->
                             {{ form.volmmprop }}
-                            {{ form.volmmprop.erros }}
+                            <!--{{ form.volmmprop.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <label class="test-label" for="id_volmmprop">%</label>
@@ -211,11 +238,14 @@
                     <tr>
                         <td class="rodal_label">
                             <label for="id_nummicrohab">Número de tipos de microhábitats en más de un pie/ha</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.nummicrohab.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
                            <!--<input id="numTipMicMasPie" type="text" class="numEspArbDos form-control">-->
                             {{ form.nummicrohab }}
-                            {{ form.nummicrohab.errors }}
+                            <!--{{ form.nummicrohab.errors }}-->
 
                         </td>
                         <td class="rodal_unidades">
@@ -232,11 +262,14 @@
                     <tr>
                         <td class="rodal_label">
                             <label for="id_numfasessil">Fases silvogenéticas presentes en el rodal</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.numfasessil.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
                            <!--<input id="fasesSilvogen" type="text" class="numEspArbDos form-control">-->
                             {{ form.numfasessil }}
-                            {{ form.numfasessil.errors }}
+                            <!--{{ form.numfasessil.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <!--<label class="test-label" for="areaBasimMed">%</label>-->
@@ -258,10 +291,20 @@
 
                     <tr>
                         <td class="rodal_label">
-                            <label for="continTempProp1956">Continuidad temporal como proporción de bosque en 1956</label>
+                            <label for="id_valpropbosc56">Continuidad temporal como proporción de bosque en 1956</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.valpropbosc56.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
-                           <input id="continTempProp1956" type="text" class="numEspArbDos form-control">
+                            <select id="id_valpropbosc56" class="form-control selectBox" name="RegioBiogeo">
+                                <option value="null" selected="selected">---------</option>
+                                    {% for v1 in val56 %}
+                                        <option value="{{ v1.categoria }}">{{ v1.categoria }}</option>
+                                    {% endfor %}
+                            </select>
+                            {{ form.valpropbosc56 }}
+                            <!--{{ form.valpropbosc56.errors }}-->
 
                         </td>
                         <td class="rodal_unidades">
@@ -272,11 +315,19 @@
                     <tr>
                         <td class="rodal_label">
                             <label for="id_valagropasant">Valores de usos agropastorales</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.valagropasant.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
-                           <!--<input id="valoresAgroPast" type="text" class="numEspArbDos form-control">-->
+                            <select id="id_valagropasant" class="form-control selectBox" name="">
+                                <option value="null" selected="selected">---------</option>
+                                    {% for v2 in valAgropAnt %}
+                                        <option value="{{ v2.categoria }}">{{ v2.categoria }}</option>
+                                    {% endfor %}
+                            </select>
                             {{ form.valagropasant }}
-                            {{ form.valagropasant.errors }}
+                            <!--{{ form.valagropasant.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <label class="test-label" for="id_valagropasant">%</label> <a href="#">(?)</a>
@@ -286,11 +337,19 @@
                     <tr>
                         <td class="rodal_label">
                             <label for="id_valforestant">Valores de usos forestales</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.valforestant.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
-                           <!--<input id="valoresUsosForestHH" type="text" class="numEspArbDos form-control">-->
+                           <select id="id_valforestant" class="form-control selectBox" name="">
+                                <option value="null" selected="selected">---------</option>
+                                {% for v3 in valFor %}
+                                    <option value="{{ v3.categoria }}">{{ v3.categoria }}</option>
+                                {% endfor %}
+                            </select>
                             {{ form.valforestant }}
-                            {{ form.valforestant.errors }}
+                            <!--{{ form.valforestant.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <!--<label class="test-label" for="areaBasimMed">%</label>-->
@@ -306,11 +365,19 @@
                     <tr>
                         <td class="rodal_label">
                             <label for="id_valforestrec">Valor de usos forestales</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.valforestrec.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
-                           <!--<input id="valoresUsosForestREC" type="text" class="numEspArbDos form-control">-->
+                            <select id="id_valforestrec" class="form-control selectBox" name="" onchange="">
+                                <option value="null" selected="selected">---------</option>
+                                {% for v4 in valForRec %}
+                                    <option value="{{ v4.categoria }}">{{ v4.categoria }}</option>
+                                {% endfor %}
+                            </select>
                             {{ form.valforestrec }}
-                            {{ form.valforestrec.errors }}
+                            <!--{{ form.valforestrec.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <!--<label class="test-label" for="areaBasimMed">%</label>-->
@@ -320,11 +387,19 @@
                     <tr>
                         <td class="rodal_label">
                             <label for="id_valespinvas">Valor de especies invasoras</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.valespinvas.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
-                           <!--<input id="valEspInv" type="text" class="numEspArbDos form-control">-->
+                            <select id="id_valespinvas" class="form-control selectBox" name="" onchange="">
+                                <option value="null" selected="selected">---------</option>
+                                {% for v5 in valEsp %}
+                                <option value="{{ v5.categoria }}">{{ v5.categoria }}</option>
+                                {% endfor %}
+                            </select>
                             {{ form.valespinvas }}
-                            {{ form.valespinvas.errors }}
+                            <!--{{ form.valespinvas.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <!--<label class="test-label" for="areaBasimMed">%</label>-->
@@ -334,11 +409,19 @@
                     <tr>
                         <td class="rodal_label">
                             <label for="id_valfragment">Valor de causas de fragmentación</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.valfragment.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
-                           <!--<input id="ValCausFrag" type="text" class="numEspArbDos form-control">-->
+                            <select id="id_valfragment" class="form-control selectBox" name="" onchange="">
+                                <option value="null" selected="selected">---------</option>
+                                {% for v6 in valFrag %}
+                                <option value="{{ v6.categoria }}">{{ v6.categoria }}</option>
+                                {% endfor %}
+                            </select>
                             {{ form.valfragment }}
-                            {{ form.valfragment.errors }}
+                            <!--{{ form.valfragment.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <!--<label class="test-label" for="areaBasimMed">%</label>-->
@@ -347,12 +430,20 @@
 
                     <tr>
                         <td class="rodal_label">
-                            <label for="i_valcaza">Valor de actividad cinegética</label>
+                            <label for="id_valcaza">Valor de actividad cinegética</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.valcaza.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
-                           <!--<input id="valorActCineget" type="text" class="numEspArbDos form-control">-->
+                            <select id="id_valcaza" class="form-control selectBox" name="" onchange="">
+                                <option value="null" selected="selected">---------</option>
+                                    {% for v7 in valCaza %}
+                                        <option value="{{ v7.categoria }}">{{ v7.categoria }}</option>
+                                    {% endfor %}
+                            </select>
                             {{ form.valcaza }}
-                            {{ form.valcaza.errors }}
+                            <!--{{ form.valcaza.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <!--<label class="test-label" for="areaBasimMed">%</label>-->
@@ -362,11 +453,19 @@
                     <tr>
                         <td class="rodal_label">
                             <label for="id_valherbiv">Valor de herbívora y/o ramoneo</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.valherbiv.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
-                           <!--<input id="valHerbRamoneo" type="text" class="numEspArbDos form-control">-->
+                            <select id="id_valherbiv" class="form-control selectBox" name="" onchange="">
+                                <option value="null" selected="selected">---------</option>
+                                    {% for v8 in valHerb %}
+                                        <option value="{{ v8.categoria }}">{{ v8.categoria }}</option>
+                                {% endfor %}
+                            </select>
                             {{ form.valherbiv }}
-                            {{ form.valherbiv.errors }}
+                            <!--{{ form.valherbiv.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <!--<label class="test-label" for="areaBasimMed">%</label>-->
@@ -376,11 +475,19 @@
                     <tr>
                         <td class="rodal_label">
                             <label for="id_valfrecuent">Valor de frecuentación</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.valfrecuent.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
-                           <!--<input id="valorFrecuent" type="text" class="numEspArbDos form-control">-->
+                            <select id="id_valfrecuent" class="form-control selectBox" name="" onchange="">
+                                <option value="null" selected="selected">---------</option>
+                                    {% for v9 in valFrec %}
+                                        <option value="{{ v9.categoria }}">{{ v9.categoria }}</option>
+                                {% endfor %}
+                            </select>
                             {{ form.valfrecuent }}
-                            {{ form.valfrecuent.errors }}
+                            <!--{{ form.valfrecuent.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <!--<label class="test-label" for="areaBasimMed">%</label>-->
@@ -390,11 +497,21 @@
                     <tr>
                         <td class="rodal_label">
                             <label for="id_valdurabusos">Valor de durabilidad de los usos</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.valdurabusos.errors }}
+                            </div>
                         </td>
                         <td class="rodal_data">
-                           <!--<input id="valorDurabUsos" type="text" class="numEspArbDos form-control">-->
+                           <select id="id_valdurabusos" class="form-control selectBox" name="" onchange="">
+                            <option value="null" selected="selected">---------</option>
+                                {% for v10 in valDurab %}
+                                    <option value="{{ v10.categoria }}">
+                                {{ v10.categoria }}
+                                    </option>
+                                {% endfor %}
+                            </select>
                             {{ form.valdurabusos }}
-                            {{ form.valdurabusos.errors }}
+                            <!--{{ form.valdurabusos.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <!--<label class="test-label" for="areaBasimMed">%</label>-->
@@ -415,7 +532,7 @@
                            <input id="tamRodal" type="text" value="{{ areaHectareas }}" class="numEspArbDos form-control" disabled>
                         </td>
                         <td class="rodal_unidades">
-                            <label class="test-label" for="areaBasimMed">ha</label>
+                            <label class="test-label" for="tamRodal">ha</label>
                         </td>
                     </tr>
 
@@ -427,7 +544,7 @@
                            <input id="contManchaForest" type="text" value="{{ contManchForestKM2 }}" class="numEspArbDos form-control" disabled>
                         </td>
                         <td class="rodal_unidades">
-                            <label class="test-label" for="areaBasimMed">Km<sup>2</sup></label>
+                            <label class="test-label" for="contManchaForest">Km<sup>2</sup></label>
                         </td>
                     </tr>
 
@@ -439,7 +556,7 @@
                             <input id="densidadBosque" type="text" value="{{ densBosquexcent }}" class="numEspArbDos form-control" disabled>
                         </td>
                         <td class="rodal_unidades">
-                            <label class="test-label" for="areaBasimMed">%</label>
+                            <label class="test-label" for="densidadBosque">%</label>
                         </td>
                     </tr>
 
@@ -451,7 +568,7 @@
                            <input id="distCoreArea" type="text" value="{{ distCoreAreaKM }}" class="numEspArbDos form-control" disabled>
                         </td>
                         <td class="rodal_unidades">
-                            <label class="test-label" for="areaBasimMed">Km</label>
+                            <label class="test-label" for="distCoreArea">Km</label>
                         </td>
                     </tr>
 
@@ -478,5 +595,5 @@
 <script src="{% static 'redbosques_main/Leaflet.draw-develop/src/leaflet.draw.js' %}"></script>-->
 <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
 
-<script src="{% static 'redbosques_main/javascript/rodalesForm.js' %}"></script>
+<script src="{% static 'redbosques_main/javascript/rodalesForm2.js' %}"></script>
 {% endblock %}

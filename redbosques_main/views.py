@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht, Tesaurus, User
+from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht, Tesaurus, User, TeCategoria, FotosRodal, DocsRodal
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from django.urls import reverse
 from django.http import JsonResponse
 import decimal
 import json
@@ -9,10 +10,12 @@ from django.db.models import Avg, StdDev
 from redbosques.settings_local import URL_BASE
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from redbosques.forms import RegistrationForm, LoginForm, rodalFormFields, rodalFormFields2, rodalFormFields3
+from redbosques.forms import RegistrationForm, LoginForm, rodalFormFields, rodalFormFields2, rodalFormFields3, rodalFormFields3Foto, rodalFormFields3Doc
 from django.contrib import messages
 from django.contrib import auth
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon
+
+
 from django.contrib.auth import authenticate
 
 import pyproj
@@ -24,6 +27,8 @@ import shapely.wkt
 from django.db import connection
 from collections import namedtuple
 from django.http import HttpResponseRedirect
+import os
+from django.conf import settings
 
 
 
@@ -44,11 +49,17 @@ def index(request):
 
 @login_required(login_url="login/")
 def menu(request):
+    current_user = request.user
+    user = User.objects.get(usuario=current_user)
+
+
     rodalesSelector = []
-    rodals_list = WebMapa.objects.filter(eje_cod='nm').order_by('nombre')
+    #rodals_list = WebMapa.objects.filter(eje_cod='nm').order_by('nombre')
+    rodals_list = Rodal.objects.filter(usuario=user).order_by('nombre')
 
     for r in rodals_list:
-        rodalesSelector.append({'id_rodal': r.id_rodal, 'nombre': r.nombre})
+        #rodalesSelector.append({'id_rodal': r.id_rodal, 'nombre': r.nombre})
+        rodalesSelector.append({'id_rodal': r.id, 'nombre': r.nombre})
 
     context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'rodalesSelector':rodalesSelector}
     return render(request, 'redbosques_main/menu.html', context)
@@ -1417,7 +1428,7 @@ def register(request):
     context = {'user_form': user_form}
     return render(request, 'registration/registration.html', context)
 
-
+@login_required(login_url="login/")
 def rodalForm(request):
     if request.method == 'POST':
         form = rodalFormFields(request.POST or None)
@@ -1441,123 +1452,326 @@ def rodalForm(request):
             dades.geom = mp
             dades.save()
 
-        #return HttpResponseRedirect('/redbosques/rodalForm2/' + str(dades.id) + '/')
-        return redirect('rodalForm2', id=dades.id)
-
-
+            #return HttpResponseRedirect('/redbosques/rodalForm2/' + str(dades.id) + '/')
+            return redirect('rodalForm2', id=dades.id)
     else:
         form = rodalFormFields()
-        context = {'form': form}
+    context = {'form': form}
 
     return render(request, 'redbosques_main/rodalesForm.html', context)
 
-
+@login_required(login_url="login/")
 def rodalForm2(request, id=None):
 
-    if request.method == 'POST':
-        #form = rodalFormFields2(request.POST or None)
+    datos = get_object_or_404(Rodal, id=id)
+    geom = datos.geom
+    area = geom.area
 
-        datos = get_object_or_404(Rodal, id=id)
+    categorias = TeCategoria.objects.all()
+
+    val56 = categorias.filter(variable_rodal='valpropbosc56').order_by('categoria')
+    valFrec = categorias.filter(variable_rodal='valfrecuent').order_by('categoria')
+    valAgropastAnt = categorias.filter(variable_rodal='valagropasant').order_by('categoria')
+    valCaza = categorias.filter(variable_rodal='valcaza').order_by('categoria')
+    valDurab = categorias.filter(variable_rodal='valdurabusos').order_by('categoria')
+    valEsp = categorias.filter(variable_rodal='valespinvas').order_by('categoria')
+    valFor = categorias.filter(variable_rodal='valforestant').order_by('categoria')
+    valForRec = categorias.filter(variable_rodal='valforestrec').order_by('categoria')
+    valFrag = categorias.filter(variable_rodal='valfragment').order_by('categoria')
+    valHerb = categorias.filter(variable_rodal='valforestrec').order_by('categoria')
+
+    val56Array = []
+    for v1 in val56:
+        val56Array.append({'categoria': v1.categoria})
+
+    valFrecArray = []
+    for v2 in valFrec:
+        valFrecArray.append({'categoria': v2.categoria})
+
+    valAgropastAntArray = []
+    for v3 in valAgropastAnt:
+        valAgropastAntArray.append({'categoria': v3.categoria})
+
+    valCazaArray = []
+    for v4 in valCaza:
+        valCazaArray.append({'categoria': v4.categoria})
+
+    valDurabArray = []
+    for v5 in valDurab:
+        valDurabArray.append({'categoria': v5.categoria})
+
+    valEspArray = []
+    for v6 in valEsp:
+        valEspArray.append({'categoria': v6.categoria})
+
+    valForArray = []
+    for v7 in valFor:
+        valForArray.append({'categoria': v7.categoria})
+
+    valForRecArray = []
+    for v8 in valForRec:
+        valForRecArray.append({'categoria': v8.categoria})
+
+    valFragArray = []
+    for v9 in valFrag:
+        valFragArray.append({'categoria': v9.categoria})
+
+    valHerbArray = []
+    for v10 in valHerb:
+        valHerbArray.append({'categoria': v10.categoria})
+
+    cursor = connection.cursor()
+
+    ######## Continuidad mancha forestal #########
+
+    contManchForestSQL = cursor.execute('select (stats).mean from '
+                                        '( select st_summarystats(st_clip( st_union(rast), ST_GeomFromText(%s, 25830),true)) '
+                                        'as stats from carto.bosque_cf '
+                                        'WHERE ST_Intersects(rast, ST_GeomFromText(%s, 25830)) ) as foo',
+                                        [geom.wkt, geom.wkt])
+
+    contManchForest = cursor.fetchall()
+
+    ##############################################
+
+    ######## Densidad de bosque #########
+
+    densBosqueSQL = cursor.execute('select (stats).mean from '
+                                   '( select st_summarystats(st_clip( st_union(rast), ST_GeomFromText(%s, 25830),true)) '
+                                   'as stats from carto.bosque_sf '
+                                   'WHERE ST_Intersects(rast, ST_GeomFromText(%s, 25830)) ) as foo',
+                                   [geom.wkt, geom.wkt])
+
+    densBosque = cursor.fetchall()
+
+    ##############################################
+
+    ######## Distancia a la core área #########
+
+    distCoreAreaSql = cursor.execute('select (stats).mean from '
+                                     '( select st_summarystats(st_clip( st_union(rast), ST_GeomFromText(%s, 25830),true)) '
+                                     'as stats from carto.bosque_ps '
+                                     'WHERE ST_Intersects(rast, ST_GeomFromText(%s, 25830)) ) as foo',
+                                     [geom.wkt, geom.wkt])
+
+    distCoreArea = cursor.fetchall()
+    ##############################################
+
+    areaHectareas = round(area / 10000, 2)
+    contManchForestKM2 = round(contManchForest[0][0] / 1000, 2)
+    densBosquexcent = round(densBosque[0][0] / 100, 2)
+    distCoreAreaKM = round(distCoreArea[0][0] / 1000, 2)
+
+    # print("Área: " + str(areaHectareas) + " ha")
+    # print("Continuidad mancha forestal: " + str(contManchForestKM2) + " km2")
+    # print("Densidad de bosque: " + str(densBosquexcent) + " %")
+    # print("Distancia a la core área: " + str(distCoreAreaKM) + " Km")
+
+    if request.method == 'POST':
+        form = rodalFormFields2(request.POST or None, instance=datos)
+        #form = rodalFormFields2(request.POST or None)
         #current_user = request.user
         #user = User.objects.get(usuario=current_user)
 
-        form = rodalFormFields2(request.POST, instance=datos)
-
+        #form = form.validate_numesparb()
         if form.is_valid():
             dades = form.save(commit=False)
             dades.save()
+            return redirect('rodalForm3', id=id)
 
-        return redirect('rodalForm3', id=dades.id)
+        '''
+        else:
+            url = reverse('rodalForm2', kwargs={'id': form.instance.id})
+            return HttpResponseRedirect(url)
+            #return render(request, 'redbosques_main/rodalesForm2.html',{'form' : form})
+        '''
 
     else:
-        form = rodalFormFields2()
+        #form = rodalFormFields2()
+        #datos = get_object_or_404(Rodal, pk=id)
+        form = rodalFormFields2(instance=datos)
 
-        datos = get_object_or_404(Rodal, pk=id)
-        geom = datos.geom
-        area = geom.area
+    context = {'herramientas': 'Herramienta de evaluación de rodales maduros',
+               'areaHectareas': areaHectareas,
+               'contManchForestKM2': contManchForestKM2,
+               'densBosquexcent': densBosquexcent,
+               'distCoreAreaKM': distCoreAreaKM,
+               'form': form,
+               'id': id,
+               'val56': val56Array,
+               'valFrec': valFrecArray,
+               'valAgropAnt': valAgropastAntArray,
+               'valCaza': valCazaArray,
+               'valDurab': valDurabArray,
+               'valEsp': valEspArray,
+               'valFor': valForArray,
+               'valForRec': valForRecArray,
+               'valFrag': valFragArray,
+               'valHerb': valHerbArray
+               }
 
-        cursor = connection.cursor()
-
-        ######## Continuidad mancha forestal #########
-
-        contManchForestSQL = cursor.execute('select (stats).mean from '
-                                            '( select st_summarystats(st_clip( rast, ST_GeomFromText(%s, 25830),true)) '
-                                            'as stats from carto.bosque_cf '
-                                            'WHERE ST_Intersects(rast, ST_GeomFromText(%s, 25830)) ) as foo',
-                                            [geom.wkt, geom.wkt])
-
-        contManchForest = cursor.fetchall()
-
-        ##############################################
-
-        ######## Densidad de bosque #########
-
-        densBosqueSQL = cursor.execute('select (stats).mean from '
-                                       '( select st_summarystats(st_clip( rast, ST_GeomFromText(%s, 25830),true)) '
-                                       'as stats from carto.bosque_sf '
-                                       'WHERE ST_Intersects(rast, ST_GeomFromText(%s, 25830)) ) as foo',
-                                       [geom.wkt, geom.wkt])
-
-        densBosque = cursor.fetchall()
-
-        ##############################################
-
-        ######## Distancia a la core área #########
-
-        distCoreAreaSql = cursor.execute('select (stats).mean from '
-                                         '( select st_summarystats(st_clip( rast, ST_GeomFromText(%s, 25830),true)) '
-                                         'as stats from carto.bosque_ps '
-                                         'WHERE ST_Intersects(rast, ST_GeomFromText(%s, 25830)) ) as foo',
-                                         [geom.wkt, geom.wkt])
-
-        distCoreArea = cursor.fetchall()
-        ##############################################
-
-        areaHectareas = round(area/10000, 2)
-        contManchForestKM2 = round(contManchForest[1][0]/1000, 2)
-        densBosquexcent = round(densBosque[0][0]/100, 2)
-        distCoreAreaKM = round(distCoreArea[0][0]/1000, 2)
-
-        print("Área: " + str(areaHectareas) + " ha")
-        print("Continuidad mancha forestal: " + str(contManchForestKM2) + " km2")
-        print("Densidad de bosque: " + str(densBosquexcent) + " %")
-        print("Distancia a la core área: " + str(distCoreAreaKM) + " Km")
-
-        context = {'herramientas': 'Herramienta de evaluación de rodales maduros',
-                   'areaHectareas': areaHectareas,
-                    'contManchForestKM2': contManchForestKM2,
-                    'densBosquexcent': densBosquexcent,
-                    'distCoreAreaKM': distCoreAreaKM,
-                   'form': form,
-                   'id': id}
-
-        return render(request, 'redbosques_main/rodalesForm2.html', context)
+    return render(request, 'redbosques_main/rodalesForm2.html', context)
 
 
+@login_required(login_url="login/")
 def rodalForm3(request, id):
-
     if request.method == 'POST':
-        #form = rodalFormFields3(request.POST or None)
-
-        datos = get_object_or_404(Rodal, id=id)
-
-        form = rodalFormFields3(request.POST, instance=datos)
-
-        if form.is_valid():
-            dades = form.save(commit=False)
-            dades.save()
-
-        return redirect('menu')
-
+        print('Post')
     else:
-        form = rodalFormFields3()
+        print('Get')
+        id_rodal = id
+        allFotos = FotosRodal.objects.all()
+        listaFotos = allFotos.filter(id_rodal=id_rodal)
 
-        datos = get_object_or_404(Rodal, pk=id)
+        fotos = []
+        for lf in listaFotos:
+            fotos.append({
+                'id_foto': lf.id_foto,
+                'nombre_foto': lf.nombre_foto,
+                'foto': lf.foto
+            })
 
-        context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'form': form, 'id': id}
+        allDocs = DocsRodal.objects.all()
+        listaDocs = allDocs.filter(id_rodal=id_rodal)
+
+        docs = []
+        for ld in listaDocs:
+            docs.append({
+                'id_doc': ld.id_foto,
+                'nombre_doc': ld.nombre_docs,
+                'doc': ld.doc
+            })
+
+        context = {'listaFotos': fotos, 'id': id_rodal, 'listaDocs': docs}
         return render(request, 'redbosques_main/rodalesForm3.html', context)
 
 
+
+@login_required(login_url="login/")
+def uploadImage(request, id):
+
+    if request.method == 'POST':
+
+        form = rodalFormFields3Foto(request.POST, request.FILES)
+
+        if form.is_valid():
+            foto = form.save(commit=False)
+            foto.id_rodal = Rodal.objects.get(id=id)
+            foto.nombre_foto = foto.foto.name
+            print(foto.nombre_foto)
+            foto.save()
+            data = {'is_valid': True, 'nombre_foto': foto.nombre_foto, 'url': foto.foto.url, 'id_foto': foto.id_foto}
+        else:
+            print(form.errors)
+            errorMessage = "La imagen supera el tamaño permitido (2MB)"
+            data = {'is_valid': False, 'error_imagen': form.errors['foto']}
+        return JsonResponse(data)
+    else:
+
+        '''urlFotos = settings.MEDIA_ROOT + "/fotos/" + str(id)
+
+        print(urlFotos)
+
+        if os.path.exists(urlFotos):
+            print("Si que existe !")
+        else:
+            print("No existe !")
+            os.makedirs(urlFotos)'''
+
+        id_rodal = id
+        allFotos = FotosRodal.objects.all()
+        listaFotos = allFotos.filter(id_rodal=id_rodal)
+
+        fotos = []
+        for lf in listaFotos:
+            fotos.append({
+                'id_foto': lf.id_foto,
+                'nombre_foto': lf.nombre_foto,
+                'foto': lf.foto
+            })
+
+        context = {'listaFotos': fotos, 'id': id_rodal}
+        return render(request, 'redbosques_main/rodalesForm3.html', context)
+
+@api_view(['POST'])
+@login_required(login_url="login/")
+def deleteImage(request, id):
+
+    rd = FotosRodal.objects.filter(id_foto=id).values('id_rodal')
+
+    rodalFotos = []
+    for r in rd:
+        id_rodal = r['id_rodal']
+        '''rodalFotos.append({
+            'id_rodal': 
+        })'''
+
+    #id_rodal = rodalFotos[0].id_rodal
+
+    if request.method == 'POST':
+        foto = FotosRodal.objects.get(id_foto=id)
+        foto.delete()
+    #return redirect('rodalForm3', id=id_rodal)
+
+    context = {'id': id_rodal}
+
+    return Response(context)
+
+
+@login_required(login_url="login/")
+def uploadDocs(request, id):
+
+    if request.method == 'POST':
+
+        form = rodalFormFields3Doc(request.POST, request.FILES)
+
+        if form.is_valid():
+            doc = form.save(commit=False)
+            doc.id_rodal = Rodal.objects.get(id=id)
+            doc.nombre_foto = doc.doc.name
+            print(doc.nombre_doc)
+            doc.save()
+            data = {'is_valid': True, 'nombre_doc': doc.nombre_doc, 'url': doc.doc.url, 'id_doc': doc.id_doc}
+        else:
+            data = {'is_valid': False}
+        return JsonResponse(data)
+    else:
+        id_rodal = id
+        allDocs = DocsRodal.objects.all()
+        listaDocs = allDocs.filter(id_rodal=id_rodal)
+
+        docs = []
+        for ld in listaDocs:
+            docs.append({
+                'id_foto': ld.id_foto,
+                'nombre_foto': ld.nombre_foto,
+                'foto': ld.foto
+            })
+
+        context = {'listaFotos': docs, 'id': id_rodal}
+        return render(request, 'redbosques_main/rodalesForm3.html', context)
+
+@api_view(['POST'])
+@login_required(login_url="login/")
+def deleteDoc(request, id):
+
+    rd = FotosRodal.objects.filter(id_doc=id).values('id_rodal')
+
+    rodalFotos = []
+    for d in rd:
+        id_rodal = d['id_rodal']
+        '''rodalFotos.append({
+            'id_rodal': 
+        })'''
+
+    if request.method == 'POST':
+        doc = DocsRodal.objects.get(id_doc=id)
+        doc.delete()
+    #return redirect('rodalForm3', id=id_rodal)
+
+    context = {'id': id_rodal}
+
+    return Response(context)
 
 ######################## Filtres data table rodales ##################################
 

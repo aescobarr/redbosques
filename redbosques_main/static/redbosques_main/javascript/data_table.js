@@ -58,6 +58,37 @@ $('tr.lv2').on("click", function(){
 });
 
 
+
+$('.showAll').on("click", function(){
+
+    $('.lv2Nat').toggle();
+    $('.lv2Hh').toggle();
+    $('.lv2Ie').toggle();
+
+    var validation = $('.lv2Nat').css("display");
+
+    if(($('.lv2Nat').css("display")) == "none"){
+        $('.lv3Nat').hide();
+    }
+
+    if(($('.lv2Hh').css("display")) == "none"){
+        $('.lv3Hh').hide();
+    }
+
+});
+
+
+$('.hideAll').on("click", function(){
+
+    $('.lv2Nat').hide();
+    $('.lv2Hh').hide();
+    $('.lv2Ie').hide();
+
+
+});
+
+
+
 var rodalData = function(){
 
     url = '/redbosques/valorRodal';

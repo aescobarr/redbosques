@@ -70,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -111,6 +112,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#MAX_UPLOAD_SIZE = 5242880
+MAX_UPLOAD_SIZE = 2097152
+#MAX_UPLOAD_SIZE = 10485760
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
@@ -137,8 +141,9 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-MEDIA_ROOT =  BASE_DIR + '/fotos/'
+#MEDIA_ROOT =  BASE_DIR + '/fotos/'
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGIN_URL = '/redbosques/login'
 LOGIN_REDIRECT_URL = BASE_DIR + '/menu'
