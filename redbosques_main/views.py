@@ -27,8 +27,7 @@ import shapely.wkt
 from django.db import connection
 from collections import namedtuple
 from django.http import HttpResponseRedirect
-import os
-from django.conf import settings
+from django.http import Http404
 
 
 
@@ -329,6 +328,84 @@ def datos_mapa(request):
     return Response(context)
 
 
+def comparador_new(request, id = None):
+    init_params = {}
+    if id is not None:
+        valors_ini = WebMapaValAmb.objects.filter(id_rodal=id).distinct().values('habitat_cod','ccaa_nom','regbio_cod').first()
+
+        if valors_ini is None:
+            raise Http404("No hay datos de comparacion para el rodal seleccionado")
+
+        # recuperar hàbitat inicial, ccaa inicial, regio inicial
+        habitat_ini = valors_ini['habitat_cod']
+        ccaa_ini = valors_ini['ccaa_nom']
+        regbio_ini = valors_ini['regbio_cod']
+
+        dades_ini = list(WebMapaValAmb.objects.filter(habitat_cod=habitat_ini).values())
+
+        if len(dades_ini) > 0:
+            cc_aa_ini_list = []
+            reg_ini_list = []
+            rodals_ini_list = []
+            # carregar comunitats per hàbitat inicial
+
+            already_in_there = set()
+            for d in dades_ini:
+                if not d['ccaa_nombre'] in already_in_there:
+                    already_in_there.add(d['ccaa_nombre'])
+                    cc_aa_ini_list.append({'codigo': d['ccaa_nom'], 'nombre_es': d['ccaa_nombre']})
+            cc_aa_ini_list.sort(key=lambda x: x['nombre_es'])
+
+            # carregar regio per comunitat autonoma
+            already_in_there = set()
+            for d in dades_ini:
+                if not d['regbio_cod'] in already_in_there:
+                    already_in_there.add(d['regbio_cod'])
+                    reg_ini_list.append({'cod': d['regbio_cod'], 'nombre_es': d['nombre_es']})
+            reg_ini_list.sort(key=lambda x: x['nombre_es'])
+
+            # carregar rodals per regió i cc_aa
+            already_in_there = set()
+            for d in dades_ini:
+                if not d['id_rodal'] in already_in_there and d['regbio_cod'] == regbio_ini and d['ccaa_nom'] == ccaa_ini:
+                    already_in_there.add(d['id_rodal'])
+                    if d['rodalref'] == True:
+                        rodals_ini_list.append({ 'id_rodal': d['id_rodal'],'nombre': d['nombre'],'rodalref': 1 })
+                    else:
+                        rodals_ini_list.append({'id_rodal': d['id_rodal'], 'nombre': d['nombre'],'rodalref': 0 })
+            rodals_ini_list.sort(key=lambda x: x['nombre'])
+
+            init_params['rodal_ini'] = id
+            init_params['habitat_ini']=habitat_ini
+            init_params['ccaa_ini']=ccaa_ini
+            init_params['regbio_ini'] = regbio_ini
+            init_params['cc_aa_ini_list'] = cc_aa_ini_list
+            init_params['reg_ini_list'] = reg_ini_list
+            init_params['rodals_ini_list'] = rodals_ini_list
+
+        else:
+            raise Http404("No hay datos de comparacion para el rodal seleccionado")
+
+    tb_in_data = WebMapaValAmb.objects.all().distinct().values('tipobosque_cod')
+    hab_in_data = WebMapaValAmb.objects.all().distinct().values('habitat_cod')
+
+    tb = Habitat.objects.filter(cod__in=tb_in_data).order_by('nombre')
+    hb = Habitat.objects.filter(cod__in=hab_in_data).order_by('nombre')
+    tipoBosqueData = []
+    habitatData = []
+    for t in tb:
+        tipoBosqueData.append({'tipobosque_cod': t.cod, 'tipobosque_nombre': t.nombre})
+    for h in hb:
+        habitatData.append({'habitat_cod': h.cod, 'habitat_nombre': h.nombre})
+
+    if not bool(init_params):
+        context = {'tiposDeBosque': tipoBosqueData, 'habitats': habitatData }
+    else:
+        context = {'tiposDeBosque': tipoBosqueData, 'habitats': habitatData, 'init_params': init_params }
+
+    return render(request, 'redbosques_main/comparador_new.html', context)
+
+
 def comparador(request, id=None):
     # rebem com a parametre el codir del rodal
     #codi_rodal = request.query_params.get('cr', None)
@@ -561,6 +638,38 @@ def valorRef(request):
                 #rodal_referencia = crearArbol(dades_rodal2)
                 context = {'rodal_referencia': rodal_referencia}
 
+
+    return Response(context)
+
+
+@api_view(['GET'])
+def valorref_ajax(request):
+
+    cordRod = request.query_params.get('vr', None)
+    idHab = request.query_params.get('idHab', None)
+    idComAut = request.query_params.get('comAut', None)
+    idRegBiogeo = request.query_params.get('regBiogeo', None)
+    rodRef = request.query_params.get('rodRef', None)
+
+
+    if cordRod is not None and cordRod != 'medRod':
+        dades_rodal2 = RodalValorres2.objects.filter(id_rodal=cordRod)
+        rodal_referencia = crearArbol(dades_rodal2)
+        context = {'rodal_referencia': rodal_referencia}
+    elif cordRod == 'medRod':
+        dades_rodal2 = RodalValorres2.objects.all()
+        if idRegBiogeo is not None and idRegBiogeo != 'all':
+            dades_rodal2 = dades_rodal2.filter(regbio_cod=idRegBiogeo)
+        if idComAut is not None and idComAut != 'all':
+            dades_rodal2 = dades_rodal2.filter(comautonom_cod=idComAut)
+        if idHab is not None:
+            dades_rodal2 = dades_rodal2.filter(lpeht_cod__startswith=idHab)
+        if rodRef is not None and rodRef == '1':
+            dades_rodal2 = dades_rodal2.filter(rodalref=True)
+
+        dades_rodal2 = dades_rodal2.values('indicador_cod').annotate(mitjana=Avg('valor'), stddev=StdDev('valor'))
+        rodal_referencia = crearArbolMedia(dades_rodal2)
+        context = {'rodal_referencia': rodal_referencia}
 
     return Response(context)
 
@@ -920,6 +1029,9 @@ def crearArbolMedia(dades):
         #print(indicador_cod['indicador_cod'])
         #print(indicador_cod['mitjana'])
         #print(indicador_cod['stddev'])
+
+        ev_valor_desv = None
+
         if indicador_cod['indicador_cod'] == 'nm':
             if indicador_cod['mitjana'] == None:
                 nm_valor = "---"
@@ -1774,6 +1886,85 @@ def deleteDoc(request, id):
     return Response(context)
 
 ######################## Filtres data table rodales ##################################
+
+@api_view(['GET'])
+def habitats_ajax(request):
+    codiTb = request.query_params.get('tb', None)
+    data = []
+    if codiTb is not None:
+        hab_in_data = WebMapaValAmb.objects.all().distinct().values('habitat_cod')
+        if codiTb == 'null':
+            hab = Habitat.objects.filter(cod__in=hab_in_data).order_by('nombre')
+        else:
+            hab = Habitat.objects.filter(cod__in=hab_in_data).filter(cod__contains= codiTb ).exclude(cod=codiTb).order_by('nombre')
+        for h in hab:
+            data.append( { 'habitat_cod': h.cod, 'habitat_nombre': h.nombre } )
+    return Response(data)
+
+
+@api_view(['GET'])
+def ccaa_ajax(request):
+    codiHab = request.query_params.get('hab', None)
+    data = []
+    if codiHab is not None:
+        ccaa_in_data = WebMapaValAmb.objects.filter(habitat_cod=codiHab).distinct().values('ccaa_nom')
+        ccaa = TeProvincia.objects.filter(codigo__in=ccaa_in_data).filter(nivel='Com. autònoma').order_by('nombre_es')
+        for c in ccaa:
+            data.append( { 'codigo': c.codigo, 'nombre_es': c.nombre_es } )
+    return Response(data)
+
+@api_view(['GET'])
+def rodals_ajax(request):
+    codiHabitat = request.query_params.get('idHab', None)
+    codiComaut = request.query_params.get('comAut', None)
+    codiregBiogeo = request.query_params.get('regBiogeo', None)
+    rodalReferencia = request.query_params.get('rodRef', None)
+
+    rodalesTable = WebCompDataValAmb.objects.all()
+
+    if codiregBiogeo is not None and codiregBiogeo != 'all':
+        rodalesTable = rodalesTable.filter(regbio_cod=codiregBiogeo).order_by('nombre')
+
+
+    if codiComaut is not None and codiComaut != 'all':
+        rodalesTable = rodalesTable.filter(ccaa_nom=codiComaut).order_by('nombre')
+
+    if codiHabitat is not None:
+        rodalesTable = rodalesTable.filter(habitat_cod=codiHabitat).order_by('nombre')
+
+    if rodalReferencia is not None and rodalReferencia=='1':
+        rodalesTable = rodalesTable.filter(rodalref=True).order_by('nombre')
+
+    rodalesTable = rodalesTable.distinct().values('id_rodal','nombre','rodalref')
+
+    rodales = []
+    for r in rodalesTable:
+        rodales.append({
+            'id_rodal': r['id_rodal'],
+            'nombre': r['nombre'],
+            'rodalref': r['rodalref']
+        })
+
+    return Response(rodales)
+
+
+@api_view(['GET'])
+def regbiogeo_ajax(request):
+    codiCa = request.query_params.get('ca', None)
+    codiHab = request.query_params.get('hab', None)
+    data = []
+    regbio_in_data = WebMapaValAmb.objects.all()
+    if codiCa is not None and codiCa != 'all':
+        regbio_in_data = regbio_in_data.filter(ccaa_nom=codiCa)
+    if codiHab is not None:
+        regbio_in_data = regbio_in_data.filter(habitat_cod=codiHab)
+    regbio_in_data = regbio_in_data.distinct().values('regbio_cod')
+    regsbio = TeRegbio.objects.filter(cod__in=regbio_in_data).order_by('nombre_es')
+        # hab = Habitat.objects.filter(cod__in=hab_in_data).order_by('nombre')
+    for r in regsbio:
+        data.append({'cod': r.cod, 'nombre_es': r.nombre_es})
+    return Response(data)
+
 
 @api_view(['GET'])
 def filtraxtipobosque(request):
