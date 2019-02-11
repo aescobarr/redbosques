@@ -9,4 +9,4 @@ redbosques/settings_local*
 static/*
 __pycache__/
 imagenesBosques/
-fotos/
+fotos/media/
