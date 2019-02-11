@@ -27,8 +27,6 @@
                     <input class="form-control email" type="password" name="password1" {% if user_form.password1.value != None %} value="{{ user_form.password1 }}" {% endif %} placeholder="Contraseña" required>
                     <input class="form-control email" type="password" name="password2" {% if user_form.password2.value != None %} value="{{ user_form.password2 }}" {% endif %} placeholder="Repita la contraseña" required>-->
                     <!--{{ form.as_p }}-->
-
-
                         <div class="form-group">
                             {{ user_form.first_name }}
                             {{ user_form.first_name.errors }}
@@ -43,11 +41,19 @@
                             {{ user_form.username.errors }}
                         </div>
                         -->
-                        <div class="form-group">
+                        <div class="form-group {% if user_form.email.errors %} alert alert-danger {% endif %}">
                             {{ user_form.email }}
                             {{ user_form.email.errors }}
                         </div>
-                        <div class="form-group">
+                        <div class="form-group {% if messages %} alert alert-danger {% endif %}" style="margin-left: 5px;margin-right: -5px;">
+                            <select class="form-control" name="institucion" id="institucion">
+                            <option value="null" selected="selected">Seleccione su institución</option>
+                                {% for institucion in instituciones %}
+                                    <option value="{{ institucion.id }}">{{ institucion.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group {% if user_form.password.errors %} alert alert-danger {% endif %}">
                             {{ user_form.password }}
                             {{ user_form.password.errors }}
                         </div>
@@ -58,6 +64,13 @@
                         <div class="form-group">
                             <input id="password_2" class="form-control email" name="password_2" required="" type="password" placeholder="Repetir Contraseña">
                         </div>
+                        {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
                         {{ user_form.username.as_hidden }}
                     <div class="conditionCheck">
                         <label><input type="checkbox"> * He leído y acepto las condiciones legales.</label>

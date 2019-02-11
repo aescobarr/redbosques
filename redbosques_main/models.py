@@ -1,6 +1,7 @@
 # Create your models here.
 #from django.db import models
 from django.contrib.gis.db import models
+from django.contrib.auth.models import User as DUser
 import os
 from django.core.exceptions import ValidationError
 from redbosques.settings import MAX_UPLOAD_SIZE
@@ -133,6 +134,7 @@ class Tesaurus(models.Model):
 
     def __str__(self):
         return '%s' % (self.nombre_es)
+
 
 class User(models.Model):
     #id = models.AutoField()
@@ -473,3 +475,35 @@ class DocsRodal(models.Model):
     def delete(self, *args, **kwargs):
         self.doc.delete()
         super().delete(*args, **kwargs)
+
+
+class Institucion(models.Model):
+    nombre = models.CharField(max_length=200)
+    acronimo = models.CharField(max_length=20, blank=True)
+
+    class Meta:
+        managed = False
+        verbose_name_plural = "instituciones"
+        db_table = 'institucion'
+
+    def __str__(self):
+        return '%s - %s' % ( self.acronimo, self.nombre )
+
+
+class DatosUsuario(models.Model):
+    user = models.OneToOneField(DUser, on_delete=models.CASCADE)
+    institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
+    admin_institucion = models.BooleanField(default=False)
+
+    @property
+    def user_first_name(self):
+        return self.user.first_name
+
+    @property
+    def user_last_name(self):
+        return self.user.last_name
+
+    class Meta:
+        managed = False
+        verbose_name_plural = "datos usuario"
+        db_table = 'datos_usuario'

@@ -7,11 +7,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from redbosques.forms import LoginForm
+from django.contrib.auth import views as auth_views
+
 
 urlpatterns = [
     path('', views.index, name='index'),
     path('menu', views.menu, name='menu'),
-    path('login', views.login, {'template_name': 'login.html', 'authentication_form': LoginForm}, name='login'),
+    #path('login', views.login, {'template_name': 'login.html', 'authentication_form': LoginForm}, name='login'),
     url(r'^login/$', views.login, name='login'),
     path('register', views.register, name='register'),
     path('comparador', views.comparador, name='comparador_noparam'),
@@ -50,6 +52,17 @@ urlpatterns = [
     path('regbiogeo_ajax',views.regbiogeo_ajax,name="regbiogeo_ajax"),
     path('rodals_ajax',views.rodals_ajax,name="rodals_ajax"),
     path('valorref_ajax',views.valorref_ajax,name="valorref_ajax"),
+    path('process_shapefile',views.process_shapefile,name="process_shapefile"),
+    path('ajax-upload', views.import_uploader, name='ajax_upload'),
+    path('user_admin', views.user_admin, name='user_admin'),
+    path('datatabledu/list/', views.revision_usuarios_datatable_list, name='revision_usuarios_datatable_list'),
+    path('activate_user', views.activate_user, name='activate_user'),
+
+    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 
 ]
 

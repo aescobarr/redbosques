@@ -209,6 +209,22 @@ ul.nav-pills li.active a {
     margin: 5px;
 }
 
+.btn-selector-mapa-admin{
+    width: 100%;
+    color: #fff;
+    background-color: #FF6600;
+    border-color: #FF6600;
+    margin: 5px;
+}
+
+.btn-selector-mapa-superadmin{
+    width: 100%;
+    color: #fff;
+    background-color: #FF0000;
+    border-color: #FF0000;
+    margin: 5px;
+}
+
 .btn-selector-mapa:hover{
     color: #fff;
     background-color: #8db727;
@@ -607,4 +623,12 @@ td.rodal_unidades label{
 .asyncload-big {
     background-image: url(/static/redbosques_main/css/loader_128.gif);
     background-repeat: no-repeat;background-position: center;
+}
+
+.dtGreen{
+    background-color: #d0efd7;
+}
+
+.dtOrange{
+    background-color: #f7551d;
 }
