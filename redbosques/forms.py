@@ -10,7 +10,7 @@ from redbosques_main import validators
 from django.core.exceptions import ValidationError
 from bootstrap_datepicker.widgets import DatePicker
 from django.contrib import messages
-from redbosques.settings import MAX_UPLOAD_SIZE
+from redbosques.settings import MAX_UPLOAD_SIZE, MAX_UPLOAD_DOC_SIZE
 
 #from django.utils.translation import gettext as _
 
@@ -424,3 +424,14 @@ class rodalFormFields3Doc(ModelForm):
     class Meta:
         model = DocsRodal
         fields = ('doc', )
+
+    def clean_doc(self):
+        doc = self.cleaned_data.get('doc', False)
+        maxSize = (MAX_UPLOAD_DOC_SIZE /1024)/1024
+        if doc:
+            if doc.size > MAX_UPLOAD_DOC_SIZE:
+                raise ValidationError("El documento es demasiado grande ( > " + str(maxSize) + " mb )")
+                #raise ValidationError("El documento es demasiado grande ( > 2 mb )")
+            return doc
+        else:
+            raise ValidationError("No se pudo leer el documento cargado")

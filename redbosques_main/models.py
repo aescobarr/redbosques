@@ -460,7 +460,7 @@ def urlDocs(instance, filename):
     return os.path.join("docs", str(instance.id_rodal.id), filename)
 
 class DocsRodal(models.Model):
-    id_doc = models.IntegerField(primary_key=True)
+    id_doc = models.AutoField(primary_key=True)
     id_rodal = models.ForeignKey('Rodal', on_delete=models.CASCADE, db_column='id_rodal')
     nombre_doc = models.CharField(max_length=200, blank=True, null=True)
     doc = models.FileField(upload_to=urlDocs)

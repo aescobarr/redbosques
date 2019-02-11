@@ -1,0 +1,292 @@
+{% extends "redbosques_main/base.html" %}
+{% load static %}
+{% block extra_css %}
+    <link href="{% static 'redbosques_main/leaflet/leaflet.css' %}" rel="stylesheet">
+
+    <link href="{% static 'redbosques_main/Leaflet.Draw.static/src/leaflet.draw.css' %}" rel="stylesheet">
+
+    {{ form.media.css }}
+{% endblock %}
+{% block extrahead %}
+    <script src="{% static 'redbosques_main/jquery/dist/jquery.min.js' %}"></script>
+
+{% endblock %}
+{% block main %}
+<div class="container-fluid subheader">
+    <div class="row">
+        <div class="col-lg-12 subfield">
+            <p>
+                <h4>
+                    <a href="{% url 'index' %}">Inicio</a> /
+                    <a href="{% url 'menu' %}">Menú</a> /
+                    <!--<a href="{% url 'herramientas' %}">Mapa de rodales</a>-->
+                    Información rodal
+                </h4>
+            </p>
+            <h2>{{ herramientas }}</h2>
+            <!--<h2>Herramienta de evaluación de rodales maduros</h2>-->
+        </div>
+    </div>
+</div>
+<div class="container menu-header">
+    <div class="row">
+            <h3>Datos obligatorios del rodal</h3>
+        </div>
+    </div>
+</div>
+
+<div class="container form-rodal">
+    <div class="row">
+        <div class="col-lg-offset-3 col-lg-6">
+            <h4>DATOS GENERALES Y ADMINISTRATIVOS</h4>
+        </div>
+    </div>
+    <form action="{% url 'editrodalForm' id %}" method="POST">
+        <div class="row form-group restrData">
+            <div class="col-lg-offset-3 col-lg-6">
+                <!--<input id="datosRestringidos" type="checkbox">-->
+                {{ form.datosrestringidos }}
+                {{ form.datosrestringidos.errors }}
+                <label for="datosRestringidos">Datos restringidos</label>
+            </div>
+        </div>
+        <div class="row form-group green-font-bold">
+            <div class="col-lg-offset-3 col-lg-6">
+                <label>Tipo de muestreo</label>
+                <input name="tipoMuestreo" id="porParcelas" type="radio" checked>
+                <label for="porParcelas">Por parcelas</label>
+                <input name="tipoMuestreo" id="porTransecto" type="radio">
+                <label for="portransecto">Por transecto</label>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-offset-3 col-lg-6">
+                <div class="metodo">
+                    {{ form.metodo_cod }}
+                    {{ form.metodo_cod.errors }}
+                </div>
+                <div class="nombreRodal">
+                    {{ form.nombre }}
+                    {{ form.nombre.errors }}
+                </div>
+                <div class="comAut">
+                    {{ form.comautonom_cod }}
+                    {{ form.comautonom_cod.errors }}
+                </div>
+                <div class="provincia">
+                    {{ form.provincia_cod }}
+                    {{ form.provincia_cod.errors }}
+
+                </div>
+                <div class="terminoMunicipal">
+                    {{ form.municipio }}
+                    {{ form.municipio.errores }}
+                </div>
+                <div class="propietario">
+                    {{ form.propietario }}
+                    {{ form.propietario.errores }}
+                </div>
+
+                <div class="subirLimites">
+                    <a class="btn btn-selector-mapa" href="#">Subir limites (shp, Kml...)</a>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-offset-3 col-lg-6">
+                <div id="map" class="mapaPoligonos" style="width: 560px; height: 450px;"></div>
+                {% if geojson_string %}
+                    <input id="geometria_string" name="geometria_string" type="hidden" value="{{ geojson_string }}"/>
+                {% else %}
+                    <!--<input id="geometria_string" name="geometria_string" type="hidden" value=""/>-->
+                {% endif %}
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-offset-3 col-lg-6">
+                <h4>Muestreo</h4>
+                <div class="fecha">
+                    <!--<input class="form-control" type="date" placeholder="Fecha">-->
+                    {{ form.media }}
+                    {{ form.fecha }}
+                    {{ form.fecha.errors }}
+                </div>
+                <div class="equipoDeCampo">
+                    {{ form.equipo }}
+                    {{ form.equipo.errors }}
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-offset-3 col-lg-6">
+                <h4>Hábitat</h4>
+                <div class="habitatCorine">
+                    {{ form.lpeht_cod }}
+                    {{ form.lpeht_cod.errors }}
+                </div>
+                <div class="habitatHIC">
+                    {{ form.hic_cod }}
+                    {{ form.hic_cod.errors }}
+
+                </div>
+                <div class="regionBiogeo">
+                    {{ form.regbio_cod }}
+                    {{ form.regbio_cod.errors }}
+                </div>
+                <div class="especiePrincipal">
+                    <!--<select class="form-control">
+                        <option value="" selected="selected">Especie principal</option>
+                        <option value="catalunya">AAAAA</option>
+                        <option value="paisVasco">BBBBB</option>
+                    </select>-->
+                    {{ form.espprinc_cod }}
+                    {{ form.espprinc_cod.errors }}
+                </div>
+
+                <table>
+                    <tr>
+                    <!--<div class="altDominante">-->
+                        <td class="rodal_label">
+                            <label for="altDomEspPrin">Altura dominante de la especie principal</label>
+                            {% if form.espprincip_h0.errors %}
+                            <div class="alert alert-danger small">
+                                {{ form.espprincip_h0.errors }}
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td class="rodal_data">
+                            <!--<input type="text" id="altDomEspPrin" class="alturaDominanteEspeciePrincipal form-control">-->
+                            {{ form.espprincip_h0 }}
+                            <!--{{ form.espprincip_h0.errors }}-->
+                        </td>
+                        <td class="rodal_unidades">
+                            <label for="altDomEspPrin">m</label>
+                        </td>
+                        <!--</div>-->
+                    </tr>
+                    <tr>
+                        <!--<div class="cavCubespPrin">-->
+                            <td class="rodal_label">
+                                <label for="cavCubespPrin">Fracción de cavidad cubierta de la especie principal</label>
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.espprinc_fcc.errors }}
+                                </div>
+                            </td>
+                            <td class="rodal_data">
+                                <!--<input id="cavCubespPrin" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">-->
+                                {{ form.espprinc_fcc }}
+                                <!--{{ form.espprinc_fcc.errors }}-->
+                            </td>
+                            <td class="rodal_unidades">
+                                <label for="cavCubespPrin">%</label>
+                            </td>
+                        <!--</div>-->
+                    </tr>
+                </table>
+
+                <div class="principalAcompan">
+                    <!--<select class="form-control">
+                        <option value="" selected="selected">Principal especie acompañante</option>
+                        <option value="catalunya">AAAAA</option>
+                        <option value="paisVasco">BBBBB</option>
+                    </select>-->
+                    {{ form.espcomp_cod }}
+                    {{ form.espcomp_cod.errors }}
+                </div>
+                <table>
+                    <tr>
+                        <td class="rodal_label">
+                            <label for="altDomEspPrinAcomp">Altura dominante de la especie principal acompañante</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.espcomp_h0.errors }}
+                            <div>
+                        </td>
+                        <td class="rodal_data">
+                            <!--<input id="altDomEspPrinAcomp" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">-->
+                            {{ form.espcomp_h0 }}
+                            <!--<div class="form-group has-errors text-danger small">
+                                {{ form.espcomp_h0.errors }}
+                            <div>-->
+                        </td>
+                        <td class="rodal_unidades">
+                            <label for="altDomEspPrinAcomp">m</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="rodal_label">
+                            <label for="cavCubespPrinAcomp">Fracción de cavidad cubierta de la especie acompañante</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.espcomp_fcc.errors }}
+                            </div>
+                        </td>
+                        <td class="rodal_data">
+                            <!--<input id="cavCubespPrinAcomp" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">-->
+                            {{ form.espcomp_fcc }}
+                            <!--<div class="form-group has-errors text-danger small">
+                                {{ form.espcomp_fcc.errors }}
+                            </div>-->
+                        </td>
+                        <td class="rodal_unidades">
+                            <label for="cavCubespPrinAcomp">%</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-selector-mapa" value="Siguiente">
+                        </td>
+
+                    </tr>
+                </table>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+{% block extra_js %}
+    <script type="text/javascript">
+        var geo;
+        geo = '{{ geojson_string | safe }}';
+        console.log(geo);
+
+    </script>
+    {{ form.media.js }}
+    <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
+    <script src="{% static 'redbosques_main/leaflet/leaflet.js' %}"></script>
+
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/Leaflet.draw.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/Leaflet.Draw.Event.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/Toolbar.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/Tooltip.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/ext/GeometryUtil.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/ext/LatLngUtil.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/ext/LineUtil.Intersect.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/ext/Polygon.Intersect.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/ext/Polyline.Intersect.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/ext/TouchEvents.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/DrawToolbar.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.Feature.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.SimpleShape.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.Polyline.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.Marker.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.Circle.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.CircleMarker.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.Polygon.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.Rectangle.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/EditToolbar.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/EditToolbar.Edit.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/EditToolbar.Delete.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/Control.Draw.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.Poly.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.SimpleShape.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.Rectangle.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.Marker.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.CircleMarker.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.Circle.js' %}"></script>
+
+
+    <script src="{% static 'redbosques_main/javascript/editrodalForm.js' %}"></script>
+
+{% endblock %}

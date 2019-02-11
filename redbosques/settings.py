@@ -114,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 #MAX_UPLOAD_SIZE = 5242880
 MAX_UPLOAD_SIZE = 2097152
-#MAX_UPLOAD_SIZE = 10485760
+MAX_UPLOAD_DOC_SIZE = 10485760
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/

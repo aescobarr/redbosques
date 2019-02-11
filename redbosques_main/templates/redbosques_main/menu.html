@@ -29,7 +29,10 @@
             <!--<a class="btn btn-selector-mapa" href="{% url 'herramientas' %}" onclick="zoomRodalMapa()">Ver mapa de rodales</a>-->
             <a type="btn" href="{% url 'rodalForm' %}" class="btn btn-selector-mapa">Entrada de nuevo rodal</a>
             <button type="btn" class="btn btn-selector-mapa" disabled>Importar datos desde xls? Csv?</button>
-            <button type="btn" class="btn btn-selector-mapa" disabled>Editar Rodal</button>
+
+
+            <button type="btn" class="btn btn-selector-mapa" onclick="editarRodal()">Editar Rodal</button>
+
             <select class="form-control rodalSelected">
                 <option value="" selected="selected">------</option>
                     {% for rodal in rodalesSelector %}
@@ -52,7 +55,7 @@
 {% block extra_js %}
 <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
 <script src="{% static 'redbosques_main/javascript/menu.js' %}"></script>
-<script src="{% static 'redbosques_main/javascript/mapa.js' %}"></script>
+<!--<script src="{% static 'redbosques_main/javascript/mapa.js' %}"></script>-->
 {% endblock %}
 
 

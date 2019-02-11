@@ -14,6 +14,7 @@ from redbosques.forms import RegistrationForm, LoginForm, rodalFormFields, rodal
 from django.contrib import messages
 from django.contrib import auth
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon
+from osgeo import ogr
 
 
 from django.contrib.auth import authenticate
@@ -1018,7 +1019,7 @@ def crearArbol(dades):
                 'conect': {'valor': cn_valor}
             }
         }
-        print(rodal_referencia)
+        #print(rodal_referencia)
         return rodal_referencia
 
 def crearArbolMedia(dades):
@@ -1540,6 +1541,57 @@ def register(request):
     context = {'user_form': user_form}
     return render(request, 'registration/registration.html', context)
 
+
+@login_required(login_url="login/")
+def editrodalForm(request, id=None):
+
+    datos = get_object_or_404(Rodal, id=id)
+    #form = rodalFormFields(instance=datos)
+
+
+
+
+    if request.method == 'POST':
+        form = rodalFormFields(request.POST or None, instance=datos)
+
+        current_user = request.user
+        user = User.objects.get(usuario=current_user)
+        print(user)
+
+        if form.is_valid():
+            dades = form.save(commit=False)
+            dades.usuario = user
+
+            json_geometry = json.loads(request.POST["geometria_string"])
+            multipoligon = []
+            for feature in json_geometry['features']:
+                feature_geometry = GEOSGeometry(json.dumps(feature['geometry']))
+                feature_geometry.transform(25830)
+                multipoligon.append(feature_geometry)
+
+            mp = MultiPolygon(multipoligon)
+            dades.geom = mp
+            dades.save()
+
+            # return HttpResponseRedirect('/redbosques/rodalForm2/' + str(dades.id) + '/')
+            return redirect('rodalForm2', id=dades.id)
+    else:
+        datos = get_object_or_404(Rodal, id=id)
+        form = rodalFormFields(instance=datos)
+
+        geom = datos.geom
+        geom.transform(4326)
+        g = ogr.CreateGeometryFromJson(geom.json)
+
+        for idx, f in enumerate(g):
+            geojson_string = f.ExportToJson()
+
+        # print(geojson_string)
+
+    context = {'form': form, 'geojson_string': geojson_string, 'id': id}
+    return render(request, 'redbosques_main/editrodalForm.html', context)
+
+
 @login_required(login_url="login/")
 def rodalForm(request):
     if request.method == 'POST':
@@ -1568,9 +1620,14 @@ def rodalForm(request):
             return redirect('rodalForm2', id=dades.id)
     else:
         form = rodalFormFields()
+
     context = {'form': form}
 
     return render(request, 'redbosques_main/rodalesForm.html', context)
+
+
+
+
 
 @login_required(login_url="login/")
 def rodalForm2(request, id=None):
@@ -1727,11 +1784,23 @@ def rodalForm2(request, id=None):
 
 @login_required(login_url="login/")
 def rodalForm3(request, id):
+
+    datos = get_object_or_404(Rodal, id=id)
+
     if request.method == 'POST':
-        print('Post')
+
+        form = rodalFormFields3(request.POST, instance=datos)
+
+        if form.is_valid():
+            dades = form.save(commit=False)
+            dades.save()
+
+        return redirect('menu')
     else:
-        print('Get')
         id_rodal = id
+
+        form = rodalFormFields3(instance=datos)
+
         allFotos = FotosRodal.objects.all()
         listaFotos = allFotos.filter(id_rodal=id_rodal)
 
@@ -1749,13 +1818,36 @@ def rodalForm3(request, id):
         docs = []
         for ld in listaDocs:
             docs.append({
-                'id_doc': ld.id_foto,
-                'nombre_doc': ld.nombre_docs,
+                'id_doc': ld.id_doc,
+                'nombre_doc': ld.nombre_doc,
                 'doc': ld.doc
             })
 
-        context = {'listaFotos': fotos, 'id': id_rodal, 'listaDocs': docs}
+        context = {'listaFotos': fotos, 'id': id_rodal, 'listaDocs': docs, 'form': form}
         return render(request, 'redbosques_main/rodalesForm3.html', context)
+
+
+
+'''@login_required(login_url="login/")
+def rodalForm3(request, id):
+
+    if request.method == 'POST':
+        datos = get_object_or_404(Rodal, id=id)
+
+        form = rodalFormFields3(request.POST, instance=datos)
+
+        if form.is_valid():
+            dades = form.save(commit=False)
+            dades.save()
+
+        return redirect('menu')
+
+    else:
+        form = rodalFormFields3()
+        datos = get_object_or_404(Rodal, pk=id)
+
+        context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'form': form, 'id': id}
+        return render(request, 'redbosques_main/rodalesForm3.html', context)'''
 
 
 
@@ -1770,26 +1862,13 @@ def uploadImage(request, id):
             foto = form.save(commit=False)
             foto.id_rodal = Rodal.objects.get(id=id)
             foto.nombre_foto = foto.foto.name
-            print(foto.nombre_foto)
             foto.save()
             data = {'is_valid': True, 'nombre_foto': foto.nombre_foto, 'url': foto.foto.url, 'id_foto': foto.id_foto}
         else:
-            print(form.errors)
             errorMessage = "La imagen supera el tamaño permitido (2MB)"
             data = {'is_valid': False, 'error_imagen': form.errors['foto']}
         return JsonResponse(data)
     else:
-
-        '''urlFotos = settings.MEDIA_ROOT + "/fotos/" + str(id)
-
-        print(urlFotos)
-
-        if os.path.exists(urlFotos):
-            print("Si que existe !")
-        else:
-            print("No existe !")
-            os.makedirs(urlFotos)'''
-
         id_rodal = id
         allFotos = FotosRodal.objects.all()
         listaFotos = allFotos.filter(id_rodal=id_rodal)
@@ -1825,7 +1904,7 @@ def deleteImage(request, id):
         foto.delete()
     #return redirect('rodalForm3', id=id_rodal)
 
-    context = {'id': id_rodal}
+    context = {'id': id_rodal, 'imagen': 'imagen'}
 
     return Response(context)
 
@@ -1840,12 +1919,11 @@ def uploadDocs(request, id):
         if form.is_valid():
             doc = form.save(commit=False)
             doc.id_rodal = Rodal.objects.get(id=id)
-            doc.nombre_foto = doc.doc.name
-            print(doc.nombre_doc)
+            doc.nombre_doc = doc.doc.name
             doc.save()
             data = {'is_valid': True, 'nombre_doc': doc.nombre_doc, 'url': doc.doc.url, 'id_doc': doc.id_doc}
         else:
-            data = {'is_valid': False}
+            data = {'is_valid': False, 'error_documento': form.errors['doc']}
         return JsonResponse(data)
     else:
         id_rodal = id
@@ -1855,9 +1933,9 @@ def uploadDocs(request, id):
         docs = []
         for ld in listaDocs:
             docs.append({
-                'id_foto': ld.id_foto,
-                'nombre_foto': ld.nombre_foto,
-                'foto': ld.foto
+                'id_doc': ld.id_doc,
+                'nombre_doc': ld.nombre_doc,
+                'doc': ld.doc
             })
 
         context = {'listaFotos': docs, 'id': id_rodal}
@@ -1867,7 +1945,7 @@ def uploadDocs(request, id):
 @login_required(login_url="login/")
 def deleteDoc(request, id):
 
-    rd = FotosRodal.objects.filter(id_doc=id).values('id_rodal')
+    rd = DocsRodal.objects.filter(id_doc=id).values('id_rodal')
 
     rodalFotos = []
     for d in rd:
@@ -1881,7 +1959,7 @@ def deleteDoc(request, id):
         doc.delete()
     #return redirect('rodalForm3', id=id_rodal)
 
-    context = {'id': id_rodal}
+    context = {'id': id_rodal, 'docs': 'docs'}
 
     return Response(context)
 

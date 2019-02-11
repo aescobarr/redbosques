@@ -47,24 +47,15 @@ $(document).ready(function() {
     map.addControl(drawControl);
 
     map.on(L.Draw.Event.CREATED, function (e) {
-    var type = e.layerType,layer = e.layer;
-    editableLayers.addLayer(layer);
-
-    console.log(layer);
-    console.log(e.layerType);
-    console.log(editableLayers.toGeoJSON());
-
-    test = editableLayers.toGeoJSON();
-
-    console.log(test);
-
-
-
-    var string_json = JSON.stringify(editableLayers.toGeoJSON());
-    //var latLng = map.layerPointToLatLng(string_json);
-    console.log(string_json);
-    $('#geometria_string').val(string_json);
-    console.log(string_json);
+        var type = e.layerType,layer = e.layer;
+        editableLayers.addLayer(layer);
+        test = editableLayers.toGeoJSON();
+        //console.log(test);
+        var string_json = JSON.stringify(editableLayers.toGeoJSON());
+        //var latLng = map.layerPointToLatLng(string_json);
+        //console.log(string_json);
+        $('#geometria_string').val(string_json);
+        //console.log(string_json);
     });
 });
 

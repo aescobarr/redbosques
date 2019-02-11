@@ -61,7 +61,7 @@
                                 <p>{{ f.id_foto }}</p>
                                 <!--<form method="post" enctype="multipart/form-data" action="{% url 'eliminarImagen' f.id_foto %}">-->
                                 {% csrf_token %}
-                                <button class="btn btn-danger btn-sm btn-del-img" id="{{ f.id_foto }}" type="submit" onclick="deleteFile()">Eliminar</button>
+                                <button class="btn btn-danger btn-sm btn-del btn-del-img imatgeRodal" id="{{ f.id_foto }}" type="submit" onclick="deleteFile()">Eliminar</button>
                                 <!--</form>-->
                           </td>
                       </tr>
@@ -74,11 +74,11 @@
                 <input type="file" name="documentosRodal"/>-->
 
                 <!--{# 1. BUTTON TO TRIGGER THE ACTION #}-->
-                <button type="button" class="btn btn-primary js-upload-photos">
+                <button type="button" class="btn btn-primary js-upload-docs">
                     <span class="glyphicon glyphicon-cloud-upload"></span> Subir documentos relevantes
                 </button>
 
-                <input id="docupload" type="file" name="foto" style="display: none" multiple data-url="{% url 'uploadImage' id %}" data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
+                <input id="docupload" type="file" name="doc" style="display: none" multiple data-url="{% url 'uploadDocs' id %}" data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
 
                 <table id="library" class="table table-bordered" style="margin-top: 15px;">
                   <thead>
@@ -90,9 +90,9 @@
                     {% for d in listaDocs %}
                       <tr>
                           <td>
-                              <a target="_blank" href="{{ d.doc.url }}"><img style="height: 150px;" src="{{ f.doc.url }}"></a>
+                              <a target="_blank" href="{{ d.doc.url }}"><img style="height: 100px;" src="{% static 'redbosques_main/images/fileIcon2.png' %}"></a>
                               <p>Nombre: {{ d.nombre_doc }}</p>
-                              <button class="btn btn-danger btn-sm btn-del-img" id="{{ d.id_doc }}" type="submit" onclick="deleteFile()">Eliminar</button>
+                              <button class="btn btn-danger btn-sm btn-del btn-del-doc documentRodal" id="{{ d.id_doc }}" type="submit" onclick="deleteDoc()">Eliminar</button>
                           </td>
                       </tr>
                     {% endfor %}
@@ -103,6 +103,7 @@
                     {{ form.otroespflora }}
                     {{ form.otrohics }}
                     {{ form.otroinfo }}
+                    {% csrf_token %}
                 <input type="submit" class="btn btn-selector-mapa" value="Terminar">
             </form>
         </div>
@@ -115,4 +116,9 @@
 <script src="{% static 'redbosques_main/jQuery-File-Upload-9.28.0/js/vendor/jquery.ui.widget.js' %}"></script>
 <script src="{% static 'redbosques_main/jQuery-File-Upload-9.28.0/js/jquery.iframe-transport.js' %}"></script>
 <script src="{% static 'redbosques_main/jQuery-File-Upload-9.28.0/js/jquery.fileupload.js' %}"></script>
+<script>
+    var fileIconUrl = "{% static 'redbosques_main/images/fileIcon2.png' %}";
+</script>
+
+
 {% endblock %}
