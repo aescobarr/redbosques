@@ -1,0 +1,15 @@
+{% autoescape off %}
+RedBosques - Herramienta de comparación de Rodales
+
+¡Enhorabuena, tu cuenta de usuario ha sido activada!
+
+Puedes acceder a la aplicación a través de nuestra página web:
+
+{{ login_url }}
+
+Con las credenciales siguientes:
+
+nombre de usuario - {{ email }}
+
+¡Muchas gracias por tu participación!
+{% endautoescape %}

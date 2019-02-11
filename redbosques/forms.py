@@ -33,17 +33,19 @@ class RegistrationForm(forms.ModelForm):
         password_2 = self.data['password_2']
         password = cleaned_data.get('password')
         if password != password_2:
-            raise forms.ValidationError('Los passwords son diferentes\'ls')
+            raise forms.ValidationError('Has introducido dos passwords diferentes. Por favor, vuelve a intentarlo')
 
         return password
 
-    '''
+
     def clean_email(self):
         cleaned_data = self.cleaned_data
         email = cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError('Ya existe un usuario registrado con este correo-e. Por favor, elige otro.')
         return email
 
-
+    '''
     def clean_username(self):
         cleaned_data = self.cleaned_data
         #username = self.data['username']
@@ -70,7 +72,7 @@ class LoginForm(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput(
         attrs={
             'class': 'form-control email',
-            'placeholder':'Nombre de usuairo'}
+            'placeholder':'Nombre de usuario'}
     ))
     password = forms.CharField(widget=forms.PasswordInput(
         attrs={

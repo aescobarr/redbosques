@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht, Tesaurus, User, TeCategoria, FotosRodal, DocsRodal
+from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht, Tesaurus, User, TeCategoria, FotosRodal, DocsRodal, Institucion, DatosUsuario
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.urls import reverse
 from django.http import JsonResponse
+from django.http import HttpResponse
 import decimal
 import json
 from django.db.models import Avg, StdDev
@@ -23,12 +24,30 @@ from shapely.geometry import shape
 from shapely.ops import transform
 from functools import partial
 import shapely.wkt
-
+from django.db import DatabaseError, transaction
 from django.db import connection
 from collections import namedtuple
 from django.http import HttpResponseRedirect
 from django.http import Http404
 
+import ntpath
+import glob, os
+import magic
+import shapefile
+import zipfile
+from ajaxuploader.views import AjaxFileUploader
+from redbosques.settings import *
+from querystring_parser import parser
+import functools
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import operator
+from django.db.models import Q
+from redbosques_main.serializers import DatosUsuarioSerializer
+from django.contrib.auth.models import User as dUser
+import copy
+from django.template.loader import get_template
+from django.core.mail import EmailMessage
+from redbosques import settings
 
 
 def namedtuplefetchall(cursor):
@@ -36,9 +55,6 @@ def namedtuplefetchall(cursor):
     desc = cursor.description
     nt_result = namedtuple('Result', [col[0] for col in desc])
     return [nt_result(*row) for row in cursor.fetchall()]
-
-
-
 
 
 # Create your views here.
@@ -49,18 +65,25 @@ def index(request):
 @login_required(login_url="login/")
 def menu(request):
     current_user = request.user
-    user = User.objects.get(usuario=current_user)
+    du = None
+    try:
+        du = DatosUsuario.objects.get(user=current_user)
+    except DatosUsuario.DoesNotExist:
+        pass
+
+    #user = User.objects.get(usuario=current_user)
 
 
     rodalesSelector = []
     #rodals_list = WebMapa.objects.filter(eje_cod='nm').order_by('nombre')
-    rodals_list = Rodal.objects.filter(usuario=user).order_by('nombre')
+    #rodals_list = Rodal.objects.filter(usuario=user).order_by('nombre')
+    rodals_list = Rodal.objects.all().order_by('nombre')
 
     for r in rodals_list:
         #rodalesSelector.append({'id_rodal': r.id_rodal, 'nombre': r.nombre})
         rodalesSelector.append({'id_rodal': r.id, 'nombre': r.nombre})
 
-    context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'rodalesSelector':rodalesSelector}
+    context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'rodalesSelector':rodalesSelector, 'du':du }
     return render(request, 'redbosques_main/menu.html', context)
 
 
@@ -1517,9 +1540,15 @@ def login(request):
             # correct username and password login the user
             auth.login(request, user)
             return redirect('menu')
-
         else:
-            messages.error(request, 'Error wrong username/password')
+            try:
+                user = dUser.objects.get(username=username)
+                if not user.is_active:
+                    messages.error(request, 'Tu usuario está desactivado. Por favor, contacta con el responsable de tu institución')
+                else:
+                    messages.error(request, 'Nombre de usuario o password incorrectos, por favor vuelve a intentarlo')
+            except dUser.DoesNotExist:
+                messages.error(request, 'No existe un usuario con estas credenciales')
 
     context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'login_form': login_form}
     return render(request, 'registration/login.html', context)
@@ -1529,16 +1558,32 @@ def register(request):
     if request.method == 'POST':
         user_form = RegistrationForm(request.POST or None)
         if user_form.is_valid():
-            user = user_form.save(commit=False)
-            # username = user_form.cleaned_data.get('email')
-            user.set_password(user.password)
-            user.save()
-            return redirect('/redbosques')
+            try:
+                with transaction.atomic():
+                    if request.POST['institucion'] == 'null':
+                        raise Exception("La institucion es obligatoria, por favor seleccione una del desplegable")
+                    id_inst = int(request.POST['institucion'])
+                    institucion = Institucion.objects.get(pk=id_inst)
+                    user = user_form.save(commit=False)
+                    user.set_password(user.password)
+                    user.is_active = False
+                    user.save()
+                    du = DatosUsuario()
+                    du.user = user
+                    du.institucion = institucion
+                    du.save()
+                    send_user_created_email(user.email)
+                    return redirect('/redbosques')
+            except Exception as e:
+                messages.add_message(request,messages.ERROR, e)
+                pass
     else:
         user_form = RegistrationForm()
 
-    context = {'user_form': user_form}
+    instituciones = Institucion.objects.all().order_by('nombre')
+    context = {'user_form': user_form, 'instituciones': instituciones }
     return render(request, 'registration/registration.html', context)
+
 
 @login_required(login_url="login/")
 def rodalForm(request):
@@ -2317,6 +2362,206 @@ def filtrarxRodRef(request):
     #context = {'regBiogeo': regBiogeo, 'rodales': rodales}
     context = {'rodales': rodales}
     return Response(context)
+
+
+import_uploader = AjaxFileUploader()
+
+
+@api_view(['GET'])
+def process_shapefile(request):
+    if request.method == 'GET':
+        path = request.query_params.get('path', None)
+        if path is None:
+            content = {'success': False, 'detail': 'Ruta de fichero incorrecta o fichero no encontrado'}
+            return Response(data=content, status=400)
+        else:
+            filepath = BASE_DIR + path
+            filename = ntpath.basename(os.path.splitext(filepath)[0])
+            presumed_zipfile = magic.from_file(filepath)
+            if not presumed_zipfile.lower().startswith('zip archive'):
+                content = {'success': False, 'detail': 'No parece que el fichero sea un zip correcto. El fichero es de tipo ' + presumed_zipfile}
+                return Response(data=content, status=400)
+            else:
+                # Extract file
+                zip_ref = zipfile.ZipFile(filepath, 'r')
+                zip_ref.extractall(BASE_DIR + "/media/uploads/" + filename)
+                zip_ref.close()
+                # Find and import shapefile
+                os.chdir(BASE_DIR + "/media/uploads/" + filename)
+                for file in glob.glob("*.shp"):
+                    presumed_shapefile = magic.from_file(BASE_DIR + "/media/uploads/" + filename + "/" + file)
+                    if presumed_shapefile.lower().startswith('esri shapefile'):
+                        sf = shapefile.Reader(BASE_DIR + "/media/uploads/" + filename + "/" + file)
+                        fields = sf.fields[1:]
+                        field_names = [field[0] for field in fields]
+                        buffer = []
+                        for sr in sf.shapeRecords():
+                            atr = dict(zip(field_names, sr.record))
+                            geom = sr.shape.__geo_interface__
+                            buffer.append(dict(type="Feature", geometry=geom, properties=atr))
+                        geojson = json.dumps({"type": "FeatureCollection", "features": buffer})
+                        content = {'success': True, 'detail': geojson}
+                        return Response(data=content, status=200)
+                    else:
+                        content = {'success': False, 'detail': 'El fitxer shapefile té un format incorrecte'}
+                        return Response(data=content, status=200)
+                content = {'success': False,
+                           'detail': 'No he trobat cap fitxer amb extensió *.shp dins del zip, no puc importar res.'}
+                return Response(data=content, status=200)
+
+
+@login_required(login_url="login/")
+def user_admin(request):
+    current_user = request.user
+    try:
+        du = DatosUsuario.objects.get(user=current_user)
+        if du.admin_institucion:
+            return render(request, 'redbosques_main/user_admin.html', {})
+        else:
+            return HttpResponse("Necesitas privilegios de administrador para acceder a esta página")
+    except DatosUsuario.DoesNotExist:
+        return HttpResponse("Necesitas privilegios de administrador para acceder a esta página")
+
+
+def get_order_clause(params_dict, translation_dict=None):
+    order_clause = []
+    try:
+        order = params_dict['order']
+        if len(order) > 0:
+            for key in order:
+                sort_dict = order[key]
+                column_index_str = sort_dict['column']
+                if translation_dict:
+                    column_name = translation_dict[params_dict['columns'][int(column_index_str)]['data']]
+                else:
+                    column_name = params_dict['columns'][int(column_index_str)]['data']
+                direction = sort_dict['dir']
+                if direction != 'asc':
+                    order_clause.append('-' + column_name)
+                else:
+                    order_clause.append(column_name)
+    except KeyError:
+        pass
+    return order_clause
+
+
+def get_filter_clause(params_dict, fields, translation_dict=None):
+    filter_clause = []
+    try:
+        q = params_dict['search']['value']
+        if q != '':
+            for field in fields:
+                if translation_dict:
+                    translated_field_name = translation_dict[field]
+                    filter_clause.append( Q(**{translated_field_name+'__icontains':q}) )
+                else:
+                    filter_clause.append(Q(**{field + '__icontains': q}))
+    except KeyError:
+        pass
+    return filter_clause
+
+def generic_datatable_list_endpoint(request,search_field_list,queryset, classSerializer, field_translation_dict=None, order_translation_dict=None):
+    draw = request.query_params.get('draw', -1)
+    start = request.query_params.get('start', 0)
+    #length = request.query_params.get('length', 25)
+    length = 25
+
+    get_dict = parser.parse(request.GET.urlencode())
+
+    order_clause = get_order_clause(get_dict, order_translation_dict)
+
+    filter_clause = get_filter_clause(get_dict, search_field_list, field_translation_dict)
+
+    if len(filter_clause) == 0:
+        queryset = queryset.order_by(*order_clause)
+    else:
+        queryset = queryset.order_by(*order_clause).filter(functools.reduce(operator.or_, filter_clause))
+
+    paginator = Paginator(queryset, length)
+
+    recordsTotal = queryset.count()
+    recordsFiltered = recordsTotal
+    page = int(start) / int(length) + 1
+
+    serializer = classSerializer(paginator.page(page), many=True)
+    return Response({'draw': draw, 'recordsTotal': recordsTotal, 'recordsFiltered': recordsFiltered, 'data': serializer.data})
+
+
+@api_view(['GET'])
+def revision_usuarios_datatable_list(request):
+    if request.method == 'GET':
+        current_user = request.user
+        current_user_data = DatosUsuario.objects.get(user=current_user)
+        institucion = current_user_data.institucion
+        sort_translation_list = {'user.first_name': 'user__first_name', 'user.last_name': 'user__last_name', 'user.username': 'user__username', 'user.is_active': 'user__is_active', 'institucion.nombre': 'institucion__nombre' }
+        field_translation_list = {'user.first_name': 'user__first_name', 'user.last_name': 'user__last_name', 'user.username': 'user__username', 'user.is_active': 'user__is_active', 'institucion.nombre': 'institucion__nombre' }
+        search_field_list = ('user.first_name', 'user.last_name', 'user.username')
+        queryset = DatosUsuario.objects.filter(institucion=institucion).exclude(user=current_user)
+        response = generic_datatable_list_endpoint(request, search_field_list, queryset, DatosUsuarioSerializer, field_translation_list,sort_translation_list)
+        return response
+
+
+@api_view(['POST'])
+def activate_user(request):
+    if request.method == 'POST':
+        current_user = request.user
+        id = request.POST.get('id', None)
+        value = request.POST.get('value', None)
+        if id is None:
+            content = {'status': 'KO', 'detail': 'mandatory param missing'}
+            return Response(data=content, status=400)
+        if value is None:
+            content = {'status': 'KO', 'detail': 'mandatory param missing'}
+            return Response(data=content, status=400)
+        else:
+            if value == 'true':
+                b_val = True
+            else:
+                b_val = False
+        try:
+            user = dUser.objects.get(pk=int(id))
+            user.is_active = b_val
+            user.save()
+            send_activated_email(user.email)
+            content = {'status': 'OK', 'detail': 'all cool'}
+            return Response(data=content, status=200)
+        except User.DoesNotExist as e:
+            content = {'status': 'KO', 'detail': 'user not found'}
+            return Response(data=content, status=400)
+
+
+def send_activated_email(email):
+    send_to = [email]
+    context = {
+        'login_url': settings.APP_BASE_URL + reverse('redirect_from_root'),
+        'email': email
+    }
+    plaintext = get_template('email_templates/activated_email_template.txt')
+    text_content = plaintext.render(context)
+    email = EmailMessage("Tu cuenta de RedBosques ha sido activada", text_content, to=send_to)
+    email.send()
+
+
+def send_user_created_email(email):
+    send_to = [email]
+    try:
+        u = dUser.objects.get(email=email)
+        du = DatosUsuario.objects.get(user=u)
+        institucion = du.institucion
+        capi = DatosUsuario.objects.filter(institucion=institucion).filter(admin_institucion=True)
+        for capo in capi:
+            send_to.append(capo.user.email)
+        context = {
+            'email': email,
+            'institution': institucion.nombre
+        }
+        plaintext = get_template('email_templates/created_email_template.txt')
+        text_content = plaintext.render(context)
+        email = EmailMessage("Tu cuenta de RedBosques ha sido creada", text_content, to=send_to)
+        email.send()
+    except dUser.DoesNotExist:
+        print("No se puede mandar el correo a " + email + ", no existe un usuario con este correo electrónico")
+
 
 
 '''@api_view(['POST'])
