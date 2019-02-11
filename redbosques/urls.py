@@ -19,13 +19,15 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import url
 from django.http import HttpResponse
+from django.views.generic.base import RedirectView
 
 
 urlpatterns = [
     # inclou totes les urls que penjen de redbosques
+    path('', RedirectView.as_view(url='redbosques/'), name='redirect_from_root'),
     path('redbosques/', include('redbosques_main.urls')),
     path('admin/', admin.site.urls),
     url(r'^robots.txt', lambda x: HttpResponse("User-Agent: *\nDisallow:/", content_type="text/plain"), name="robots_file"),
-    path('accounts/', include('django.contrib.auth.urls')),
+    #path('accounts/', include('django.contrib.auth.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

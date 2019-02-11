@@ -49,14 +49,84 @@ $(document).ready(function() {
     map.on(L.Draw.Event.CREATED, function (e) {
         var type = e.layerType,layer = e.layer;
         editableLayers.addLayer(layer);
+
+        console.log(layer);
+        console.log(e.layerType);
+        console.log(editableLayers.toGeoJSON());
+
         test = editableLayers.toGeoJSON();
-        //console.log(test);
+
+        console.log(test);
+
         var string_json = JSON.stringify(editableLayers.toGeoJSON());
         //var latLng = map.layerPointToLatLng(string_json);
-        //console.log(string_json);
+        console.log(string_json);
         $('#geometria_string').val(string_json);
-        //console.log(string_json);
+        console.log(string_json);
     });
+
+
+    var importa_shapefile = function(filepath){
+        $.ajax({
+            url: _import_shapefile_url,
+            data: 'path=' + encodeURI(filepath),
+            method: 'GET',
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type)) {
+                    var csrftoken = getCookie('csrftoken');
+                    xhr.setRequestHeader('X-CSRFToken', csrftoken);
+                }
+            },
+            success: function( data, textStatus, jqXHR ) {
+                editableLayers.clearLayers();
+                var geoJson = JSON.parse(data.detail);
+                var geoJSONLayer = L.geoJson(geoJson);
+                geoJSONLayer.eachLayer(
+                    function(l){
+                        editableLayers.addLayer(l);
+                    }
+                );
+                map.fitBounds(editableLayers.getBounds());
+                var string_json = JSON.stringify(editableLayers.toGeoJSON());
+                $('#geometria_string').val(string_json);
+                $('.qq-upload-list').empty();
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                if(jqXHR.responseJSON && jqXHR.responseJSON.detail){
+                    alert('Error importando fichero: ' + jqXHR.responseJSON.detail);
+                }else{
+                    alert('Error importando fichero');
+                }
+                $('.qq-upload-list').empty();
+            }
+        });
+    };
+
+    var uploader = new qq.FileUploader({
+        action: _ajax_upload_url,
+        element: $('#fileuploader')[0],
+        multiple: false,
+        onComplete: function(id, fileName, responseJSON) {
+            if(responseJSON.success) {
+                var path = responseJSON.path;
+                importa_shapefile(path);
+            } else {
+                alert('La subida del fichero shapefile ha fallado!');
+            }
+        },
+        template:'<div class="qq-uploader">' +
+            '<div class="qq-upload-drop-area"><span>Subir limites (shapefile, proyeccion EPSG:4326)</span></div>' +
+            '<div class="qq-upload-button ui-widget-content ui-button ui-corner-all ui-state-default"><span>Subir limites (shapefile, proyeccion EPSG:4326)</span></div>' +
+            '<ul class="qq-upload-list"></ul>' +
+            '</div>',
+        params: {
+            'csrf_token': csrf_token,
+            'csrf_name': 'csrfmiddlewaretoken',
+            'csrf_xname': 'X-CSRFToken',
+        }
+    });
+
+
 });
 
 

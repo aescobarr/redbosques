@@ -1,0 +1,10 @@
+{% autoescape off %}
+RedBosques - Herramienta de comparación de Rodales
+
+¡Enhorabuena, acabas de crear una cuenta de usuario de RedBosques!
+
+Tu cuenta está pendiente de activación por parte del responsable de Redbosques de {{ institution }}. Tan pronto como sea
+activada, recibirás un correo avisándote a esta misma dirección.
+
+¡Muchas gracias por tu participación!
+{% endautoescape %}

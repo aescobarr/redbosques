@@ -1,0 +1,32 @@
+{% extends "redbosques_main/base.html" %}
+{% load static %}
+{% block extra_css %}
+    <link href="{% static 'redbosques_main/DataTables_Custom/datatables.min.css' %}" rel="stylesheet">
+{% endblock %}
+{% block main %}
+<div class="container menu-header">
+    <div class="row">
+        <h3>Administración de usuarios</h3>
+    </div>
+</div>
+<div class="container ">
+    <div class="table-responsive">
+        <table class="table table-condensed" id="user_admin_list" style="width:100%;"></table>
+    </div>
+</div>
+
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'redbosques_main/javascript/datatable_language_options.js' %}"></script>
+    <script>
+        var _user_admin_list = "{% url 'revision_usuarios_datatable_list' %}";
+        var _user_activate_url = "{% url 'activate_user' %}";
+        var table_language = table_es;
+    </script>
+    <script src="{% static 'redbosques_main/DataTables_Custom/datatables.min.js' %}"></script>
+    <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
+    <script src="{% static 'redbosques_main/javascript/user_admin.js' %}"></script>
+{% endblock %}
+
+
+

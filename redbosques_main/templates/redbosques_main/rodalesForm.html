@@ -3,6 +3,13 @@
 {% block extra_css %}
     <link href="{% static 'redbosques_main/leaflet/leaflet.css' %}" rel="stylesheet">
     <link href="{% static 'redbosques_main/Leaflet.Draw.static/src/leaflet.draw.css' %}" rel="stylesheet">
+    <link href="{% static 'redbosques_main/ajaxuploader/css/fileuploader.css' %}" rel="stylesheet">
+    <style>
+        .qq-upload-button{
+            background-color: #9ac635;
+            width: 100%;
+        }
+    </style>
     <!--<link href="{% static 'redbosques_main/leaflet.draw.css' %}">-->
     {{ form.media.css }}
 {% endblock %}
@@ -86,7 +93,7 @@
                 </div>
 
                 <div class="subirLimites">
-                    <a class="btn btn-selector-mapa" href="#">Subir limites (shp, Kml...)</a>
+                    <div id="fileuploader"></div>
                 </div>
             </div>
         </div>
@@ -243,6 +250,11 @@
 {% endblock %}
 {% block extra_js %}
     {{ form.media.js }}
+    <script>
+        var csrf_token = '{{ csrf_token }}';
+        var _ajax_upload_url = '{% url 'ajax_upload' %}';
+        var _import_shapefile_url = '{% url 'process_shapefile' %}';
+    </script>
     <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
 
 
@@ -277,5 +289,6 @@
     <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.CircleMarker.js' %}"></script>
     <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.Circle.js' %}"></script>
 
+    <script src="{% static 'redbosques_main/ajaxuploader/js/fileuploader.js' %}"></script>
     <script src="{% static 'redbosques_main/javascript/rodalesForm.js' %}"></script>
 {% endblock %}
