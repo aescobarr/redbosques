@@ -22,6 +22,12 @@ html,body
     padding-right: 5px;
 }
 
+
+.logo-inst img{
+    height: 60px;
+}
+
+
 .navbar-default{
     background-color: white;
     border-color: white;
@@ -159,11 +165,11 @@ ul.nav-pills li.active a {
 
 
 .navbar-brand img{
-    height: 150px;
+    height: 90px;
 }
 
 .logoCont{
-    height:150px;
+    height:90px;
 }
 /*###################Estils Mapa#######################*/
 
@@ -287,7 +293,7 @@ h5{
 .icon_8{ color: #66bd63; }
 .icon_9{ color: #1a9850; }
 .icon_10{ color: #006837; }
-.icon_null{ color: gray; }
+.icon_null{ color: #000000; }
 
 
 .iconHH_0{ color: #006837; }
@@ -301,7 +307,7 @@ h5{
 .iconHH_8{ color: #f46d43; }
 .iconHH_9{ color: #d73027; }
 .iconHH_10{ color: #a50026; }
-.iconHH_null{ color: gray; }
+.iconHH_null{ color: #000000; }
 
 .logos-colab{
     margin-top: 3%;
@@ -376,7 +382,7 @@ body .mapa-selectores #mapid .leaflet-popup-content{
     margin-top: 15px;
 }
 
-.rodalSelected{
+.rodalSelected, .editRodalSelected{
     margin-left: 5px;
 }
 

@@ -6,13 +6,13 @@ $(document).ready(function() {
 });
 
 var editarRodal = function(){
-        var rodalSelected = $('.rodalSelected').val();
+        var editRodalSelected = $('.editRodalSelected').val();
 
-        if (rodalSelected === ''){
+        if (editRodalSelected === ''){
             //location.href = "/redbosques/comparador";
             alert("Por favor seleccione un rodal.")
         }else{
-            location.href = "/redbosques/editrodalForm/" + rodalSelected + "/";
+            location.href = "/redbosques/editrodalForm/" + editRodalSelected + "/";
         }
     };
 

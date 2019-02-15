@@ -29,13 +29,10 @@
             <!--<a class="btn btn-selector-mapa" href="{% url 'herramientas' %}" onclick="zoomRodalMapa()">Ver mapa de rodales</a>-->
             <a type="btn" href="{% url 'rodalForm' %}" class="btn btn-selector-mapa">Entrada de nuevo rodal</a>
             <button type="btn" class="btn btn-selector-mapa" disabled>Importar datos desde xls? Csv?</button>
-
-
             <button type="btn" class="btn btn-selector-mapa" onclick="editarRodal()">Editar Rodal</button>
-
-            <select class="form-control rodalSelected">
+            <select class="form-control editRodalSelected">
                 <option value="" selected="selected">------</option>
-                    {% for rodal in rodalesSelector %}
+                    {% for rodal in rodalesSelectorEditor %}
                         <option class="tipo_bosque" value="{{ rodal.id_rodal }}">
                             {{ rodal.nombre }}
                         </option>
@@ -44,6 +41,15 @@
             <button type="btn" class="btn btn-selector-mapa" disabled>Exportar (csv?, shp?, sql?)</button>
             <button type="btn" class="btn btn-selector-mapa" disabled>Crear PDF</button>
             <button type="btn" class="btn btn-selector-mapa" onclick="compararRodal()">Comparar</button>
+            <select class="form-control rodalSelected">
+                <option value="" selected="selected">------</option>
+                    {% for rodal in rodalesSelector %}
+                        <option class="tipo_bosque" value="{{ rodal.id_rodal }}">
+                            {{ rodal.nombre }}
+                        </option>
+                    {% endfor %}
+            </select>
+
             <!--<button type="btn" class="btn btn-selector-mapa">Terminar</button>-->
             <a class="btn btn-selector-mapa" href="{% url 'logout' %}">Salir</a>
             {% if du and du.admin_institucion %}

@@ -75,7 +75,11 @@ $(document).ready(function() {
 
             var current_icon;
             if (punt.valor){
-                current_icon = taula_icons[(punt.valor).toFixed(0)];
+                if(punt.valor > 10 || punt.valor < 0){
+                    current_icon = html_icon_default;
+                }else{
+                    current_icon = taula_icons[(punt.valor).toFixed(0)];
+                }
 
             }else{
                 current_icon = html_icon_default;
@@ -152,6 +156,8 @@ $(document).ready(function() {
             {10:'#006837'}
             ];
 
+
+
         for (i=0; i<puntuacion.length; i++){
             div.innerHTML += '<p class="leyendaValoracion"><i class="fas fa-circle" style="color:' + Object.values(puntuacion[i]) + '; margin-right: 5px;"></i>' + Object.keys(puntuacion[i]) + '</p>';
         }
@@ -178,7 +184,7 @@ $(document).ready(function() {
             {3: '#a6d96a'},
             {2: '#66bd63'},
             {1: '#1a9850'},
-            {0:'#006837'}
+            {0: '#006837'}
             ];
 
         for (i=0; i<puntuacion.length; i++){

@@ -188,7 +188,7 @@ class rodalFormFields(ModelForm):
         model = Rodal
         fields = ('datosrestringidos', 'nombre', 'comautonom_cod', 'provincia_cod', 'municipio', 'propietario',
                   'metodo_cod', 'fecha', 'equipo', 'lpeht_cod', 'hic_cod', 'regbio_cod', 'espprinc_cod', 'espcomp_cod',
-                  'espprincip_h0', 'espcomp_h0', 'usuario', 'espprinc_fcc', 'espcomp_fcc')
+                  'espprincip_h0', 'espcomp_h0', 'espprinc_fcc', 'espcomp_fcc')
 
 
 

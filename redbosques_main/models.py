@@ -146,6 +146,23 @@ class User(models.Model):
         db_table = 'user'
 
 
+class AuthUser(models.Model):
+    password = models.CharField(max_length=128)
+    last_login = models.DateTimeField(blank=True, null=True)
+    is_superuser = models.BooleanField()
+    username = models.CharField(unique=True, max_length=150)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=150)
+    email = models.CharField(max_length=254)
+    is_staff = models.BooleanField()
+    is_active = models.BooleanField()
+    date_joined = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'auth_user'
+
+
 
 class Rodal(models.Model):
     id = models.AutoField(primary_key=True, max_length=100)
@@ -199,7 +216,8 @@ class Rodal(models.Model):
     notes = models.CharField(max_length=500, blank=True, null=True)
     dateadded = models.DateTimeField(blank=True, null=True)
     volmmtotal = models.FloatField(blank=True, null=True)
-    usuario = models.ForeignKey('User', models.DO_NOTHING, db_column='usuario', blank=True, null=True)
+    #usuario = models.ForeignKey(AuthUser, models.DO_NOTHING)
+    usuario = models.ForeignKey('AuthUser', models.DO_NOTHING, db_column='usuario')
     rodalref = models.BooleanField(blank=True, null=True)
     fotoglobo = models.CharField(max_length=100, blank=True, null=True)
     espprinc_fcc = models.IntegerField(db_column='espprinc_fcc', blank=True, null=True)
@@ -209,27 +227,6 @@ class Rodal(models.Model):
     class Meta:
         managed = False
         db_table = 'rodal'
-
-
-'''class RodalValorres(models.Model):
-    _id = models.IntegerField()
-    lpeht_cod = models.CharField(max_length=10, blank=True, null=True)
-    calidadesta = models.IntegerField(blank=True, null=True)
-    regbio_cod = models.CharField(max_length=4, blank=True, null=True)
-    comautonom_cod = models.CharField(max_length=2, blank=True, null=True)
-    nivel = models.CharField(max_length=100, blank=True, null=True)
-    indicador_cod = models.TextField(blank=True)
-    version_calidadesta = models.IntegerField(blank=True, null=True)
-    version_metrica = models.IntegerField(blank=True, null=True)
-    version_indicador = models.IntegerField(blank=True, null=True)
-    valor = models.FloatField(blank=True, null=True)
-    indic_null = models.FloatField(blank=True, null=True)
-    parent_cod = models.CharField(max_length=2, blank=True, null=True)
-
-    class Meta:
-        managed = False  # Created from a view. Don't remove.
-        db_table = 'rodal_valorres' '''
-
 
 class RodalValorres2(models.Model):
     id_indicador_rodal = models.TextField(primary_key=True)
@@ -252,12 +249,6 @@ class RodalValorres2(models.Model):
     class Meta:
         managed = False  # Created from a view. Don't remove.
         db_table = 'rodal_valorres_2'
-
-
-
-
-
-
 
 
 class RodalValoresAmbito(models.Model):
@@ -507,3 +498,6 @@ class DatosUsuario(models.Model):
         managed = False
         verbose_name_plural = "datos usuario"
         db_table = 'datos_usuario'
+
+
+

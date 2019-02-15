@@ -1,8 +1,7 @@
 var map;
 $(document).ready(function() {
-    //map = L.map('map').setView([40.0000000, -4.0000000], 5);
-
-    if (geo){
+    map = L.map('map').setView([40.0000000, -4.0000000], 5);
+    /*if (geo){
         var test = JSON.parse(geo);
         var coord = test.coordinates[0];
         console.log(coord[0]);
@@ -10,7 +9,7 @@ $(document).ready(function() {
         var map = L.map('map').setView(latlon, 12);
     }else{
         var map = L.map('map').setView([40.0000000, -4.0000000], 5);
-    }
+    }*/
 
     var base = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
             maxZoom: 18,
@@ -18,7 +17,7 @@ $(document).ready(function() {
                 '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
                 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             id: 'mapbox.streets'
-    }).addTo(map);;
+    }).addTo(map);
 
 
 
@@ -74,6 +73,8 @@ $(document).ready(function() {
         }
     );
 
+    map.fitBounds(geoJSONLayer.getBounds());
+
 
     map.on(L.Draw.Event.CREATED, function (e) {
 
@@ -88,6 +89,11 @@ $(document).ready(function() {
         var string_json = JSON.stringify(editableLayers.toGeoJSON());
         console.log(string_json);
         $('#geometria_string').val(string_json);
+    });
+
+    map.on(L.Draw.Event.DELETED, function(e){
+        console.log("eliminado");
+        $('#geometria_string').val('');
     });
 
 });

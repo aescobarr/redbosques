@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht, Tesaurus, User, TeCategoria, FotosRodal, DocsRodal, Institucion, DatosUsuario
+from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht, Tesaurus, User, TeCategoria, FotosRodal, DocsRodal, Institucion, DatosUsuario, AuthUser
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.urls import reverse
@@ -69,6 +69,7 @@ def menu(request):
     du = None
     try:
         du = DatosUsuario.objects.get(user=current_user)
+        print(du)
     except DatosUsuario.DoesNotExist:
         pass
 
@@ -78,13 +79,39 @@ def menu(request):
     rodalesSelector = []
     #rodals_list = WebMapa.objects.filter(eje_cod='nm').order_by('nombre')
     #rodals_list = Rodal.objects.filter(usuario=user).order_by('nombre')
+
     rodals_list = Rodal.objects.all().order_by('nombre')
 
     for r in rodals_list:
         #rodalesSelector.append({'id_rodal': r.id_rodal, 'nombre': r.nombre})
-        rodalesSelector.append({'id_rodal': r.id, 'nombre': r.nombre})
+        if r.usuario.id == du.id:
+            rodalesSelector.append({'id_rodal': r.id , 'nombre': r.nombre + '(*)'})
+        else:
+            rodalesSelector.append({'id_rodal': r.id, 'nombre': r.nombre})
 
-    context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'rodalesSelector':rodalesSelector, 'du':du }
+
+    rodalesSelectorEditor = []
+
+    if du.admin_institucion:
+        usDat = DatosUsuario.objects.filter(institucion_id=du.institucion_id).values('user_id')
+
+        usuarios = AuthUser.objects.filter(id__in=usDat).values('id')
+        rodals_list_2 = Rodal.objects.filter(usuario__in=usuarios).values('id', 'nombre').order_by('nombre')
+
+        for test in rodals_list_2:
+            rodalesSelectorEditor.append({'id_rodal': test['id'], 'nombre': test['nombre']})
+
+
+    else:
+        usDat = DatosUsuario.objects.filter(id=du.id).values('user_id')
+        usuarios = AuthUser.objects.filter(id__in=usDat).values('id')
+        rodals_list_2 = Rodal.objects.filter(usuario__in=usuarios).values('id', 'nombre').order_by('nombre')
+
+        for test in rodals_list_2:
+            rodalesSelectorEditor.append({'id_rodal': test['id'], 'nombre': test['nombre']})
+
+
+    context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'rodalesSelector': rodalesSelector, 'du': du, 'rodalesSelectorEditor': rodalesSelectorEditor}
     return render(request, 'redbosques_main/menu.html', context)
 
 
@@ -120,7 +147,7 @@ def initialData():
 
     return context
 
-@login_required(login_url="login/")
+#@login_required(login_url="login/")
 def herramientas(request, id=None):
 
     if id is None:
@@ -151,14 +178,10 @@ def cordRodal(id):
     return coordenadas_rodal
 
 
-
-
-
 @api_view(['GET'])
 def dataCleaner(request):
     resultado = initialData()
     return Response(resultado)
-
 
 
 @api_view(['GET'])
@@ -207,7 +230,6 @@ def habitatData(request):
 
     context = {'newSubHabitatData': newSubHabitatData, 'newRodalesData': newRodalesData}
     return Response(context)
-
 
 
 @api_view(['GET'])
@@ -276,7 +298,6 @@ def rodalData(request):
     return Response(context)
 
 
-
 @api_view(['GET'])
 def ambitoData(request):
 
@@ -291,8 +312,6 @@ def ambitoData(request):
 
     context = {'rodalData': rodalData}
     return Response(context)
-
-
 
 
 # Retorna totes les dades de la vista web_mapa per poder generar els punts en el mapa
@@ -1530,7 +1549,7 @@ def login(request):
     login_form = LoginForm()
 
     if request.user.is_authenticated:
-        return redirect('menu')
+        return redirect('herramientas')
 
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -1540,7 +1559,7 @@ def login(request):
         if user is not None:
             # correct username and password login the user
             auth.login(request, user)
-            return redirect('menu')
+            return redirect('herramientas')
         else:
             try:
                 user = dUser.objects.get(username=username)
@@ -1592,21 +1611,20 @@ def editrodalForm(request, id=None):
     datos = get_object_or_404(Rodal, id=id)
     #form = rodalFormFields(instance=datos)
 
-
-
-
     if request.method == 'POST':
         form = rodalFormFields(request.POST or None, instance=datos)
 
-        current_user = request.user
-        user = User.objects.get(usuario=current_user)
+        current_user = request.user.id
+        user = AuthUser.objects.get(id=current_user)
         print(user)
+
 
         if form.is_valid():
             dades = form.save(commit=False)
             dades.usuario = user
 
             json_geometry = json.loads(request.POST["geometria_string"])
+
             multipoligon = []
             for feature in json_geometry['features']:
                 feature_geometry = GEOSGeometry(json.dumps(feature['geometry']))
@@ -1623,16 +1641,23 @@ def editrodalForm(request, id=None):
         datos = get_object_or_404(Rodal, id=id)
         form = rodalFormFields(instance=datos)
 
-        geom = datos.geom
-        geom.transform(4326)
-        g = ogr.CreateGeometryFromJson(geom.json)
+        buffer = []
+        if datos.geom != 'null':
+            geom = datos.geom
+            geom.transform(4326)
+            g = ogr.CreateGeometryFromJson(geom.json)
 
-        for idx, f in enumerate(g):
-            geojson_string = f.ExportToJson()
+            #buffer = []
+            for idx, f in enumerate(g):
+                geojson_string = f.ExportToJson()
+                buffer.append(dict(type="Feature", geometry=json.loads(geojson_string)))
 
-        # print(geojson_string)
+            geojsoncollection_string = json.dumps({"type": "FeatureCollection", "features": buffer})
+        else:
+            buffer.append(dict(type="Feature", geometry=""))
+            geojsoncollection_string = json.dumps({"type": "FeatureCollection", "features": buffer})
 
-    context = {'form': form, 'geojson_string': geojson_string, 'id': id}
+    context = {'form': form, 'geojson_string': geojsoncollection_string, 'id': id}
     return render(request, 'redbosques_main/editrodalForm.html', context)
 
 
@@ -1641,9 +1666,16 @@ def rodalForm(request):
     if request.method == 'POST':
         form = rodalFormFields(request.POST or None)
 
-        current_user = request.user
-        user = User.objects.get(usuario=current_user)
+        current_user = request.user.id
+        user = AuthUser.objects.get(id=current_user)
         print(user)
+
+
+
+
+
+
+
 
         if form.is_valid():
             dades = form.save(commit=False)
@@ -1771,9 +1803,27 @@ def rodalForm2(request, id=None):
     ##############################################
 
     areaHectareas = round(area / 10000, 2)
-    contManchForestKM2 = round(contManchForest[0][0] / 1000, 2)
-    densBosquexcent = round(densBosque[0][0] / 100, 2)
-    distCoreAreaKM = round(distCoreArea[0][0] / 1000, 2)
+
+    if contManchForest[0][0] == None:
+        contManchForestKM2 = 0
+    else:
+        contManchForestKM2 = round(contManchForest[0][0] / 1000, 2)
+
+
+    if densBosque[0][0] == None:
+        densBosquexcent = 0
+    else:
+        densBosquexcent = round(densBosque[0][0] / 100, 2)
+
+
+    if distCoreArea[0][0] == None:
+        distCoreAreaKM = 0
+    else:
+        distCoreAreaKM = round(distCoreArea[0][0] / 1000, 2)
+
+    #contManchForestKM2 = round(contManchForest[0][0] / 1000, 2)
+    #densBosquexcent = round(densBosque[0][0] / 100, 2)
+    #distCoreAreaKM = round(distCoreArea[0][0] / 1000, 2)
 
     # print("Área: " + str(areaHectareas) + " ha")
     # print("Continuidad mancha forestal: " + str(contManchForestKM2) + " km2")
@@ -2638,135 +2688,3 @@ def send_user_created_email(email):
         email.send()
     except dUser.DoesNotExist:
         print("No se puede mandar el correo a " + email + ", no existe un usuario con este correo electrónico")
-
-
-
-'''@api_view(['POST'])
-def rodalFormData(request):
-
-    current_user = request.user
-    user = User.objects.get(usuario=current_user)
-
-
-    if request.method == 'POST':
-        print('POST')
-    else:
-        print('No post')
-
-    form = rodalFormFields(request.POST)
-
-    if form.is_valid():
-        dades = form.save(commit=False)
-        dades.usuario = user
-
-        json_geometry = json.loads(request.POST["geometria_string"])
-        multipoligon = []
-        for feature in json_geometry['features']:
-            feature_geometry = GEOSGeometry(json.dumps(feature['geometry']))
-            feature_geometry.transform(25830)
-            multipoligon.append(feature_geometry)
-
-        mp = MultiPolygon(multipoligon)
-        dades.geom = mp
-        dades.save()
-
-
-            testJson = json.loads(request.POST["geometria_string"])
-
-            print(testJson)
-            testJson2 = testJson['features'][0]['geometry']
-
-
-            fig = shape(testJson2)
-
-
-            proj = partial(pyproj.transform, pyproj.Proj(init='epsg:4326'), pyproj.Proj(init='epsg:3857'))
-
-            # Encontrado aquí https://gist.github.com/robinkraft/c6de2f988c9d3f01af3c
-            # https://gist.github.com/drmalex07/5a54fc4f1db06a66679e
-            fig_new = transform(proj, fig)
-            area = fig_new.area
-
-            cursor = connection.cursor()
-
-            ######## Continuidad mancha forestal #########
-
-            contManchForestSQL = cursor.execute('select (stats).mean from '
-                '( select st_summarystats(st_clip( rast, ST_Transform(ST_GeomFromText(%s, 4326), 25830),true)) '
-                'as stats from carto.bosque_cf '
-                'WHERE ST_Intersects(rast, ST_Transform(ST_GeomFromText(%s, 4326), 25830)) ) as foo', [fig.wkt, fig.wkt])
-
-            contManchForest = cursor.fetchall()
-
-            print(contManchForest)
-            #contManchForest = namedtuplefetchall(cursor)
-
-            ##############################################
-
-
-            ######## Densidad de bosque #########
-
-            densBosqueSQL = cursor.execute('select (stats).mean from '
-                '( select st_summarystats(st_clip( rast, ST_Transform(ST_GeomFromText(%s, 4326), 25830),true)) '
-                'as stats from carto.bosque_sf '
-                'WHERE ST_Intersects(rast, ST_Transform(ST_GeomFromText(%s, 4326), 25830)) ) as foo', [fig.wkt, fig.wkt])
-
-            densBosque = cursor.fetchall()
-
-            ##############################################
-
-
-            ######## Distancia a la core área #########
-
-            distCoreAreaSql = cursor.execute('select (stats).mean from '
-                '( select st_summarystats(st_clip( rast, ST_Transform(ST_GeomFromText(%s, 4326), 25830),true)) '
-                'as stats from carto.bosque_ps '
-                'WHERE ST_Intersects(rast, ST_Transform(ST_GeomFromText(%s, 4326), 25830)) ) as foo', [fig.wkt, fig.wkt])
-
-            distCoreArea = cursor.fetchall()
-            ##############################################
-
-            areaHectareas = round(area/10000, 2)
-            contManchForestKM2 = round(contManchForest[1][0]/1000, 2)
-            densBosquexcent = round(densBosque[0][0]/100, 2)
-            distCoreAreaKM = round(distCoreArea[0][0]/1000, 2)
-
-            print("Área: " + str(areaHectareas) + " ha")
-            print("Continuidad mancha forestal: " + str(contManchForestKM2) + " km2")
-            print("Densidad de bosque: " + str(densBosquexcent) + " %")
-            print("Distancia a la core área: " + str(distCoreAreaKM) + " Km")
-
-            context = {'areaHectareas': areaHectareas,
-                     'contManchForestKM2': contManchForestKM2,
-                     'densBosquexcent': densBosquexcent,
-                     'distCoreAreaKM': distCoreAreaKM,
-                     'idRodoal': id}
-
-
-    return HttpResponseRedirect('/redbosques/rodalForm2/'+ str(dades.id) +'/')
-
-'''
-
-'''@api_view(['POST'])
-def rodalFormData2(request, id):
-    if request.method == 'POST':
-        datos = get_object_or_404(Rodal, id=id)
-
-
-
-        current_user = request.user
-        user = User.objects.get(usuario=current_user)
-
-        form = rodalFormFields2(request.POST, instance=datos)
-
-        if form.is_valid():
-            dades = form.save(commit=False)
-            dades.save()
-        print('POST')
-    else:
-        print('No post')
-
-    data = 1
-
-    return data
-'''
