@@ -421,6 +421,11 @@ class rodalFormFields3Foto(ModelForm):
         else:
             raise ValidationError("No se pudo leer la imagen cargada")
 
+class rodalFormFields3Fotoprincipal(ModelForm):
+    class Meta:
+        model = FotosRodal
+        fields = ('fotoprincipal', )
+
 
 class rodalFormFields3Doc(ModelForm):
     class Meta:

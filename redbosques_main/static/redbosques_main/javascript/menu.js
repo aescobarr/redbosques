@@ -23,9 +23,9 @@ var compararRodal = function(){
     var rodalSelected = $('.rodalSelected').val();
 
     if (rodalSelected === ''){
-        location.href = "/redbosques/comparador";
+        location.href = "/redbosques/comparador_new";
     }else{
-        location.href = "/redbosques/comparador/" + rodalSelected + "/";
+        location.href = "/redbosques/comparador_new/" + rodalSelected + "/";
     }
 };
 

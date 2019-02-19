@@ -58,11 +58,19 @@
                           </td>
                           <td>
                                 <p>Nombre: {{ f.nombre_foto }}</p>
-                                <p>{{ f.id_foto }}</p>
+                                <p name="fotoPrinc" value="{{ f.id_foto }}">{{ f.id_foto }}</p>
                                 <!--<form method="post" enctype="multipart/form-data" action="{% url 'eliminarImagen' f.id_foto %}">-->
                                 {% csrf_token %}
                                 <button class="btn btn-danger btn-sm btn-del btn-del-img imatgeRodal" id="{{ f.id_foto }}" type="submit" onclick="deleteFile()">Eliminar</button>
                                 <!--</form>-->
+                                <div class="fotoPrincipal" style="padding-top: 10px;">
+                                  <p>Foto principal</p>
+                                  {% if f.fotoPrincipal %}
+                                    <input id="{{ f.id_foto }}" type="radio" class="fotoPrinc" name="fotoPrinc" value="ture" checked="checked" onchange="fotoPrincipal()">
+                                  {% else %}
+                                    <input id="{{ f.id_foto }}" type="radio" class="fotoPrinc" name="fotoPrinc" value="false" onchange="fotoPrincipal()">
+                                  {% endif %}
+                                </div>
                           </td>
                       </tr>
                     {% endfor %}
@@ -93,6 +101,7 @@
                               <a target="_blank" href="{{ d.doc.url }}"><img style="height: 100px;" src="{% static 'redbosques_main/images/fileIcon2.png' %}"></a>
                               <p>Nombre: {{ d.nombre_doc }}</p>
                               <button class="btn btn-danger btn-sm btn-del btn-del-doc documentRodal" id="{{ d.id_doc }}" type="submit" onclick="deleteDoc()">Eliminar</button>
+
                           </td>
                       </tr>
                     {% endfor %}

@@ -39,7 +39,7 @@ urlpatterns = [
     path('rodalForm3/<int:id>/', views.rodalForm3, name='rodalForm3'),
     path('uploadImage/<int:id>/', views.uploadImage, name='uploadImage'),
     path('eliminarImagen/<int:id>/', views.deleteImage, name='eliminarImagen'),
-
+    path('mainImage/<int:idRodal>/<int:fotoSelected>/', views.mainImage, name='mainImage'),
     path('uploadDocs/<int:id>/', views.uploadDocs, name='uploadDocs'),
     path('eliminarDoc/<int:id>/', views.deleteDoc, name='eliminarDoc'),
 

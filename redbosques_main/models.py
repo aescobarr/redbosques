@@ -285,6 +285,7 @@ class WebMapaValAmb(models.Model):
     nm = models.FloatField(blank=True, null=True)
     regbio_cod = models.CharField(max_length=100, blank=True, null=True)
     nombre_es = models.CharField(max_length=100, blank=True, null=True)
+    foto = models.CharField(max_length=255, blank=True, null=True)
 
 
     class Meta:
@@ -428,12 +429,13 @@ class FotosRodal(models.Model):
     #foto = models.FileField(upload_to='media/fotos/')
     #foto = models.ImageField(upload_to=urlFotos, validators=[validate_image])
     foto = models.ImageField(upload_to=urlFotos)
+    fotoprincipal = models.BooleanField()
 
 
     class Meta:
         managed = False
         db_table = 'fotos_rodal'
-        unique_together = (('id_foto', 'id_rodal'),)
+        unique_together = (('id_foto', 'id_rodal', 'fotoprincipal'),)
 
     def delete(self, *args, **kwargs):
         self.foto.delete()

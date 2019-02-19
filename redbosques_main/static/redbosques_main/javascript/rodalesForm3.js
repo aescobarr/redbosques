@@ -12,11 +12,25 @@ $(function () {
     ],
     done: function (e, data) {  /* 3. PROCESS THE RESPONSE FROM THE SERVER */
       if (data.result.is_valid) {
-        $("#gallery tbody").prepend(
+        console.log(data.result.fotoprincipal);
+        if(data.result.fotoprincipal){
+            $("#gallery tbody").prepend(
+            "<tr><td><a target='_blank' href='" + data.result.url +  "'><img id="+ data.result.id_foto +" style='height: 150px;' src='" + data.result.url + "'></a></td>" +
+            "<td><p>Nombre: '" + data.result.nombre_foto +  "'</p>" +
+            "<button class='btn btn-danger btn-sm btn-del btn-del-img imatgeRodal' type='submit' id="+ data.result.id_foto +" onclick='deleteFile()'>Eliminar</button></td></tr>"+
+            "<input id=" + data.result.id_foto + " type='radio' class='fotoPrinc' name='fotoPrinc' value='ture' checked='checked'>"
+            )
+
+            $('.fotoPrinc').is(':checked');
+        }else{
+          $("#gallery tbody").prepend(
           "<tr><td><a target='_blank' href='" + data.result.url +  "'><img id="+ data.result.id_foto +" style='height: 150px;' src='" + data.result.url + "'></a></td>" +
           "<td><p>Nombre: '" + data.result.nombre_foto +  "'</p>" +
-          "<button class='btn btn-danger btn-sm btn-del btn-del-img imatgeRodal' type='submit' id="+ data.result.id_foto +" onclick='deleteFile()'>Eliminar</button></td></tr>"
-        )
+          "<button class='btn btn-danger btn-sm btn-del btn-del-img imatgeRodal' type='submit' id="+ data.result.id_foto +" onclick='deleteFile()'>Eliminar</button></td></tr>"+
+          "<input id=" + data.result.id_foto + " type='radio' class='fotoPrinc' name='fotoPrinc' value='false'>"
+          )
+        }
+
       }else{
         alert(data.result.error_imagen);
       }
@@ -92,6 +106,40 @@ var deleteDoc = function(){
         },
         success: function( data, textStatus, jqXHR ) {
             $("#library").load(" #library");
+        },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(errorThrown);
+            }
+        });
+};
+
+
+
+var fotoPrincipal = function(){
+    var idRodal = window.location.pathname.split("/")[3];
+
+    url = '/redbosques/mainImage';
+
+    fotoSelected = $( "input:checked" ).attr("id");
+
+    if (fotoSelected == null){
+        $("#gallery").load(" #gallery");
+    }else{
+        url = url + '/' + idRodal + '/' + fotoSelected + '/';
+    }
+
+    $.ajax({
+        url: url,
+        method: "POST",
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                var csrftoken = getCookie('csrftoken');
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        },
+        success: function( data, textStatus, jqXHR ) {
+
+
         },
             error: function(jqXHR, textStatus, errorThrown){
                 console.log(errorThrown);

@@ -11,7 +11,7 @@ from django.db.models import Avg, StdDev
 from redbosques.settings_local import URL_BASE
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from redbosques.forms import RegistrationForm, LoginForm, rodalFormFields, rodalFormFields2, rodalFormFields3, rodalFormFields3Foto, rodalFormFields3Doc
+from redbosques.forms import RegistrationForm, LoginForm, rodalFormFields, rodalFormFields2, rodalFormFields3, rodalFormFields3Foto, rodalFormFields3Doc, rodalFormFields3Fotoprincipal
 from django.contrib import messages
 from django.contrib import auth
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon
@@ -136,6 +136,7 @@ def initialData():
     # Carga de datos para el selector de Rodales
     rodalesData = []
     rodales = WebMapaValAmb.objects.filter(eje_cod='nm').order_by('nombre')
+
     for r in rodales:
         rodalesData.append({'id_rodal': r.id_rodal, 'nombre': r.nombre})
 
@@ -166,13 +167,16 @@ def cordRodal(id):
 
     rodal = WebMapaValAmb.objects.filter(id_rodal=id).filter(eje_cod='nm')
 
+
+
     coordenadas_rodal = []
     for punt in rodal:
         coordenadas_rodal.append({
             'id_rodal': punt.id_rodal,
             'x': punt.geom.x,
             'y': punt.geom.y,
-            'nombre': punt.nombre
+            'nombre': punt.nombre,
+            'test': punt.foto
         })
 
     return coordenadas_rodal
@@ -221,7 +225,7 @@ def habitatData(request):
             'habitat_nom': r.habitat_nom,
             'tipobosque_nombre': r.tipobosque_nombre,
             'valor': r.valor,
-            'imagen': r.fotoglobo,
+            'imagen': r.foto,
             'valor_hh': r.hh,
             'valor_ie': r.ie,
             'valor_nm': r.nm,
@@ -255,7 +259,7 @@ def subHabitatData(request):
             'habitat_nom': r.habitat_nom,
             'tipobosque_nombre': r.tipobosque_nombre,
             'valor': r.valor,
-            'imagen': r.fotoglobo,
+            'imagen': r.foto,
             'valor_hh': r.hh,
             'valor_ie': r.ie,
             'valor_nm': r.nm,
@@ -287,7 +291,7 @@ def rodalData(request):
             'habitat_nom': r.habitat_nom,
             'tipobosque_nombre': r.tipobosque_nombre,
             'valor': r.valor,
-            'imagen': r.fotoglobo,
+            'imagen': r.foto,
             'valor_hh': r.hh,
             'valor_ie': r.ie,
             'valor_nm': r.nm,
@@ -349,23 +353,28 @@ def datos_mapa(request):
 
     #valoracio = request.query_params.getlist('val_valor') or None
 
+    #fotosSelected = FotosRodal.objects.filter(fotoprincipal=True)
+
+
+
     llista_punts = []
     for punt in dades_punts:
         llista_punts.append({
-            'id_rodal':punt.id_rodal,
-            'x':punt.geom.x,
-            'y':punt.geom.y,
-            'nombre': punt.nombre,
-            'Comunidad_autonoma': punt.ccaa_nombre,
-            'habitat_nom': punt.habitat_nom,
-            'tipobosque_nombre': punt.tipobosque_nombre,
-            'valor': punt.valor,
-            'imagen': punt.fotoglobo,
-            'valor_hh': punt.hh,
-            'valor_ie': punt.ie,
-            'valor_nm': punt.nm,
-            'regionBiogeo': punt.nombre_es
-        })
+                    'id_rodal': punt.id_rodal,
+                    'x': punt.geom.x,
+                    'y': punt.geom.y,
+                    'nombre': punt.nombre,
+                    'Comunidad_autonoma': punt.ccaa_nombre,
+                    'habitat_nom': punt.habitat_nom,
+                    'tipobosque_nombre': punt.tipobosque_nombre,
+                    'valor': punt.valor,
+                    'imagen': punt.foto,
+                    'valor_hh': punt.hh,
+                    'valor_ie': punt.ie,
+                    'valor_nm': punt.nm,
+                    'regionBiogeo': punt.nombre_es
+                })
+
 
     context = {'llista_punts': llista_punts, 'llista_habitats': llista_habitats}
     return Response(context)
@@ -1670,13 +1679,6 @@ def rodalForm(request):
         user = AuthUser.objects.get(id=current_user)
         print(user)
 
-
-
-
-
-
-
-
         if form.is_valid():
             dades = form.save(commit=False)
             dades.usuario = user
@@ -1882,7 +1884,6 @@ def rodalForm3(request, id):
     datos = get_object_or_404(Rodal, id=id)
 
     if request.method == 'POST':
-
         form = rodalFormFields3(request.POST, instance=datos)
 
         if form.is_valid():
@@ -1903,7 +1904,8 @@ def rodalForm3(request, id):
             fotos.append({
                 'id_foto': lf.id_foto,
                 'nombre_foto': lf.nombre_foto,
-                'foto': lf.foto
+                'foto': lf.foto,
+                'fotoPrincipal': lf.fotoprincipal
             })
 
         allDocs = DocsRodal.objects.all()
@@ -1956,6 +1958,7 @@ def uploadImage(request, id):
             foto = form.save(commit=False)
             foto.id_rodal = Rodal.objects.get(id=id)
             foto.nombre_foto = foto.foto.name
+            foto.fotoprincipal = False
             foto.save()
             data = {'is_valid': True, 'nombre_foto': foto.nombre_foto, 'url': foto.foto.url, 'id_foto': foto.id_foto}
         else:
@@ -2001,6 +2004,18 @@ def deleteImage(request, id):
     context = {'id': id_rodal, 'imagen': 'imagen'}
 
     return Response(context)
+
+
+@api_view(['POST'])
+def mainImage(request, idRodal, fotoSelected):
+    oldSelected = FotosRodal.objects.filter(id_rodal=idRodal).filter(fotoprincipal=True).update(fotoprincipal=False)
+    newSelected = FotosRodal.objects.filter(id_foto=fotoSelected).update(fotoprincipal=True)
+
+    context = {'oldSelected': oldSelected, 'newSelected': newSelected}
+
+    return Response(context)
+
+
 
 
 @login_required(login_url="login/")
