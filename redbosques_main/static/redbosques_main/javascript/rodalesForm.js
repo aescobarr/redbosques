@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var map = L.map('map').setView([40.0000000, -4.0000000], 5);
+    //var map = L.map('map').setView([40.0000000, -4.0000000], 5);
 
     /*L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -12,8 +12,23 @@ $(document).ready(function() {
                 '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
                 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             id: 'mapbox.streets'
-    }).addTo(map);;
+    });
 
+    var bing = L.tileLayer.bing('AisLQm3JkrOKysYfF9FiIkwkH-kIryIOeJcEs4JV-Qb9fgdBZk3tM4NmTe-e94Zr');
+
+    var baseLayers = {
+		"Bing maps": bing,
+		"Open street map": base
+	};
+
+
+	var map = L.map('map', {
+            center: [40.0000000, -4.0000000],
+            zoom: 5,
+            layers: [base,bing]
+    });
+
+	L.control.layers(baseLayers).addTo(map);
 
     var editableLayers = new L.FeatureGroup();
 
@@ -63,6 +78,17 @@ $(document).ready(function() {
         console.log(string_json);
         $('#geometria_string').val(string_json);
         console.log(string_json);
+    });
+
+    map.on(L.Draw.Event.EDITED, function(e){
+        var string_json = JSON.stringify(editableLayers.toGeoJSON());
+        console.log(string_json);
+        $('#geometria_string').val(string_json);
+    });
+
+    map.on(L.Draw.Event.DELETED, function(e){
+        console.log("eliminado");
+        $('#geometria_string').val('');
     });
 
 
@@ -128,34 +154,3 @@ $(document).ready(function() {
 
 
 });
-
-
-/*var sendData = function(){
-
-    var test = $('#geometria').val();
-    //console.log(test['geometry']);
-
-    url = '/redbosques/rodalFormData'
-
-    $.ajax({
-        url: url,
-        method: "POST",
-        data: { test },
-        beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type)) {
-                var csrftoken = getCookie('csrftoken');
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-        },
-
-        success: function(data) {
-            console.log("Tot OK !!!!")
-        },
-        error: function(jqXHR, textStatus, errorThrown){
-            console.log(errorThrown);
-        }
-    });
-}*/
-
-
-
