@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^register/$', views.register, name='register'),
     path('rodalForm', views.rodalForm, name='rodalForm'),
     path('editrodalForm/<int:id>/', views.editrodalForm, name='editrodalForm'),
+    path('eliminarRodal/<int:id>/', views.eliminarRodal, name='eliminarRodal'),
     path('rodalForm2/<int:id>/', views.rodalForm2, name='rodalForm2'),
     path('rodalForm3/<int:id>/', views.rodalForm3, name='rodalForm3'),
     path('uploadImage/<int:id>/', views.uploadImage, name='uploadImage'),

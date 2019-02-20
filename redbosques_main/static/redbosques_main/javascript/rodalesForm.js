@@ -24,7 +24,7 @@ $(document).ready(function() {
 
 	var map = L.map('map', {
             center: [40.0000000, -4.0000000],
-            zoom: 5,
+            zoom: 6,
             layers: [base,bing]
     });
 

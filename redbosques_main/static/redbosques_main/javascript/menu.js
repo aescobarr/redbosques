@@ -14,7 +14,24 @@ var editarRodal = function(){
         }else{
             location.href = "/redbosques/editrodalForm/" + editRodalSelected + "/";
         }
-    };
+};
+
+
+
+var eliminarRodal = function(){
+        var eliminarRodalSelected = $('.editRodalSelected').val();
+
+        if (eliminarRodalSelected === ''){
+            alert("Por favor seleccione un rodal.")
+        }else{
+            var resp = confirm("Estas seguro que deseas eliminar el rodal?");
+
+            if(resp == true){
+                location.href = "/redbosques/eliminarRodal/" + eliminarRodalSelected + "/";
+            }
+        }
+};
+
 
 
 
