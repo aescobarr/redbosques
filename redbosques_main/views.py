@@ -65,7 +65,9 @@ def index(request):
 
 @login_required(login_url="login/")
 def menu(request):
-    current_user = request.user
+    context = menuData(request)
+
+    '''current_user = request.user
     du = None
     try:
         du = DatosUsuario.objects.get(user=current_user)
@@ -111,7 +113,7 @@ def menu(request):
             rodalesSelectorEditor.append({'id_rodal': test['id'], 'nombre': test['nombre']})
 
 
-    context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'rodalesSelector': rodalesSelector, 'du': du, 'rodalesSelectorEditor': rodalesSelectorEditor}
+    context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'rodalesSelector': rodalesSelector, 'du': du, 'rodalesSelectorEditor': rodalesSelectorEditor}'''
     return render(request, 'redbosques_main/menu.html', context)
 
 
@@ -1668,6 +1670,67 @@ def editrodalForm(request, id=None):
 
     context = {'form': form, 'geojson_string': geojsoncollection_string, 'id': id}
     return render(request, 'redbosques_main/editrodalForm.html', context)
+
+@login_required(login_url="login/")
+def eliminarRodal(request, id=None):
+    Rodal.objects.filter(id=id).delete()
+    context = menuData(request)
+    return redirect('menu')
+
+
+
+def menuData(request):
+    current_user = request.user
+    du = None
+    try:
+        du = DatosUsuario.objects.get(user=current_user)
+        print(du)
+    except DatosUsuario.DoesNotExist:
+        pass
+
+    #user = User.objects.get(usuario=current_user)
+
+
+    rodalesSelector = []
+    #rodals_list = WebMapa.objects.filter(eje_cod='nm').order_by('nombre')
+    #rodals_list = Rodal.objects.filter(usuario=user).order_by('nombre')
+
+    rodals_list = Rodal.objects.all().order_by('nombre')
+
+    for r in rodals_list:
+        #rodalesSelector.append({'id_rodal': r.id_rodal, 'nombre': r.nombre})
+        if r.usuario.id == du.id:
+            rodalesSelector.append({'id_rodal': r.id , 'nombre': r.nombre + '(*)'})
+        else:
+            rodalesSelector.append({'id_rodal': r.id, 'nombre': r.nombre})
+
+
+    rodalesSelectorEditor = []
+
+    if du.admin_institucion:
+        usDat = DatosUsuario.objects.filter(institucion_id=du.institucion_id).values('user_id')
+
+        usuarios = AuthUser.objects.filter(id__in=usDat).values('id')
+        rodals_list_2 = Rodal.objects.filter(usuario__in=usuarios).values('id', 'nombre').order_by('nombre')
+
+        for test in rodals_list_2:
+            rodalesSelectorEditor.append({'id_rodal': test['id'], 'nombre': test['nombre']})
+
+
+    else:
+        usDat = DatosUsuario.objects.filter(id=du.id).values('user_id')
+        usuarios = AuthUser.objects.filter(id__in=usDat).values('id')
+        rodals_list_2 = Rodal.objects.filter(usuario__in=usuarios).values('id', 'nombre').order_by('nombre')
+
+        for test in rodals_list_2:
+            rodalesSelectorEditor.append({'id_rodal': test['id'], 'nombre': test['nombre']})
+
+
+    context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'rodalesSelector': rodalesSelector, 'du': du, 'rodalesSelectorEditor': rodalesSelectorEditor}
+
+    return context
+
+
 
 
 @login_required(login_url="login/")

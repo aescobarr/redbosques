@@ -29,7 +29,15 @@
             <!--<a class="btn btn-selector-mapa" href="{% url 'herramientas' %}" onclick="zoomRodalMapa()">Ver mapa de rodales</a>-->
             <a type="btn" href="{% url 'rodalForm' %}" class="btn btn-selector-mapa">Entrada de nuevo rodal</a>
             <button type="btn" class="btn btn-selector-mapa" disabled>Importar datos desde xls? Csv?</button>
-            <button type="btn" class="btn btn-selector-mapa" onclick="editarRodal()">Editar Rodal</button>
+            <div class="row">
+                <div class="col-lg-6">
+                    <button type="btn" class="btn btn-selector-mapa" onclick="editarRodal()">Editar Rodal</button>
+                </div>
+                <div class="col-lg-6">
+                    <button type="btn" class="btn btn-eliminar-rodal" onclick="eliminarRodal()">Eliminar Rodal</button>
+                </div>
+
+            </div>
             <select class="form-control editRodalSelected">
                 <option value="" selected="selected">------</option>
                     {% for rodal in rodalesSelectorEditor %}
