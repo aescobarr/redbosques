@@ -1602,7 +1602,7 @@ def register(request):
                     du.institucion = institucion
                     du.save()
                     send_user_created_email(user.email)
-                    return redirect('/redbosques')
+                    return redirect('registration_complete')
             except Exception as e:
                 messages.add_message(request,messages.ERROR, e)
                 pass
@@ -2703,3 +2703,7 @@ def send_user_created_email(email):
         email.send()
     except dUser.DoesNotExist:
         print("No se puede mandar el correo a " + email + ", no existe un usuario con este correo electrónico")
+
+
+def registration_complete(request):
+    return render(request, 'registration/registration_complete.html', {})
