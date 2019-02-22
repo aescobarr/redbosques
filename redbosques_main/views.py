@@ -2185,14 +2185,18 @@ def rodals_ajax(request):
     if rodalReferencia is not None and rodalReferencia=='1':
         rodalesTable = rodalesTable.filter(rodalref=True).order_by('nombre')
 
-    rodalesTable = rodalesTable.distinct().values('id_rodal','nombre','rodalref')
+    rodalesTable = rodalesTable.distinct().values('id_rodal','nombre','rodalref','ccaa_nom','ccaa_nombre','regbio_cod','nombre_es')
 
     rodales = []
     for r in rodalesTable:
         rodales.append({
             'id_rodal': r['id_rodal'],
             'nombre': r['nombre'],
-            'rodalref': r['rodalref']
+            'rodalref': r['rodalref'],
+            'codi_ccaa' : r['ccaa_nom'],
+            'ccaa_nombre': r['ccaa_nombre'],
+            'codi_rb': r['regbio_cod'],
+            'nom_rb': r['nombre_es']
         })
 
     return Response(rodales)

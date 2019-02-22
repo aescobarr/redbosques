@@ -166,10 +166,10 @@ $(document).ready(function(){
     }
 
     function load_cc_aa_comp(selected){
-        if(selected == 'null'){
+        /*if(selected == 'null'){
             resetUICcaaComp();
             block_from('selector_ComAut_Comp');
-        }else{
+        }else{*/
             resetUICcaaComp();
             setLoadingUI('selector_ComAut_Comp');
             block_from('selector_ComAut_Comp');
@@ -180,7 +180,6 @@ $(document).ready(function(){
                     $('#selector_ComAut_Comp').val(data[0].codigo);
                     load_biogeo_comp(data[0].codigo,$('#habitat').find(":selected").val());
                  }
-                 //unblock_all();
                  unblock('selector_ComAut_Comp');
             }else{
                 $.ajax({
@@ -195,11 +194,10 @@ $(document).ready(function(){
                     success: function( data, textStatus, jqXHR ) {
                          cached_data_cc_aa[selected] = data;
                          set_ccaa_data(data,'selector_ComAut_Comp');
-                         if(data.length == 1){
+                         /*if(data.length == 1){
                             $('#selector_ComAut_Comp').val(data[0].codigo);
                             load_biogeo_comp(data[0].codigo,$('#habitat').find(":selected").val());
-                         }
-                         //unblock_all();
+                         }*/
                          unblock('selector_ComAut_Comp');
                     },
                     error: function(jqXHR, textStatus, errorThrown){
@@ -208,14 +206,14 @@ $(document).ready(function(){
                     }
                 });
             }
-        }
+        //}
     }
 
     function load_cc_aa(selected){
-        if(selected == 'null'){
+        /*if(selected == 'null'){
             resetUICcaa();
             block_from('selector_ComAut');
-        }else{
+        }else{*/
             resetUICcaa();
             setLoadingUI('selector_ComAut');
             block_from('selector_ComAut');
@@ -241,10 +239,10 @@ $(document).ready(function(){
                     success: function( data, textStatus, jqXHR ) {
                          cached_data_cc_aa[selected] = data;
                          set_ccaa_data(data,'selector_ComAut');
-                         if(data.length == 1){
+                         /*if(data.length == 1){
                             $('#selector_ComAut').val(data[0].codigo);
                             load_biogeo(data[0].codigo,$('#habitat').find(":selected").val());
-                         }
+                         }*/
                          //unblock_all();
                          unblock('selector_ComAut');
                     },
@@ -254,7 +252,7 @@ $(document).ready(function(){
                     }
                 });
             }
-        }
+        //}
     }
 
     function rodalData(valorRodal){
@@ -408,74 +406,74 @@ $(document).ready(function(){
     }
 
     function load_rodals_comp(idHabitat,idComAut,idRegBiogeo,rodRef){
-        if( idComAut == 'null' || idRegBiogeo == 'null' ){
+        /*if( idComAut == 'null' || idRegBiogeo == 'null' ){
             resetUIRodalComp();
             block_from('selector_rodales_comp');
-        }else{
-            resetUIRodalComp();
-            setLoadingUI('selector_rodales_comp');
-            block_from('selector_rodales_comp');
-            if(cached_data_rodal[idHabitat+idComAut+idRegBiogeo+rodRef]!=null){
-                var data = cached_data_rodal[idHabitat+idComAut+idRegBiogeo+rodRef];
-                for(var i = 0; i < data.length; i++){
-                    var label = data[i].nombre;
-                    if(data[i].rodalref && data[i].rodalref == 1){
-                        label = label + ' *';
-                    }
-                    $('#selector_rodales_comp').append('<option value="' + data[i].id_rodal + '">' + label + '</option>')
+        }else{*/
+        resetUIRodalComp();
+        setLoadingUI('selector_rodales_comp');
+        block_from('selector_rodales_comp');
+        if(cached_data_rodal[idHabitat+idComAut+idRegBiogeo+rodRef]!=null){
+            var data = cached_data_rodal[idHabitat+idComAut+idRegBiogeo+rodRef];
+            for(var i = 0; i < data.length; i++){
+                var label = data[i].nombre;
+                if(data[i].rodalref && data[i].rodalref == 1){
+                    label = label + ' *';
                 }
-                unblock('selector_rodales_comp');
-            }else{
-                var params = [];
-                if( idHabitat != "null" ){
-                    params.push('idHab=' + escape(idHabitat));
-                }
-                if( idComAut != "null" ){
-                    params.push('comAut=' + escape(idComAut));
-                }
-                if( idRegBiogeo != "null" ){
-                    params.push('regBiogeo=' + escape(idRegBiogeo));
-                }
-                if(rodRef != null){
-                    params.push('rodRef=' + escape(rodRef));
-                }
-                var params_string = params.join("&");
-
-                var url = '';
-                if( params_string == '' ){
-                    url = _rodal_list;
-                }else{
-                    url = _rodal_list + '?' + params_string;
-                }
-
-                $.ajax({
-                    url: url,
-                    method: "GET",
-                    beforeSend: function(xhr, settings) {
-                        if (!csrfSafeMethod(settings.type)) {
-                            var csrftoken = getCookie('csrftoken');
-                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                        }
-                    },
-
-                    success: function( data, textStatus, jqXHR ) {
-                        cached_data_rodal[idHabitat+idComAut+idRegBiogeo+rodRef] = data;
-                        for(var i = 0; i < data.length; i++){
-                            var label = data[i].nombre;
-                            if(data[i].rodalref && data[i].rodalref == 1){
-                                label = label + ' *';
-                            }
-                            $('#selector_rodales_comp').append('<option value="' + data[i].id_rodal + '">' + label + '</option>')
-                        }
-                        unblock('selector_rodales_comp');
-                    },
-                    error: function(jqXHR, textStatus, errorThrown){
-                        console.log(errorThrown);
-                        unblock_all();
-                    }
-                });
+                $('#selector_rodales_comp').append('<option value="' + data[i].id_rodal + '">' + label + '</option>')
             }
+            unblock('selector_rodales_comp');
+        }else{
+            var params = [];
+            if( idHabitat != "null" ){
+                params.push('idHab=' + escape(idHabitat));
+            }
+            if( idComAut != "null" ){
+                params.push('comAut=' + escape(idComAut));
+            }
+            if( idRegBiogeo != "null" ){
+                params.push('regBiogeo=' + escape(idRegBiogeo));
+            }
+            if(rodRef != null){
+                params.push('rodRef=' + escape(rodRef));
+            }
+            var params_string = params.join("&");
+
+            var url = '';
+            if( params_string == '' ){
+                url = _rodal_list;
+            }else{
+                url = _rodal_list + '?' + params_string;
+            }
+
+            $.ajax({
+                url: url,
+                method: "GET",
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        var csrftoken = getCookie('csrftoken');
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                },
+
+                success: function( data, textStatus, jqXHR ) {
+                    cached_data_rodal[idHabitat+idComAut+idRegBiogeo+rodRef] = data;
+                    for(var i = 0; i < data.length; i++){
+                        var label = data[i].nombre;
+                        if(data[i].rodalref && data[i].rodalref == 1){
+                            label = label + ' *';
+                        }
+                        $('#selector_rodales_comp').append('<option value="' + data[i].id_rodal + '">' + label + '</option>')
+                    }
+                    unblock('selector_rodales_comp');
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                    console.log(errorThrown);
+                    unblock_all();
+                }
+            });
         }
+        /*}*/
     }
 
     function load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod){
@@ -556,77 +554,77 @@ $(document).ready(function(){
     }
 
     function load_rodals(idHabitat,idComAut,idRegBiogeo){
-        if( idComAut == 'null' || idRegBiogeo == 'null' ){
+        /*if( idComAut == 'null' || idRegBiogeo == 'null' ){
             resetUIRodal();
             block_from('selector_rodales');
+        }else{*/
+        resetUIRodal();
+        setLoadingUI('selector_rodales');
+        block_from('selector_rodales');
+        if(cached_data_rodal[idHabitat+idComAut+idRegBiogeo+'0']!=null){
+            var data = cached_data_rodal[idHabitat+idComAut+idRegBiogeo+'0'];
+            set_rodal_data(data,'selector_rodales');
+             if(data.length == 1){
+                $('#selector_rodales').val(data[0].id_rodal);
+                rodalData(data[0].id_rodal);
+             }
+            //unblock_all();
+            unblock('selector_rodales');
         }else{
-            resetUIRodal();
-            setLoadingUI('selector_rodales');
-            block_from('selector_rodales');
-            if(cached_data_rodal[idHabitat+idComAut+idRegBiogeo+'0']!=null){
-                var data = cached_data_rodal[idHabitat+idComAut+idRegBiogeo+'0'];
-                set_rodal_data(data,'selector_rodales');
-                 if(data.length == 1){
-                    $('#selector_rodales').val(data[0].id_rodal);
-                    rodalData(data[0].id_rodal);
-                 }
-                //unblock_all();
-                unblock('selector_rodales');
-            }else{
-                var params = [];
-                if( idHabitat != "null" ){
-                    params.push('idHab=' + escape(idHabitat));
-                }
-                if( idComAut != "null" ){
-                    params.push('comAut=' + escape(idComAut));
-                }
-                if( idRegBiogeo != "null" ){
-                    params.push('regBiogeo=' + escape(idRegBiogeo));
-                }
-                var params_string = params.join("&");
-
-                var url = '';
-                if( params_string == '' ){
-                    url = _rodal_list;
-                }else{
-                    url = _rodal_list + '?' + params_string;
-                }
-
-                $.ajax({
-                    url: url,
-                    method: "GET",
-                    beforeSend: function(xhr, settings) {
-                        if (!csrfSafeMethod(settings.type)) {
-                            var csrftoken = getCookie('csrftoken');
-                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                        }
-                    },
-
-                    success: function( data, textStatus, jqXHR ) {
-                        cached_data_rodal[idHabitat+idComAut+idRegBiogeo+'0'] = data;
-                        set_rodal_data(data,'selector_rodales');
-                         if(data.length == 1){
-                            $('#selector_rodales').val(data[0].id_rodal);
-                            rodalData(data[0].id_rodal);
-                         }
-                        //unblock_all();
-                        unblock('selector_rodales');
-                    },
-                    error: function(jqXHR, textStatus, errorThrown){
-                        console.log(errorThrown);
-                        unblock_all();
-                    }
-                });
+            var params = [];
+            if( idHabitat != "null" ){
+                params.push('idHab=' + escape(idHabitat));
             }
+            if( idComAut != "null" ){
+                params.push('comAut=' + escape(idComAut));
+            }
+            if( idRegBiogeo != "null" ){
+                params.push('regBiogeo=' + escape(idRegBiogeo));
+            }
+            var params_string = params.join("&");
+
+            var url = '';
+            if( params_string == '' ){
+                url = _rodal_list;
+            }else{
+                url = _rodal_list + '?' + params_string;
+            }
+
+            $.ajax({
+                url: url,
+                method: "GET",
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        var csrftoken = getCookie('csrftoken');
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                },
+
+                success: function( data, textStatus, jqXHR ) {
+                    cached_data_rodal[idHabitat+idComAut+idRegBiogeo+'0'] = data;
+                    set_rodal_data(data,'selector_rodales');
+                     if(data.length == 1){
+                        $('#selector_rodales').val(data[0].id_rodal);
+                        rodalData(data[0].id_rodal);
+                     }
+                    //unblock_all();
+                    unblock('selector_rodales');
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                    console.log(errorThrown);
+                    unblock_all();
+                }
+            });
         }
+        /*}*/
     }
 
     $('#tipoBosque').change(function(){
         var selected = $('#tipoBosque').find(":selected").val();
-        resetUICcaa();
-        resetUICcaaComp();
-        resetUIRegBioGeo();
-        resetUIRegBioGeoComp();
+        //resetUICcaa();
+        //resetUICcaaComp();
+        //resetUIRegBioGeo();
+        //resetUIRegBioGeoComp();
         resetUIRodal();
         resetUIRodalComp();
         loadHabitat(selected);
@@ -634,10 +632,15 @@ $(document).ready(function(){
 
     $('#habitat').change(function(){
         var selected = $('#habitat').find(":selected").val();
-        resetUIRegBioGeo();
-        resetUIRegBioGeoComp();
+        //resetUIRegBioGeo();
+        //resetUIRegBioGeoComp();
         resetUIRodal();
         resetUIRodalComp();
+        var idHabitat = $('#habitat').val();
+        var idComAut = $('#selector_ComAut').val();
+        var idRegBiogeo = $('#selector_RegBio').val();
+        load_rodals(idHabitat,idComAut,idRegBiogeo);
+        load_rodals_comp(idHabitat,idComAut,idRegBiogeo);
         load_cc_aa(selected);
         load_cc_aa_comp(selected);
     });

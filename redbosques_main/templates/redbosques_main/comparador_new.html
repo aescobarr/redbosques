@@ -60,18 +60,8 @@
 
             <div class="row">
                 <!-- ************************** Rodal seleccionado ************************** -->
-                <div class="col-lg-offset-2 col-lg-4">
+                <div class="col-lg-offset-1 col-lg-4">
                     <label class="green-font">Rodal seleccionado  <i class="fas fa-circle colLeyRod"></i></label>
-                    <select id="selector_ComAut" class="form-control selector_ComAut inputsFiltComp" name="ComunidadAutonoma">
-                        <option value="null" selected="selected">Seleccione Comunidad autónoma</option>
-                    </select>
-
-                    <select id="selector_RegBio" class="form-control selector_RegBio inputsFiltComp" name="RegioBiogeo">
-                        <option value="null" selected="selected">Seleccione Región biogeográfica</option>
-                    </select>
-
-                    <b class="green-font" style="display:inline-block;">Rodal de referencia(*)</b>
-
                     <select id="selector_rodales" class="form-control selector_rodal inputsFiltComp">
                         <option value=None selected="selected">Seleccione un rodal</option>
                         <!--<option value="medRod">Media del conjunto de rodales</option>-->
@@ -85,11 +75,51 @@
                                  </option>
                             {% endfor %}
                     </select>
+
+                    <b class="green-font" style="display:inline-block;">Filtros adicionales:</b>
+
+                    <select id="selector_ComAut" class="form-control selector_ComAut inputsFiltComp" name="ComunidadAutonoma">
+                        <option value="null" selected="selected">Seleccione Comunidad autónoma</option>
+                    </select>
+
+                    <select id="selector_RegBio" class="form-control selector_RegBio inputsFiltComp" name="RegioBiogeo">
+                        <option value="null" selected="selected">Seleccione Región biogeográfica</option>
+                    </select>
+
                 </div>
                 <!-- **************************************************************************** -->
                 <!-- ************************** Rodales de comparación ************************** -->
-                <div class="col-lg-offset-1 col-lg-4">
+                <div class="col-lg-offset-1 col-lg-6">
                     <label class="green-font">Rodal de comparación   <i class="fas fa-circle colLeyRodComp"></i></label>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <select id="selector_rodales_comp" class="form-control selector_rodal_Comp inputsFiltComp">
+                            <option value="null" selected="selected">Rodal / Conjunto de rodales a comparar</option>
+                            <option value="medRod">Todos los rodales</option>
+                            {% for rodal in listaRodalesComp %}
+                                <option class="rodal" value="{{ rodal.id_rodal }}">
+                                    {% if rodal.rodalref %}
+                                        {{ rodal.nombre }} (*)
+                                    {% else %}
+                                        {{ rodal.nombre }}
+                                    {% endif %}
+                                 </option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-xs-6">
+                            <form id="selector_rodalRef" class="checkbox">
+                                <b class="green-font" style="display:inline-block;">Sólo de referencia (*)</b>
+                                <label for="boolRodRefSI">Si</label>
+                                <input type="radio" name="boolRodRef" id="boolRodRefSI" value="True" class="boolRodRef" />
+                                <label for="boolRodRefNO">No</label>
+                                <input type="radio" name="boolRodRef" id="boolRodRefNO" value="False" checked="checked" class="boolRodRef"/>
+                            </form>
+                        </div>
+                    </div>
+
+                    <b class="green-font" style="display:inline-block;">Filtros adicionales:</b>
+
                     <select id="selector_ComAut_Comp" class="form-control selector_ComAut inputsFiltComp" name="ComunidadAutonoma">
                         <option value="null" selected="selected">Seleccione Comunidad autónoma</option>
                         <option value="all">Todas las comunidades autónomas</option>
@@ -110,27 +140,6 @@
                             {% endfor %}
                     </select>
 
-                    <form id="selector_rodalRef" class="checkbox">
-                        <b class="green-font" style="display:inline-block;">Mostrar rodales de referencia (*)</b>
-                        <label for="boolRodRefSI">Si</label>
-                        <input type="radio" name="boolRodRef" id="boolRodRefSI" value="True" class="boolRodRef" />
-                        <label for="boolRodRefNO">No</label>
-                        <input type="radio" name="boolRodRef" id="boolRodRefNO" value="False" checked="checked" class="boolRodRef"/>
-                    </form>
-
-                    <select id="selector_rodales_comp" class="form-control selector_rodal_Comp inputsFiltComp">
-                        <option value="null" selected="selected">Rodal / Conjunto de rodales a comparar</option>
-                        <option value="medRod">Todos los rodales</option>
-                            {% for rodal in listaRodalesComp %}
-                                <option class="rodal" value="{{ rodal.id_rodal }}">
-                                    {% if rodal.rodalref %}
-                                        {{ rodal.nombre }} (*)
-                                    {% else %}
-                                        {{ rodal.nombre }}
-                                    {% endif %}
-                                 </option>
-                            {% endfor %}
-                    </select>
                 </div>
                 <!-- **************************************************************************** -->
             </div>
