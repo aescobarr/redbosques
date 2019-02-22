@@ -1,6 +1,6 @@
 var map;
 $(document).ready(function() {
-    map = L.map('map').setView([40.0000000, -4.0000000], 5);
+    //map = L.map('map').setView([40.0000000, -4.0000000], 5);
     /*if (geo){
         var test = JSON.parse(geo);
         var coord = test.coordinates[0];
@@ -17,9 +17,22 @@ $(document).ready(function() {
                 '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
                 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             id: 'mapbox.streets'
-    }).addTo(map);
+    });
 
+    var bing = L.tileLayer.bing('AisLQm3JkrOKysYfF9FiIkwkH-kIryIOeJcEs4JV-Qb9fgdBZk3tM4NmTe-e94Zr');
 
+    var baseLayers = {
+		"Bing maps": bing,
+		"Open street map": base
+	};
+
+	var map = L.map('map', {
+            center: [40.0000000, -4.0000000],
+            zoom: 6,
+            layers: [base,bing]
+    });
+
+    L.control.layers(baseLayers).addTo(map);
 
     var editableLayers = new L.FeatureGroup();
 

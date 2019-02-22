@@ -116,16 +116,16 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <div class="row">
                 <div class="col-lg-2 col-md-3 col-sm-3 logoCont">
-                    <a class="navbar-brand" href="#">
+                    <a class="navbar-brand" href="http://www.redbosques.eu/" target="_blank">
                         <img src="{% static 'redbosques_main/css/logo.png' %}">
                     </a>
                 </div>
-                <div class="col-lg-8" style="margin-top: 3%">
+                <div class="col-lg-offset-1 col-lg-7" style="margin-top: 3%">
                 <ul class="nav navbar-nav">
                     <li class="menu-options active"><a href="/redbosques">INICIO<span class="sr-only">(current)</span></a></li>
-                    <li class="menu-options active"><a href="{% url 'menu' %}">MENÚ DE RODALES<span class="sr-only">(current)</span></a></li>
-                    <li class="menu-options active"><a href="{% url 'comparador_new' %}">COMPARADOR DE RODALES<span class="sr-only">(current)</span></a></li>
-                    <li class="menu-options active"><a href="{% url 'herramientas' %}">MAPA DE RODALES<span class="sr-only">(current)</span></a></li>
+                    <li class="menu-options active"><a href="{% url 'menu' %}">MENÚ PRINCIPAL<span class="sr-only">(current)</span></a></li>
+                    <li class="menu-options active"><a href="{% url 'herramientas' %}">MAPA<span class="sr-only">(current)</span></a></li>
+                    <li class="menu-options active"><a href="{% url 'comparador_new' %}">COMPARADOR<span class="sr-only">(current)</span></a></li>
                     {% if user.is_authenticated %}
                         <li class="userLogout">
                             <p>Hola, {{ user.first_name }} | <a href="{% url 'logout' %}">Salir <i class="fas fa-sign-out-alt"></i></a></p>
@@ -188,7 +188,7 @@
 {% block footer %}
 <div class="container-fluid logos-colab">
     <div class="row">
-        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-6 img-colabs">
+        <div class="col-lg-offset-1 col-lg-2 col-md-4 col-sm-6 col-xs-6 img-colabs">
             <a>
                 <img class="img-responsive collabs" src="{% static 'redbosques_main/css/FUNGOBE_2006_GRANDE.jpg' %}" alt="">
             </a>
@@ -213,11 +213,11 @@
                 <img class="img-responsive collabs" src="{% static 'redbosques_main/css/logo-fundacio-catalunya-la-pedrera.png' %}" alt="">
             </a>
         </div>
-        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-6 img-colabs">
+        <!--<div class="col-lg-2 col-md-4 col-sm-6 col-xs-6 img-colabs">
             <a>
                 <img class="img-responsive collabs" src="{% static 'redbosques_main/css/Ministerio_fundacion_apoyo_2.png' %}" alt="">
             </a>
-        </div>
+        </div>-->
     </div>
 </div>
 
