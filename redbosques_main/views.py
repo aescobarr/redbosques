@@ -392,8 +392,8 @@ def comparador_new(request, id = None):
 
         # recuperar hàbitat inicial, ccaa inicial, regio inicial
         habitat_ini = valors_ini['habitat_cod']
-        ccaa_ini = valors_ini['ccaa_nom']
-        regbio_ini = valors_ini['regbio_cod']
+        #ccaa_ini = valors_ini['ccaa_nom']
+        #regbio_ini = valors_ini['regbio_cod']
 
         dades_ini = list(WebMapaValAmb.objects.filter(habitat_cod=habitat_ini).values())
 
@@ -421,7 +421,7 @@ def comparador_new(request, id = None):
             # carregar rodals per regió i cc_aa
             already_in_there = set()
             for d in dades_ini:
-                if not d['id_rodal'] in already_in_there and d['regbio_cod'] == regbio_ini and d['ccaa_nom'] == ccaa_ini:
+                if not d['id_rodal'] in already_in_there:
                     already_in_there.add(d['id_rodal'])
                     if d['rodalref'] == True:
                         rodals_ini_list.append({ 'id_rodal': d['id_rodal'],'nombre': d['nombre'],'rodalref': 1 })
@@ -431,8 +431,8 @@ def comparador_new(request, id = None):
 
             init_params['rodal_ini'] = id
             init_params['habitat_ini']=habitat_ini
-            init_params['ccaa_ini']=ccaa_ini
-            init_params['regbio_ini'] = regbio_ini
+            #init_params['ccaa_ini']=ccaa_ini
+            #init_params['regbio_ini'] = regbio_ini
             init_params['cc_aa_ini_list'] = cc_aa_ini_list
             init_params['reg_ini_list'] = reg_ini_list
             init_params['rodals_ini_list'] = rodals_ini_list
@@ -2185,7 +2185,7 @@ def rodals_ajax(request):
     if rodalReferencia is not None and rodalReferencia=='1':
         rodalesTable = rodalesTable.filter(rodalref=True).order_by('nombre')
 
-    rodalesTable = rodalesTable.distinct().values('id_rodal','nombre','rodalref','ccaa_nom','ccaa_nombre','regbio_cod','nombre_es')
+    rodalesTable = rodalesTable.distinct().values('id_rodal','nombre','rodalref','ccaa_nom','ccaa_nombre','regbio_cod','nombre_es').order_by('nombre')
 
     rodales = []
     for r in rodalesTable:

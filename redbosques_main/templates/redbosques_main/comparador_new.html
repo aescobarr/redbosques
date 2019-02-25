@@ -61,7 +61,7 @@
             <div class="row">
                 <!-- ************************** Rodal seleccionado ************************** -->
                 <div class="col-lg-offset-1 col-lg-4">
-                    <label class="green-font">Rodal seleccionado  <i class="fas fa-circle colLeyRod"></i></label>
+                    <label class="green-font">Rodal seleccionado (* = referencia) <i class="fas fa-circle colLeyRod"></i></label>
                     <select id="selector_rodales" class="form-control selector_rodal inputsFiltComp">
                         <option value=None selected="selected">Seleccione un rodal</option>
                         <!--<option value="medRod">Media del conjunto de rodales</option>-->
@@ -90,7 +90,7 @@
                 <!-- **************************************************************************** -->
                 <!-- ************************** Rodales de comparación ************************** -->
                 <div class="col-lg-offset-1 col-lg-6">
-                    <label class="green-font">Rodal de comparación   <i class="fas fa-circle colLeyRodComp"></i></label>
+                    <label class="green-font">Rodal de comparación (* = referencia) <i class="fas fa-circle colLeyRodComp"></i></label>
                     <div class="row">
                         <div class="col-xs-6">
                             <select id="selector_rodales_comp" class="form-control selector_rodal_Comp inputsFiltComp">
@@ -820,11 +820,10 @@
     {% endif %}
 
     var cached_data_habitat = {};
-    var cached_data_cc_aa = {};
-    var cached_data_regbio = {};
-    var cached_data_rodal = {};
 
     cached_data_habitat['null'] = {{ habitats | safe }};
+
+    var rodals_habitat_cached = {};
 
 </script>
 <script src="{% static 'redbosques_main/javascript/data_table.js' %}"></script>
