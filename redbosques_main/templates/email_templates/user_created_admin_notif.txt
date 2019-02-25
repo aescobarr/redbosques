@@ -1,0 +1,13 @@
+{% autoescape off %}
+RedBosques - Herramienta de comparación de Rodales
+
+Estás recibiendo este correo por que eres usuario administrador de Redbosques - {{ institution }}. Un usuario con
+el correo {{ solicitant_email }} acaba de crear una cuenta en la aplicación. Este usuario no será operativo hasta
+que actives su cuenta, lo que puedes hacer en esta dirección:
+
+{{ user_activation_link }}
+
+Cuando actives su cuenta, el usuario podrá operar normalmente.
+
+Un saludo,
+{% endautoescape %}

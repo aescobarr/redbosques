@@ -2753,21 +2753,36 @@ def send_activated_email(email):
 
 def send_user_created_email(email):
     send_to = [email]
+    send_to_admin = []
     try:
         u = dUser.objects.get(email=email)
         du = DatosUsuario.objects.get(user=u)
         institucion = du.institucion
         capi = DatosUsuario.objects.filter(institucion=institucion).filter(admin_institucion=True)
         for capo in capi:
-            send_to.append(capo.user.email)
+            send_to_admin.append(capo.user.email)
         context = {
             'email': email,
             'institution': institucion.nombre
         }
+        context_admin = {
+            'solicitant_email': email,
+            'institution': institucion.nombre,
+            'user_activation_link': settings.APP_BASE_URL + reverse('user_admin')
+        }
+
+        #send email to solicitant
         plaintext = get_template('email_templates/created_email_template.txt')
         text_content = plaintext.render(context)
-        email = EmailMessage("Tu cuenta de RedBosques ha sido creada", text_content, to=send_to)
-        email.send()
+        milio = EmailMessage("Tu cuenta de RedBosques ha sido creada", text_content, to=send_to)
+        milio.send()
+
+        #send copy to admins
+        plaintext = get_template('email_templates/user_created_admin_notif.txt')
+        text_content = plaintext.render(context_admin)
+        milio = EmailMessage("Redbosques - usuario " + email + " solicita activación de cuenta", text_content, to=send_to_admin)
+        milio.send()
+
     except dUser.DoesNotExist:
         print("No se puede mandar el correo a " + email + ", no existe un usuario con este correo electrónico")
 
