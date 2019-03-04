@@ -47,7 +47,7 @@
                         </div>
                         <div class="form-group {% if messages %} alert alert-danger {% endif %}" style="margin-left: 5px;margin-right: -5px;">
                             <select class="form-control" name="institucion" id="institucion">
-                            <option value="null" selected="selected">Seleccione su institución</option>
+                            <option value="null" selected="selected">Selecciona tu institución</option>
                                 {% for institucion in instituciones %}
                                     <option value="{{ institucion.id }}">{{ institucion.nombre }}</option>
                                 {% endfor %}

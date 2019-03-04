@@ -392,8 +392,8 @@ def comparador_new(request, id = None):
 
         # recuperar hàbitat inicial, ccaa inicial, regio inicial
         habitat_ini = valors_ini['habitat_cod']
-        ccaa_ini = valors_ini['ccaa_nom']
-        regbio_ini = valors_ini['regbio_cod']
+        #ccaa_ini = valors_ini['ccaa_nom']
+        #regbio_ini = valors_ini['regbio_cod']
 
         dades_ini = list(WebMapaValAmb.objects.filter(habitat_cod=habitat_ini).values())
 
@@ -421,7 +421,7 @@ def comparador_new(request, id = None):
             # carregar rodals per regió i cc_aa
             already_in_there = set()
             for d in dades_ini:
-                if not d['id_rodal'] in already_in_there and d['regbio_cod'] == regbio_ini and d['ccaa_nom'] == ccaa_ini:
+                if not d['id_rodal'] in already_in_there:
                     already_in_there.add(d['id_rodal'])
                     if d['rodalref'] == True:
                         rodals_ini_list.append({ 'id_rodal': d['id_rodal'],'nombre': d['nombre'],'rodalref': 1 })
@@ -431,8 +431,8 @@ def comparador_new(request, id = None):
 
             init_params['rodal_ini'] = id
             init_params['habitat_ini']=habitat_ini
-            init_params['ccaa_ini']=ccaa_ini
-            init_params['regbio_ini'] = regbio_ini
+            #init_params['ccaa_ini']=ccaa_ini
+            #init_params['regbio_ini'] = regbio_ini
             init_params['cc_aa_ini_list'] = cc_aa_ini_list
             init_params['reg_ini_list'] = reg_ini_list
             init_params['rodals_ini_list'] = rodals_ini_list
@@ -2277,14 +2277,18 @@ def rodals_ajax(request):
     if rodalReferencia is not None and rodalReferencia=='1':
         rodalesTable = rodalesTable.filter(rodalref=True).order_by('nombre')
 
-    rodalesTable = rodalesTable.distinct().values('id_rodal','nombre','rodalref')
+    rodalesTable = rodalesTable.distinct().values('id_rodal','nombre','rodalref','ccaa_nom','ccaa_nombre','regbio_cod','nombre_es').order_by('nombre')
 
     rodales = []
     for r in rodalesTable:
         rodales.append({
             'id_rodal': r['id_rodal'],
             'nombre': r['nombre'],
-            'rodalref': r['rodalref']
+            'rodalref': r['rodalref'],
+            'codi_ccaa' : r['ccaa_nom'],
+            'ccaa_nombre': r['ccaa_nombre'],
+            'codi_rb': r['regbio_cod'],
+            'nom_rb': r['nombre_es']
         })
 
     return Response(rodales)
@@ -2841,21 +2845,36 @@ def send_activated_email(email):
 
 def send_user_created_email(email):
     send_to = [email]
+    send_to_admin = []
     try:
         u = dUser.objects.get(email=email)
         du = DatosUsuario.objects.get(user=u)
         institucion = du.institucion
         capi = DatosUsuario.objects.filter(institucion=institucion).filter(admin_institucion=True)
         for capo in capi:
-            send_to.append(capo.user.email)
+            send_to_admin.append(capo.user.email)
         context = {
             'email': email,
             'institution': institucion.nombre
         }
+        context_admin = {
+            'solicitant_email': email,
+            'institution': institucion.nombre,
+            'user_activation_link': settings.APP_BASE_URL + reverse('user_admin')
+        }
+
+        #send email to solicitant
         plaintext = get_template('email_templates/created_email_template.txt')
         text_content = plaintext.render(context)
-        email = EmailMessage("Tu cuenta de RedBosques ha sido creada", text_content, to=send_to)
-        email.send()
+        milio = EmailMessage("Tu cuenta de RedBosques ha sido creada", text_content, to=send_to)
+        milio.send()
+
+        #send copy to admins
+        plaintext = get_template('email_templates/user_created_admin_notif.txt')
+        text_content = plaintext.render(context_admin)
+        milio = EmailMessage("Redbosques - usuario " + email + " solicita activación de cuenta", text_content, to=send_to_admin)
+        milio.send()
+
     except dUser.DoesNotExist:
         print("No se puede mandar el correo a " + email + ", no existe un usuario con este correo electrónico")
 
