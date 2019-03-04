@@ -291,13 +291,13 @@
 
                     <tr>
                         <td class="rodal_label">
-                            <label for="id_valpropbosc56">Continuidad temporal como proporción de bosque en 1956</label>
+                            <label for="id_valpropbosc56_sel">Continuidad temporal como proporción de bosque en 1956</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valpropbosc56.errors }}
                             </div>
                         </td>
                         <td class="rodal_data">
-                            <select id="id_valpropbosc56" class="form-control selectBox" name="RegioBiogeo">
+                            <select id="id_valpropbosc56_sel" class="form-control selectBox" name="id_valpropbosc56_sel">
                                 <option value="null" selected="selected">---------</option>
                                     {% for v1 in val56 %}
                                         <option value="{{ v1.categoria }}">{{ v1.categoria }}</option>
@@ -308,19 +308,19 @@
 
                         </td>
                         <td class="rodal_unidades">
-                            <label class="test-label" for="id_valagropasant"><a href="#">(?)</a></label>
+                            <label class="test-label" for="id_valpropbosc56_sel"><a href="#">(?)</a></label>
                         </td>
                     </tr>
 
                     <tr>
                         <td class="rodal_label">
-                            <label for="id_valagropasant">Usos agropastorales antiguos</label>
+                            <label for="id_valagropasant_sel">Usos agropastorales antiguos</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valagropasant.errors }}
                             </div>
                         </td>
                         <td class="rodal_data">
-                            <select id="id_valagropasant" class="form-control selectBox" name="">
+                            <select id="id_valagropasant_sel" class="form-control selectBox" name="id_valagropasant_sel">
                                 <option value="null" selected="selected">---------</option>
                                     {% for v2 in valAgropAnt %}
                                         <option value="{{ v2.categoria }}">{{ v2.categoria }}</option>
@@ -336,13 +336,13 @@
 
                     <tr>
                         <td class="rodal_label">
-                            <label for="id_valforestant">Usos forestales antiguos</label>
+                            <label for="id_valforestant_sel">Usos forestales antiguos</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valforestant.errors }}
                             </div>
                         </td>
                         <td class="rodal_data">
-                           <select id="id_valforestant" class="form-control selectBox" name="">
+                           <select id="id_valforestant_sel" class="form-control selectBox" name="id_valforestant_sel">
                                 <option value="null" selected="selected">---------</option>
                                 {% for v3 in valFor %}
                                     <option value="{{ v3.categoria }}">{{ v3.categoria }}</option>
@@ -364,13 +364,13 @@
 
                     <tr>
                         <td class="rodal_label">
-                            <label for="id_valforestrec">Usos forestales recientes</label>
+                            <label for="id_valforestrec_sel">Usos forestales recientes</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valforestrec.errors }}
                             </div>
                         </td>
                         <td class="rodal_data">
-                            <select id="id_valforestrec" class="form-control selectBox" name="" onchange="">
+                            <select id="id_valforestrec_sel" class="form-control selectBox" name="id_valforestrec_sel">
                                 <option value="null" selected="selected">---------</option>
                                 {% for v4 in valForRec %}
                                     <option value="{{ v4.categoria }}">{{ v4.categoria }}</option>
@@ -386,13 +386,13 @@
 
                     <tr>
                         <td class="rodal_label">
-                            <label for="id_valespinvas">Especies invasoras</label>
+                            <label for="id_valespinvas_sel">Especies invasoras</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valespinvas.errors }}
                             </div>
                         </td>
                         <td class="rodal_data">
-                            <select id="id_valespinvas" class="form-control selectBox" name="" onchange="">
+                            <select id="id_valespinvas_sel" class="form-control selectBox" name="id_valespinvas_sel">
                                 <option value="null" selected="selected">---------</option>
                                 {% for v5 in valEsp %}
                                 <option value="{{ v5.categoria }}">{{ v5.categoria }}</option>
@@ -408,13 +408,13 @@
 
                     <tr>
                         <td class="rodal_label">
-                            <label for="id_valfragment">Causas de fragmentación</label>
+                            <label for="id_valfragment_sel">Causas de fragmentación</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valfragment.errors }}
                             </div>
                         </td>
                         <td class="rodal_data">
-                            <select id="id_valfragment" class="form-control selectBox" name="" onchange="">
+                            <select id="id_valfragment_sel" class="form-control selectBox" name="id_valfragment_sel">
                                 <option value="null" selected="selected">---------</option>
                                 {% for v6 in valFrag %}
                                 <option value="{{ v6.categoria }}">{{ v6.categoria }}</option>
@@ -430,13 +430,13 @@
 
                     <tr>
                         <td class="rodal_label">
-                            <label for="id_valcaza">Actividad cinegética</label>
+                            <label for="id_valcaza_sel">Actividad cinegética</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valcaza.errors }}
                             </div>
                         </td>
                         <td class="rodal_data">
-                            <select id="id_valcaza" class="form-control selectBox" name="" onchange="">
+                            <select id="id_valcaza_sel" class="form-control selectBox" name="id_valcaza_sel">
                                 <option value="null" selected="selected">---------</option>
                                     {% for v7 in valCaza %}
                                         <option value="{{ v7.categoria }}">{{ v7.categoria }}</option>
@@ -452,13 +452,13 @@
 
                     <tr>
                         <td class="rodal_label">
-                            <label for="id_valherbiv">Herbívora y/o ramoneo</label>
+                            <label for="id_valherbiv_sel">Herbívora y/o ramoneo</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valherbiv.errors }}
                             </div>
                         </td>
                         <td class="rodal_data">
-                            <select id="id_valherbiv" class="form-control selectBox" name="" onchange="">
+                            <select id="id_valherbiv_sel" class="form-control selectBox" name="id_valherbiv_sel">
                                 <option value="null" selected="selected">---------</option>
                                     {% for v8 in valHerb %}
                                         <option value="{{ v8.categoria }}">{{ v8.categoria }}</option>
@@ -474,13 +474,13 @@
 
                     <tr>
                         <td class="rodal_label">
-                            <label for="id_valfrecuent">Frecuentación</label>
+                            <label for="id_valfrecuent_sel">Frecuentación</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valfrecuent.errors }}
                             </div>
                         </td>
                         <td class="rodal_data">
-                            <select id="id_valfrecuent" class="form-control selectBox" name="" onchange="">
+                            <select id="id_valfrecuent_sel" class="form-control selectBox" name="id_valfrecuent_sel">
                                 <option value="null" selected="selected">---------</option>
                                     {% for v9 in valFrec %}
                                         <option value="{{ v9.categoria }}">{{ v9.categoria }}</option>
@@ -496,13 +496,13 @@
 
                     <tr>
                         <td class="rodal_label">
-                            <label for="id_valdurabusos">Durabilidad de los usos</label>
+                            <label for="id_valdurabusos_sel">Durabilidad de los usos</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valdurabusos.errors }}
                             </div>
                         </td>
                         <td class="rodal_data">
-                           <select id="id_valdurabusos" class="form-control selectBox" name="" onchange="">
+                           <select id="id_valdurabusos_sel" class="form-control selectBox" name="id_valdurabusos_sel">
                             <option value="null" selected="selected">---------</option>
                                 {% for v10 in valDurab %}
                                     <option value="{{ v10.categoria }}">

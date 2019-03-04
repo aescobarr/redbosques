@@ -59,7 +59,8 @@ urlpatterns = [
     path('user_admin', views.user_admin, name='user_admin'),
     path('datatabledu/list/', views.revision_usuarios_datatable_list, name='revision_usuarios_datatable_list'),
     path('activate_user', views.activate_user, name='activate_user'),
-
+    path('comAutFilt', views.comAutFilt, name='comAutFilt'),
+    path('provFilt', views.provFilt, name='provFilt'),
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),

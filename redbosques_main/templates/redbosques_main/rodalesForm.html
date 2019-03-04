@@ -75,17 +75,36 @@
                     {{ form.nombre.errors }}
                 </div>
                 <div class="comAut">
+                    <select class="form-control" name="comautonom_cod_sel" id="id_comautonom" onchange="ccaa_rodalForm()">
+                        <option value="null" selected="selected">Comunidad Autónoma</option>
+                            {% for ca in comAut %}
+                                <option value="{{ ca.cod }}">{{ ca.nombre }}</option>
+                            {% endfor %}
+                    </select>
                     {{ form.comautonom_cod }}
                     {{ form.comautonom_cod.errors }}
                 </div>
                 <div class="provincia">
+
+                    <select class="form-control" name="provincia_cod_sel" id="id_provincia" onchange="prov_rodalForm()">
+                        <option value="null" selected="selected">Provincia</option>
+                            {% for p in provincias %}
+                                <option class="provincia" value="{{ p.cod }}">{{ p.nombre }}</option>
+                            {% endfor %}
+                    </select>
                     {{ form.provincia_cod }}
                     {{ form.provincia_cod.errors }}
-
                 </div>
                 <div class="terminoMunicipal">
-                    {{ form.municipio }}
-                    {{ form.municipio.errores }}
+
+                    <select class="form-control" name="municipio_cod_sel" id="id_municipio_cod" onchange="muni_rodalForm()">
+                        <option value="null" selected="selected">Municipio</option>
+                            {% for m in municipio %}
+                                <option class="municipio" value="{{ m.id }}">{{ m.nombre }}</option>
+                            {% endfor %}
+                    </select>
+                    {{ form.municipio1 }}
+                    {{ form.municipio1.errores }}
                 </div>
                 <div class="propietario">
                     {{ form.propietario }}
@@ -94,6 +113,19 @@
 
                 <div class="subirLimites">
                     <div id="fileuploader"></div>
+                    <!--<table>
+                        <tbody>
+                            <tr>
+                                <td style="width: 100%; text-align: left;">
+                                    <div id="fileuploader"></div>
+                                </td>
+                                <td style="width: 100%; text-align: right;">
+
+                                    <p><a href="#" class="btn btn-default">?</a></p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>-->
                 </div>
             </div>
         </div>
@@ -241,6 +273,8 @@
                 </table>
                 </table>
             </div>
+
+
                      <!--{% csrf_token %}
         <input type="submit" class="btn btn-selector-mapa" value="Siguiente">-->
         </div>
@@ -254,6 +288,9 @@
         var csrf_token = '{{ csrf_token }}';
         var _ajax_upload_url = '{% url 'ajax_upload' %}';
         var _import_shapefile_url = '{% url 'process_shapefile' %}';
+        var _ccaaFilter_url = '{% url 'comAutFilt' %}';
+        var _provFilter_url = '{% url 'provFilt' %}';
+
     </script>
     <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
 
@@ -291,5 +328,7 @@
     <script src="{% static 'redbosques_main/javascript/leaflet-bing-layer.min.js' %}"></script>
 
     <script src="{% static 'redbosques_main/ajaxuploader/js/fileuploader.js' %}"></script>
+    <script src="{% static 'redbosques_main/javascript/comAut_prov_muni.js' %}"></script>
     <script src="{% static 'redbosques_main/javascript/rodalesForm.js' %}"></script>
 {% endblock %}
+

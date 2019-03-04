@@ -365,11 +365,24 @@ function calcDiferencia(){
             var resta_str = resta.toFixed(2);
             $('#' + key+'_dif').html(resta_str);
 
-            if(resta<0){
-                $('#' + key+'_dif').css("background-color", "#EF3340");
-            }else if(resta >= 0){
-                $('#' + key+'_dif').css("background-color", "#9ac635");
+
+            //console.log(key.split("_")[0]);
+            if (key.split("_")[0] == "huellaHumana"){
+                if(resta<0){
+                    $('#' + key+'_dif').css("background-color", "#9ac635");
+                }else if(resta >= 0){
+                    $('#' + key+'_dif').css("background-color", "#EF3340");
+                }
+
+            }else{
+                if(resta<0){
+                    $('#' + key+'_dif').css("background-color", "#EF3340");
+                }else if(resta >= 0){
+                    $('#' + key+'_dif').css("background-color", "#9ac635");
+                }
             }
+
+
         }
         var elem = {};
         elem[key+'_dif'] = resta;

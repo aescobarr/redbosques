@@ -21,15 +21,22 @@ $(document).ready(function() {
 
     var bing = L.tileLayer.bing('AisLQm3JkrOKysYfF9FiIkwkH-kIryIOeJcEs4JV-Qb9fgdBZk3tM4NmTe-e94Zr');
 
+    var openCycle = L.tileLayer('https://tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=dda4faab5df24211a8d46b5b607f51d6',{
+        attribution: 'Maps &copy; <a href="https://www.thunderforest.com">Thunderforest</a>, Data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
+        maxZoom: 22
+    });
+
     var baseLayers = {
 		"Bing maps": bing,
-		"Open street map": base
+		"Open street map": base,
+		"Open cycle map": openCycle
 	};
+
 
 	var map = L.map('map', {
             center: [40.0000000, -4.0000000],
             zoom: 6,
-            layers: [base,bing]
+            layers: [base,bing,openCycle]
     });
 
     L.control.layers(baseLayers).addTo(map);
@@ -109,6 +116,82 @@ $(document).ready(function() {
         $('#geometria_string').val('');
     });
 
+
+
+    var importa_shapefile = function(filepath){
+        $.ajax({
+            url: _import_shapefile_url,
+            data: 'path=' + encodeURI(filepath),
+            method: 'GET',
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type)) {
+                    var csrftoken = getCookie('csrftoken');
+                    xhr.setRequestHeader('X-CSRFToken', csrftoken);
+                }
+            },
+            success: function( data, textStatus, jqXHR ) {
+                editableLayers.clearLayers();
+                var geoJson = JSON.parse(data.detail);
+                var geoJSONLayer = L.geoJson(geoJson);
+                geoJSONLayer.eachLayer(
+                    function(l){
+                        editableLayers.addLayer(l);
+                    }
+                );
+                map.fitBounds(editableLayers.getBounds());
+                var string_json = JSON.stringify(editableLayers.toGeoJSON());
+                $('#geometria_string').val(string_json);
+                $('.qq-upload-list').empty();
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                if(jqXHR.responseJSON && jqXHR.responseJSON.detail){
+                    alert('Error importando fichero: ' + jqXHR.responseJSON.detail);
+                }else{
+                    alert('Error importando fichero');
+                }
+                $('.qq-upload-list').empty();
+            }
+        });
+    };
+
+    var uploader = new qq.FileUploader({
+        action: _ajax_upload_url,
+        element: $('#fileuploader')[0],
+        multiple: false,
+        onComplete: function(id, fileName, responseJSON) {
+            if(responseJSON.success) {
+                var path = responseJSON.path;
+                importa_shapefile(path);
+            } else {
+                alert('La subida del fichero shapefile ha fallado!');
+            }
+        },
+        template:'<div class="qq-uploader">' +
+            '<div class="qq-upload-drop-area"><span>Subir limites (shapefile, proyeccion EPSG:4326)</span></div>' +
+            '<div class="qq-upload-button ui-widget-content ui-button ui-corner-all ui-state-default"><span>Subir limites (shapefile, proyeccion EPSG:4326)</span></div>' +
+            '<ul class="qq-upload-list"></ul>' +
+            '</div>',
+        params: {
+            'csrf_token': csrf_token,
+            'csrf_name': 'csrfmiddlewaretoken',
+            'csrf_xname': 'X-CSRFToken',
+        }
+    });
+
+    var comunidadAutonoma = $('#id_comautonom_cod').val();
+    if(comunidadAutonoma){
+        $('#id_comautonom.selectBox option[value=' + comunidadAutonoma + ']').attr("selected", "selected");
+    }
+
+    var provincia = $('#id_provincia_cod').val();
+    if(provincia){
+        $('#id_provincia.selectBox option[value="' + provincia + '"]').attr("selected", "selected");
+    }
+
+    var municipio = $('#id_municipio1').val();
+    if(municipio){
+        $('#id_municipio_cod.selectBox option[value=' + municipio + ']').attr("selected", "selected");
+    }
 });
 
 

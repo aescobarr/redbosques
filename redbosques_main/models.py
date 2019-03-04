@@ -60,10 +60,22 @@ class TeProvincia(models.Model):
         return '%s' % (self.nombre_es)
 
 
+class TeMunicipi(models.Model):
+    id = models.IntegerField(primary_key=True)
+    codigoine = models.CharField(max_length=5, blank=True, null=True)
+    nombre = models.CharField(max_length=255, blank=True, null=True)
+    codprov = models.CharField(max_length=2, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'te_municipi'
+
+    def __str__(self):
+        return '%s' % (self.nombre)
 
 
 class TeHic(models.Model):
-    #id = models.AutoField()
+    # id = models.AutoField()
     cod = models.CharField(primary_key=True, max_length=5)
     corine_cod = models.ForeignKey('TeLpeht', models.DO_NOTHING, db_column='corine_cod')
     nombre_es = models.CharField(max_length=100, blank=True, null=True)
@@ -77,7 +89,7 @@ class TeHic(models.Model):
 
 
 class TeLpeht(models.Model):
-    #id = models.AutoField()
+    # id = models.AutoField()
     cod = models.CharField(primary_key=True, max_length=50)
     nombre = models.CharField(max_length=255, blank=True, null=True)
     seleccion = models.BooleanField(blank=True, null=True)
@@ -89,8 +101,9 @@ class TeLpeht(models.Model):
     def __str__(self):
         return '%s' % (self.nombre)
 
+
 class TeRegbio(models.Model):
-    #id = models.AutoField()
+    # id = models.AutoField()
     cod = models.CharField(primary_key=True, max_length=14)
     nombre_es = models.CharField(max_length=100, blank=True, null=True)
     nombre_cat = models.CharField(max_length=100, blank=True, null=True)
@@ -104,9 +117,8 @@ class TeRegbio(models.Model):
         return '%s' % (self.nombre_es)
 
 
-
 class TeTaxon(models.Model):
-    #cod = models.CharField(unique=True, max_length=100, blank=True, null=True)
+    # cod = models.CharField(unique=True, max_length=100, blank=True, null=True)
     cod = models.CharField(primary_key=True, unique=True, max_length=100)
     nombre = models.CharField(max_length=100, blank=True, null=True)
     exotico = models.BooleanField(blank=True, null=True)
@@ -170,10 +182,6 @@ class Rodal(models.Model):
     datosrestringidos = models.BooleanField(blank=True, null=True)
     metodo_cod = models.ForeignKey(Tesaurus, models.DO_NOTHING, db_column='metodo_cod')
     nombre = models.CharField(max_length=150)
-    #comautonom_cod = models.ForeignKey(TeProvincia, models.DO_NOTHING, db_column='cod')
-
-    #comautonom_cod = models.ForeignKey(TeProvincia, db_column=TeProvincia.cod, related_name='TeProvincia_comautonom_cod', on_delete=models.CASCADE)
-
     comautonom_cod = models.ForeignKey(TeProvincia, db_column='comautonom_cod', related_name='TeProvincia_comautonom_cod', on_delete=models.CASCADE)
     provincia_cod = models.ForeignKey(TeProvincia, db_column='provincia_cod', related_name='TeProvincia_prvincia_cod', on_delete=models.CASCADE, blank=True, null=True)
     municipio = models.CharField(max_length=150, blank=True, null=True)
@@ -183,10 +191,8 @@ class Rodal(models.Model):
     lpeht_cod = models.ForeignKey(TeLpeht, models.DO_NOTHING, db_column='lpeht_cod')
     hic_cod = models.ForeignKey(TeHic, models.DO_NOTHING, db_column='hic_cod', blank=True, null=True)
     regbio_cod = models.ForeignKey(TeRegbio, models.DO_NOTHING, db_column='regbio_cod', blank=True, null=True)
-
     espprinc_cod = models.ForeignKey(TeTaxon, db_column='espprinc_cod', related_name='TeTaxon_espprinc_cod', on_delete=models.CASCADE, blank=True, null=True)
     espcomp_cod = models.ForeignKey(TeTaxon, db_column='espcomp_cod', related_name='TeTaxon_espcomp_cod', on_delete=models.CASCADE, blank=True, null=True)
-
     espprincip_h0 = models.IntegerField()
     espcomp_h0 = models.IntegerField(blank=True, null=True)
     numesparb = models.IntegerField(blank=True, null=True)
@@ -216,13 +222,12 @@ class Rodal(models.Model):
     notes = models.CharField(max_length=500, blank=True, null=True)
     dateadded = models.DateTimeField(blank=True, null=True)
     volmmtotal = models.FloatField(blank=True, null=True)
-    #usuario = models.ForeignKey(AuthUser, models.DO_NOTHING)
     usuario = models.ForeignKey('AuthUser', models.DO_NOTHING, db_column='usuario')
     rodalref = models.BooleanField(blank=True, null=True)
     fotoglobo = models.CharField(max_length=100, blank=True, null=True)
     espprinc_fcc = models.IntegerField(db_column='espprinc_fcc', blank=True, null=True)
     espcomp_fcc = models.IntegerField(db_column='espcomp_fcc', blank=True, null=True)
-
+    municipio1 = models.ForeignKey('TeMunicipi', models.DO_NOTHING, db_column='municipio1', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -500,6 +505,8 @@ class DatosUsuario(models.Model):
         managed = False
         verbose_name_plural = "datos usuario"
         db_table = 'datos_usuario'
+
+
 
 
 

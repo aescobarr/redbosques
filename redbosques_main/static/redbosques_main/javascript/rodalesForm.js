@@ -16,16 +16,22 @@ $(document).ready(function() {
 
     var bing = L.tileLayer.bing('AisLQm3JkrOKysYfF9FiIkwkH-kIryIOeJcEs4JV-Qb9fgdBZk3tM4NmTe-e94Zr');
 
+    var openCycle = L.tileLayer('https://tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=dda4faab5df24211a8d46b5b607f51d6', {
+        attribution: 'Maps &copy; <a href="https://www.thunderforest.com">Thunderforest</a>, Data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
+        maxZoom: 22
+    });
+
     var baseLayers = {
 		"Bing maps": bing,
-		"Open street map": base
+		"Open street map": base,
+		"Open cycle map": openCycle
 	};
 
 
 	var map = L.map('map', {
             center: [40.0000000, -4.0000000],
             zoom: 6,
-            layers: [base,bing]
+            layers: [base,bing,openCycle]
     });
 
 	L.control.layers(baseLayers).addTo(map);
@@ -152,5 +158,6 @@ $(document).ready(function() {
         }
     });
 
-
 });
+
+

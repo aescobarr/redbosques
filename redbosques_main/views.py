@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht, Tesaurus, User, TeCategoria, FotosRodal, DocsRodal, Institucion, DatosUsuario, AuthUser
+from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht, Tesaurus, User, TeCategoria, FotosRodal, DocsRodal, Institucion, DatosUsuario, AuthUser,TeMunicipi
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.urls import reverse
@@ -1622,6 +1622,31 @@ def editrodalForm(request, id=None):
     datos = get_object_or_404(Rodal, id=id)
     #form = rodalFormFields(instance=datos)
 
+    ccaa = TeProvincia.objects.filter(nivel='Com. autònoma').order_by('nombre_es')
+    prov = TeProvincia.objects.filter(nivel='Província').order_by('nombre_es')
+    muni = TeMunicipi.objects.all().order_by('nombre').order_by('nombre')
+
+    comAut = []
+    for x in ccaa:
+        comAut.append({
+            'cod': x.cod,
+            'nombre': x.nombre_es
+        })
+
+    provincias = []
+    for p in prov:
+        provincias.append({
+            'cod': p.cod,
+            'nombre': p.nombre_es
+        })
+
+    municipio = []
+    for m in muni:
+        municipio.append({
+            'id': m.id,
+            'nombre': m.nombre
+        })
+
     if request.method == 'POST':
         form = rodalFormFields(request.POST or None, instance=datos)
 
@@ -1668,7 +1693,7 @@ def editrodalForm(request, id=None):
             buffer.append(dict(type="Feature", geometry=""))
             geojsoncollection_string = json.dumps({"type": "FeatureCollection", "features": buffer})
 
-    context = {'form': form, 'geojson_string': geojsoncollection_string, 'id': id}
+    context = {'form': form, 'geojson_string': geojsoncollection_string, 'id': id, 'comAut': comAut, 'provincias': provincias, 'municipio': municipio}
     return render(request, 'redbosques_main/editrodalForm.html', context)
 
 @login_required(login_url="login/")
@@ -1735,16 +1760,48 @@ def menuData(request):
 
 @login_required(login_url="login/")
 def rodalForm(request):
+    ccaa = TeProvincia.objects.filter(nivel='Com. autònoma').order_by('nombre_es')
+    prov = TeProvincia.objects.filter(nivel='Província').order_by('nombre_es')
+    muni = TeMunicipi.objects.all().order_by('nombre').order_by('nombre')
+
+    comAut = []
+    for x in ccaa:
+        comAut.append({
+            'cod': x.cod,
+            'nombre': x.nombre_es
+        })
+
+    provincias = []
+    for p in prov:
+        provincias.append({
+            'cod': p.cod,
+            'nombre': p.nombre_es
+        })
+
+    municipio = []
+    for m in muni:
+        municipio.append({
+            'id': m.id,
+            'nombre': m.nombre
+        })
+
+
     if request.method == 'POST':
         form = rodalFormFields(request.POST or None)
 
+        #ccaa = TeProvincia.objects.get(codigo=form.data['comautonom_cod'], nivel='Com. autònoma')
+        #prov = TeProvincia.objects.get(codigo=form.data['provincia_cod'], nivel='Província')
+        #muni = TeMunicipi.objects.get(id=form.data['municipio1'])
         current_user = request.user.id
         user = AuthUser.objects.get(id=current_user)
-        print(user)
 
         if form.is_valid():
             dades = form.save(commit=False)
+
             dades.usuario = user
+            #dades.comautonom_cod = ccaa
+            #dades.provincia_cod = prov
+            #dades.municipio1 = muni
 
             json_geometry = json.loads(request.POST["geometria_string"])
             multipoligon = []
@@ -1757,16 +1814,68 @@ def rodalForm(request):
             dades.geom = mp
             dades.save()
 
-            #return HttpResponseRedirect('/redbosques/rodalForm2/' + str(dades.id) + '/')
             return redirect('rodalForm2', id=dades.id)
     else:
         form = rodalFormFields()
 
-    context = {'form': form}
+
+
+    context = {'form': form, 'comAut': comAut, 'provincias': provincias, 'municipio': municipio}
 
     return render(request, 'redbosques_main/rodalesForm.html', context)
 
 
+@api_view(['GET'])
+@login_required(login_url="login/")
+def comAutFilt(request):
+
+
+    idCcaa = request.query_params.get('id', None)
+
+    prov = TeProvincia.objects.filter(parent=idCcaa).order_by('nombre_es')
+    #prov2 = TeProvincia.objects.filter(parent=idCcaa).values('codigo')
+
+    provincias = []
+    for p in prov:
+        provincias.append({
+            'cod': p.cod,
+            'nombre': p.nombre_es
+        })
+
+
+    for x in prov:
+        provMun = TeMunicipi.objects.filter(codprov=x.codigo).order_by('nombre')
+
+
+    municipios = []
+    for m in provMun:
+        municipios.append({
+            'id': m.id,
+            'nombre': m.nombre
+        })
+
+    print(municipios)
+
+    context = {'provincias': provincias, 'municipios': municipios}
+    return Response(context)
+
+@api_view(['GET'])
+@login_required(login_url="login/")
+def provFilt(request):
+    idProv = request.query_params.get('id', None)
+    test = idProv.split(".", 2)
+    print(test[1])
+    muni = TeMunicipi.objects.filter(codprov=test[1]).order_by('nombre')
+
+    municipios = []
+    for m in muni:
+        municipios.append({
+            'id': m.id,
+            'nombre': m.nombre
+        })
+
+    context = {'municipios': municipios}
+    return Response(context)
 
 
 
@@ -1836,7 +1945,7 @@ def rodalForm2(request, id=None):
 
     contManchForestSQL = cursor.execute('select (stats).mean from '
                                         '( select st_summarystats(st_clip( st_union(rast), ST_GeomFromText(%s, 25830),true)) '
-                                        'as stats from carto.bosque_cf '
+                                        'as stats from carto.bosque_ps '
                                         'WHERE ST_Intersects(rast, ST_GeomFromText(%s, 25830)) ) as foo',
                                         [geom.wkt, geom.wkt])
 
@@ -1860,31 +1969,37 @@ def rodalForm2(request, id=None):
 
     distCoreAreaSql = cursor.execute('select (stats).mean from '
                                      '( select st_summarystats(st_clip( st_union(rast), ST_GeomFromText(%s, 25830),true)) '
-                                     'as stats from carto.bosque_ps '
+                                     'as stats from carto.bosque_cf '
                                      'WHERE ST_Intersects(rast, ST_GeomFromText(%s, 25830)) ) as foo',
                                      [geom.wkt, geom.wkt])
 
     distCoreArea = cursor.fetchall()
     ##############################################
 
-    areaHectareas = round(area / 10000, 2)
+    #print("Área: " + str(round(area/10000, 1)) + " ha")
+    #print("Continuidad mancha forestal: " + str(round(contManchForest[0][0]/100, 2)) + " km2")
+    #print("Densidad de bosque: " + str(densBosque[0][0]) + " %")
+    #print("Distancia a la core área: " + str(round(distCoreArea[0][0]/1000, 1)) + " Km")
+
+
+    areaHectareas = round(area / 10000, 1)
 
     if contManchForest[0][0] == None:
         contManchForestKM2 = 0
     else:
-        contManchForestKM2 = round(contManchForest[0][0] / 1000, 2)
+        contManchForestKM2 = round(contManchForest[0][0]/100, 2)
 
 
     if densBosque[0][0] == None:
         densBosquexcent = 0
     else:
-        densBosquexcent = round(densBosque[0][0] / 100, 2)
+        densBosquexcent = densBosque[0][0]
 
 
     if distCoreArea[0][0] == None:
         distCoreAreaKM = 0
     else:
-        distCoreAreaKM = round(distCoreArea[0][0] / 1000, 2)
+        distCoreAreaKM = round(distCoreArea[0][0] / 1000, 1)
 
     #contManchForestKM2 = round(contManchForest[0][0] / 1000, 2)
     #densBosquexcent = round(densBosque[0][0] / 100, 2)
@@ -1984,29 +2099,6 @@ def rodalForm3(request, id):
 
         context = {'listaFotos': fotos, 'id': id_rodal, 'listaDocs': docs, 'form': form}
         return render(request, 'redbosques_main/rodalesForm3.html', context)
-
-
-
-'''@login_required(login_url="login/")
-def rodalForm3(request, id):
-
-    if request.method == 'POST':
-        datos = get_object_or_404(Rodal, id=id)
-
-        form = rodalFormFields3(request.POST, instance=datos)
-
-        if form.is_valid():
-            dades = form.save(commit=False)
-            dades.save()
-
-        return redirect('menu')
-
-    else:
-        form = rodalFormFields3()
-        datos = get_object_or_404(Rodal, pk=id)
-
-        context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'form': form, 'id': id}
-        return render(request, 'redbosques_main/rodalesForm3.html', context)'''
 
 
 

@@ -646,3 +646,8 @@ td.rodal_unidades label{
 .dtOrange{
     background-color: #f7551d;
 }
+
+.qq-upload-button{
+    background-color: #9ac635;
+    width: 100%;
+}

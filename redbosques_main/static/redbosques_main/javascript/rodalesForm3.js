@@ -27,10 +27,10 @@ $(function () {
           "<tr><td><a target='_blank' href='" + data.result.url +  "'><img id="+ data.result.id_foto +" style='height: 150px;' src='" + data.result.url + "'></a></td>" +
           "<td><p>Nombre: '" + data.result.nombre_foto +  "'</p>" +
           "<button class='btn btn-danger btn-sm btn-del btn-del-img imatgeRodal' type='submit' id="+ data.result.id_foto +" onclick='deleteFile()'>Eliminar</button></td></tr>"+
-          "<input id=" + data.result.id_foto + " type='radio' class='fotoPrinc' name='fotoPrinc' value='false'>"
+          "<div class='fotoPrincipal' style='padding-top: 10px;'><p>Foto principal</p>"+
+          "<input id="+ data.result.id_foto +" type='radio' class='fotoPrinc' name='fotoPrinc' value='ture' checked='checked' onchange='fotoPrincipal()'>"
           )
         }
-
       }else{
         alert(data.result.error_imagen);
       }
