@@ -147,7 +147,7 @@ $(document).ready(function() {
             }
         },
         template:'<div class="qq-uploader">' +
-            '<div class="qq-upload-drop-area"><span>Subir limites (shapefile, proyeccion EPSG:4326)</span></div>' +
+            '<div class="qq-upload-drop-area"><span>Subir limites (shapefile comprimido en ZIP, proyeccion WGS84 EPSG:4326)</span></div>' +
             '<div class="qq-upload-button ui-widget-content ui-button ui-corner-all ui-state-default"><span>Subir limites (shapefile, proyeccion EPSG:4326)</span></div>' +
             '<ul class="qq-upload-list"></ul>' +
             '</div>',
@@ -158,6 +158,23 @@ $(document).ready(function() {
         }
     });
 
+    $("#altDomEspPrinAcomp").prop("disabled", true);
+    $("#cavCubespPrinAcomp").prop("disabled", true);
+
 });
 
+
+var disEnEspecieAcomp = function(){
+    var espcomp_cod = $("#id_espcomp_cod").val();
+
+    if (espcomp_cod == ""){
+        $("#altDomEspPrinAcomp").prop("disabled", true);
+        $("#altDomEspPrinAcomp").val('');
+        $("#cavCubespPrinAcomp").prop("disabled", true);
+        $("#cavCubespPrinAcomp").val('');
+    }else if(espcomp_cod != ""){
+        $("#altDomEspPrinAcomp").prop("disabled", false);
+        $("#cavCubespPrinAcomp").prop("disabled", false);
+    }
+};
 

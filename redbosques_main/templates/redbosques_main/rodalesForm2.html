@@ -28,7 +28,7 @@
 
 <div class="container form-rodal2">
     <div class="row form-group">
-        <div class="col-lg-offset-3 col-lg-6">
+        <div class="col-lg-offset-3 col-lg-7">
             <form action="{% url 'rodalForm2' id %}" method="POST">
                 <!--<table>
                     <tr>
@@ -47,11 +47,13 @@
                 </table>-->
                 <table>
                     <tr>
+                        {% if adminInstitucion %}
                         <td>
                             <b style="display:inline-block; font-weight: normal;">Bosque de referencia</b>
                             {{ form.rodalref }}
                             {{ form.rodalref.errors }}
                         </td>
+                        {% endif %}
                         <td>
 
                         </td>
@@ -68,7 +70,7 @@
                     </tr>
                     <tr>
                         <td class="rodal_label">
-                            <label for="id_numesparb">Número de especies arbóreas en el dosel
+                            <label for="id_numesparb">Número de especies arbóreas
                             <div class="form-group has-errors text-danger small">
                                 {{ form.numesparb.errors }}
                             </div>
@@ -84,13 +86,13 @@
         <!-- ######################################################################################## -->
                     <tr>
                         <td colspan="3">
-                            <h5>Complejidad</h5>
+                            <h5>Complejidad estructural</h5>
                         </td>
                     </tr>
 
                     <tr>
                         <td class="rodal_label">
-                            <label for="id_areabasal">Área basimétrica media</label>
+                            <label for="id_areabasal">Área basal</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.areabasal.errors }}
                             </div>
@@ -107,7 +109,7 @@
 
                     <tr>
                         <td class="rodal_label">
-                            <label for="id_volmadvivo">Volumen de madera en pie</label>
+                            <label for="id_volmadvivo">Volumen de árboles vivos</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.volmadvivo.errors }}
                             </div>
@@ -121,24 +123,6 @@
                             <label class="test-label" for="id_volmadvivo">m<sup>3</sup>/ha</label>
                         </td>
                     </tr>
-
-                    <tr>
-                        <td class="rodal_label">
-                            <label for="id_numestratos">Número de estratos verticales de vegetación arbolada del dosel</label>
-                            <div class="form-group has-errors text-danger small">
-                                {{ form.numestratos.errors }}
-                            </div>
-                        </td>
-                        <td class="rodal_data">
-                           <!--<input id="numEstVert" type="text" class="numEspArbDos form-control">-->
-                            {{ form.numestratos }}
-                            <!--{{ form.numestratos.errors }}-->
-                        </td>
-                        <td class="rodal_unidades">
-                            <!--<label class="test-label" for="id_numestratos">m<sup>2</sup>/ha</label>-->
-                        </td>
-                    </tr>
-
                     <tr>
                         <td class="rodal_label">
                             <label for="id_numclasdiam">Número de clases diamétricas</label>
@@ -155,15 +139,33 @@
                             <!--<label class="test-label" for="id_numclasdiam">m<sup>2</sup>/ha</label>-->
                         </td>
                     </tr>
+                    <tr>
+                        <td class="rodal_label">
+                            <label for="id_numestratos">Número de estratos verticales</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.numestratos.errors }}
+                            </div>
+                        </td>
+                        <td class="rodal_data">
+                           <!--<input id="numEstVert" type="text" class="numEspArbDos form-control">-->
+                            {{ form.numestratos }}
+                            <!--{{ form.numestratos.errors }}-->
+                        </td>
+                        <td class="rodal_unidades">
+                            <!--<label class="test-label" for="id_numestratos">m<sup>2</sup>/ha</label>-->
+                        </td>
+                    </tr>
+
+
         <!-- ######################################################################################## -->
                     <tr>
                         <td colspan="3">
-                            <h5>Madurez</h5>
+                            <h5>Senectud</h5>
                         </td>
                     </tr>
                     <tr>
                         <td class="rodal_label">
-                            <label for="id_abundpiesexcep">Abundancia de pies excepcionales</label>
+                            <label for="id_abundpiesexcep">Árboles excepcionales</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.abundpiesexcep.errors }}
                             </div>
@@ -180,7 +182,7 @@
 
                     <tr>
                         <td class="rodal_label">
-                            <label for="id_volmmpie">Volumen de madera muerta medio/gruesa en pie</label>
+                            <label for="id_volmmpie">Volumen de madera muerta en pie</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.volmmpie.errors }}
                             </div>
@@ -197,7 +199,7 @@
 
                     <tr>
                         <td class="rodal_label">
-                            <label for="id_volmmsuelo">Volumen de madera muerta medio/gruesa en suelo</label>
+                            <label for="id_volmmsuelo">Volumen de madera muerta en suelo</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.volmmsuelo.errors }}
                             </div>
@@ -214,20 +216,38 @@
 
                     <tr>
                         <td class="rodal_label">
-                            <label for="idvolmmprop">Proporción de madera muerta medio/gruesa</label>
+                            <label for="idvolmmprop">Proporción de madera muerta</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.volmmprop.errors }}
+                            </div>
+                            <div class="form-group errorCalculo text-danger small">
+
                             </div>
                         </td>
                         <td class="rodal_data">
                            <!--<input id="propMadMuertaMedGru" type="text" class="numEspArbDos form-control">-->
+                            <input type="text" name="volmmprop_val" class="form-control numEspArbDos" disabled="True" required="" id="id_volmmprop_val">
                             {{ form.volmmprop }}
+
                             <!--{{ form.volmmprop.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <label class="test-label" for="id_volmmprop">%</label>
                         </td>
+                        <td></td>
+                        <td class="rodal_data">
+                            <a class="btn btn-selector-mapa" onclick="calcularPropMad()" >Calcular</a>
+                        </td>
                     </tr>
+
+                    <!--<tr>
+                        <td></td>
+                        <td class="rodal_data">
+                            <a class="btn btn-selector-mapa" onclick="calcularPropMad()" >Calcular</a>
+                        </td>
+                    </tr>-->
+
+
         <!-- ######################################################################################## -->
                     <tr>
                         <td colspan="3">
@@ -237,7 +257,7 @@
 
                     <tr>
                         <td class="rodal_label">
-                            <label for="id_nummicrohab">Número de tipos de microhábitats en más de un pie/ha</label>
+                            <label for="id_nummicrohab">Número de tipos de microhábitats en pies vivos</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.nummicrohab.errors }}
                             </div>
@@ -261,7 +281,7 @@
 
                     <tr>
                         <td class="rodal_label">
-                            <label for="id_numfasessil">Fases silvogenéticas presentes en el rodal</label>
+                            <label for="id_numfasessil">Fases silvogenéticas</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.numfasessil.errors }}
                             </div>
@@ -291,7 +311,7 @@
 
                     <tr>
                         <td class="rodal_label">
-                            <label for="id_valpropbosc56_sel">Continuidad temporal como proporción de bosque en 1956</label>
+                            <label for="id_valpropbosc56_sel">Continuidad temporal</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valpropbosc56.errors }}
                             </div>
@@ -573,11 +593,23 @@
                     </tr>
 
                     <tr>
-                        <td colspan="2">
+                        <!--<td colspan="2">
                             {% csrf_token %}
                             <input type="submit" class="btn btn-selector-mapa" value="Siguiente">
+                        </td>-->
+
+                        <td colspan="2">
+                            <div class="col-lg-6">
+                                <a class="btn btn-selector-mapa" href="{% url 'editrodalForm' id %}">Volver atrás</a>
+                            </div>
+                            <div class="col-lg-6">
+                                {% csrf_token %}
+                                <input type="submit" class="btn btn-selector-mapa" value="Siguiente">
+                            </div>
                         </td>
-                        <td> </td>
+
+
+
                     </tr>
                 </table>
             </form>

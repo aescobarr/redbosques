@@ -99,14 +99,30 @@ class rodalFormFields(forms.ModelForm):
     regbio_cod = forms.ModelChoiceField(queryset=regionesBiogeo, widget=forms.Select(attrs={'class': 'form-control'}),empty_label="Región biogeográfica", required=True)
     especies = TeTaxon.objects.order_by('nombre')
     espprinc_cod = forms.ModelChoiceField(queryset=especies, widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Especie principal", required=True)
-    espcomp_cod = forms.ModelChoiceField(queryset=especies, widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Principal especie acompañante", required=True)
-    espprincip_h0 = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control alturaDominanteEspeciePrincipal', 'id': 'altDomEspPrin'}), required=True)
-    espcomp_h0 = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control alturaDominanteEspeciePrincipalAcomp', 'id': 'altDomEspPrinAcomp'}), required=True)
-    espprinc_fcc = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control alturaDominanteEspeciePrincipalAcomp', 'id': 'cavCubespPrin'}), required=True)
-    espcomp_fcc = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control alturaDominanteEspeciePrincipalAcomp', 'id': 'cavCubespPrinAcomp'}), required=True)
+    espprincip_h0 = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control alturaDominanteEspeciePrincipal', 'id': 'altDomEspPrin'}), required=True)
+    espprinc_fcc = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control alturaDominanteEspeciePrincipalAcomp', 'id': 'cavCubespPrin'}), required=True)
+
+    espcomp_cod = forms.ModelChoiceField(queryset=especies, widget=forms.Select(attrs={'class': 'form-control', 'onchange':'disEnEspecieAcomp()'}), empty_label="Principal especie acompañante", required=False)
+    espcomp_h0 = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control alturaDominanteEspeciePrincipalAcomp', 'id': 'altDomEspPrinAcomp'}), required=False)
+    espcomp_fcc = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control alturaDominanteEspeciePrincipalAcomp', 'id': 'cavCubespPrinAcomp'}), required=False)
+
     # municipio1 = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control id_municipio', 'type': 'hidden', 'value': ''}))
     # comautonom_cod = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control id_comAutonoma', 'type': 'hidden', 'value': ''}), required=True)
     # provincia_cod = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control id_provincia', 'type': 'hidden', 'value': ''}), required=True)
+
+
+
+    def clean_espcomp_cod(self):
+        cleaned_data = self.cleaned_data
+        espcomp_cod_val = cleaned_data.get('espcomp_cod')
+        espcomp_h0_val = cleaned_data.get('espcomp_h0')
+        espcomp_fcc_val = cleaned_data.get('espcomp_fcc')
+
+        if espcomp_cod_val is None:
+            print("No se ha seleccionado nada")
+        else:
+            return espcomp_cod_val
+
 
 
     def clean_lpeht_cod(self):
@@ -125,19 +141,23 @@ class rodalFormFields(forms.ModelForm):
 
         espprincip_h0 = TeIndicador.objects.get(variable_rodal='espprincip_h0')
 
-        if espprincip_h0_val < espprincip_h0.val_minimo:
-            raise ValidationError('El valor es inferior al permitido. valores permitidos(' + str(espprincip_h0.val_minimo) + '-' + str(espprincip_h0.val_maximo) + ')')
-        elif espprincip_h0_val == espprincip_h0.val_alerta:
-            messages.warning(espprincip_h0_val, 'OJO CUIDAO !!')
-        elif espprincip_h0_val > espprincip_h0.val_maximo:
-            raise ValidationError("El valor es mayor al permitido.")
+        if isinstance(espprincip_h0_val, float):
+            raise ValidationError("El valor tiene que ser un número entero.")
         else:
-            return espprincip_h0_val
+            if espprincip_h0_val < espprincip_h0.val_minimo:
+                raise ValidationError('El valor es inferior al permitido. valores permitidos(' + str(espprincip_h0.val_minimo) + '-' + str(espprincip_h0.val_maximo) + ')')
+            elif espprincip_h0_val == espprincip_h0.val_alerta:
+                messages.warning(espprincip_h0_val, 'OJO CUIDAO !!')
+            elif espprincip_h0_val > espprincip_h0.val_maximo:
+                raise ValidationError("El valor es mayor al permitido.")
+            else:
+                return espprincip_h0_val
+
+
 
     def clean_espprinc_fcc(self):
         cleaned_data = self.cleaned_data
         espprinc_fcc_val = cleaned_data.get('espprinc_fcc')
-
         espprinc_fcc = TeIndicador.objects.get(variable_rodal='espprinc_fcc')
 
         if espprinc_fcc_val < espprinc_fcc.val_minimo:
@@ -147,33 +167,50 @@ class rodalFormFields(forms.ModelForm):
         else:
             return espprinc_fcc_val
 
+
     def clean_espcomp_fcc(self):
         cleaned_data = self.cleaned_data
         espcomp_fcc_val = cleaned_data.get('espcomp_fcc')
+        espprinc_fcc_val = cleaned_data.get('espprinc_fcc')
+        espcomp_cod_val = cleaned_data.get('espcomp_cod')
 
-        espcomp_fcc = TeIndicador.objects.get(variable_rodal='espcomp_fcc')
+        if espcomp_fcc_val is None and espcomp_cod_val is not None:
+            raise ValidationError("El campo de Altura dominante de la principal especie acompañante es obligatorio")
+        elif espcomp_fcc_val is not None:
+            if((espcomp_fcc_val + espprinc_fcc_val) <= 100 ):
+                espcomp_fcc = TeIndicador.objects.get(variable_rodal='espcomp_fcc')
 
-        if espcomp_fcc_val < espcomp_fcc.val_minimo:
-            raise ValidationError("El valor es inferior al permitido.")
-        elif espcomp_fcc_val > espcomp_fcc.val_maximo:
-            raise ValidationError("El valor es mayor al permitido.")
-        else:
-            return espcomp_fcc_val
+                if espcomp_fcc_val < espcomp_fcc.val_minimo:
+                    raise ValidationError("El valor es inferior al permitido.")
+                elif espcomp_fcc_val > espcomp_fcc.val_maximo:
+                    raise ValidationError("El valor es mayor al permitido.")
+                else:
+                    return espcomp_fcc_val
+            else:
+                raise ValidationError("La suma del porcentaje de cavidad cubierta de la especie principal i de la especie acompañante no puede sumar mas de 100%.")
+
+
 
     def clean_espcomp_h0(self):
         cleaned_data = self.cleaned_data
         espcomp_h0_val = cleaned_data.get('espcomp_h0')
+        espcomp_cod_val = cleaned_data.get('espcomp_cod')
 
         espcomp_h0 = TeIndicador.objects.get(variable_rodal='espcomp_h0')
 
-        if espcomp_h0_val < espcomp_h0.val_minimo:
-            raise ValidationError("El valor es inferior al permitido.")
-        elif espcomp_h0_val == espcomp_h0.val_alerta:
-            messages.warning(espcomp_h0_val, 'OJO CUIDAO !!')
-        elif espcomp_h0_val > espcomp_h0.val_maximo:
-            raise ValidationError("El valor es mayor al permitido.")
-        else:
-            return espcomp_h0_val
+        if espcomp_h0_val is None and espcomp_cod_val is not None:
+            raise ValidationError("El campo de Altura dominante de la principal especie acompañante es obligatorio")
+        elif isinstance(espcomp_h0_val, float):
+            raise ValidationError("El valor tiene que ser un número entero.")
+        elif espcomp_h0_val is not None:
+            if espcomp_h0_val < espcomp_h0.val_minimo:
+                raise ValidationError("El valor es inferior al permitido.")
+            elif espcomp_h0_val == espcomp_h0.val_alerta:
+                messages.warning(espcomp_h0_val, 'OJO CUIDAO !!')
+            elif espcomp_h0_val > espcomp_h0.val_maximo:
+                raise ValidationError("El valor es mayor al permitido.")
+            else:
+                return espcomp_h0_val
 
 
 
@@ -191,14 +228,14 @@ class rodalFormFields(forms.ModelForm):
 class rodalFormFields2(forms.ModelForm):
 
     numesparb = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
-    areabasal = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
-    volmadvivo = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
+    areabasal = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
+    volmadvivo = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
     numestratos = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
     numclasdiam = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
-    abundpiesexcep = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
-    volmmpie = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
-    volmmsuelo = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
-    volmmprop = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
+    abundpiesexcep = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
+    volmmpie = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
+    volmmsuelo = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
+    #volmmprop = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos', 'disabled': 'True'}), required=True)
     nummicrohab = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
     numfasessil = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
 
@@ -384,15 +421,16 @@ class rodalFormFields2(forms.ModelForm):
             'valherbiv': forms.HiddenInput(),
             'valdurabusos': forms.HiddenInput(),
             'valfrecuent': forms.HiddenInput(),
-            'valpropbosc56': forms.HiddenInput()
+            'valpropbosc56': forms.HiddenInput(),
+            'volmmprop': forms.HiddenInput()
         }
 
 
 
 
 class rodalFormFields3(ModelForm):
-    otroespflora = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Otras especies de flora acompañante', 'cols': 67, 'rows': 3}), required=False)
-    otrohics = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Otras hábitats de interés comunitario', 'cols': 67, 'rows': 3}), required=False)
+    otroespflora = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Otras especies de flora acompañantes', 'cols': 67, 'rows': 3}), required=False)
+    otrohics = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Otras hábitats de interés comunitario (arbolaos o no)', 'cols': 67, 'rows': 3}), required=False)
     otroinfo = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Otra información relevante', 'cols': 67, 'rows': 3}), required=False)
 
     class Meta:

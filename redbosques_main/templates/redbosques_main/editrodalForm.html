@@ -112,10 +112,27 @@
                     {{ form.propietario }}
                     {{ form.propietario.errores }}
                 </div>
-
-                <div class="subirLimites">
+                <!--<div class="subirLimites">
                     <div id="fileuploader"></div>
+                </div>-->
+                <div class="row">
+                    <div class="col-lg-11">
+                        <div class="subirLimites">
+                            <div id="fileuploader"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 guiaShape">
+                        <p><a href="#" id="abrirPopup" class="btn btn-default">?</a></p>
+                    </div>
+
+                    <div id="instruc" title="Requisitos del archivo de límites (Shapefiles)">
+                        <p class="infoPopup">Ahora mismo, este control solamente acepta Shapefiles con una <b>proyección WGS84</b>.
+                            Un fichero shapefile consta de <b>múltiples ficheros con extensiones
+                            diferentes (*.shp, *.dbf, *.shx) : estos ficheros deben comprimirse en un solo fichero
+                            zip</b> y el control aceptará el shapefile comprimido.</p>
+                    </div>
                 </div>
+
             </div>
         </div>
         <div class="row form-group">
@@ -258,8 +275,13 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            {% csrf_token %}
-                            <input type="submit" class="btn btn-selector-mapa" value="Siguiente">
+                            <div class="col-lg-6" style="float: left;">
+                                <a class="btn btn-selector-mapa" href="{% url 'menu' %}">Volver al menú</a>
+                            </div>
+                            <div class="col-lg-6" style="float: right;">
+                                {% csrf_token %}
+                                <input type="submit" class="btn btn-selector-mapa" value="Siguiente">
+                            </div>
                         </td>
 
                     </tr>
@@ -318,6 +340,7 @@
     <script src="{% static 'redbosques_main/javascript/leaflet-bing-layer.min.js' %}"></script>
     <script src="{% static 'redbosques_main/ajaxuploader/js/fileuploader.js' %}"></script>
     <script src="{% static 'redbosques_main/javascript/comAut_prov_muni.js' %}"></script>
+    <script src="{% static 'redbosques_main/javascript/forms.js' %}"></script>
     <script src="{% static 'redbosques_main/javascript/editrodalForm.js' %}"></script>
 
 {% endblock %}

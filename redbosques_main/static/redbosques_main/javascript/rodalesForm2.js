@@ -53,6 +53,10 @@ $(document).ready(function(){
         $('#id_valdurabusos_sel.selectBox option[value=' + valdurabusos_val + ']').attr("selected", "selected");
     }
 
+    var volmmprop_val = $('#id_volmmprop').val();
+    if(volmmprop_val){
+        $('#id_volmmprop_val').val(volmmprop_val);
+    }
 });
 
     $(".selectBox").click(function(event) {
@@ -63,3 +67,25 @@ $(document).ready(function(){
         console.log(valor);
         $('#' + idCampo[0]).val(valor);
     });
+
+
+    var calcularPropMad = function(){
+        $('.errorCalculo').html("");
+        var volmadvivo_val = $('#id_volmadvivo').val();
+        var volmmsuelo_val = $('#id_volmmsuelo').val();
+        var volmmpie_val = $('#id_volmmpie').val();
+
+        volmadvivo_int = parseFloat(volmadvivo_val);
+        volmmsuelo_int = parseFloat(volmmsuelo_val);
+        volmmpie_int = parseFloat(volmmpie_val);
+
+        if (isNaN(volmadvivo_int) || isNaN(volmmsuelo_int) || isNaN(volmmpie_int)){
+            $('.errorCalculo').append("<ul class='errorList'><li>Falta algún valor para realizar el cálculo.</li></ul>");
+        }else{
+            var res = ((volmmpie_int + volmmsuelo_int) / volmadvivo_int ) * 100;
+            var resRounded = res.toFixed(2);
+            $("#id_volmmprop_val").val(resRounded);
+            //$("#id_volmmprop_val").attr("value", res);
+            $("#id_volmmprop").val(resRounded);
+        }
+    };

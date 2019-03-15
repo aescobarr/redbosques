@@ -6,7 +6,11 @@
 <link href="{% static 'redbosques_main/jQuery-File-Upload-9.28.0/css/jquery.fileupload.css' %}" rel="stylesheet">
 <link href="{% static 'redbosques_main/jQuery-File-Upload-9.28.0/css/style.css' %}" rel="stylesheet">
 <link href="{% static 'redbosques_main/jQuery-File-Upload-9.28.0/css/github/blueimp-gallery.min.css' %}" rel="stylesheet">
-
+<style>
+    body{
+        padding-top: 0px;
+    }
+</style>
 {% endblock %}
 {% block main %}
 <div class="container-fluid subheader">
@@ -61,7 +65,7 @@
                                 <p name="fotoPrinc" value="{{ f.id_foto }}">{{ f.id_foto }}</p>
                                 <!--<form method="post" enctype="multipart/form-data" action="{% url 'eliminarImagen' f.id_foto %}">-->
                                 {% csrf_token %}
-                                <button class="btn btn-danger btn-sm btn-del btn-del-img imatgeRodal" id="{{ f.id_foto }}" type="submit" onclick="deleteFile()">Eliminar</button>
+                                <button class="btn btn-danger btn-sm btn-del btn-del-img imatgeRodal deleteFoto" id="{{ f.id_foto }}" type="submit">Eliminar</button>
                                 <!--</form>-->
                                 <div class="fotoPrincipal" style="padding-top: 10px;">
                                   <p>Foto principal</p>
@@ -100,7 +104,7 @@
                           <td>
                               <a target="_blank" href="{{ d.doc.url }}"><img style="height: 100px;" src="{% static 'redbosques_main/images/fileIcon2.png' %}"></a>
                               <p>Nombre: {{ d.nombre_doc }}</p>
-                              <button class="btn btn-danger btn-sm btn-del btn-del-doc documentRodal" id="{{ d.id_doc }}" type="submit" onclick="deleteDoc()">Eliminar</button>
+                              <button class="btn btn-danger btn-sm btn-del btn-del-doc documentRodal deleteDoc" id="{{ d.id_doc }}" type="submit" onclick="deleteDoc()">Eliminar</button>
 
                           </td>
                       </tr>
@@ -113,7 +117,19 @@
                     {{ form.otrohics }}
                     {{ form.otroinfo }}
                     {% csrf_token %}
-                <input type="submit" class="btn btn-selector-mapa" value="Terminar">
+                <!--<input type="submit" class="btn btn-selector-mapa" value="Terminar">-->
+
+
+
+                <td colspan="2">
+                            <div class="col-lg-6">
+                                <a class="btn btn-selector-mapa" href="{% url 'rodalForm2' id %}">Volver atrás</a>
+                            </div>
+                            <div class="col-lg-6">
+                                {% csrf_token %}
+                                <input type="submit" class="btn btn-selector-mapa" value="Terminar">
+                            </div>
+                        </td>
             </form>
         </div>
     </div>

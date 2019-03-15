@@ -4,6 +4,8 @@
     <link href="{% static 'redbosques_main/leaflet/leaflet.css' %}" rel="stylesheet">
     <link href="{% static 'redbosques_main/Leaflet.Draw.static/src/leaflet.draw.css' %}" rel="stylesheet">
     <link href="{% static 'redbosques_main/ajaxuploader/css/fileuploader.css' %}" rel="stylesheet">
+    <link href="{% static 'redbosques_main/jquery-ui-1.12.1.custom/jquery-ui.min.css' %}" rel="stylesheet">
+
     <style>
         .qq-upload-button{
             background-color: #9ac635;
@@ -43,7 +45,7 @@
 <div class="container form-rodal">
     <div class="row">
         <div class="col-lg-offset-3 col-lg-6">
-            <h4>DATOS GENERALES Y ADMINISTRATIVOS</h4>
+            <h4>DATOS GENERALES</h4>
         </div>
     </div>
     <form action="{% url 'rodalForm' %}" method="POST">
@@ -55,7 +57,7 @@
                 <label for="datosRestringidos">Datos restringidos</label>
             </div>
         </div>
-        <div class="row form-group green-font-bold">
+        <!--<div class="row form-group green-font-bold">
             <div class="col-lg-offset-3 col-lg-6">
                 <label>Tipo de muestreo</label>
                 <input name="tipoMuestreo" id="porParcelas" type="radio" checked>
@@ -63,7 +65,7 @@
                 <input name="tipoMuestreo" id="porTransecto" type="radio">
                 <label for="portransecto">Por transecto</label>
             </div>
-        </div>
+        </div>-->
         <div class="row form-group">
             <div class="col-lg-offset-3 col-lg-6">
                 <div class="metodo">
@@ -110,22 +112,25 @@
                     {{ form.propietario }}
                     {{ form.propietario.errores }}
                 </div>
+                <div class="row">
+                    <div class="col-lg-11">
+                        <div class="subirLimites">
+                            <!--<div id="fileuploader"></div>-->
+                            <div id="fileuploader"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 guiaShape">
+                        <p><a href="#" id="abrirPopup" class="btn btn-default">?</a></p>
 
-                <div class="subirLimites">
-                    <div id="fileuploader"></div>
-                    <!--<table>
-                        <tbody>
-                            <tr>
-                                <td style="width: 100%; text-align: left;">
-                                    <div id="fileuploader"></div>
-                                </td>
-                                <td style="width: 100%; text-align: right;">
+                    </div>
 
-                                    <p><a href="#" class="btn btn-default">?</a></p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>-->
+                    <div id="instruc" title="Requisitos del archivo de límites (Shapefiles)">
+                        <p class="infoPopup">Ahora mismo, este control solamente acepta Shapefiles con una <b>proyección WGS84</b>.
+                            Un fichero shapefile consta de <b>múltiples ficheros con extensiones
+                            diferentes (*.shp, *.dbf, *.shx) : estos ficheros deben comprimirse en un solo fichero
+                            zip</b> y el control aceptará el shapefile comprimido.</p>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -224,15 +229,25 @@
                         <option value="paisVasco">BBBBB</option>
                     </select>-->
                     {{ form.espcomp_cod }}
-                    {{ form.espcomp_cod.errors }}
+
+                    {% if form.espcomp_cod.errors %}
+                            <div class="alert alert-danger small">
+                                {{ form.espcomp_cod.errors }}
+                            </div>
+                            {% endif %}
                 </div>
                 <table>
                     <tr>
                         <td class="rodal_label">
-                            <label for="altDomEspPrinAcomp">Altura dominante de la especie principal acompañante</label>
+                            <label for="altDomEspPrinAcomp">Altura dominante de la principal especie acompañante</label>
+                            <!--<div class="form-group has-errors text-danger small">
+                                {{ form.espcomp_h0.errors }}
+                            <div>-->
+                            {% if form.espcomp_h0.errors %}
                             <div class="form-group has-errors text-danger small">
                                 {{ form.espcomp_h0.errors }}
-                            <div>
+                            </div>
+                            {% endif %}
                         </td>
                         <td class="rodal_data">
                             <!--<input id="altDomEspPrinAcomp" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">-->
@@ -265,9 +280,15 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            {% csrf_token %}
-                            <input type="submit" class="btn btn-selector-mapa" value="Siguiente">
+                            <div class="col-lg-6">
+                            <a class="btn btn-selector-mapa" href="{% url 'menu' %}">Volver al menú</a>
+                            </div>
+                            <div class="col-lg-6">
+                                {% csrf_token %}
+                                <input type="submit" class="btn btn-selector-mapa" value="Siguiente">
+                            </div>
                         </td>
+
 
                     </tr>
                 </table>
@@ -327,8 +348,10 @@
     <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.Circle.js' %}"></script>
     <script src="{% static 'redbosques_main/javascript/leaflet-bing-layer.min.js' %}"></script>
 
+
     <script src="{% static 'redbosques_main/ajaxuploader/js/fileuploader.js' %}"></script>
     <script src="{% static 'redbosques_main/javascript/comAut_prov_muni.js' %}"></script>
+    <script src="{% static 'redbosques_main/javascript/forms.js' %}"></script>
     <script src="{% static 'redbosques_main/javascript/rodalesForm.js' %}"></script>
 {% endblock %}
 

@@ -1882,6 +1882,10 @@ def provFilt(request):
 @login_required(login_url="login/")
 def rodalForm2(request, id=None):
 
+    adminInstitucion = request.user.datosusuario.admin_institucion
+    #du = DatosUsuario.objects.get(user=current_user)
+    #print(du)
+
     datos = get_object_or_404(Rodal, id=id)
     geom = datos.geom
     area = geom.area
@@ -1976,10 +1980,10 @@ def rodalForm2(request, id=None):
     distCoreArea = cursor.fetchall()
     ##############################################
 
-    #print("Área: " + str(round(area/10000, 1)) + " ha")
-    #print("Continuidad mancha forestal: " + str(round(contManchForest[0][0]/100, 2)) + " km2")
-    #print("Densidad de bosque: " + str(densBosque[0][0]) + " %")
-    #print("Distancia a la core área: " + str(round(distCoreArea[0][0]/1000, 1)) + " Km")
+    # print("Área: " + str(round(area/10000, 1)) + " ha")
+    # print("Continuidad mancha forestal: " + str(round(contManchForest[0][0]/100, 2)) + " km2")
+    # print("Densidad de bosque: " + str(densBosque[0][0]) + " %")
+    # print("Distancia a la core área: " + str(round(distCoreArea[0][0]/1000, 1)) + " Km")
 
 
     areaHectareas = round(area / 10000, 1)
@@ -1993,17 +1997,17 @@ def rodalForm2(request, id=None):
     if densBosque[0][0] == None:
         densBosquexcent = 0
     else:
-        densBosquexcent = densBosque[0][0]
+        densBosquexcent = round(densBosque[0][0], 2)
 
 
     if distCoreArea[0][0] == None:
-        distCoreAreaKM = 0
+        distCoreAreaKM = 68000/1000
     else:
         distCoreAreaKM = round(distCoreArea[0][0] / 1000, 1)
 
-    #contManchForestKM2 = round(contManchForest[0][0] / 1000, 2)
-    #densBosquexcent = round(densBosque[0][0] / 100, 2)
-    #distCoreAreaKM = round(distCoreArea[0][0] / 1000, 2)
+    # contManchForestKM2 = round(contManchForest[0][0] / 1000, 2)
+    # densBosquexcent = round(densBosque[0][0] / 100, 2)
+    # distCoreAreaKM = round(distCoreArea[0][0] / 1000, 2)
 
     # print("Área: " + str(areaHectareas) + " ha")
     # print("Continuidad mancha forestal: " + str(contManchForestKM2) + " km2")
@@ -2050,7 +2054,8 @@ def rodalForm2(request, id=None):
                'valFor': valForArray,
                'valForRec': valForRecArray,
                'valFrag': valFragArray,
-               'valHerb': valHerbArray
+               'valHerb': valHerbArray,
+               'adminInstitucion': adminInstitucion
                }
 
     return render(request, 'redbosques_main/rodalesForm2.html', context)
@@ -2115,7 +2120,20 @@ def uploadImage(request, id):
             foto.nombre_foto = foto.foto.name
             foto.fotoprincipal = False
             foto.save()
-            data = {'is_valid': True, 'nombre_foto': foto.nombre_foto, 'url': foto.foto.url, 'id_foto': foto.id_foto}
+
+
+            oldSelectedExists = FotosRodal.objects.filter(id_rodal=id).filter(fotoprincipal=True)
+
+            oldSelected = None
+
+            if(oldSelectedExists):
+                oldSelected = FotosRodal.objects.filter(id_rodal=id).filter(fotoprincipal=True).update(fotoprincipal=False)
+                newSelected = FotosRodal.objects.filter(id_foto=foto.id_foto).update(fotoprincipal=True)
+            else:
+                newSelected = FotosRodal.objects.filter(id_foto=foto.id_foto).update(fotoprincipal=True)
+
+            data = {'is_valid': True, 'nombre_foto': foto.nombre_foto, 'url': foto.foto.url, 'id_foto': foto.id_foto, 'oldSelected': oldSelected, 'newSelected': newSelected}
+
         else:
             errorMessage = "La imagen supera el tamaño permitido (2MB)"
             data = {'is_valid': False, 'error_imagen': form.errors['foto']}
@@ -2881,3 +2899,7 @@ def send_user_created_email(email):
 
 def registration_complete(request):
     return render(request, 'registration/registration_complete.html', {})
+
+
+def contacto(request):
+    return render(request, 'redbosques_main/contacto.html')

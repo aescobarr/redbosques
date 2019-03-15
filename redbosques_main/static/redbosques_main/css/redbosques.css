@@ -651,3 +651,44 @@ td.rodal_unidades label{
     background-color: #9ac635;
     width: 100%;
 }
+
+.form-rodal2 .selectBox{
+    text-align: center;
+}
+
+.guiaShape{
+    padding-left: 0px;
+}
+
+.popupInstrucciones .ui-dialog-titlebar-close {
+    display: none;
+}
+
+.popupInstrucciones .ui-widget-header{
+    border: 1px solid #9ac635;
+    background: #9ac635;
+    color: white;
+    font-weight: bold;
+}
+
+.popupInstrucciones {
+    position: fixed !important;
+    z-index: 1500 !important;
+    width: 400px !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%,-50%);
+}
+
+.infoPopup{
+    text-align: justify;
+    padding: 2%;
+}
+
+#instruc{
+    display: none;
+}
+
+.contactMessage{
+    padding-top: 2%;
+}

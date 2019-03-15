@@ -126,6 +126,7 @@
                     <li class="menu-options active"><a href="{% url 'menu' %}">MENÚ PRINCIPAL<span class="sr-only">(current)</span></a></li>
                     <li class="menu-options active"><a href="{% url 'herramientas' %}">MAPA<span class="sr-only">(current)</span></a></li>
                     <li class="menu-options active"><a href="{% url 'comparador_new' %}">COMPARADOR<span class="sr-only">(current)</span></a></li>
+                    <li class="menu-options active"><a href="{% url 'contacto' %}">CONTACTO<span class="sr-only">(current)</span></a></li>
                     {% if user.is_authenticated %}
                         <li class="userLogout">
                             <p>Hola, {{ user.first_name }} | <a href="{% url 'logout' %}">Salir <i class="fas fa-sign-out-alt"></i></a></p>
@@ -242,7 +243,7 @@
                                     <a href="/user/login" title="">Iniciar sesión</a>
                                 </li>
                                 <li class="last leaf">
-                                    <a href="mailto:redbosques@fungobe.org" title="Envía un correo">redbosques@fungobe.org</a>
+                                    <a href="mailto:redbosques.project@gmail.com" title="Envía un correo">redbosques.project@gmail.com</a>
                                 </li>
                             </ul>
                         </div>

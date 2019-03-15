@@ -192,6 +192,25 @@ $(document).ready(function() {
     if(municipio){
         $('#id_municipio_cod.selectBox option[value=' + municipio + ']').attr("selected", "selected");
     }
+
+    var espcomp_cod = $("#id_espcomp_cod").val();
+    if (espcomp_cod == ""){
+        $("#altDomEspPrinAcomp").prop("disabled", true);
+        $("#cavCubespPrinAcomp").prop("disabled", true);
+    }
 });
 
+var disEnEspecieAcomp = function(){
+    var espcomp_cod = $("#id_espcomp_cod").val();
+
+    if (espcomp_cod == ""){
+        $("#altDomEspPrinAcomp").prop("disabled", true);
+        $("#altDomEspPrinAcomp").val('');
+        $("#cavCubespPrinAcomp").prop("disabled", true);
+        $("#cavCubespPrinAcomp").val('');
+    }else if(espcomp_cod != ""){
+        $("#altDomEspPrinAcomp").prop("disabled", false);
+        $("#cavCubespPrinAcomp").prop("disabled", false);
+    }
+};
 
