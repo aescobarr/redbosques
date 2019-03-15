@@ -146,8 +146,6 @@ class rodalFormFields(forms.ModelForm):
         else:
             if espprincip_h0_val < espprincip_h0.val_minimo:
                 raise ValidationError('El valor es inferior al permitido. valores permitidos(' + str(espprincip_h0.val_minimo) + '-' + str(espprincip_h0.val_maximo) + ')')
-            elif espprincip_h0_val == espprincip_h0.val_alerta:
-                messages.warning(espprincip_h0_val, 'OJO CUIDAO !!')
             elif espprincip_h0_val > espprincip_h0.val_maximo:
                 raise ValidationError("El valor es mayor al permitido.")
             else:
@@ -205,8 +203,6 @@ class rodalFormFields(forms.ModelForm):
         elif espcomp_h0_val is not None:
             if espcomp_h0_val < espcomp_h0.val_minimo:
                 raise ValidationError("El valor es inferior al permitido.")
-            elif espcomp_h0_val == espcomp_h0.val_alerta:
-                messages.warning(espcomp_h0_val, 'OJO CUIDAO !!')
             elif espcomp_h0_val > espcomp_h0.val_maximo:
                 raise ValidationError("El valor es mayor al permitido.")
             else:
@@ -339,8 +335,6 @@ class rodalFormFields2(forms.ModelForm):
 
         if volmmpie_val < volmmpie.val_minimo:
             raise ValidationError("El valor es inferior al permitido.")
-        #elif volmmpie_val == volmmpie.val_alerta:
-            #messages.warning(volmmpie, 'OJO CUIDAO !!')
         elif volmmpie_val > volmmpie.val_maximo:
             raise ValidationError("El valor es mayor al permitido.")
         else:
@@ -354,8 +348,6 @@ class rodalFormFields2(forms.ModelForm):
 
         if volmmsuelo_val < volmmsuelo.val_minimo:
             raise ValidationError("El valor es inferior al permitido.")
-        #elif volmmsuelo_val == volmmsuelo.val_alerta:
-            #messages.warning(volmmsuelo, 'OJO CUIDAO !!')
         elif volmmsuelo_val > volmmsuelo.val_maximo:
             raise ValidationError("El valor es mayor al permitido.")
         else:
@@ -369,8 +361,6 @@ class rodalFormFields2(forms.ModelForm):
 
         if volmmprop_val < volmmprop.val_minimo:
             raise ValidationError("El valor es inferior al permitido.")
-        #elif volmmprop_val == volmmprop.val_alerta:
-            #messages.warning(volmmprop, 'OJO CUIDAO !!')
         elif volmmprop_val > volmmprop.val_maximo:
             raise ValidationError("El valor es mayor al permitido.")
         else:
