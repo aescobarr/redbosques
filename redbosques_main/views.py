@@ -49,6 +49,8 @@ import copy
 from django.template.loader import get_template
 from django.core.mail import EmailMessage
 from redbosques import settings
+from json.decoder import JSONDecodeError
+from django.contrib import messages
 
 
 def namedtuplefetchall(cursor):
@@ -1647,32 +1649,38 @@ def editrodalForm(request, id=None):
             'nombre': m.nombre
         })
 
+    geojsoncollection_string = None
+
     if request.method == 'POST':
         form = rodalFormFields(request.POST or None, instance=datos)
 
         current_user = request.user.id
         user = AuthUser.objects.get(id=current_user)
-        print(user)
+        json_geometry = None
+        multipoligon = []
 
+        if request.POST.get("geometria_string","") != '':
+            try:
+                json_geometry = json.loads(request.POST["geometria_string"])
+                for feature in json_geometry['features']:
+                    feature_geometry = GEOSGeometry(json.dumps(feature['geometry']))
+                    feature_geometry.transform(25830)
+                    multipoligon.append(feature_geometry)
+            except JSONDecodeError:
+                pass
+        if len(multipoligon) == 0:
+            messages.add_message(request, messages.ERROR,'No has entrado los límites del rodal. Por favor, éntralos y vuelve a intentar guardar')
+        else:
+            if form.is_valid():
+                dades = form.save(commit=False)
+                dades.usuario = user
 
-        if form.is_valid():
-            dades = form.save(commit=False)
-            dades.usuario = user
+                mp = MultiPolygon(multipoligon)
+                dades.geom = mp
+                dades.save()
 
-            json_geometry = json.loads(request.POST["geometria_string"])
-
-            multipoligon = []
-            for feature in json_geometry['features']:
-                feature_geometry = GEOSGeometry(json.dumps(feature['geometry']))
-                feature_geometry.transform(25830)
-                multipoligon.append(feature_geometry)
-
-            mp = MultiPolygon(multipoligon)
-            dades.geom = mp
-            dades.save()
-
-            # return HttpResponseRedirect('/redbosques/rodalForm2/' + str(dades.id) + '/')
-            return redirect('rodalForm2', id=dades.id)
+                # return HttpResponseRedirect('/redbosques/rodalForm2/' + str(dades.id) + '/')
+                return redirect('rodalForm2', id=dades.id)
     else:
         datos = get_object_or_404(Rodal, id=id)
         form = rodalFormFields(instance=datos)
@@ -1764,6 +1772,12 @@ def rodalForm(request):
     prov = TeProvincia.objects.filter(nivel='Província').order_by('nombre_es')
     muni = TeMunicipi.objects.all().order_by('nombre').order_by('nombre')
 
+    selected_ccaa = None
+    selected_prov = None
+    selected_muni = None
+    json_geometry = None
+    multipoligon = []
+
     comAut = []
     for x in ccaa:
         comAut.append({
@@ -1790,37 +1804,52 @@ def rodalForm(request):
         form = rodalFormFields(request.POST or None)
 
         #ccaa = TeProvincia.objects.get(codigo=form.data['comautonom_cod'], nivel='Com. autònoma')
+        selected_ccaa = form.data['comautonom_cod']
         #prov = TeProvincia.objects.get(codigo=form.data['provincia_cod'], nivel='Província')
+        selected_prov = form.data['provincia_cod']
         #muni = TeMunicipi.objects.get(id=form.data['municipio1'])
+        selected_muni = form.data['municipio1']
         current_user = request.user.id
         user = AuthUser.objects.get(id=current_user)
 
-        if form.is_valid():
-            dades = form.save(commit=False)
+        if request.POST.get("geometria_string","") != '':
+            try:
+                json_geometry = request.POST["geometria_string"]
+                json_geometry_dict = json.loads(json_geometry)
+                for feature in json_geometry_dict['features']:
+                    feature_geometry = GEOSGeometry(json.dumps(feature['geometry']))
+                    feature_geometry.transform(25830)
+                    multipoligon.append(feature_geometry)
+            except JSONDecodeError:
+                pass
 
-            dades.usuario = user
-            #dades.comautonom_cod = ccaa
-            #dades.provincia_cod = prov
-            #dades.municipio1 = muni
+        if len(multipoligon) == 0:
+            messages.add_message(request, messages.ERROR, 'No has entrado los límites del rodal. Por favor, éntralos y vuelve a intentar guardar')
+        else:
+            if form.is_valid():
+                dades = form.save(commit=False)
 
-            json_geometry = json.loads(request.POST["geometria_string"])
-            multipoligon = []
-            for feature in json_geometry['features']:
-                feature_geometry = GEOSGeometry(json.dumps(feature['geometry']))
-                feature_geometry.transform(25830)
-                multipoligon.append(feature_geometry)
+                dades.usuario = user
+                #dades.comautonom_cod = ccaa
+                #dades.provincia_cod = prov
+                #dades.municipio1 = muni
 
-            mp = MultiPolygon(multipoligon)
-            dades.geom = mp
-            dades.save()
+                mp = MultiPolygon(multipoligon)
+                dades.geom = mp
+                dades.save()
 
-            return redirect('rodalForm2', id=dades.id)
+                return redirect('rodalForm2', id=dades.id)
     else:
         form = rodalFormFields()
 
 
 
-    context = {'form': form, 'comAut': comAut, 'provincias': provincias, 'municipio': municipio}
+    context = {
+        'form': form,
+        'comAut': comAut, 'provincias': provincias, 'municipio': municipio,
+        'selected_ccaa' : selected_ccaa, 'selected_prov': selected_prov, 'selected_muni': selected_muni,
+        'json_geometry': json_geometry
+    }
 
     return render(request, 'redbosques_main/rodalesForm.html', context)
 

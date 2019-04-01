@@ -4,6 +4,7 @@
     <link href="{% static 'redbosques_main/leaflet/leaflet.css' %}" rel="stylesheet">
     <link href="{% static 'redbosques_main/Leaflet.Draw.static/src/leaflet.draw.css' %}" rel="stylesheet">
     <link href="{% static 'redbosques_main/ajaxuploader/css/fileuploader.css' %}" rel="stylesheet">
+    <link href="{% static 'redbosques_main/toastr/toastr.min.css' %}" rel="stylesheet">
     {{ form.media.css }}
 
     <style>
@@ -138,11 +139,7 @@
         <div class="row form-group">
             <div class="col-lg-offset-1 col-lg-10">
                 <div id="map" class="mapaPoligonos" style="width: 100%; height: 550px;"></div>
-                {% if geojson_string %}
-                    <input id="geometria_string" name="geometria_string" type="hidden" value="{{ geojson_string }}"/>
-                {% else %}
-                    <!--<input id="geometria_string" name="geometria_string" type="hidden" value=""/>-->
-                {% endif %}
+                <input id="geometria_string" name="geometria_string" type="hidden" value="{{ geojson_string }}"/>
             </div>
         </div>
         <div class="row form-group">
@@ -295,13 +292,20 @@
 {% endblock %}
 {% block extra_js %}
     <script type="text/javascript">
-        var geo;
+        var geo = '';
+        {% if geojson_string %}
         geo = '{{ geojson_string | safe }}';
+        {% endif %}
         var csrf_token = '{{ csrf_token }}';
         var _ajax_upload_url = '{% url 'ajax_upload' %}';
         var _import_shapefile_url = '{% url 'process_shapefile' %}';
         var _ccaaFilter_url = '{% url 'comAutFilt' %}';
         var _provFilter_url = '{% url 'provFilt' %}';
+        var missatge_geometria = '';
+        {% for message in messages %}
+            missatge_geometria += '{{ message }}' + '\n';
+        {% endfor %}
+        console.log(missatge_geometria);
 
     </script>
     {{ form.media.js }}
@@ -341,6 +345,7 @@
     <script src="{% static 'redbosques_main/ajaxuploader/js/fileuploader.js' %}"></script>
     <script src="{% static 'redbosques_main/javascript/comAut_prov_muni.js' %}"></script>
     <script src="{% static 'redbosques_main/javascript/forms.js' %}"></script>
+    <script src="{% static 'redbosques_main/toastr/toastr.min.js' %}"></script>
     <script src="{% static 'redbosques_main/javascript/editrodalForm.js' %}"></script>
 
 {% endblock %}

@@ -1,4 +1,8 @@
 $(document).ready(function() {
+
+    toastr.options.timeOut = 0;
+    toastr.options.extendedTimeOut = 0;
+    toastr.options.closeButton = true;
     //var map = L.map('map').setView([40.0000000, -4.0000000], 5);
 
     /*L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -112,16 +116,35 @@ $(document).ready(function() {
             success: function( data, textStatus, jqXHR ) {
                 editableLayers.clearLayers();
                 var geoJson = JSON.parse(data.detail);
-                var geoJSONLayer = L.geoJson(geoJson);
-                geoJSONLayer.eachLayer(
-                    function(l){
-                        editableLayers.addLayer(l);
+                var error = false;
+                //Validació de geometria
+                for(var i = 0; i < geoJson.features.length; i++){
+                    var feature = geoJson.features[i];
+                    if( feature.geometry ){
+                        for(var j = 0; j < feature.geometry.coordinates.length; j++){
+                            var coords = feature.geometry.coordinates[j];
+                            var intersects = findSelfIntersects(coords);
+                            if( intersects != null && intersects.length > 0){
+                                //error
+                                error = true;
+                                toastr.error('El límite que has introducido no es válido porque contiene intersecciones consigo mismo. Por favor, valídalo y vuelve a intentarlo.','Error de geometría');
+                                $('.qq-upload-list').empty();
+                            }
+                        }
                     }
-                );
-                map.fitBounds(editableLayers.getBounds());
-                var string_json = JSON.stringify(editableLayers.toGeoJSON());
-                $('#geometria_string').val(string_json);
-                $('.qq-upload-list').empty();
+                }
+                if(!error){
+                    var geoJSONLayer = L.geoJson(geoJson);
+                    geoJSONLayer.eachLayer(
+                        function(l){
+                            editableLayers.addLayer(l);
+                        }
+                    );
+                    map.fitBounds(editableLayers.getBounds());
+                    var string_json = JSON.stringify(editableLayers.toGeoJSON());
+                    $('#geometria_string').val(string_json);
+                    $('.qq-upload-list').empty();
+                }
             },
             error: function(jqXHR, textStatus, errorThrown){
                 if(jqXHR.responseJSON && jqXHR.responseJSON.detail){
@@ -161,6 +184,35 @@ $(document).ready(function() {
     $("#altDomEspPrinAcomp").prop("disabled", true);
     $("#cavCubespPrinAcomp").prop("disabled", true);
 
+    if( missatge_geometria != '' ){
+        toastr.error(missatge_geometria,'No hay geometría');
+    }
+
+    if ( selected_ccaa != ''){
+        $('#id_comautonom option[value="' + selected_ccaa + '"]').prop('selected', true);
+    }
+    if ( selected_prov != '' ){
+        $('#id_provincia option[value="' + selected_prov + '"]').prop('selected', true);
+    }
+    if ( selected_muni != '' ){
+        $('#id_municipio_cod option[value="' + selected_muni + '"]').prop('selected', true);
+    }
+
+    if(geo != ''){
+        var geoJson2 = JSON.parse(geo);
+        var geoJSONLayer = L.geoJson(geoJson2);
+        editableLayers.clearLayers();
+
+        geoJSONLayer.eachLayer(
+            function(l){
+              editableLayers.addLayer(l);
+            }
+        );
+
+        map.fitBounds(geoJSONLayer.getBounds());
+        $("#geometria_string").val(geo);
+    }
+
 });
 
 
@@ -178,3 +230,11 @@ var disEnEspecieAcomp = function(){
     }
 };
 
+/*
+function validateGeometriaNoBuida() {
+  if( $("#geometria_string").val() == '' ){
+    toastr.error('No has introducido los límites del rodal. Por favor, dibuja un límite manualmente o sube un fichero shp comprimido con los límites.','Error de geometría');
+    return false;
+  }
+}
+*/

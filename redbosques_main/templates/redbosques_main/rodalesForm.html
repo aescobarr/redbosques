@@ -5,6 +5,7 @@
     <link href="{% static 'redbosques_main/Leaflet.Draw.static/src/leaflet.draw.css' %}" rel="stylesheet">
     <link href="{% static 'redbosques_main/ajaxuploader/css/fileuploader.css' %}" rel="stylesheet">
     <link href="{% static 'redbosques_main/jquery-ui-1.12.1.custom/jquery-ui.min.css' %}" rel="stylesheet">
+    <link href="{% static 'redbosques_main/toastr/toastr.min.css' %}" rel="stylesheet">
 
     <style>
         .qq-upload-button{
@@ -49,6 +50,7 @@
         </div>
     </div>
     <form action="{% url 'rodalForm' %}" method="POST">
+        {% csrf_token %}
         <div class="row form-group restrData">
             <div class="col-lg-offset-3 col-lg-6">
                 <!--<input id="datosRestringidos" type="checkbox">-->
@@ -284,7 +286,6 @@
                             <a class="btn btn-selector-mapa" href="{% url 'menu' %}">Volver al menú</a>
                             </div>
                             <div class="col-lg-6">
-                                {% csrf_token %}
                                 <input type="submit" class="btn btn-selector-mapa" value="Siguiente">
                             </div>
                         </td>
@@ -306,11 +307,33 @@
 {% block extra_js %}
     {{ form.media.js }}
     <script>
+        var geo = '';
+        {% if json_geometry %}
+        geo = '{{ json_geometry | safe }}';
+        {% endif %}
         var csrf_token = '{{ csrf_token }}';
         var _ajax_upload_url = '{% url 'ajax_upload' %}';
         var _import_shapefile_url = '{% url 'process_shapefile' %}';
         var _ccaaFilter_url = '{% url 'comAutFilt' %}';
         var _provFilter_url = '{% url 'provFilt' %}';
+        var missatge_geometria = '';
+        {% if messages %}
+            {% for message in messages %}
+            missatge_geometria += '{{ message }}' + '\n';
+            {% endfor %}
+        {% endif %}
+        var selected_ccaa = '';
+        {% if selected_ccaa %}
+        selected_ccaa = '{{ selected_ccaa }}';
+        {% endif %}
+        var selected_prov = '';
+        {% if selected_prov %}
+        selected_prov = '{{ selected_prov }}';
+        {% endif %}
+        var selected_muni = '';
+        {% if selected_muni %}
+        selected_muni = '{{ selected_muni }}';
+        {% endif %}
 
     </script>
     <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
@@ -349,9 +372,12 @@
     <script src="{% static 'redbosques_main/javascript/leaflet-bing-layer.min.js' %}"></script>
 
 
+    <script src="{% static 'redbosques_main/javascript/jsts.min.js' %}"></script>
+    <script src="{% static 'redbosques_main/javascript/validacion_geometria.js' %}"></script>
     <script src="{% static 'redbosques_main/ajaxuploader/js/fileuploader.js' %}"></script>
     <script src="{% static 'redbosques_main/javascript/comAut_prov_muni.js' %}"></script>
     <script src="{% static 'redbosques_main/javascript/forms.js' %}"></script>
+    <script src="{% static 'redbosques_main/toastr/toastr.min.js' %}"></script>
     <script src="{% static 'redbosques_main/javascript/rodalesForm.js' %}"></script>
 {% endblock %}
 
