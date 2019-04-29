@@ -91,17 +91,20 @@ $(document).ready(function() {
 
 
 
-    var geoJson2 = JSON.parse(geo);
-    var geoJSONLayer = L.geoJson(geoJson2);
-    editableLayers.clearLayers();
+    if(geo){
+        var geoJson2 = JSON.parse(geo);
+        var geoJSONLayer = L.geoJson(geoJson2);
+        editableLayers.clearLayers();
 
-    geoJSONLayer.eachLayer(
-        function(l){
-          editableLayers.addLayer(l);
-        }
-    );
+        geoJSONLayer.eachLayer(
+            function(l){
+              editableLayers.addLayer(l);
+            }
+        );
 
-    map.fitBounds(geoJSONLayer.getBounds());
+        map.fitBounds(geoJSONLayer.getBounds());
+        $('#geometria_string').val(geo);
+    }
 
 
     map.on(L.Draw.Event.CREATED, function (e) {
@@ -221,6 +224,10 @@ $(document).ready(function() {
 
 
 
+
+    if( missatge_geometria ){
+        toastr.error(missatge_geometria,'No hay geometría');
+    }
 });
 
 var disEnEspecieAcomp = function(){

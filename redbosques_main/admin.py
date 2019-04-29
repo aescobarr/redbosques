@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib import admin
-from redbosques_main.models import Institucion, DatosUsuario
+from redbosques_main.models import Institucion, DatosUsuario, Rodal, AuthUser
 
 
 class DatosUsuarioAdmin(admin.ModelAdmin):
@@ -16,5 +16,16 @@ class InstitucionAdmin(admin.ModelAdmin):
     search_fields = ['nombre', ]
 
 
+class RodalAdmin(admin.ModelAdmin):
+    fields = ('datosrestringidos', 'metodo_cod', 'nombre', 'comautonom_cod', 'provincia_cod', 'municipio', 'propietario', 'fecha', 'equipo', 'lpeht_cod', 'hic_cod', 'regbio_cod', 'espprinc_cod', 'espcomp_cod', 'espprincip_h0', 'espcomp_h0', 'numesparb', 'areabasal', 'volmadvivo', 'numestratos', 'numclasdiam', 'abundpiesexcep', 'volmmpie', 'volmmsuelo', 'volmmprop', 'nummicrohab', 'numfasessil', 'valpropbosc56', 'valagropasant', 'valforestant', 'valforestrec', 'valespinvas', 'valfragment', 'valcaza', 'valherbiv', 'valfrecuent', 'valdurabusos', 'otroespflora', 'otrohics', 'otroinfo', 'notes', 'dateadded', 'volmmtotal', 'usuario', 'rodalref', 'fotoglobo', 'espprinc_fcc', 'espcomp_fcc', 'municipio1',)
+    list_display = ('nombre', 'usuario', 'municipio1',)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "usuario":
+            kwargs["queryset"] = AuthUser.objects.all().order_by('username')
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
 admin.site.register(Institucion, InstitucionAdmin)
 admin.site.register(DatosUsuario, DatosUsuarioAdmin)
+admin.site.register(Rodal, RodalAdmin)
