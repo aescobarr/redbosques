@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'bootstrap_datepicker_plus',
     'django.contrib.admin',
+    #'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -148,3 +150,5 @@ LOGIN_REDIRECT_URL = BASE_DIR + '/menu'
 LOGOUT_REDIRECT_URL = '/redbosques'
 
 from redbosques.settings_local import *
+
+#INTERNAL_IPS = ['127.0.0.1']

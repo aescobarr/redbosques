@@ -57,3 +57,29 @@ var zoomRodalMapa = function(){
         location.href = "/redbosques/herramientas/" + rodalSelected + "/";
     }
 };
+
+
+var crearPDF = function(){
+
+    var rodalSelected = $('.rodalPDFselected').val();
+
+    url = '/redbosques/crearPDF/' + rodalSelected
+    $.ajax({
+        url: url,
+        method: "GET",
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                var csrftoken = getCookie('csrftoken');
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        },
+        success: function( data, textStatus, jqXHR ) {
+            alert("La descarga se ha realizado con éxito !!")
+        },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(errorThrown);
+            }
+        });
+
+
+}

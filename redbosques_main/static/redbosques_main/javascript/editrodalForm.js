@@ -26,9 +26,18 @@ $(document).ready(function() {
         maxZoom: 22
     });
 
+    var ign = new L.TileLayer('http://www.ign.es/wmts/mapa-raster?service=WMTS&request=GetTile&version=1.0.0&layers=&styles=&tilematrixSet=GoogleMapsCompatible&format=image/jpeg&height=256&width=256&layer=MTN&style=default&tilematrix={z}&tilerow={y}&tilecol={x}',
+      {
+        maxZoom: 18,
+        minZoom: 0,
+        continuousWorld: true,
+        attribution: 'Capa Raster CC BY 4.0 <a href="http://www.ign.es/web/ign/portal">ign.es</a>'
+      });
+
     var baseLayers = {
 		"Bing maps": bing,
 		"Open street map": base,
+		"IGN": ign,
 		"Open cycle map": openCycle
 	};
 
@@ -36,7 +45,7 @@ $(document).ready(function() {
 	var map = L.map('map', {
             center: [40.0000000, -4.0000000],
             zoom: 6,
-            layers: [base,bing,openCycle]
+            layers: [base,bing,ign,openCycle]
     });
 
     L.control.layers(baseLayers).addTo(map);
@@ -82,7 +91,6 @@ $(document).ready(function() {
 
 
 
-
     var geoJson2 = JSON.parse(geo);
     var geoJSONLayer = L.geoJson(geoJson2);
     editableLayers.clearLayers();
@@ -101,22 +109,23 @@ $(document).ready(function() {
         var type = e.layerType,layer = e.layer;
         editableLayers.addLayer(layer);
         var string_json = JSON.stringify(editableLayers.toGeoJSON());
-        console.log(string_json);
         $('#geometria_string').val(string_json);
+        blockUnblockSubmit(string_json);
     });
 
     map.on(L.Draw.Event.EDITED, function(e){
         var string_json = JSON.stringify(editableLayers.toGeoJSON());
-        console.log(string_json);
         $('#geometria_string').val(string_json);
+        blockUnblockSubmit(string_json);
     });
 
     map.on(L.Draw.Event.DELETED, function(e){
-        console.log("eliminado");
         $('#geometria_string').val('');
+        string_json = "";
+        blockUnblockSubmit(string_json);
     });
 
-
+    blockUnblockSubmit(geo);
 
     var importa_shapefile = function(filepath){
         $.ajax({
@@ -141,6 +150,7 @@ $(document).ready(function() {
                 map.fitBounds(editableLayers.getBounds());
                 var string_json = JSON.stringify(editableLayers.toGeoJSON());
                 $('#geometria_string').val(string_json);
+                blockUnblockSubmit(string_json);
                 $('.qq-upload-list').empty();
             },
             error: function(jqXHR, textStatus, errorThrown){
@@ -198,6 +208,19 @@ $(document).ready(function() {
         $("#altDomEspPrinAcomp").prop("disabled", true);
         $("#cavCubespPrinAcomp").prop("disabled", true);
     }
+
+
+
+    if(geo == ""){
+        $("#btnSubmitForm").prop("disabled", true);
+    }else{
+        $("#btnSubmitForm").prop("disabled", false);
+    }
+
+
+
+
+
 });
 
 var disEnEspecieAcomp = function(){
@@ -213,4 +236,16 @@ var disEnEspecieAcomp = function(){
         $("#cavCubespPrinAcomp").prop("disabled", false);
     }
 };
+
+var blockUnblockSubmit = function(string_json){
+
+    if(string_json == ""){
+        $(".rodalOblig").show();
+        $("#btnSubmitForm").prop("disabled", true);
+    }else{
+        $(".rodalOblig").hide();
+        $("#btnSubmitForm").prop("disabled", false);
+    }
+};
+
 

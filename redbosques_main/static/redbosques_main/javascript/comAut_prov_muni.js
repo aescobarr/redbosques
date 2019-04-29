@@ -66,7 +66,7 @@ var prov_rodalForm = function(){
                  $('#id_municipio_cod .municipio').remove();
 
                  municipios.forEach(m => {
-                        console.log(m);
+                        //console.log(m);
                         $('#id_municipio_cod').append('<option class="municipio" value="' + m.id + '">'+ m.nombre + '</option>');
                  });
             }

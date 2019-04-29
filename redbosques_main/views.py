@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht, Tesaurus, User, TeCategoria, FotosRodal, DocsRodal, Institucion, DatosUsuario, AuthUser,TeMunicipi
+from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht, Tesaurus, User, TeCategoria, FotosRodal, DocsRodal, Institucion, DatosUsuario, AuthUser,TeMunicipi,TeIndicador
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.urls import reverse
@@ -49,6 +49,10 @@ import copy
 from django.template.loader import get_template
 from django.core.mail import EmailMessage
 from redbosques import settings
+from django.core.files.storage import FileSystemStorage
+from django.template.loader import render_to_string
+from weasyprint import HTML, CSS
+from django.db.models import Q
 
 
 def namedtuplefetchall(cursor):
@@ -115,7 +119,6 @@ def menu(request):
 
     context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'rodalesSelector': rodalesSelector, 'du': du, 'rodalesSelectorEditor': rodalesSelectorEditor}'''
     return render(request, 'redbosques_main/menu.html', context)
-
 
 
 def initialData():
@@ -707,9 +710,33 @@ def valorref_ajax(request):
 
 
     if cordRod is not None and cordRod != 'medRod':
-        dades_rodal2 = RodalValorres2.objects.filter(id_rodal=cordRod)
-        rodal_referencia = crearArbol(dades_rodal2)
-        context = {'rodal_referencia': rodal_referencia}
+        dades_rodal = RodalValorres2.objects.filter(id_rodal=cordRod)
+        rodal_referencia = crearArbol(dades_rodal)
+        #dades_graficos = RodalValorres2.objects.filter(id_rodal=cordRod).filter(Q(nivel='crite') | Q(nivel='eje'))
+        #rodal_graficos = crearArbolGraficos(dades_graficos)
+
+        dadesGraficosPuntos = RodalValorres2.objects.filter(id_rodal=cordRod).filter(nivel='eje').values('id_rodal','indicador_cod', 'valor')
+
+        idRodales = []
+        for infRod in dadesGraficosPuntos:
+            if infRod['id_rodal'] not in idRodales:
+                idRodales.append(infRod['id_rodal'])
+
+        infoRodal = Rodal.objects.filter(id__in=idRodales).values('id','nombre')
+        rodal_graficos_puntos = datosGraficasPuntos(dadesGraficosPuntos, infoRodal)
+
+        dadesGraficoBarrasCrite = RodalValorres2.objects.filter(id_rodal=cordRod).filter(nivel='crite').values('id_rodal', 'indicador_cod', 'valor')
+
+        idRodalesBarCrite = []
+        for infRod in dadesGraficoBarrasCrite:
+            if infRod['id_rodal'] not in idRodalesBarCrite:
+                idRodalesBarCrite.append(infRod['id_rodal'])
+
+        infoRodalBarCrite = Rodal.objects.filter(id__in=idRodalesBarCrite).values('id', 'nombre')
+        rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarrasCrite, infoRodalBarCrite)
+
+        context = {'rodal_referencia': rodal_referencia, 'rodalRefGraficoPuntos': rodal_graficos_puntos, 'rodalRefCriteChart' : rodal_graficos_barras, 'infoRodal': infoRodal}
+
     elif cordRod == 'medRod':
         dades_rodal2 = RodalValorres2.objects.all()
         if idRegBiogeo is not None and idRegBiogeo != 'all':
@@ -721,9 +748,36 @@ def valorref_ajax(request):
         if rodRef is not None and rodRef == '1':
             dades_rodal2 = dades_rodal2.filter(rodalref=True)
 
-        dades_rodal2 = dades_rodal2.values('indicador_cod').annotate(mitjana=Avg('valor'), stddev=StdDev('valor'))
-        rodal_referencia = crearArbolMedia(dades_rodal2)
-        context = {'rodal_referencia': rodal_referencia}
+        dades_rodal = dades_rodal2.values('indicador_cod').annotate(mitjana=Avg('valor'), stddev=StdDev('valor'))
+        rodal_referencia = crearArbolMedia(dades_rodal)
+
+        ### Grafica puntos
+        dadesGraficosPuntos = dades_rodal2.filter(nivel='eje').values('id_rodal', 'indicador_cod', 'valor')
+
+        ##Esta NO
+        #dadesGraficosPuntos = dades_rodal2.filter(nivel='eje').filter(id_rodal=id).distinct().values('id_rodal', 'indicador_cod', 'valor')
+
+
+        idRodales = []
+        for infRod in dadesGraficosPuntos:
+            if infRod['id_rodal'] not in idRodales:
+                idRodales.append(infRod['id_rodal'])
+
+        infoRodal = Rodal.objects.filter(id__in=idRodales).values('id', 'nombre').order_by('id')
+        rodal_graficos_puntos = datosGraficasPuntos(dadesGraficosPuntos, infoRodal)
+
+        dadesGraficoBarrasCrite = RodalValorres2.objects.filter(lpeht_cod=idHab).filter(nivel='crite').values('id_rodal', 'indicador_cod', 'valor')
+
+        idRodalesBarCrite = []
+        for infRod in dadesGraficoBarrasCrite:
+            if infRod['id_rodal'] not in idRodalesBarCrite:
+                idRodalesBarCrite.append(infRod['id_rodal'])
+
+        infoRodalBarCrite = Rodal.objects.filter(id__in=idRodalesBarCrite).values('id', 'nombre')
+        rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarrasCrite, infoRodalBarCrite)
+
+
+        context = {'rodal_referencia': rodal_referencia, 'rodalRefGraficoPuntos': rodal_graficos_puntos, 'rodalRefCriteChart' : rodal_graficos_barras}
 
     return Response(context)
 
@@ -743,6 +797,35 @@ def valorRodal(request):
         if cordRod != 'medRod':
             dades_rodal2 = RodalValorres2.objects.filter(id_rodal=cordRod)
             rodal_referencia = crearArbol(dades_rodal2)
+            #dadesGraficos = RodalValorres2.objects.filter(id_rodal=cordRod).filter(Q(nivel='crite') | Q(nivel='eje'))
+            #rodal_graficos = crearArbolGraficos(dadesGraficos)
+            #rodal_graficos = datosGraficasPuntos(dadesGraficos)
+            dadesGraficosPuntos = RodalValorres2.objects.filter(id_rodal=cordRod).filter(nivel='eje').values('id_rodal', 'indicador_cod', 'valor')
+
+            idRodales = []
+            for infRod in dadesGraficosPuntos:
+                if infRod['id_rodal'] not in idRodales:
+                    idRodales.append(infRod['id_rodal'])
+
+            infoRodal = Rodal.objects.filter(id__in=idRodales).values('id', 'nombre')
+
+
+            rodal_graficos_puntos = datosGraficasPuntos(dadesGraficosPuntos, infoRodal)
+            #print("-----------")
+            #print(rodal_graficos_puntos)
+
+            dadesGraficoBarrasCrite = RodalValorres2.objects.filter(id_rodal=cordRod).filter(nivel='crite').values('id_rodal', 'indicador_cod', 'valor')
+
+            idRodalesBarCrite = []
+            for infRod in dadesGraficoBarrasCrite:
+                if infRod['id_rodal'] not in idRodalesBarCrite:
+                    idRodalesBarCrite.append(infRod['id_rodal'])
+
+            infoRodalBarCrite = Rodal.objects.filter(id__in=idRodalesBarCrite).values('id', 'nombre')
+
+            #rodal_graficos_barras = datosGraficasBarras(dadesGraficoBarrasCrite, infoRodalBarCrite)
+            rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarrasCrite, infoRodalBarCrite)
+
         if cordRod == 'medRod':
             #dades_rodal2 = RodalValorres2.objects.all()
             #rodals_list = RodalValorres2.objects.all()
@@ -751,10 +834,67 @@ def valorRodal(request):
             dades_rodal2 = RodalValorres2.objects.filter(lpeht_cod=habSel).values('indicador_cod').annotate(mitjana=Avg('valor'),stddev=StdDev('valor'))
             rodal_referencia = crearArbolMedia(dades_rodal2)
 
+            dadesGraficosPuntos = RodalValorres2.objects.filter(lpeht_cod=habSel).filter(nivel='eje').values('id_rodal', 'indicador_cod', 'valor')
+
+            idRodales = []
+            for infRod in dadesGraficosPuntos:
+                if infRod['id_rodal'] not in idRodales:
+                    idRodales.append(infRod['id_rodal'])
+
+            infoRodal = Rodal.objects.filter(id__in=idRodales).values('id', 'nombre')
+
+            rodal_graficos_puntos = datosGraficasPuntos(dadesGraficosPuntos, infoRodal)
+            #print("-----------")
+            #print(rodal_graficos_puntos)
+
+            #dadesGraficoBarrasCrite = RodalValorres2.objects.filter(lpeht_cod=habSel).filter(Q(nivel='crite') | Q(nivel='eje')).values('id_rodal', 'indicador_cod', 'valor')
+            dadesGraficoBarrasCrite = RodalValorres2.objects.filter(lpeht_cod=habSel).filter(nivel='crite').values('id_rodal', 'indicador_cod', 'valor')
+
+
+            idRodalesBarCrite = []
+            for infRod in dadesGraficoBarrasCrite:
+                if infRod['id_rodal'] not in idRodalesBarCrite:
+                    idRodalesBarCrite.append(infRod['id_rodal'])
+
+            infoRodalBarCrite = Rodal.objects.filter(id__in=idRodalesBarCrite).values('id', 'nombre')
+            rodal_graficos_barras = datosGraficasBarras(dadesGraficoBarrasCrite)
+
+
+
         #rodal_referencia = crearArbol(dades_rodal2)
-        context = {'rodal': rodal_referencia}
+        context = {'rodal': rodal_referencia, 'rodalGraficoPuntos': rodal_graficos_puntos, 'rodalCriteChart': rodal_graficos_barras}
 
     return Response(context)
+
+def datosGraficasPuntos(dades, infoRodal):
+
+    #print(infoRodal)
+
+    id_rodales = []
+    lista = []
+    for i in dades:
+        if i['id_rodal'] not in id_rodales:
+            id_rodales.append(i['id_rodal'])
+
+        for t in id_rodales:
+            if t == i['id_rodal']:
+                for n in infoRodal:
+                    if i['id_rodal'] == n['id']:
+                        lista.append({
+                            'id_rodal': i['id_rodal'],
+                            'nombre': n['nombre'],
+                            'indicador_cod': i['indicador_cod'],
+                            'valor': i['valor']
+                        })
+
+    #print(lista)
+
+    return(lista)
+
+def datosGraficasBarras(dades, infoRodalBarCrite):
+    print(dades)
+
+
 
 
 @api_view(['GET'])
@@ -1076,7 +1216,7 @@ def crearArbol(dades):
         return rodal_referencia
 
 def crearArbolMedia(dades):
-    #print(dades)
+
     for indicador_cod in dades:
         #json1 = json.dumps(indicador_cod, ensure_ascii=False)
         #print(indicador_cod.keys(),'->', indicador_cod.values())
@@ -1554,6 +1694,147 @@ def crearArbolMedia(dades):
 
     return rodal_referencia
 
+def crearArbolGraficos(dades):
+    print(len(dades))
+
+    lista = []
+    ind = None
+    list2 = []
+
+    for indicador_cod in dades:
+        if ind != indicador_cod.id_rodal:
+            ind = indicador_cod.id_rodal
+            lista.append(ind)
+
+        if indicador_cod.indicador_cod == 'nm':
+            if indicador_cod.valor == None:
+                nm_valor = "---"
+            else:
+                nm_valor = round(indicador_cod.valor, 2)
+            lista.append(nm_valor)
+
+        if indicador_cod.indicador_cod == 'ie':
+            if indicador_cod.valor == None:
+                ie_valor = "---"
+            else:
+                ie_valor = round(indicador_cod.valor, 2)
+            lista.append(ie_valor)
+        if indicador_cod.indicador_cod == 'hh':
+            if indicador_cod.valor == None:
+                hh_valor = "---"
+            else:
+                hh_valor = round(indicador_cod.valor, 2)
+            lista.append(hh_valor)
+        if indicador_cod.indicador_cod == 'sn':
+            if indicador_cod.valor == None:
+                sn_valor = "---"
+            else:
+                sn_valor = round(indicador_cod.valor, 2)
+            lista.append(sn_valor)
+        if indicador_cod.indicador_cod == 'hr':
+            if indicador_cod.valor == None:
+                hr_valor = "---"
+            else:
+                hr_valor = round(indicador_cod.valor, 2)
+            lista.append(hr_valor)
+        if indicador_cod.indicador_cod == 'hm':
+            if indicador_cod.valor == None:
+                hm_valor = "---"
+            else:
+                hm_valor = round(indicador_cod.valor, 2)
+            lista.append(hm_valor)
+        if indicador_cod.indicador_cod == 'ha':
+            if indicador_cod.valor == None:
+                ha_valor = "---"
+            else:
+                ha_valor = round(indicador_cod.valor, 2)
+            lista.append(ha_valor)
+        if indicador_cod.indicador_cod == 'eb':
+            if indicador_cod.valor == None:
+                eb_valor = "---"
+            else:
+                eb_valor = round(indicador_cod.valor, 2)
+            lista.append(eb_valor)
+        if indicador_cod.indicador_cod == 'dn':
+            if indicador_cod.valor == None:
+                dn_valor = "---"
+            else:
+                dn_valor = round(indicador_cod.valor, 2)
+            lista.append(dn_valor)
+        if indicador_cod.indicador_cod == 'cp':
+            if indicador_cod.valor == None:
+                cp_valor = "---"
+            else:
+                cp_valor = round(indicador_cod.valor, 2)
+            lista.append(cp_valor)
+        if indicador_cod.indicador_cod == 'cn':
+            if indicador_cod.valor == None:
+                cn_valor = "---"
+            else:
+                cn_valor = round(indicador_cod.valor, 2)
+            lista.append(cn_valor)
+        if indicador_cod.indicador_cod == 'cf':
+            if indicador_cod.valor == None:
+                cf_valor = "---"
+            else:
+                cf_valor = round(indicador_cod.valor, 2)
+            lista.append(cf_valor)
+        if indicador_cod.indicador_cod == 'ce':
+            if indicador_cod.valor == None:
+                ce_valor = "---"
+            else:
+                ce_valor = round(indicador_cod.valor, 2)
+            lista.append(ce_valor)
+        if indicador_cod.indicador_cod == 'ar':
+            if indicador_cod.valor == None:
+                ar_valor = "---"
+            else:
+                ar_valor = round(indicador_cod.valor, 2)
+            lista.append(ar_valor)
+
+    list2.extend(lista)
+
+    #print(list2)
+
+######   Valores del rodal    #########
+    rodal_graficos = {
+        'naturalidad': {
+            'valor': nm_valor,
+            'composicion': {
+                'valor': cp_valor,
+            },
+            'complejidad': {
+                'valor': ce_valor,
+            },
+            'senectud': {
+                'valor': sn_valor,
+            },
+            'micro_habitats': {
+                'valor': hm_valor,
+            },
+            'dinamica': {
+                'valor': dn_valor,
+            }
+        },
+        'huellaHumana': {
+            'valor': hh_valor,
+            'antigua': {
+                'valor': ha_valor,
+            },
+            'reciente': {
+                'valor': hr_valor,
+            },
+        },
+        'integridadEspacial': {
+            'valor': ie_valor,
+            'tamano': {'valor': ar_valor},
+            'cont_forest': {'valor': cf_valor},
+            'efect_borde': {'valor': eb_valor},
+            'conect': {'valor': cn_valor}
+        }
+    }
+    #print(rodal_referencia)
+    return rodal_graficos
 
 def login(request):
 
@@ -1654,10 +1935,9 @@ def editrodalForm(request, id=None):
         user = AuthUser.objects.get(id=current_user)
         print(user)
 
-
         if form.is_valid():
             dades = form.save(commit=False)
-            dades.usuario = user
+            #dades.usuario = user
 
             json_geometry = json.loads(request.POST["geometria_string"])
 
@@ -1673,6 +1953,10 @@ def editrodalForm(request, id=None):
 
             # return HttpResponseRedirect('/redbosques/rodalForm2/' + str(dades.id) + '/')
             return redirect('rodalForm2', id=dades.id)
+        else:
+            geojsoncollection_string = request.POST["geometria_string"]
+            print(geojsoncollection_string)
+
     else:
         datos = get_object_or_404(Rodal, id=id)
         form = rodalFormFields(instance=datos)
@@ -1785,13 +2069,10 @@ def rodalForm(request):
             'nombre': m.nombre
         })
 
-
+    json_geometry = None
+    form = rodalFormFields()
     if request.method == 'POST':
         form = rodalFormFields(request.POST or None)
-
-        #ccaa = TeProvincia.objects.get(codigo=form.data['comautonom_cod'], nivel='Com. autònoma')
-        #prov = TeProvincia.objects.get(codigo=form.data['provincia_cod'], nivel='Província')
-        #muni = TeMunicipi.objects.get(id=form.data['municipio1'])
         current_user = request.user.id
         user = AuthUser.objects.get(id=current_user)
 
@@ -1799,10 +2080,6 @@ def rodalForm(request):
             dades = form.save(commit=False)
 
             dades.usuario = user
-            #dades.comautonom_cod = ccaa
-            #dades.provincia_cod = prov
-            #dades.municipio1 = muni
-
             json_geometry = json.loads(request.POST["geometria_string"])
             multipoligon = []
             for feature in json_geometry['features']:
@@ -1815,12 +2092,15 @@ def rodalForm(request):
             dades.save()
 
             return redirect('rodalForm2', id=dades.id)
-    else:
-        form = rodalFormFields()
+        else:
+            json_geometry = request.POST["geometria_string"]
+            print(json_geometry)
 
+    #else:
+    #    form = rodalFormFields()
+    #    json_geometry = ''
 
-
-    context = {'form': form, 'comAut': comAut, 'provincias': provincias, 'municipio': municipio}
+    context = {'form': form, 'comAut': comAut, 'provincias': provincias, 'municipio': municipio, 'json_geometry': json_geometry}
 
     return render(request, 'redbosques_main/rodalesForm.html', context)
 
@@ -1833,7 +2113,7 @@ def comAutFilt(request):
     idCcaa = request.query_params.get('id', None)
 
     prov = TeProvincia.objects.filter(parent=idCcaa).order_by('nombre_es')
-    #prov2 = TeProvincia.objects.filter(parent=idCcaa).values('codigo')
+    # prov2 = TeProvincia.objects.filter(parent=idCcaa).values('codigo')
 
     provincias = []
     for p in prov:
@@ -2014,6 +2294,15 @@ def rodalForm2(request, id=None):
     # print("Densidad de bosque: " + str(densBosquexcent) + " %")
     # print("Distancia a la core área: " + str(distCoreAreaKM) + " Km")
 
+    valMedios = TeIndicador.objects.filter(val_alerta__isnull=False).values('variable_rodal', 'val_alerta')
+
+    valMediosAlerta = []
+    for va in valMedios:
+        valMediosAlerta.append({
+            'nom_variable': va['variable_rodal'],
+            'valorAlerta': va['val_alerta']
+        })
+
     if request.method == 'POST':
         form = rodalFormFields2(request.POST or None, instance=datos)
         #form = rodalFormFields2(request.POST or None)
@@ -2055,7 +2344,8 @@ def rodalForm2(request, id=None):
                'valForRec': valForRecArray,
                'valFrag': valFragArray,
                'valHerb': valHerbArray,
-               'adminInstitucion': adminInstitucion
+               'adminInstitucion': adminInstitucion,
+               'valMediosAlerta': valMediosAlerta
                }
 
     return render(request, 'redbosques_main/rodalesForm2.html', context)
@@ -2613,10 +2903,10 @@ def filtrarxRodRef(request):
     codiregBiogeo = request.query_params.get('regBiogeo', None)
     rodalReferencia = request.query_params.get('rodRef', None)
 
-    print(codiHabitat)
-    print(codiComaut)
-    print(codiregBiogeo)
-    print(rodalReferencia)
+    #print(codiHabitat)
+    #print(codiComaut)
+    #print(codiregBiogeo)
+    #print(rodalReferencia)
 
 
     rodalesTable = WebCompDataValAmb.objects.all()
@@ -2903,3 +3193,105 @@ def registration_complete(request):
 
 def contacto(request):
     return render(request, 'redbosques_main/contacto.html')
+
+
+def html_to_pdf_view(request, id):
+    dades_rodal = RodalValorres2.objects.filter(id_rodal=id)
+    info_rodal = WebCompDataValAmb.objects.filter(id_rodal=id).filter(eje_cod="nm")
+    rodalArbol = crearArbol(dades_rodal)
+
+    paragraphs = ['first paragraph', 'second paragraph', 'third paragraph']
+    html_string = render_to_string('pdf_templates/pdf_template.html', {'paragraphs': paragraphs, 'rodal': rodalArbol})
+    css_string = render_to_string('pdf_templates/pdfStyles.css')
+    # css_btsrp = render_to_string('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+
+    html = HTML(string=html_string)
+    css = CSS(string=css_string)
+    html.write_pdf(target='/tmp/mypdf.pdf', stylesheets=[css]);
+
+    fs = FileSystemStorage('/tmp')
+    with fs.open('mypdf.pdf') as pdf:
+        response = HttpResponse(pdf, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="mypdf.pdf"'
+        return response
+
+    return response
+
+def comparadorGraficos(request, id = None):
+    init_params = {}
+    if id is not None:
+        valors_ini = WebMapaValAmb.objects.filter(id_rodal=id).distinct().values('habitat_cod', 'ccaa_nom',
+                                                                                 'regbio_cod').first()
+
+        if valors_ini is None:
+            raise Http404("No hay datos de comparacion para el rodal seleccionado")
+
+        # recuperar hàbitat inicial, ccaa inicial, regio inicial
+        habitat_ini = valors_ini['habitat_cod']
+        # ccaa_ini = valors_ini['ccaa_nom']
+        # regbio_ini = valors_ini['regbio_cod']
+
+        dades_ini = list(WebMapaValAmb.objects.filter(habitat_cod=habitat_ini).values())
+
+        if len(dades_ini) > 0:
+            cc_aa_ini_list = []
+            reg_ini_list = []
+            rodals_ini_list = []
+            # carregar comunitats per hàbitat inicial
+
+            already_in_there = set()
+            for d in dades_ini:
+                if not d['ccaa_nombre'] in already_in_there:
+                    already_in_there.add(d['ccaa_nombre'])
+                    cc_aa_ini_list.append({'codigo': d['ccaa_nom'], 'nombre_es': d['ccaa_nombre']})
+            cc_aa_ini_list.sort(key=lambda x: x['nombre_es'])
+
+            # carregar regio per comunitat autonoma
+            already_in_there = set()
+            for d in dades_ini:
+                if not d['regbio_cod'] in already_in_there:
+                    already_in_there.add(d['regbio_cod'])
+                    reg_ini_list.append({'cod': d['regbio_cod'], 'nombre_es': d['nombre_es']})
+            reg_ini_list.sort(key=lambda x: x['nombre_es'])
+
+            # carregar rodals per regió i cc_aa
+            already_in_there = set()
+            for d in dades_ini:
+                if not d['id_rodal'] in already_in_there:
+                    already_in_there.add(d['id_rodal'])
+                    if d['rodalref'] == True:
+                        rodals_ini_list.append({'id_rodal': d['id_rodal'], 'nombre': d['nombre'], 'rodalref': 1})
+                    else:
+                        rodals_ini_list.append({'id_rodal': d['id_rodal'], 'nombre': d['nombre'], 'rodalref': 0})
+            rodals_ini_list.sort(key=lambda x: x['nombre'])
+
+            init_params['rodal_ini'] = id
+            init_params['habitat_ini'] = habitat_ini
+            # init_params['ccaa_ini']=ccaa_ini
+            # init_params['regbio_ini'] = regbio_ini
+            init_params['cc_aa_ini_list'] = cc_aa_ini_list
+            init_params['reg_ini_list'] = reg_ini_list
+            init_params['rodals_ini_list'] = rodals_ini_list
+
+        else:
+            raise Http404("No hay datos de comparacion para el rodal seleccionado")
+
+    tb_in_data = WebMapaValAmb.objects.all().distinct().values('tipobosque_cod')
+    hab_in_data = WebMapaValAmb.objects.all().distinct().values('habitat_cod')
+
+    tb = Habitat.objects.filter(cod__in=tb_in_data).order_by('nombre')
+    hb = Habitat.objects.filter(cod__in=hab_in_data).order_by('nombre')
+    tipoBosqueData = []
+    habitatData = []
+    for t in tb:
+        tipoBosqueData.append({'tipobosque_cod': t.cod, 'tipobosque_nombre': t.nombre})
+    for h in hb:
+        habitatData.append({'habitat_cod': h.cod, 'habitat_nombre': h.nombre})
+
+    if not bool(init_params):
+        context = {'tiposDeBosque': tipoBosqueData, 'habitats': habitatData}
+    else:
+        context = {'tiposDeBosque': tipoBosqueData, 'habitats': habitatData, 'init_params': init_params}
+
+    return render(request, 'redbosques_main/comparadorGraficos.html', context)
+

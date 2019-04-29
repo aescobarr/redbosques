@@ -1,0 +1,412 @@
+{% extends "redbosques_main/base.html" %}
+{% load static %}
+{% block extra_css %}
+
+{% endblock %}
+{% block main %}
+<div class="container-fluid subheader">
+    <div class="row">
+        <div class="col-lg-12 subfield">
+            <p>
+                <h4>
+                    <a href="{% url 'index' %}">Inicio</a> /
+                    <a href="{% url 'menu' %}">Menú</a> /
+                    Comparador de rodales
+                </h4>
+            </p>
+            <!--<h2>{{ herramientas }}</h2>-->
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-offset-1 col-lg-10 menu-header">
+            <h3>Valoración de la madurez</h3>
+        </div>
+    </div>
+</div>
+<div class="tab-content">
+        <div class="container">
+            <div class="row filtros">
+                <div class="col-lg-6">
+                    <div class="col-lg-3">
+                        <label for="habitat" class="green-font" style="margin-top: 8px">Tipo de bosque</label>
+                    </div>
+                    <div class="col-lg-9">
+                        <select class="form-control" name="habitat" id="tipoBosque">
+                            <option value="null" selected="selected">Seleccione un tipo de bosque</option>
+                                {% for tb in tiposDeBosque %}
+                                    <option value="{{ tb.tipobosque_cod }}">{{ tb.tipobosque_nombre }}</option>
+                                {% endfor %}
+                        </select>
+                        <!--<input id="nombreHabitat" type="text" class="form-control" placeholder="{{ infoRodal.habitat_nom }}">-->
+
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="col-lg-2">
+                        <label for="habitat" class="green-font" style="margin-top: 8px">Hábitat</label>
+                    </div>
+                    <div class="col-lg-10">
+                        <select class="form-control" name="habitat" id="habitat">
+                            <option value="null" selected="selected">Seleccione un hábitat</option>
+                            {% for h in habitats %}
+                                    <option value="{{ h.habitat_cod }}">{{ h.habitat_nombre }}</option>
+                            {% endfor %}
+                        </select>
+                        <!--<input id="nombreHabitat" type="text" class="form-control" placeholder="{{ infoRodal.habitat_nom }}">-->
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- ************************** Rodal seleccionado ************************** -->
+                <div class="col-lg-offset-1 col-lg-4">
+                    <label class="green-font">Rodal seleccionado (* = referencia) <i class="fas fa-circle colLeyRod"></i></label>
+                    <select id="selector_rodales" class="form-control selector_rodal inputsFiltComp">
+                        <option value=None selected="selected">Seleccione un rodal</option>
+                        <!--<option value="medRod">Media del conjunto de rodales</option>-->
+                            {% for rodal in listaRodales %}
+                                <option class="rodal" value="{{ rodal.id_rodal }}">
+                                    {% if rodal.rodalref %}
+                                        {{ rodal.nombre }} (*)
+                                    {% else %}
+                                        {{ rodal.nombre }}
+                                    {% endif %}
+                                 </option>
+                            {% endfor %}
+                    </select>
+
+                    <b class="green-font" style="display:inline-block;">Filtros adicionales:</b>
+
+                    <select id="selector_ComAut" class="form-control selector_ComAut inputsFiltComp" name="ComunidadAutonoma">
+                        <option value="null" selected="selected">Seleccione Comunidad autónoma</option>
+                    </select>
+
+                    <select id="selector_RegBio" class="form-control selector_RegBio inputsFiltComp" name="RegioBiogeo">
+                        <option value="null" selected="selected">Seleccione Región biogeográfica</option>
+                    </select>
+
+                </div>
+                <!-- **************************************************************************** -->
+                <!-- ************************** Rodales de comparación ************************** -->
+                <div class="col-lg-offset-1 col-lg-6">
+                    <label class="green-font">Rodal de comparación (* = referencia) <i class="fas fa-circle colLeyRodComp"></i></label>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <select id="selector_rodales_comp" class="form-control selector_rodal_Comp inputsFiltComp">
+                            <option value="null" selected="selected">Rodal / Conjunto de rodales a comparar</option>
+                            <option value="medRod">Todos los rodales</option>
+                            {% for rodal in listaRodalesComp %}
+                                <option class="rodal" value="{{ rodal.id_rodal }}">
+                                    {% if rodal.rodalref %}
+                                        {{ rodal.nombre }} (*)
+                                    {% else %}
+                                        {{ rodal.nombre }}
+                                    {% endif %}
+                                 </option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-xs-6">
+                            <form id="selector_rodalRef" class="checkbox">
+                                <b class="green-font" style="display:inline-block;">Sólo de referencia (*)</b>
+                                <label for="boolRodRefSI">Si</label>
+                                <input type="radio" name="boolRodRef" id="boolRodRefSI" value="True" class="boolRodRef" />
+                                <label for="boolRodRefNO">No</label>
+                                <input type="radio" name="boolRodRef" id="boolRodRefNO" value="False" checked="checked" class="boolRodRef"/>
+                            </form>
+                        </div>
+                    </div>
+
+                    <b class="green-font" style="display:inline-block;">Filtros adicionales:</b>
+
+                    <select id="selector_ComAut_Comp" class="form-control selector_ComAut inputsFiltComp" name="ComunidadAutonoma">
+                        <option value="null" selected="selected">Seleccione Comunidad autónoma</option>
+                        <option value="all">Todas las comunidades autónomas</option>
+                            {% for comAuto in listaComAuto %}
+                        <option value="{{ comAuto.codigo }}">
+                            {{ comAuto.nombre }}
+                        </option>
+                        {% endfor %}
+                    </select>
+
+                    <select id="selector_RegBio_Comp" class="form-control selector_RegBio inputsFiltComp" name="RegioBiogeo">
+                        <option value="null" selected="selected">Seleccione Región biogeográfica</option>
+                        <option value="all">Todas las Regiones biogeográficas</option>
+                            {% for regBio in listaRegBio %}
+                                <option value="{{ regBio.cod }}">
+                            {{ regBio.nombre }}
+                        </option>
+                            {% endfor %}
+                    </select>
+
+                </div>
+                <!-- **************************************************************************** -->
+            </div>
+        </div>
+</div>
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-offset-2 col-lg-8 grafica1Container">
+
+    <table class="graficTable">
+        <tbody>
+            <tr>
+                <th rowspan="2">Ejes</th>
+                <th colspan="3">Criterios</th>
+            </tr>
+            <tr>
+                <th>Naturalidad</th>
+                <th>Huella</th>
+                <th>Integridad Espacial</th>
+            </tr>
+            <tr>
+                <td><div id="container" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div></td>
+                <td><div id="container2" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div></td>
+                <td><div id="container3" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div></td>
+                <td><div id="container4" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div></td>
+
+            </tr>
+            <tr>
+                <td>
+                    <ul>
+                        <li><strong>Nat</strong> => Naturalidad</li>
+                        <li><strong>HH</strong> => Huella humana</li>
+                         <li><strong>IE</strong> => Integridad Espacial</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li><strong>Comp</strong> => Composición</li>
+                        <li><strong>Compl</strong> => Complejidad</li>
+                        <li><strong>Mad</strong> => Madurez</li>
+                        <li><strong>MicHab</strong> => Microhábitats</li>
+                        <li><strong>Din</strong> => Dinamica</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li><strong>HAnt</strong> => Huella antigua</li>
+                        <li><strong>HRec</strong> => Huella reciente</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li><strong>Tam</strong> => Tamaño</li>
+                        <li><strong>CF</strong> => Continuidad forestal</li>
+                        <li><strong>EB</strong> => Efecto borde</li>
+                        <li><strong>Conec</strong> => Conectividad</li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+            </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 separador"></div>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-4 graficaScatter">
+            <div id="scatter1" style="min-width: 310px; height: 435px; max-width: 420px; margin: 0 auto;"></div>
+            <div class="row">
+                <div class="col-lg-3 labelSelector">
+                    <label for="ejeXGrafica1">Eje X:</label>
+                </div>
+                <div class="col-lg-7">
+                    <select id="ejeXGrafica1" class="form-control scatterSelector grafica1" name="RegioBiogeo">
+                        <option value="null" selected="selected">Seleccione un eje</option>
+                        <option value="nm">Naturalidad</option>
+                        <option value="hh">Huella Humana</option>
+                        <option value="ie">Integridad espacial</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 labelSelector">
+                    <label for="ejeYGrafica1">Eje Y:</label>
+                </div>
+                <div class="col-lg-7">
+                    <select id="ejeYGrafica1" class="form-control scatterSelector grafica1" name="RegioBiogeo">
+                        <option value="null" selected="selected">Seleccione un eje</option>
+                        <option value="nm">Naturalidad</option>
+                        <option value="hh">Huella Humana</option>
+                        <option value="ie">Integridad espacial</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 graficaScatter">
+            <div id="scatter2" style="min-width: 310px; height: 435px; max-width: 420px; margin: 0 auto;"></div>
+            <div class="row">
+                <div class="col-lg-3 labelSelector">
+                    <label for="ejeXGrafica1">Eje X:</label>
+                </div>
+                <div class="col-lg-7">
+                    <select id="ejeXGrafica2" class="form-control scatterSelector grafica2" name="RegioBiogeo">
+                        <option value="null" selected="selected">Seleccione un eje</option>
+                        <option value="nm">Naturalidad</option>
+                        <option value="hh">Huella Humana</option>
+                        <option value="ie">Integridad espacial</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 labelSelector">
+                    <label for="ejeYGrafica1">Eje Y:</label>
+                </div>
+                <div class="col-lg-7">
+                    <select id="ejeYGrafica2" class="form-control scatterSelector grafica2" name="RegioBiogeo">
+                        <option value="null" selected="selected">Seleccione un eje</option>
+                        <option value="nm">Naturalidad</option>
+                        <option value="hh">Huella Humana</option>
+                        <option value="ie">Integridad espacial</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 graficaScatter">
+            <div id="scatter3" style="min-width: 310px; height: 435px; max-width: 420px; margin: 0 auto;"></div>
+            <div class="row">
+                <div class="col-lg-3 labelSelector">
+                    <label for="ejeXGrafica1">Eje X:</label>
+                </div>
+                <div class="col-lg-7">
+                    <select id="ejeXGrafica3" class="form-control scatterSelector grafica3" name="RegioBiogeo">
+                        <option value="null" selected="selected">Seleccione un eje</option>
+                        <option value="nm">Naturalidad</option>
+                        <option value="hh">Huella Humana</option>
+                        <option value="ie">Integridad espacial</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 labelSelector">
+                    <label for="ejeYGrafica1">Eje Y:</label>
+                </div>
+                <div class="col-lg-7">
+                    <select id="ejeYGrafica3" class="form-control scatterSelector grafica3" name="RegioBiogeo">
+                        <option value="null" selected="selected">Seleccione un eje</option>
+                        <option value="nm">Naturalidad</option>
+                        <option value="hh">Huella Humana</option>
+                        <option value="ie">Integridad espacial</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 separador"></div>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div id="graficaBarras1" style="min-width: 310px; max-width: 435px; height: 420px; margin: 0 auto"></div>
+            <div class="row">
+                <div class="col-lg-offset-3 col-lg-7">
+                    <select id="selecGrafBar1" class="form-control graficaBarEjes" name="RegioBiogeo">
+                        <option value="null" selected="selected">Seleccione un eje</option>
+                        <option value="nm">Naturalidad</option>
+                        <option value="hh">Huella Humana</option>
+                        <option value="ie">Integridad espacial</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div id="graficaBarras2" style="min-width: 310px; max-width: 435px; height: 420px; margin: 0 auto"></div>
+            <div class="row">
+                <div class="col-lg-offset-3 col-lg-7">
+                    <select id="selecGrafBar2" class="form-control graficaBarCrite" name="RegioBiogeo">
+                        <option value="null" selected="selected">Seleccione un criterio</option>
+                        <option value="comp">Composición</option>
+                        <option value="compl">Complejidad</option>
+                        <option value="mad">Madurez</option>
+                        <option value="microhab">Microhábitats</option>
+                        <option value="din">Dinamica</option>
+                        <option value="ha">Huella antigua</option>
+                        <option value="hr">Huella reciente</option>
+                        <option value="tam">Tamaño</option>
+                        <option value="contForest">Continuidad forestal</option>
+                        <option value="efBord">Efecto borde</option>
+                        <option value="conec">Conectividad</option>
+
+                    </select>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    var rodRef = new Array();
+    var rodal = new Array();
+    var rodalSelData;
+    var linkComparador = "{% url 'comparador_noparam' %}";
+    var rodalReferencia;
+    var resComp = new Array();
+    /*var rodalselected = {{ infoRodal | safe }};
+    var valores_rodal_json = {{ valores_rodal_json | safe }};*/
+    var _habitat_list = "{% url 'habitats_ajax' %}";
+    var _cc_aa_list = "{% url 'ccaa_ajax' %}";
+    var _regbiogeo_list = "{% url 'regbiogeo_ajax' %}";
+    var _rodal_list = "{% url 'rodals_ajax' %}";
+    var _rodal_ref_list = "{% url 'valorref_ajax' %}";
+
+    var rodalSelData_ini;
+    {% if valores_rodal %}
+        rodalSelData_ini = {{ valores_rodal | safe }};
+    {% endif %}
+
+    var init_data;
+    {% if init_params %}
+        init_data = {{ init_params | safe }};
+    {% endif %}
+
+    var cached_data_habitat = {};
+
+    cached_data_habitat['null'] = {{ habitats | safe }};
+
+    var rodals_habitat_cached = {};
+
+</script>
+
+<script src="{% static 'redbosques_main/javascript/data_table.js' %}"></script>
+<script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-more.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<!--<script src="{% static 'redbosques_main/javascript/comparador_new.js' %}"></script>-->
+<script src="{% static 'redbosques_main/javascript/controlesComparador.js' %}"></script>
+<script src="{% static 'redbosques_main/javascript/comparadorGraficos.js' %}"></script>
+
+{% endblock %}
+
+<!--var iniListaRodales = {{ listaRodales | safe }};
+var iniListaRodalesComp = {{ listaRodalesComp | safe }};-->

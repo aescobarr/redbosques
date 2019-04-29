@@ -7,7 +7,7 @@ $(document).ready(function() {
 
 
 
-var initialRodal = function(){
+/*var initialRodal = function(){
 
     if(rodalselected){
         rodalSelData = rodalSelData_ini;
@@ -20,7 +20,7 @@ var initialRodal = function(){
     }else{
         //alert("adios");
     }
-};
+};*/
 
 
 $('tr.lv1').on("click", function(){
@@ -89,19 +89,13 @@ $('.hideAll').on("click", function(){
 
 
 
-var rodalData = function(){
+/*var rodalData = function(){
 
     url = '/redbosques/valorRodal';
     valRod = $('.selector_rodal option:selected').val();
     habSel = $('.habitatSelected').attr('value');
 
-    /*if(valRod == 'medRod'){
-        url = url + '?vr=medRod&habSel='+ habSel;
-        console.log(url);
-        $('#selector_ComAut_Comp option:first').prop('selected', 'selected');
-        $('#selector_RegBio_Comp option:first').prop('selected', 'selected');
 
-    }else*/
 
     if(valRod != 'medRod' ){
         if (valRod == 'null'){
@@ -141,22 +135,19 @@ var rodalData = function(){
             }
         });
 };
-
+*/
 
 
 
 //$('.selector_rodal').on("change", function(){
-var rodalRefData = function(){
+/*var rodalRefData = function(){
 
     var idComAut = $('#selector_ComAut_Comp').val();
     var idHabitat = $('#habitat').val();
     var rodRef = $('input[name=boolRodRef]:checked').val();
     var idRegBiogeo = $('#selector_RegBio_Comp').val();
 
-    /*console.log(idHabitat);
-    console.log(idComAut);
-    console.log(idRegBiogeo);
-    console.log(rodRef);*/
+
 
     url = '/redbosques/valorRef';
     valRod = $('.selector_rodal_Comp option:selected').val();
@@ -251,7 +242,7 @@ var rodalRefData = function(){
                 console.log(errorThrown);
             }
         });
-};
+};*/
 
 
 
@@ -418,7 +409,7 @@ $('.val-metr.metrica').on("click", function(){
 
 
 
-
+/*
 var setFiltros = function(){
 
         valIdRodal = $('p.rodalSelected').attr('value');
@@ -461,7 +452,7 @@ var setFiltros = function(){
                 console.log(errorThrown);
             }
         });
-}
+}*/
 
 
 
@@ -747,7 +738,7 @@ var crearGraficos = function(testJson){
 
 
 /* ########################## Filtros ################################*/
-
+/*
 var tipoBosqueFilter = function(){
     var tipoBosque = $('#tipoBosque').val();
 
@@ -1073,30 +1064,25 @@ var rodalRefFilterComp = function(){
         });
 }
 
-
+*/
 
 
 
 /* ################ Act. controles filtros ################*/
 
-
+/*
 var habNewData  = function(codigoHab){
 
         $("#habitat").empty();
         $("#habitat").append('<option value="null" selected="selected">Seleccione un Hábitat</option>');
 
-        /*$("#selector_ComAut_Comp").empty();
-        $("#selector_ComAut_Comp").append('<option value="null" selected="selected">Seleccione Comunidad autónoma</option>');
-        $("#selector_ComAut_Comp").append('<option value="all">Todas las Comunidades autónomas</option>');*/
 
         for(i=0; i<codigoHab.length; i++){
             $("#habitat").append('<option value=' + codigoHab[i].habitat_cod + '>' + codigoHab[i].tipobosque_nombre + '</option>');
             //$("#selector_ComAut_Comp").append('<option value=' + comAuto[i].ccaa_nom + '>' + comAuto[i].ccaa_nombre + '</option>');
         }
 
-        /*if(id_tipo_habitat){
-            $(".tipo_habitat").val(id_tipo_habitat);
-        }*/
+
 }
 
 
@@ -1116,9 +1102,7 @@ var comAutNewData  =function(comAuto){
             $("#selector_ComAut_Comp").append('<option value=' + comAuto[i].ccaa_nom + '>' + comAuto[i].ccaa_nombre + '</option>');
         }
 
-        /*if(id_tipo_habitat){
-            $(".tipo_habitat").val(id_tipo_habitat);
-        }*/
+
 }
 
 
@@ -1178,17 +1162,4 @@ var rodalesNewDataComp = function(rodales){
     }
 
 }
-
-/*var rodalFilterlist = function(iniListaRodales){
-
-    console.log(iniListaRodales[0].nombre);
-
-    $("#selector_rodales").empty();
-    $("#selector_rodales").append('<option value="null" selected="selected">Seleccione Rodal</option>');
-
-    for(i=0; i<iniListaRodales.length; i++){
-        $("#selector_rodales").append('<option value=' + iniListaRodales[i].id_rodal + '>' + iniListaRodales[i].nombre + '</option>');
-    }
-
-
-}*/
+*/

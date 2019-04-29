@@ -1,0 +1,312 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>{{ title }}</title>
+        <link rel="stylesheet" href="/redbosques-main/static/css/redbosques.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="pdfStyles.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <table class="infoRodal">
+                    <thead>
+                        <th style="width: 40%; text-align: center;">Información del Rodal</th>
+                        <th style="width: 60%; text-align: center;">Límites del Rodal</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Nombre del rodal:</td>
+                            <td rowspan="8">Hola</td>
+                        </tr>
+                        <tr>
+                            <td>Comunidad Autónoma:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Provincia:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Municipio:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Propiedad:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Área:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>CORINE/LPEHT:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Región biogeogràfica:</td>
+                            <td></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="container data-table tabla-datos"><!--         Naturalidad                       -->
+            <div class="row">
+                <table class="table responsive">
+                    <thead>
+                        <tr class="headerTabla">
+                            <th style="width: 40%"></th>
+                            <th style="width: 20%; text-align: center;">Ámbito</th>
+                            <th style="width: 20%; text-align: center;">Criterio</th>
+                            <th style="width: 20%; text-align: center;">Indicador</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="lv1 lv1Nat">
+                            <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>NATURALIDAD</span></th>
+                            <td id="_naturalidad" class="bgColorRod">{{ rodal.naturalidad.valor }}</td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                        </tr>
+                        <tr class="lv2 lv2Nat">
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Composición</span></th>
+                            <td class="bgColorRod"></td>
+                            <td id="_naturalidad_composicion" class="bgColorRod">{{ rodal.naturalidad.composicion.valor }}</td>
+                            <td class="bgColorRod"></td>
+                        </tr>
+                        <tr class="lv3 lv3Nat">
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Especies arbóreas</span></td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                            <td id="_naturalidad_composicion_especies_arboreas" class="bgColorRod">{{ rodal.naturalidad.composicion.especies_arboreas.valor }}</td>
+                        </tr>
+                        <tr class="lv2 lv2Nat">
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Complejidad</span></th>
+                            <td class="bgColorRod"></td>
+                            <td id="_naturalidad_complejidad" class="bgColorRod">{{ rodal.naturalidad.complejidad.valor }}</td>
+                            <td class="bgColorRod"></td>
+                        </tr>
+                        <tr class="lv3 lv3Nat">
+                            <td class="identValores" style="text-indent: 15px;"><span>Área basimétrica</span></td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                            <td id="_naturalidad_complejidad_area_basimetrica" class="bgColorRod">{{ rodal.naturalidad.complejidad.area_basimetrica.valor }}</td>
+                        </tr>
+                        <tr class="lv3 lv3Nat">
+                            <td class="identValores"><span>Estratificación vertical</span></td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                            <td id="_naturalidad_complejidad_estratificacion_vertical" class="bgColorRod">{{ rodal.naturalidad.complejidad.estratificacion_vertical.valor }}</td>
+                        </tr>
+                        <tr class="lv3 lv3Nat">
+                            <td class="identValores"><span>Diversidad estructural</span></td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                            <td id="_naturalidad_complejidad_diversidad_estructural" class="bgColorRod">{{ rodal.naturalidad.complejidad.diversidad_estructural.valor }}</td>
+                        </tr>
+
+                        <tr class="lv2 lv2Nat">
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Senectud</span></th>
+                            <td class="bgColorRod"></td>
+                            <td id="_naturalidad_senectud" class="bgColorRod">{{ rodal.naturalidad.senectud.valor }}</td>
+                            <td class="bgColorRod"></td>
+                        </tr>
+                        <tr class="lv3 lv3Nat">
+                            <td class="identValores"><span>Àrboles de tamaño excepcional</span></td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                            <td id="_naturalidad_senectud_arb_tam_excep" class="bgColorRod">{{ rodal.naturalidad.senectud.arb_tam_excep.valor }}</td>
+                        </tr>
+                        <tr class="lv3 lv3Nat">
+                            <td class="identValores" style="text-indent: 15px;"><span>Abundancia de madera muerta</span></td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                            <td id="_naturalidad_senectud_abund_mad_muerta" class="bgColorRod">{{ rodal.naturalidad.senectud.abund_mad_muerta.valor }}</td>
+                        </tr>
+                        <tr class="lv3 lv3Nat">
+                            <td class="identValores"><span>Proporción de madera muerta</span></td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                            <td id="_naturalidad_senectud_prop_madera_muerta" class="bgColorRod">{{ rodal.naturalidad.senectud.prop_madera_muerta.valor }}</td>
+                        </tr>
+
+                        <tr class="lv2 lv2Nat">
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Microhábitats</span></th>
+                            <td class="bgColorRod"></td>
+                            <td id="_naturalidad_micro_habitats" class="bgColorRod">{{ rodal.naturalidad.micro_habitats.valor }}</td>
+                            <td class="bgColorRod"></td>
+                        </tr>
+                        <tr class="lv3 lv3Nat">
+                            <td class="identValores" style="text-indent: 15px;"><span>Microhábitats de pies vivos</span></td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                            <td id="_naturalidad_micro_habitats_mh_pies_vivos" class="bgColorRod">{{ rodal.naturalidad.micro_habitats.mh_pies_vivos.valor }}</td>
+                        </tr>
+
+                        <tr class="lv2 lv2Nat">
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Dinámica</span></th>
+                            <td class="bgColorRod"></td>
+                            <td id="_naturalidad_dinamica" class="bgColorRod">{{ rodal.naturalidad.dinamica.valor }}</td>
+                            <td class="bgColorRod"></td>
+                        </tr>
+                        <tr class="lv3 lv3Nat">
+                            <td class="identValores" style="text-indent: 15px;"><span>Ciclo silvogenético</span></td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                            <td id="_naturalidad_dinamica_ciclo_silvogen" class="bgColorRod">{{ rodal.naturalidad.dinamica.ciclo_silvogen.valor }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="container data-table tabla-datos"><!--         Huella Humana                     -->
+            <div class="row">
+                <table class="table responsive">
+                    <thead>
+                        <tr class="headerTabla">
+                            <th style="width: 40%"></th>
+                            <th style="width: 20%; text-align: center;">Ámbito</th>
+                            <th style="width: 20%; text-align: center;">Criterio</th>
+                            <th style="width: 20%; text-align: center;">Indicador</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="lv1 lv1Hh">
+                            <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>HUELLA HUMANA</span></th>
+                            <td id="_huellaHumana" class="bgColorRod">{{ rodal.huellaHumana.valor }}</td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                        </tr>
+                        <tr class="lv2 lv2Hh">
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Antigua</span></th>
+                            <td class="bgColorRod"></td>
+                            <td id="_huellaHumana_antigua" class="bgColorRod">{{ rodal.huellaHumana.antigua.valor }}</td>
+                            <td class="bgColorRod"></td>
+                        </tr>
+                        <tr class="lv3 lv3Hh">
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Continuidad temporal</span></td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                            <td id="_huellaHumana_antigua_cont_temp" class="bgColorRod">{{ rodal.huellaHumana.antigua.cont_temp.valor }}</td>
+                        </tr>
+                        <tr class="lv3 lv3Hh">
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Usos agropastorales</span></td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                            <td id="_huellaHumana_antigua_usos_agropast" class="bgColorRod">{{ rodal.huellaHumana.antigua.usos_agropast.valor }}</td>
+                        </tr>
+                        <tr class="lv3 lv3Hh">
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Usos forestales</span></td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                            <td id="_huellaHumana_antigua_usos_forestales" class="bgColorRod">{{ rodal.huellaHumana.antigua.usos_forestales.valor }}</td>
+                        </tr>
+                        <tr class="lv2 lv2Hh">
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Reciente</span></th>
+                            <td class="bgColorRod"></td>
+                            <td id="_huellaHumana_reciente" class="bgColorRod">{{ rodal.huellaHumana.reciente.valor }}</td>
+                            <td class="bgColorRod"></td>
+                        </tr>
+                        <tr class="lv3 lv3Hh">
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Usos forestales</span></td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                            <td id="_huellaHumana_reciente_usos_forestales" class="bgColorRod">{{ rodal.huellaHumana.reciente.usos_forestales.valor }}</td>
+                        </tr>
+                        <tr class="lv3 lv3Hh">
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Especies invasoras</span></td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                            <td id="_huellaHumana_reciente_especies_inv" class="bgColorRod">{{ rodal.huellaHumana.reciente.especies_inv.valor }}</td>
+                        </tr>
+                        <tr class="lv3 lv3Hh">
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Causas de fragmentación</span></td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                            <td id="_huellaHumana_reciente_causa_fragment" class="bgColorRod">{{ rodal.huellaHumana.reciente.causa_fragment.valor }}</td>
+                        </tr>
+                        <tr class="lv3 lv3Hh">
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Actividad cinegética</span></td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                            <td id="_huellaHumana_reciente_actv_cineget" class="bgColorRod">{{ rodal.huellaHumana.reciente.actv_cineget.valor }}</td>
+                        </tr>
+                        <tr class="lv3 lv3Hh">
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Herbívora y/o ramoneo</span></td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                            <td id="_huellaHumana_reciente_herv_rom" class="bgColorRod">{{ rodal.huellaHumana.reciente.herv_rom.valor }}</td>
+                        </tr>
+                        <tr class="lv3 lv3Hh">
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Frecuentación</span></td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                            <td id="_huellaHumana_reciente_frecuent" class="bgColorRod">{{ rodal.huellaHumana.reciente.frecuent.valor }}</td>
+                        </tr>
+                        <tr class="lv3 lv3Hh">
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Durabilidad de los usos</span></td>
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                            <td id="_huellaHumana_reciente_durab_usos" class="bgColorRod">{{ rodal.huellaHumana.reciente.durab_usos.valor }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <div class="container data-table tabla-datos"><!--         Integridad Espacial                  -->
+            <div class="row">
+                <table class="table responsive">
+                    <thead>
+                        <tr class="headerTabla">
+                            <th style="width: 40%"></th>
+                            <th style="width: 20%; text-align: center;">Ámbito</th>
+                            <th style="width: 20%; text-align: center;">Criterio</th>
+                            <th style="width: 20%; text-align: center;">Indicador</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="lv1 lv1Ie">
+                            <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>INTEGRIDAD ESPACIAL</span></th>
+                            <td id="_integridadEspacial" class="bgColorRod">{{ rodal.integridadEspacial.valor }}</td>
+
+                            <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
+                        </tr>
+                        <tr class="lv2 lv2Ie">
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Tamaño</span></th>
+                            <td class="bgColorRod"></td>
+                            <td id="_integridadEspacial_tamano" class="bgColorRod">{{ rodal.integridadEspacial.tamano.valor }}</td>
+                            <td class="bgColorRod"></td>
+                        </tr>
+                        <tr class="lv2 lv2Ie">
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Continuidad forestal</span></th>
+                            <td class="bgColorRod"></td>
+                            <td id="_integridadEspacial_cont_forest" class="bgColorRod">{{ rodal.integridadEspacial.cont_forest.valor }}</td>
+                            <td class="bgColorRod"></td>
+                        </tr>
+                        <tr class="lv2 lv2Ie">
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Efecto borde</span></th>
+                            <td class="bgColorRod"></td>
+                            <td id="_integridadEspacial_efect_borde" class="bgColorRod">{{ rodal.integridadEspacial.efect_borde.valor }}</td>
+                            <td class="bgColorRod"></td>
+                        </tr>
+                        <tr class="lv2 lv2Ie">
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Conectividad</span></th>
+                            <td class="bgColorRod"></td>
+                            <td id="_integridadEspacial_conect" class="bgColorRod">{{ rodal.integridadEspacial.conect.valor }}</td>
+                            <td class="bgColorRod"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

@@ -44,86 +44,153 @@
 
 <div class="container form-rodal">
     <div class="row">
-        <div class="col-lg-offset-3 col-lg-6">
+        <div class="col-lg-offset-3 col-lg-7">
             <h4>DATOS GENERALES</h4>
         </div>
     </div>
     <form action="{% url 'rodalForm' %}" method="POST">
         <div class="row form-group restrData">
-            <div class="col-lg-offset-3 col-lg-6">
-                <!--<input id="datosRestringidos" type="checkbox">-->
+            <div class="col-lg-offset-3 col-lg-7">
                 {{ form.datosrestringidos }}
                 {{ form.datosrestringidos.errors }}
                 <label for="datosRestringidos">Datos restringidos</label>
             </div>
         </div>
-        <!--<div class="row form-group green-font-bold">
-            <div class="col-lg-offset-3 col-lg-6">
-                <label>Tipo de muestreo</label>
-                <input name="tipoMuestreo" id="porParcelas" type="radio" checked>
-                <label for="porParcelas">Por parcelas</label>
-                <input name="tipoMuestreo" id="porTransecto" type="radio">
-                <label for="portransecto">Por transecto</label>
-            </div>
-        </div>-->
         <div class="row form-group">
-            <div class="col-lg-offset-3 col-lg-6">
-                <div class="metodo">
-                    {{ form.metodo_cod }}
-                    {{ form.metodo_cod.errors }}
+            <div class="col-lg-offset-3 col-lg-7">
+                <div class="inputCont">
+                    <div class="metodo inputRodalField">
+                        {{ form.metodo_cod }}
+                        {% if form.metodo_cod.errors %}
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.metodo_cod.errors }}
+
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="errorIcon">
+                        {% if form.metodo_cod.errors %}
+                            <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                        {% endif %}
+                    </div>
                 </div>
+
+
                 <div class="nombreRodal">
-                    {{ form.nombre }}
-                    {{ form.nombre.errors }}
-                </div>
-                <div class="comAut">
-                    <select class="form-control" name="comautonom_cod_sel" id="id_comautonom" onchange="ccaa_rodalForm()">
-                        <option value="null" selected="selected">Comunidad Autónoma</option>
-                            {% for ca in comAut %}
-                                <option value="{{ ca.cod }}">{{ ca.nombre }}</option>
-                            {% endfor %}
-                    </select>
-                    {{ form.comautonom_cod }}
-                    {{ form.comautonom_cod.errors }}
-                </div>
-                <div class="provincia">
-
-                    <select class="form-control" name="provincia_cod_sel" id="id_provincia" onchange="prov_rodalForm()">
-                        <option value="null" selected="selected">Provincia</option>
-                            {% for p in provincias %}
-                                <option class="provincia" value="{{ p.cod }}">{{ p.nombre }}</option>
-                            {% endfor %}
-                    </select>
-                    {{ form.provincia_cod }}
-                    {{ form.provincia_cod.errors }}
-                </div>
-                <div class="terminoMunicipal">
-
-                    <select class="form-control" name="municipio_cod_sel" id="id_municipio_cod" onchange="muni_rodalForm()">
-                        <option value="null" selected="selected">Municipio</option>
-                            {% for m in municipio %}
-                                <option class="municipio" value="{{ m.id }}">{{ m.nombre }}</option>
-                            {% endfor %}
-                    </select>
-                    {{ form.municipio1 }}
-                    {{ form.municipio1.errores }}
-                </div>
-                <div class="propietario">
-                    {{ form.propietario }}
-                    {{ form.propietario.errores }}
-                </div>
-                <div class="row">
-                    <div class="col-lg-11">
-                        <div class="subirLimites">
-                            <!--<div id="fileuploader"></div>-->
-                            <div id="fileuploader"></div>
+                    <div class="inputCont">
+                        <div class="inputRodalField">
+                            {{ form.nombre }}
+                            {% if form.nombre.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.nombre.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="errorIcon">
+                            {% if form.nombre.errors %}
+                                <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                            {% endif %}
                         </div>
                     </div>
-                    <div class="col-lg-1 guiaShape">
-                        <p><a href="#" id="abrirPopup" class="btn btn-default">?</a></p>
-
+                </div>
+                <div class="comAut">
+                    <div class="inputCont">
+                        <div class="inputRodalField">
+                            <select class="form-control selectBox" name="comautonom_cod_sel" id="id_comautonom" onchange="ccaa_rodalForm()">
+                                <option value="null" selected="selected">Comunidad Autónoma</option>
+                                    {% for ca in comAut %}
+                                        <option value="{{ ca.cod }}">{{ ca.nombre }}</option>
+                                    {% endfor %}
+                            </select>
+                            {{ form.comautonom_cod }}
+                            {% if form.comautonom_cod.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.comautonom_cod.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="errorIcon">
+                            {% if form.comautonom_cod.errors %}
+                                <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                            {% endif %}
+                        </div>
                     </div>
-
+                </div>
+                <div class="provincia">
+                    <div class="inputCont">
+                        <div class="inputRodalField">
+                            <select class="form-control selectBox" name="provincia_cod_sel" id="id_provincia" onchange="prov_rodalForm()">
+                                <option value="null" selected="selected">Provincia</option>
+                                    {% for p in provincias %}
+                                        <option class="provincia" value="{{ p.cod }}">{{ p.nombre }}</option>
+                                    {% endfor %}
+                            </select>
+                            {{ form.provincia_cod }}
+                            {% if form.provincia_cod.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.provincia_cod.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="errorIcon">
+                            {% if form.provincia_cod.errors %}
+                                <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="terminoMunicipal">
+                    <div class="inputCont">
+                        <div class="inputRodalField">
+                            <select class="form-control selectBox" name="municipio_cod_sel" id="id_municipio_cod" onchange="muni_rodalForm()">
+                                <option value="null" selected="selected">Municipio</option>
+                                    {% for m in municipio %}
+                                        <option class="municipio" value="{{ m.id }}">{{ m.nombre }}</option>
+                                    {% endfor %}
+                            </select>
+                            {{ form.municipio1 }}
+                            {% if form.municipio1.errores %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.municipio1.errores }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="errorIcon">
+                            {% if form.municipio1.errores %}
+                                <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="propietario">
+                    <div class="inputCont">
+                        <div class="inputRodalField">
+                            {{ form.propietario }}
+                            {% if form.propietario.errores %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.propietario.errores }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="errorIcon">
+                            {% if form.propietario.errores %}
+                                <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="inputRodalField">
+                        <div class="col-lg-11">
+                            <div class="subirLimites">
+                                <!--<div id="fileuploader"></div>-->
+                                <div id="fileuploader"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 guiaShape">
+                            <p><a href="#" id="abrirPopup" class="btn btn-default">?</a></p>
+                        </div>
+                    </div>
                     <div id="instruc" title="Requisitos del archivo de límites (Shapefiles)">
                         <p class="infoPopup">Ahora mismo, este control solamente acepta Shapefiles con una <b>proyección WGS84</b>.
                             Un fichero shapefile consta de <b>múltiples ficheros con extensiones
@@ -140,135 +207,221 @@
                 <input id="geometria_string" name="geometria_string" type="hidden" value=""/>
             </div>
         </div>
+
         <div class="row form-group">
-            <div class="col-lg-offset-3 col-lg-6">
+            <div class="col-lg-offset-3 col-lg-7">
                 <h4>Muestreo</h4>
-                <div class="fecha">
-                    <!--<input class="form-control" type="date" placeholder="Fecha">-->
-                    {{ form.media }}
-                    {{ form.fecha }}
-                    {{ form.fecha.errors }}
+                <div class="inputCont">
+                    <div class="inputRodalField">
+                        <div class="fecha">
+                            {{ form.media }}
+                            {{ form.fecha }}
+                            {% if form.fecha.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.fecha.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="errorIcon">
+                        {% if form.fecha.errors %}
+                            <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="equipoDeCampo">
-                    {{ form.equipo }}
-                    {{ form.equipo.errors }}
+                <div class="inputCont">
+                    <div class="inputRodalField">
+                        <div class="equipoDeCampo">
+                            {{ form.equipo }}
+                            {% if form.equipo.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.equipo.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="errorIcon">
+                        {% if form.equipo.errors %}
+                            <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
         <div class="row form-group">
-            <div class="col-lg-offset-3 col-lg-6">
+            <div class="col-lg-offset-3 col-lg-7">
                 <h4>Hábitat</h4>
-                <div class="habitatCorine">
-                    {{ form.lpeht_cod }}
-                    {{ form.lpeht_cod.errors }}
+                <div class="inputCont">
+                    <div class="inputRodalField">
+                        <div class="habitatCorine">
+                            {{ form.lpeht_cod }}
+                            {% if form.lpeht_cod.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.lpeht_cod.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="errorIcon">
+                        {% if form.lpeht_cod.errors %}
+                            <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="habitatHIC">
-                    {{ form.hic_cod }}
-                    {{ form.hic_cod.errors }}
-
+                <div class="inputCont">
+                    <div class="inputRodalField">
+                        <div class="habitatHIC">
+                            {{ form.hic_cod }}
+                            {% if form.hic_cod.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.hic_cod.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="errorIcon">
+                        {% if form.hic_cod.errors %}
+                            <div class="form-group has-errors text-danger small">
+                                <p><i class="fas fa-exclamation-circle fa-2x"></i>{{ form.hic_cod.errors }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="regionBiogeo">
-                    {{ form.regbio_cod }}
-                    {{ form.regbio_cod.errors }}
+                <div class="inputCont">
+                    <div class="inputRodalField">
+                        <div class="regionBiogeo">
+                            {{ form.regbio_cod }}
+                            {% if form.regbio_cod.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.regbio_cod.errors }}
+                                </div>
+                            {% endif %}
+                            <div class="errorIcon">
+                                {% if form.regbio_cod.errors %}
+                                    <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="especiePrincipal">
-                    <!--<select class="form-control">
-                        <option value="" selected="selected">Especie principal</option>
-                        <option value="catalunya">AAAAA</option>
-                        <option value="paisVasco">BBBBB</option>
-                    </select>-->
-                    {{ form.espprinc_cod }}
-                    {{ form.espprinc_cod.errors }}
+                <div class="inputCont">
+                    <div class="inputRodalField">
+                        <div class="especiePrincipal">
+                            {{ form.espprinc_cod }}
+                            {% if form.espprinc_cod.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.espprinc_cod.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if form.espprinc_cod.errors %}
+                        <div class="errorIcon">
+                            <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                        </div>
+                    {% endif %}
                 </div>
-
                 <table>
                     <tr>
-                    <!--<div class="altDominante">-->
                         <td class="rodal_label">
                             <label for="altDomEspPrin">Altura dominante de la especie principal</label>
                             {% if form.espprincip_h0.errors %}
-                            <div class="alert alert-danger small">
+                            <div class="form-group has-errors text-danger small">
                                 {{ form.espprincip_h0.errors }}
                             </div>
                             {% endif %}
                         </td>
                         <td class="rodal_data">
-                            <!--<input type="text" id="altDomEspPrin" class="alturaDominanteEspeciePrincipal form-control">-->
                             {{ form.espprincip_h0 }}
-                            <!--{{ form.espprincip_h0.errors }}-->
                         </td>
                         <td class="rodal_unidades">
                             <label for="altDomEspPrin">m</label>
                         </td>
-                        <!--</div>-->
+
+                        <td class="errorIcon">
+                            {% if form.espprincip_h0.errors %}
+                                <p>
+                                    <i class="fas fa-exclamation-circle fa-2x"></i>
+                                </p>
+                            {% endif %}
+                        </td>
                     </tr>
                     <tr>
-                        <!--<div class="cavCubespPrin">-->
-                            <td class="rodal_label">
-                                <label for="cavCubespPrin">Fracción de cavidad cubierta de la especie principal</label>
+                        <td class="rodal_label">
+                            <label for="cavCubespPrin">Fracción de cavidad cubierta de la especie principal</label>
+                            {% if form.espprinc_fcc.errors %}
                                 <div class="form-group has-errors text-danger small">
-                                    {{ form.espprinc_fcc.errors }}
+                                    <p><i class="fas fa-exclamation-circle fa-2x"></i>{{ form.espprinc_fcc.errors }}</p>
                                 </div>
-                            </td>
-                            <td class="rodal_data">
-                                <!--<input id="cavCubespPrin" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">-->
-                                {{ form.espprinc_fcc }}
-                                <!--{{ form.espprinc_fcc.errors }}-->
-                            </td>
-                            <td class="rodal_unidades">
-                                <label for="cavCubespPrin">%</label>
-                            </td>
-                        <!--</div>-->
+                            {% endif %}
+                        </td>
+                        <td class="rodal_data">
+                            {{ form.espprinc_fcc }}
+                        </td>
+                        <td class="rodal_unidades">
+                            <label for="cavCubespPrin">%</label>
+                        </td>
+                        <td class="errorIcon">
+                            {% if form.espprinc_fcc.errors %}
+                                <p>
+                                    <i class="fas fa-exclamation-circle fa-2x"></i>
+                                </p>
+                            {% endif %}
+                        </td>
                     </tr>
                 </table>
-
-                <div class="principalAcompan">
-                    <!--<select class="form-control">
-                        <option value="" selected="selected">Principal especie acompañante</option>
-                        <option value="catalunya">AAAAA</option>
-                        <option value="paisVasco">BBBBB</option>
-                    </select>-->
-                    {{ form.espcomp_cod }}
-
-                    {% if form.espcomp_cod.errors %}
-                            <div class="alert alert-danger small">
+                <div class="inputCont">
+                    <div class="inputRodalField">
+                        <div class="principalAcompan">
+                            {{ form.espcomp_cod }}
+                            <div class="form-group has-errors text-danger small">
                                 {{ form.espcomp_cod.errors }}
                             </div>
-                            {% endif %}
+                        </div>
+                    </div>
+                    {% if form.espcomp_cod.errors %}
+                        <div class="errorIcon">
+                            <p>
+                                <i class="fas fa-exclamation-circle fa-2x"></i>
+                            </p>
+                        </div>
+                    {% endif %}
                 </div>
                 <table>
                     <tr>
                         <td class="rodal_label">
                             <label for="altDomEspPrinAcomp">Altura dominante de la principal especie acompañante</label>
-                            <!--<div class="form-group has-errors text-danger small">
-                                {{ form.espcomp_h0.errors }}
-                            <div>-->
                             {% if form.espcomp_h0.errors %}
-                            <div class="form-group has-errors text-danger small">
-                                {{ form.espcomp_h0.errors }}
-                            </div>
+                                <div class="form-group has-errors text-danger small">
+                                    <p><i class="fas fa-exclamation-circle fa-2x"></i>{{ form.espcomp_h0.errors }}</p>
+                                </div>
                             {% endif %}
                         </td>
                         <td class="rodal_data">
-                            <!--<input id="altDomEspPrinAcomp" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">-->
                             {{ form.espcomp_h0 }}
-                            <!--<div class="form-group has-errors text-danger small">
-                                {{ form.espcomp_h0.errors }}
-                            <div>-->
                         </td>
                         <td class="rodal_unidades">
                             <label for="altDomEspPrinAcomp">m</label>
+                        </td>
+                        <td class="errorIcon">
+                            {% if form.espcomp_h0.errors %}
+                                <p>
+                                    <i class="fas fa-exclamation-circle fa-2x"></i>
+                                </p>
+                            {% endif %}
                         </td>
                     </tr>
                     <tr>
                         <td class="rodal_label">
                             <label for="cavCubespPrinAcomp">Fracción de cavidad cubierta de la especie acompañante</label>
-                            <div class="form-group has-errors text-danger small">
-                                {{ form.espcomp_fcc.errors }}
-                            </div>
+                            {% if form.espcomp_fcc.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.espcomp_fcc.errors }}
+                                </div>
+                            {% endif %}
                         </td>
                         <td class="rodal_data">
-                            <!--<input id="cavCubespPrinAcomp" type="text" class="alturaDominanteEspeciePrincipalAcomp form-control">-->
+
                             {{ form.espcomp_fcc }}
                             <!--<div class="form-group has-errors text-danger small">
                                 {{ form.espcomp_fcc.errors }}
@@ -277,15 +430,25 @@
                         <td class="rodal_unidades">
                             <label for="cavCubespPrinAcomp">%</label>
                         </td>
+                        <td class="errorIcon">
+                            {% if form.espcomp_fcc.errors %}
+                                <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                            {% endif %}
+                        </td>
+
+
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <div class="col-lg-6">
+                            <div class="col-lg-offset-1 col-lg-5">
                             <a class="btn btn-selector-mapa" href="{% url 'menu' %}">Volver al menú</a>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-offset-1 col-lg-5">
                                 {% csrf_token %}
-                                <input type="submit" class="btn btn-selector-mapa" value="Siguiente">
+                                <input type="submit" class="btn btn-selector-mapa" id="btnSubmitForm" value="Siguiente">
+                                <div class="form-group has-errors text-danger small">
+                                    <p class="rodalOblig">- Los límites del rodal son obligatorios.</p>
+                                </div>
                             </div>
                         </td>
 
@@ -306,11 +469,14 @@
 {% block extra_js %}
     {{ form.media.js }}
     <script>
+        var geo;
+        geo = {% if json_geometry %} JSON.parse('{{ json_geometry | safe }}') {% else %} null {% endif %};
         var csrf_token = '{{ csrf_token }}';
         var _ajax_upload_url = '{% url 'ajax_upload' %}';
         var _import_shapefile_url = '{% url 'process_shapefile' %}';
         var _ccaaFilter_url = '{% url 'comAutFilt' %}';
         var _provFilter_url = '{% url 'provFilt' %}';
+
 
     </script>
     <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>

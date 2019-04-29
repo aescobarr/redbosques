@@ -100,11 +100,11 @@ class rodalFormFields(forms.ModelForm):
     especies = TeTaxon.objects.order_by('nombre')
     espprinc_cod = forms.ModelChoiceField(queryset=especies, widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Especie principal", required=True)
     espprincip_h0 = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control alturaDominanteEspeciePrincipal', 'id': 'altDomEspPrin'}), required=True)
-    espprinc_fcc = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control alturaDominanteEspeciePrincipalAcomp', 'id': 'cavCubespPrin'}), required=True)
+    espprinc_fcc = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control alturaDominanteEspeciePrincipalAcomp dotDel', 'id': 'cavCubespPrin'}), required=True)
 
     espcomp_cod = forms.ModelChoiceField(queryset=especies, widget=forms.Select(attrs={'class': 'form-control', 'onchange':'disEnEspecieAcomp()'}), empty_label="Principal especie acompañante", required=False)
     espcomp_h0 = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control alturaDominanteEspeciePrincipalAcomp', 'id': 'altDomEspPrinAcomp'}), required=False)
-    espcomp_fcc = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control alturaDominanteEspeciePrincipalAcomp', 'id': 'cavCubespPrinAcomp'}), required=False)
+    espcomp_fcc = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control alturaDominanteEspeciePrincipalAcomp dotDel', 'id': 'cavCubespPrinAcomp'}), required=False)
 
     # municipio1 = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control id_municipio', 'type': 'hidden', 'value': ''}))
     # comautonom_cod = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control id_comAutonoma', 'type': 'hidden', 'value': ''}), required=True)
@@ -224,18 +224,21 @@ class rodalFormFields(forms.ModelForm):
 class rodalFormFields2(forms.ModelForm):
 
     numesparb = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
-    areabasal = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
-    volmadvivo = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
-    numestratos = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
+    areabasal = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos dotDel'}), required=True)
+    volmadvivo = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos calculo dotDel'}), required=True)
+    numestratos = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos dotDel'}), required=True)
     numclasdiam = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
-    abundpiesexcep = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
-    volmmpie = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
-    volmmsuelo = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
-    #volmmprop = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos', 'disabled': 'True'}), required=True)
+    abundpiesexcep = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos dotDel'}), required=True)
+    volmmpie = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos calculo dotDel'}), required=True)
+    volmmsuelo = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos calculo dotDel'}), required=True)
+    volmmprop = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
+    volmmtotal = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos dotDel'}), required=True)
     nummicrohab = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
     numfasessil = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
-
     rodalref = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'boolRodRef'}), required=False)
+
+
+
 
     # valagropasant = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control id_valagropasant', 'type':'hidden', 'value': ''}), required=True)
     # valforestant = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control id_valforestant', 'type': 'hidden', 'value': ''}), required=True)
@@ -353,6 +356,19 @@ class rodalFormFields2(forms.ModelForm):
         else:
             return volmmsuelo_val
 
+    def clean_volmmtotal(self):
+        cleaned_data = self.cleaned_data
+        volmmtotal_val = cleaned_data.get('volmmtotal')
+
+        volmmsuelo = TeIndicador.objects.get(variable_rodal='volmmtotal')
+
+        if volmmtotal_val < volmmsuelo.val_minimo:
+            raise ValidationError("El valor es inferior al permitido.")
+        elif volmmtotal_val > volmmsuelo.val_maximo:
+            raise ValidationError("El valor es mayor al permitido.")
+        else:
+            return volmmtotal_val
+
     def clean_volmmprop(self):
         cleaned_data = self.cleaned_data
         volmmprop_val = cleaned_data.get('volmmprop')
@@ -411,8 +427,8 @@ class rodalFormFields2(forms.ModelForm):
             'valherbiv': forms.HiddenInput(),
             'valdurabusos': forms.HiddenInput(),
             'valfrecuent': forms.HiddenInput(),
-            'valpropbosc56': forms.HiddenInput(),
-            'volmmprop': forms.HiddenInput()
+            'valpropbosc56': forms.HiddenInput()
+
         }
 
 

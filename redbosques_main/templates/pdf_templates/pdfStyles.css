@@ -1,0 +1,133 @@
+/*###################Estils generals###################*/
+body{
+    font-family: "Open Sans", Arial, sans-serif !important;
+    font-size: 11px;
+}
+
+html,body
+{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
+
+}
+
+
+.filtros{
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border-bottom: 3px solid #9ac635;
+    padding-bottom: 10px;
+}
+
+
+.rodalRefer{
+    width: 10%;
+}
+
+.headerTabla th, td{
+    text-align: center;
+}
+
+.identValores{
+    text-align: left;
+}
+
+.menu-data-show{
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+.menu-data-show a{
+    color:#9ac635;
+}
+
+.green-font{
+    color:#9ac635;
+}
+
+#filtro-valores .form-control, #filtro-grafica .form-control{
+    border: 1px solid #9ac635;
+}
+
+.data-table input, .data-table select{
+    border: 1px solid #9ac635;
+}
+
+.grafico{
+    text-align: center;
+}
+
+.js-plotly-plot{
+    display: inline-block;
+}
+
+.tabla-datos{
+    margin-top: 2%;
+}
+
+input.boolRodRef{
+    /*margin-left: 24%;*/
+    margin-top: -18%;
+}
+
+.boolRodRef{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+label .boolRodRef{
+    padding-left: 0px;
+}
+
+.grafico{
+    pointer-events: all;
+}
+
+.grafico text{
+    background-color: red;
+
+}
+
+.bgColorRod{
+    /*background-color: #cee49a;*/
+    color: #339933;
+    font-weight: bold;
+}
+
+.bgColorRodComp{
+    /*background-color: #cee49a;*/
+    color: #FF6600;
+    font-weight: bold;
+}
+
+.colLeyRod{
+    color: #339933;
+}
+
+.colLeyRodComp{
+    color: #FF6600;
+}
+
+.divGraf {
+    padding: 6px;
+}
+
+.tabla-datos .table tr th{
+    vertical-align: middle;
+}
+
+.tabla-datos .table tr td{
+    vertical-align: middle;
+}
+
+.inputsFiltComp{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.infoRodal td{
+    text-align: left;
+}

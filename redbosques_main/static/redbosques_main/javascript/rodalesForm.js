@@ -21,9 +21,18 @@ $(document).ready(function() {
         maxZoom: 22
     });
 
+    var ign = new L.TileLayer('http://www.ign.es/wmts/mapa-raster?service=WMTS&request=GetTile&version=1.0.0&layers=&styles=&tilematrixSet=GoogleMapsCompatible&format=image/jpeg&height=256&width=256&layer=MTN&style=default&tilematrix={z}&tilerow={y}&tilecol={x}',
+      {
+        maxZoom: 18,
+        minZoom: 0,
+        continuousWorld: true,
+        attribution: 'Capa Raster CC BY 4.0 <a href="http://www.ign.es/web/ign/portal">ign.es</a>'
+      });
+
     var baseLayers = {
 		"Bing maps": bing,
 		"Open street map": base,
+		"IGN": ign,
 		"Open cycle map": openCycle
 	};
 
@@ -31,7 +40,7 @@ $(document).ready(function() {
 	var map = L.map('map', {
             center: [40.0000000, -4.0000000],
             zoom: 6,
-            layers: [base,bing,openCycle]
+            layers: [base,bing,ign,openCycle]
     });
 
 	L.control.layers(baseLayers).addTo(map);
@@ -67,34 +76,73 @@ $(document).ready(function() {
     map.addLayer(editableLayers);
     map.addControl(drawControl);
 
+    var geomFlag = $('#geometria_string').val();
+
+    if(geomFlag){
+        var geoJson2 = JSON.parse(geomFlag);
+        var geoJSONLayer = L.geoJson(geoJson2);
+        editableLayers.clearLayers();
+
+        geoJSONLayer.eachLayer(
+            function(l){
+            editableLayers.addLayer(l);
+            }
+        );
+        map.fitBounds(geoJSONLayer.getBounds());
+
+        var string_json = JSON.stringify(editableLayers.toGeoJSON());
+        $('#geometria_string').val(string_json);
+        blockUnblockSubmit(string_json);
+
+    }else if(geo != '' && geo != null){
+        console.log(geo);
+        var geoJson2 = geo;
+        var geoJSONLayer = L.geoJson(geoJson2);
+        editableLayers.clearLayers();
+
+        geoJSONLayer.eachLayer(
+            function(l){
+            editableLayers.addLayer(l);
+            }
+        );
+        map.fitBounds(geoJSONLayer.getBounds());
+
+        var string_json = JSON.stringify(editableLayers.toGeoJSON());
+        $('#geometria_string').val(string_json);
+        blockUnblockSubmit(string_json);
+    }
+
+
+
+
     map.on(L.Draw.Event.CREATED, function (e) {
         var type = e.layerType,layer = e.layer;
         editableLayers.addLayer(layer);
 
-        console.log(layer);
-        console.log(e.layerType);
-        console.log(editableLayers.toGeoJSON());
-
         test = editableLayers.toGeoJSON();
 
-        console.log(test);
+        //console.log(test);
 
         var string_json = JSON.stringify(editableLayers.toGeoJSON());
         //var latLng = map.layerPointToLatLng(string_json);
-        console.log(string_json);
+        //console.log(string_json);
         $('#geometria_string').val(string_json);
-        console.log(string_json);
+        blockUnblockSubmit(string_json);
+        //console.log(string_json);
     });
 
     map.on(L.Draw.Event.EDITED, function(e){
         var string_json = JSON.stringify(editableLayers.toGeoJSON());
         console.log(string_json);
         $('#geometria_string').val(string_json);
+        blockUnblockSubmit(string_json);
     });
 
     map.on(L.Draw.Event.DELETED, function(e){
         console.log("eliminado");
         $('#geometria_string').val('');
+        string_json = '';
+        blockUnblockSubmit(string_json);
     });
 
 
@@ -121,6 +169,7 @@ $(document).ready(function() {
                 map.fitBounds(editableLayers.getBounds());
                 var string_json = JSON.stringify(editableLayers.toGeoJSON());
                 $('#geometria_string').val(string_json);
+                blockUnblockSubmit(string_json);
                 $('.qq-upload-list').empty();
             },
             error: function(jqXHR, textStatus, errorThrown){
@@ -158,8 +207,34 @@ $(document).ready(function() {
         }
     });
 
+
+    var comunidadAutonoma = $('#id_comautonom_cod').val();
+    if(comunidadAutonoma){
+        console.log(comunidadAutonoma);
+        $('#id_comautonom.selectBox option[value=' + comunidadAutonoma + ']').attr("selected", "selected");
+    }
+
+    var provincia = $('#id_provincia_cod').val();
+    if(provincia){
+        $('#id_provincia.selectBox option[value="' + provincia + '"]').attr("selected", "selected");
+    }
+
+    var municipio = $('#id_municipio1').val();
+    if(municipio){
+        $('#id_municipio_cod.selectBox option[value=' + municipio + ']').attr("selected", "selected");
+    }
+
+
     $("#altDomEspPrinAcomp").prop("disabled", true);
     $("#cavCubespPrinAcomp").prop("disabled", true);
+
+    if(geomFlag == ""){
+        $(".rodalOblig").show();
+        $("#btnSubmitForm").prop("disabled", true);
+    }else{
+        $(".rodalOblig").hide();
+        $("#btnSubmitForm").prop("disabled", false);
+    }
 
 });
 
@@ -178,3 +253,14 @@ var disEnEspecieAcomp = function(){
     }
 };
 
+var blockUnblockSubmit = function(string_json){
+
+    console.log(string_json);
+    if(string_json == ""){
+        $(".rodalOblig").show();
+        $("#btnSubmitForm").prop("disabled", true);
+    }else{
+        $(".rodalOblig").hide();
+        $("#btnSubmitForm").prop("disabled", false);
+    }
+};
