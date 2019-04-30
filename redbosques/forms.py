@@ -174,7 +174,7 @@ class rodalFormFields(forms.ModelForm):
 
         if espcomp_fcc_val is None and espcomp_cod_val is not None:
             raise ValidationError("El campo de Altura dominante de la principal especie acompañante es obligatorio")
-        elif espcomp_fcc_val is not None:
+        elif espcomp_fcc_val is not None and espprinc_fcc_val is not None:
             if((espcomp_fcc_val + espprinc_fcc_val) <= 100 ):
                 espcomp_fcc = TeIndicador.objects.get(variable_rodal='espcomp_fcc')
 
@@ -187,6 +187,7 @@ class rodalFormFields(forms.ModelForm):
             else:
                 raise ValidationError("La suma del porcentaje de cavidad cubierta de la especie principal i de la especie acompañante no puede sumar mas de 100%.")
 
+            #raise ValidationError("Los valores introducidos no son correctos.")
 
 
     def clean_espcomp_h0(self):

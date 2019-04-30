@@ -66,7 +66,6 @@
                         {% if form.metodo_cod.errors %}
                             <div class="form-group has-errors text-danger small">
                                 {{ form.metodo_cod.errors }}
-
                             </div>
                         {% endif %}
                     </div>
@@ -284,7 +283,7 @@
                     <div class="errorIcon">
                         {% if form.hic_cod.errors %}
                             <div class="form-group has-errors text-danger small">
-                                <p><i class="fas fa-exclamation-circle fa-2x"></i>{{ form.hic_cod.errors }}</p>
+                                <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
                             </div>
                         {% endif %}
                     </div>
@@ -353,7 +352,7 @@
                             <label for="cavCubespPrin">Fracción de cavidad cubierta de la especie principal</label>
                             {% if form.espprinc_fcc.errors %}
                                 <div class="form-group has-errors text-danger small">
-                                    <p><i class="fas fa-exclamation-circle fa-2x"></i>{{ form.espprinc_fcc.errors }}</p>
+                                    {{ form.espprinc_fcc.errors }}
                                 </div>
                             {% endif %}
                         </td>
@@ -395,7 +394,7 @@
                             <label for="altDomEspPrinAcomp">Altura dominante de la principal especie acompañante</label>
                             {% if form.espcomp_h0.errors %}
                                 <div class="form-group has-errors text-danger small">
-                                    <p><i class="fas fa-exclamation-circle fa-2x"></i>{{ form.espcomp_h0.errors }}</p>
+                                    {{ form.espcomp_h0.errors }}
                                 </div>
                             {% endif %}
                         </td>

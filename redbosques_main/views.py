@@ -387,7 +387,7 @@ def datos_mapa(request):
     return Response(context)
 
 
-def comparador_new(request, id = None):
+def comparador_new(request, id=None):
     init_params = {}
     if id is not None:
         valors_ini = WebMapaValAmb.objects.filter(id_rodal=id).distinct().values('habitat_cod','ccaa_nom','regbio_cod').first()
@@ -1942,13 +1942,16 @@ def editrodalForm(request, id=None):
 
         if request.POST.get("geometria_string","") != '':
             try:
-                json_geometry = json.loads(request.POST["geometria_string"])
-                for feature in json_geometry['features']:
+                #json_geometry = json.loads(request.POST["geometria_string"])
+                json_geometry = request.POST["geometria_string"]
+                json_geometry_dict = json.loads(json_geometry)
+                for feature in json_geometry_dict['features']:
                     feature_geometry = GEOSGeometry(json.dumps(feature['geometry']))
                     feature_geometry.transform(25830)
                     multipoligon.append(feature_geometry)
             except JSONDecodeError:
                 pass
+
         if len(multipoligon) == 0:
             messages.add_message(request, messages.ERROR,'No has entrado los límites del rodal. Por favor, éntralos y vuelve a intentar guardar')
         else:
@@ -1962,6 +1965,8 @@ def editrodalForm(request, id=None):
 
                 # return HttpResponseRedirect('/redbosques/rodalForm2/' + str(dades.id) + '/')
                 return redirect('rodalForm2', id=dades.id)
+            else:
+                geojsoncollection_string = request.POST["geometria_string"]
     else:
         datos = get_object_or_404(Rodal, id=id)
         form = rodalFormFields(instance=datos)
@@ -2009,12 +2014,16 @@ def menuData(request):
     #rodals_list = WebMapa.objects.filter(eje_cod='nm').order_by('nombre')
     #rodals_list = Rodal.objects.filter(usuario=user).order_by('nombre')
 
-    rodals_list = Rodal.objects.all().order_by('nombre')
+    #rodals_list = Rodal.objects.all().order_by('nombre')
+    rodals_list = Rodal.objects.exclude(geom__isnull=True).order_by('nombre')
+
+
+
 
     for r in rodals_list:
         #rodalesSelector.append({'id_rodal': r.id_rodal, 'nombre': r.nombre})
         if r.usuario.id == du.id:
-            rodalesSelector.append({'id_rodal': r.id , 'nombre': r.nombre + '(*)'})
+            rodalesSelector.append({'id_rodal': r.id, 'nombre': r.nombre + '(*)'})
         else:
             rodalesSelector.append({'id_rodal': r.id, 'nombre': r.nombre})
 
@@ -2025,7 +2034,7 @@ def menuData(request):
         usDat = DatosUsuario.objects.filter(institucion_id=du.institucion_id).values('user_id')
 
         usuarios = AuthUser.objects.filter(id__in=usDat).values('id')
-        rodals_list_2 = Rodal.objects.filter(usuario__in=usuarios).values('id', 'nombre').order_by('nombre')
+        rodals_list_2 = Rodal.objects.filter(usuario__in=usuarios).exclude(geom__isnull=True).values('id', 'nombre').order_by('nombre')
 
         for test in rodals_list_2:
             rodalesSelectorEditor.append({'id_rodal': test['id'], 'nombre': test['nombre']})
@@ -2034,7 +2043,7 @@ def menuData(request):
     else:
         usDat = DatosUsuario.objects.filter(id=du.id).values('user_id')
         usuarios = AuthUser.objects.filter(id__in=usDat).values('id')
-        rodals_list_2 = Rodal.objects.filter(usuario__in=usuarios).values('id', 'nombre').order_by('nombre')
+        rodals_list_2 = Rodal.objects.filter(usuario__in=usuarios).exclude(geom__isnull=True).values('id', 'nombre').order_by('nombre')
 
         for test in rodals_list_2:
             rodalesSelectorEditor.append({'id_rodal': test['id'], 'nombre': test['nombre']})
@@ -2128,12 +2137,12 @@ def rodalForm(request):
     #    form = rodalFormFields()
     #    json_geometry = ''
 
-    context = {'form': form, 'comAut': comAut, 'provincias': provincias, 'municipio': municipio, 'json_geometry': json_geometry}
+    #context = {'form': form, 'comAut': comAut, 'provincias': provincias, 'municipio': municipio, 'json_geometry': json_geometry}
 
     context = {
         'form': form,
         'comAut': comAut, 'provincias': provincias, 'municipio': municipio,
-        'selected_ccaa' : selected_ccaa, 'selected_prov': selected_prov, 'selected_muni': selected_muni,
+        'selected_ccaa': selected_ccaa, 'selected_prov': selected_prov, 'selected_muni': selected_muni,
         'json_geometry': json_geometry
     }
 
