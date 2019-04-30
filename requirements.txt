@@ -1,4 +1,9 @@
 ajaxuploader==0.3.8
+cairocffi==1.0.2
+CairoSVG==2.3.0
+cffi==1.12.2
+cssselect2==0.2.1
+defusedxml==0.5.0
 Django==2.1.1
 django-appconf==1.0.2
 django-bootstrap-datepicker==1.3.1
@@ -6,11 +11,16 @@ django-bootstrap-datepicker-plus==3.0.5
 django-bootstrap-datepicker-widget==0.1
 django-compressor==2.2
 django-cors-headers==2.4.0
+django-debug-toolbar==1.11
 djangorestframework==3.8.2
-GDAL==2.3.2
+djangorestframework-stubs==0.3.0
+GDAL==2.2.3
+html5lib==1.0.1
 Pillow==5.4.1
 pkg-resources==0.0.0
 psycopg2==2.7.5
+pycparser==2.19
+Pyphen==0.9.5
 pyproj==1.9.5.1
 pyshp==2.0.1
 python-magic==0.4.15
@@ -19,3 +29,7 @@ rcssmin==1.0.6
 rjsmin==1.0.12
 Shapely==1.6.4.post2
 six==1.12.0
+sqlparse==0.3.0
+tinycss2==1.0.1
+WeasyPrint==46
+webencodings==0.5.1
