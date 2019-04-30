@@ -23,16 +23,15 @@
 <div class="container-fluid subheader">
     <div class="row">
         <div class="col-lg-12 subfield">
-            <p>
+
                 <h4>
                     <a href="{% url 'index' %}">Inicio</a> /
                     <a href="{% url 'menu' %}">Menú</a> /
-                    <!--<a href="{% url 'herramientas' %}">Mapa de rodales</a>-->
                     Información rodal
                 </h4>
-            </p>
+
             <h2>{{ herramientas }}</h2>
-            <!--<h2>Herramienta de evaluación de rodales maduros</h2>-->
+
         </div>
     </div>
 </div>
@@ -40,8 +39,8 @@
     <div class="row">
             <h3>Datos obligatorios del rodal</h3>
         </div>
-    </div>
 </div>
+
 
 <div class="container form-rodal">
     <div class="row">
@@ -440,24 +439,24 @@
 
 
                     </tr>
+
                     <tr>
                         <td colspan="2">
-                            <div class="col-lg-offset-1 col-lg-5" style="float: left;">
-                                <a class="btn btn-selector-mapa" href="{% url 'menu' %}">Volver al menú</a>
-                            </div>
-                            <div class="col-lg-offset-1 col-lg-5" style="float: right;">
-                                {% csrf_token %}
-                                <input id="btnSubmitForm" type="submit" class="btn btn-selector-mapa" value="Siguiente">
+                            <div class="row">
+                                <div class="col-lg-offset-1 col-lg-5" style="float: left;">
+                                    <a class="btn btn-selector-mapa" href="{% url 'menu' %}">Volver al menú</a>
+                                </div>
+                                <div class="col-lg-offset-1 col-lg-5" style="float: right;">
+                                    {% csrf_token %}
+                                    <input id="btnSubmitForm" type="submit" class="btn btn-selector-mapa" value="Siguiente">
 
-                                    <div class="form-group has-errors text-danger small">
-                                        <p class="rodalOblig">- Los límites del rodal son obligatorios.</p>
-                                    </div>
-
+                                        <div class="form-group has-errors text-danger small">
+                                            <p class="rodalOblig">- Los límites del rodal son obligatorios.</p>
+                                        </div>
+                                </div>
                             </div>
                         </td>
-
                     </tr>
-                </table>
                 </table>
             </div>
         </div>

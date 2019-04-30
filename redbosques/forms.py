@@ -361,11 +361,11 @@ class rodalFormFields2(forms.ModelForm):
         cleaned_data = self.cleaned_data
         volmmtotal_val = cleaned_data.get('volmmtotal')
 
-        volmmsuelo = TeIndicador.objects.get(variable_rodal='volmmtotal')
+        volmmtotal = TeIndicador.objects.get(variable_rodal='volmmtotal')
 
-        if volmmtotal_val < volmmsuelo.val_minimo:
+        if volmmtotal_val < volmmtotal.val_minimo:
             raise ValidationError("El valor es inferior al permitido.")
-        elif volmmtotal_val > volmmsuelo.val_maximo:
+        elif volmmtotal_val > volmmtotal.val_maximo:
             raise ValidationError("El valor es mayor al permitido.")
         else:
             return volmmtotal_val
@@ -417,7 +417,7 @@ class rodalFormFields2(forms.ModelForm):
         fields = ('numesparb', 'areabasal', 'volmadvivo', 'numestratos', 'numclasdiam', 'abundpiesexcep', 'volmmpie',
                   'volmmsuelo', 'volmmprop', 'nummicrohab', 'numfasessil', 'valagropasant', 'valforestant', 'valpropbosc56',
                   'valforestrec', 'valespinvas', 'valfragment', 'valcaza', 'valherbiv', 'valfrecuent', 'valdurabusos',
-                  'rodalref')
+                  'rodalref', 'volmmtotal')
         widgets = {
             'valagropasant': forms.HiddenInput(),
             'valforestant': forms.HiddenInput(),

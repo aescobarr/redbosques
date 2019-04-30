@@ -192,6 +192,7 @@ $(document).ready(function() {
                     var string_json = JSON.stringify(editableLayers.toGeoJSON());
                     $('#geometria_string').val(string_json);
                     $('.qq-upload-list').empty();
+                    blockUnblockSubmit(string_json);
                 }
             },
             error: function(jqXHR, textStatus, errorThrown){
