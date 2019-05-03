@@ -40,6 +40,7 @@ var rodalReferenciaXY3 = null;
 var grafico;
 var coordenadasPuntos;
 var valoresBarrasEjes;
+var valoresBarrasCrite;
 
 var rodNombres = [];
 var rodValores = [];
@@ -794,8 +795,8 @@ $('.graficaBarCrite').change(function(){
 });
 
 function setBars(barGraphDataSize, criteOptionSelected){
-    rodalBarVal = [];
-    rodalRefBarVal = [];
+    var rodalBarVal = [];
+    var rodalRefBarVal = [];
     var barData = [];
 
     /*Rodal inicial*/
@@ -1559,11 +1560,12 @@ var graficaBarras1 = function(valoresBarrasEjes){
 }
 
 var graficaBarras2 = function(valoresBarrasCrite){
-    rodNombres = [];
-    rodValores = [];
-    rodVal = [];
-    valores = [];
+    var rodNombres = [];
+    var rodValores = [];
+    var rodVal = [];
+    var valores = [];
 
+    console.log(valoresBarrasCrite.length);
 
     for(t=0; t<valoresBarrasCrite.length; t++){
         for(x=0; x<valoresBarrasCrite[t].length; x++){
