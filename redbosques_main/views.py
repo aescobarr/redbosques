@@ -714,10 +714,8 @@ def valorref_ajax(request):
     if cordRod is not None and cordRod != 'medRod':
         dades_rodal = RodalValorres2.objects.filter(id_rodal=cordRod)
         rodal_referencia = crearArbol(dades_rodal)
-        #dades_graficos = RodalValorres2.objects.filter(id_rodal=cordRod).filter(Q(nivel='crite') | Q(nivel='eje'))
-        #rodal_graficos = crearArbolGraficos(dades_graficos)
-
-        dadesGraficosPuntos = RodalValorres2.objects.filter(id_rodal=cordRod).filter(nivel='eje').values('id_rodal','indicador_cod', 'valor')
+        print(rodal_referencia)
+        dadesGraficosPuntos = RodalValorres2.objects.filter(id_rodal=cordRod).filter(nivel='eje').values('id_rodal', 'indicador_cod', 'valor')
 
         idRodales = []
         for infRod in dadesGraficosPuntos:
@@ -725,6 +723,12 @@ def valorref_ajax(request):
                 idRodales.append(infRod['id_rodal'])
 
         infoRodal = Rodal.objects.filter(id__in=idRodales).values('id','nombre')
+
+
+        rodalRefValNom = []
+        rodalRefValNom.append(rodal_referencia)
+        rodalRefValNom.append(infoRodal)
+
         rodal_graficos_puntos = datosGraficasPuntos(dadesGraficosPuntos, infoRodal)
 
         dadesGraficoBarrasCrite = RodalValorres2.objects.filter(id_rodal=cordRod).filter(nivel='crite').values('id_rodal', 'indicador_cod', 'valor')
@@ -737,7 +741,7 @@ def valorref_ajax(request):
         infoRodalBarCrite = Rodal.objects.filter(id__in=idRodalesBarCrite).values('id', 'nombre')
         rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarrasCrite, infoRodalBarCrite)
 
-        context = {'rodal_referencia': rodal_referencia, 'rodalRefGraficoPuntos': rodal_graficos_puntos, 'rodalRefCriteChart' : rodal_graficos_barras, 'infoRodal': infoRodal}
+        context = {'rodal_referencia': rodal_referencia, 'rodalRefGraficos': rodalRefValNom, 'rodalRefGraficoPuntos': rodal_graficos_puntos, 'rodalRefCriteChart' : rodal_graficos_barras, 'infoRodal': infoRodal}
 
     elif cordRod == 'medRod':
         dades_rodal2 = RodalValorres2.objects.all()
@@ -766,6 +770,12 @@ def valorref_ajax(request):
                 idRodales.append(infRod['id_rodal'])
 
         infoRodal = Rodal.objects.filter(id__in=idRodales).values('id', 'nombre').order_by('id')
+
+        rodalRefValNom = []
+        rodalRefValNom.append(rodal_referencia)
+        rodalRefValNom.append(infoRodal)
+
+
         rodal_graficos_puntos = datosGraficasPuntos(dadesGraficosPuntos, infoRodal)
 
         dadesGraficoBarrasCrite = RodalValorres2.objects.filter(lpeht_cod=idHab).filter(nivel='crite').values('id_rodal', 'indicador_cod', 'valor')
@@ -779,7 +789,7 @@ def valorref_ajax(request):
         rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarrasCrite, infoRodalBarCrite)
 
 
-        context = {'rodal_referencia': rodal_referencia, 'rodalRefGraficoPuntos': rodal_graficos_puntos, 'rodalRefCriteChart' : rodal_graficos_barras}
+        context = {'rodal_referencia': rodal_referencia, 'rodalRefGraficos': rodalRefValNom, 'rodalRefGraficoPuntos': rodal_graficos_puntos, 'rodalRefCriteChart' : rodal_graficos_barras}
 
     return Response(context)
 
@@ -799,9 +809,7 @@ def valorRodal(request):
         if cordRod != 'medRod':
             dades_rodal2 = RodalValorres2.objects.filter(id_rodal=cordRod)
             rodal_referencia = crearArbol(dades_rodal2)
-            #dadesGraficos = RodalValorres2.objects.filter(id_rodal=cordRod).filter(Q(nivel='crite') | Q(nivel='eje'))
-            #rodal_graficos = crearArbolGraficos(dadesGraficos)
-            #rodal_graficos = datosGraficasPuntos(dadesGraficos)
+
             dadesGraficosPuntos = RodalValorres2.objects.filter(id_rodal=cordRod).filter(nivel='eje').values('id_rodal', 'indicador_cod', 'valor')
 
             idRodales = []
@@ -811,10 +819,12 @@ def valorRodal(request):
 
             infoRodal = Rodal.objects.filter(id__in=idRodales).values('id', 'nombre')
 
+            rodalValNom = []
+            rodalValNom.append(rodal_referencia)
+            rodalValNom.append(infoRodal)
+
 
             rodal_graficos_puntos = datosGraficasPuntos(dadesGraficosPuntos, infoRodal)
-            #print("-----------")
-            #print(rodal_graficos_puntos)
 
             dadesGraficoBarrasCrite = RodalValorres2.objects.filter(id_rodal=cordRod).filter(nivel='crite').values('id_rodal', 'indicador_cod', 'valor')
 
@@ -845,9 +855,13 @@ def valorRodal(request):
 
             infoRodal = Rodal.objects.filter(id__in=idRodales).values('id', 'nombre')
 
+            rodalValNom = []
+            rodalValNom.append(rodal_referencia)
+            rodalValNom.append(infoRodal)
+
             rodal_graficos_puntos = datosGraficasPuntos(dadesGraficosPuntos, infoRodal)
-            #print("-----------")
-            #print(rodal_graficos_puntos)
+
+
 
             #dadesGraficoBarrasCrite = RodalValorres2.objects.filter(lpeht_cod=habSel).filter(Q(nivel='crite') | Q(nivel='eje')).values('id_rodal', 'indicador_cod', 'valor')
             dadesGraficoBarrasCrite = RodalValorres2.objects.filter(lpeht_cod=habSel).filter(nivel='crite').values('id_rodal', 'indicador_cod', 'valor')
@@ -859,12 +873,13 @@ def valorRodal(request):
                     idRodalesBarCrite.append(infRod['id_rodal'])
 
             infoRodalBarCrite = Rodal.objects.filter(id__in=idRodalesBarCrite).values('id', 'nombre')
-            rodal_graficos_barras = datosGraficasBarras(dadesGraficoBarrasCrite)
+            #rodal_graficos_barras = datosGraficasBarras(dadesGraficoBarrasCrite)
+            rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarrasCrite, infoRodalBarCrite)
 
 
 
         #rodal_referencia = crearArbol(dades_rodal2)
-        context = {'rodal': rodal_referencia, 'rodalGraficoPuntos': rodal_graficos_puntos, 'rodalCriteChart': rodal_graficos_barras}
+        context = {'rodal': rodal_referencia, 'rodalGraficos': rodalValNom, 'rodalGraficoPuntos': rodal_graficos_puntos, 'rodalCriteChart': rodal_graficos_barras}
 
     return Response(context)
 
@@ -1218,7 +1233,7 @@ def crearArbol(dades):
         return rodal_referencia
 
 def crearArbolMedia(dades):
-
+    print(dades)
     for indicador_cod in dades:
         #json1 = json.dumps(indicador_cod, ensure_ascii=False)
         #print(indicador_cod.keys(),'->', indicador_cod.values())

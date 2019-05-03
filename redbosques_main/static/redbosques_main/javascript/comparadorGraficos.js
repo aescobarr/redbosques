@@ -1,13 +1,14 @@
 $(document).ready(function() {
     graficaScatterDefault();
+    graficaBarrasDefault();
     blockSelectores();
-    //graficaBarras1(valoresBarrasEjes);
-    graficaBarras2();
 });
 
 var dataGraph2;
 var datosEjesGraph2 = {};
-var dotsGraphData = []
+var dotsGraphData = [];
+var barCharData = [];
+var barData = [];
 var g1EjeYSelectedPoints = [];
 var g1EjeXSelectedPoints = [];
 var g2EjeYSelectedPoints;
@@ -39,12 +40,17 @@ var rodalReferenciaXY3 = null;
 var grafico;
 var coordenadasPuntos;
 var valoresBarrasEjes;
-//var rodalYNombres = [];
-//var rodalReferenciaYNombres = [];
-//var rodalXNombres = [];
-//var rodalReferenciaXNombres = [];
+
+var rodNombres = [];
+var rodValores = [];
+var rodVal = [];
+var valores = [];
+
 
 var dataGraph = function(valoresRodal, valoresRodalComp){
+
+    console.log(valoresRodal);
+    console.log(valoresRodalComp);
 
     var datosEjes = {
         "0": { "ref": "naturalidad",
@@ -60,6 +66,8 @@ var dataGraph = function(valoresRodal, valoresRodalComp){
                 "valorRodalComp": valoresRodalComp.integridadEspacial.valor,
                 "desv": valoresRodalComp.integridadEspacial.valor_desv },
     }
+
+    //console.log(datosEjes);
 
     var datosCritNat = {
         "0": { "ref": "composicion",
@@ -87,6 +95,8 @@ var dataGraph = function(valoresRodal, valoresRodalComp){
 
     }
 
+    //console.log(datosCritNat);
+
     var datosCritHu = {
         "0": { "ref": "antigua",
                 "valorRodal": valoresRodal.huellaHumana.antigua.valor,
@@ -98,6 +108,9 @@ var dataGraph = function(valoresRodal, valoresRodalComp){
                 "valorRodalComp": valoresRodalComp.huellaHumana.reciente.valor,
                 "desv": valoresRodalComp.huellaHumana.reciente.valor_desv },
     }
+
+    //console.log(datosCritNat);
+
 
     var datosCritIe = {
         "0": { "ref": "tamano",
@@ -117,6 +130,8 @@ var dataGraph = function(valoresRodal, valoresRodalComp){
                 "valorRodalComp": valoresRodalComp.integridadEspacial.conect.valor,
                 "desv": valoresRodalComp.integridadEspacial.conect.valor_desv },
     }
+
+    //console.log(datosCritIe);
 
     graficaEjes(datosEjes);
     graficaCritNat(datosCritNat);
@@ -146,7 +161,7 @@ function dataScatterGraph(rodalPuntosData, rodalRefPuntosData){
                 "rodal": {
                     "eje": rodalPuntosData[i].indicador_cod,
                     "id_rodal": rodalPuntosData[i].id_rodal,
-                    "nombre": rodalPuntosData[i].nombre,
+                    "name": rodalPuntosData[i].nombre,
                     "valor": rodalPuntosData[i].valor
                 }
             }
@@ -156,7 +171,7 @@ function dataScatterGraph(rodalPuntosData, rodalRefPuntosData){
                 "rodal": {
                     "eje" :rodalPuntosData[i].indicador_cod,
                     "id_rodal": rodalPuntosData[i].id_rodal,
-                    "nombre": rodalPuntosData[i].nombre,
+                    "name": rodalPuntosData[i].nombre,
                     "valor": rodalPuntosData[i].valor
                 }
             }
@@ -166,7 +181,7 @@ function dataScatterGraph(rodalPuntosData, rodalRefPuntosData){
                 "rodal": {
                     "eje" :rodalPuntosData[i].indicador_cod,
                     "id_rodal": rodalPuntosData[i].id_rodal,
-                    "nombre": rodalPuntosData[i].nombre,
+                    "name": rodalPuntosData[i].nombre,
                     "valor": rodalPuntosData[i].valor
                 }
             }
@@ -183,7 +198,7 @@ function dataScatterGraph(rodalPuntosData, rodalRefPuntosData){
                 "rodal": {
                     "eje": rodalRefPuntosData[i].indicador_cod,
                     "id_rodal": rodalRefPuntosData[i].id_rodal,
-                    "nombre": rodalRefPuntosData[i].nombre,
+                    "name": rodalRefPuntosData[i].nombre,
                     "valor": rodalRefPuntosData[i].valor
                 }
             }
@@ -193,7 +208,7 @@ function dataScatterGraph(rodalPuntosData, rodalRefPuntosData){
                 "rodal": {
                     "eje" :rodalRefPuntosData[i].indicador_cod,
                     "id_rodal": rodalRefPuntosData[i].id_rodal,
-                    "nombre": rodalRefPuntosData[i].nombre,
+                    "name": rodalRefPuntosData[i].nombre,
                     "valor": rodalRefPuntosData[i].valor
                 }
             }
@@ -203,7 +218,7 @@ function dataScatterGraph(rodalPuntosData, rodalRefPuntosData){
                 "rodal": {
                     "eje" :rodalRefPuntosData[i].indicador_cod,
                     "id_rodal": rodalRefPuntosData[i].id_rodal,
-                    "nombre": rodalRefPuntosData[i].nombre,
+                    "name": rodalRefPuntosData[i].nombre,
                     "valor": rodalRefPuntosData[i].valor
                 }
             }
@@ -218,121 +233,153 @@ function dataScatterGraph(rodalPuntosData, rodalRefPuntosData){
     return dotsGraphData;
 }
 
-
 function dataChartCrite(rodalCriteChart, rodalRefCriteChart){
 
-    console.log(rodalCriteChart);
-    console.log(rodalRefCriteChart);
-
+    var arRodal = [];
+    var ceRodal = [];
+    var cfRodal = [];
+    var cnRodal = [];
+    var cpRodal = [];
+    var dnRodal = [];
+    var ebRodal = [];
+    var haRodal = [];
+    var hmRodal = [];
+    var hrRodal = [];
+    var snRodal = [];
+    var rodalBarras = [];
+    var arRefRodal = [];
+    var ceRefRodal = [];
+    var cfRefRodal = [];
+    var cnRefRodal = [];
+    var cpRefRodal = [];
+    var dnRefRodal = [];
+    var ebRefRodal = [];
+    var haRefRodal = [];
+    var hmRefRodal = [];
+    var hrRefRodal = [];
+    var snRefRodal = [];
+    var rodalRefBarras = [];
 
     for(i=0; i<rodalCriteChart.length; i++){
         if(rodalCriteChart[i].indicador_cod == 'ar'){
             AR = {
                 "rodal": {
-                    "eje": rodalPuntosData[i].indicador_cod,
-                    "id_rodal": rodalPuntosData[i].id_rodal,
-                    "nombre": rodalPuntosData[i].nombre,
-                    "valor": rodalPuntosData[i].valor
+                    "eje": rodalCriteChart[i].indicador_cod,
+                    "id_rodal": rodalCriteChart[i].id_rodal,
+                    "name": rodalCriteChart[i].nombre,
+                    "y": rodalCriteChart[i].valor,
+                    "color": "#339933"
                 }
             }
             arRodal.push(AR);
-        }else if(rodalPuntosData[i].indicador_cod == 'ce'){
+        }else if(rodalCriteChart[i].indicador_cod == 'ce'){
             CE = {
                 "rodal": {
-                    "eje" :rodalPuntosData[i].indicador_cod,
-                    "id_rodal": rodalPuntosData[i].id_rodal,
-                    "nombre": rodalPuntosData[i].nombre,
-                    "valor": rodalPuntosData[i].valor
+                    "eje" :rodalCriteChart[i].indicador_cod,
+                    "id_rodal": rodalCriteChart[i].id_rodal,
+                    "name": rodalCriteChart[i].nombre,
+                    "y": rodalCriteChart[i].valor,
+                    "color": "#339933"
+
                 }
             }
             ceRodal.push(CE);
-        }else if(rodalPuntosData[i].indicador_cod == 'cf'){
+        }else if(rodalCriteChart[i].indicador_cod == 'cf'){
             CF = {
                 "rodal": {
-                    "eje" :rodalPuntosData[i].indicador_cod,
-                    "id_rodal": rodalPuntosData[i].id_rodal,
-                    "nombre": rodalPuntosData[i].nombre,
-                    "valor": rodalPuntosData[i].valor
+                    "eje" :rodalCriteChart[i].indicador_cod,
+                    "id_rodal": rodalCriteChart[i].id_rodal,
+                    "name": rodalCriteChart[i].nombre,
+                    "y": rodalCriteChart[i].valor,
+                    "color": "#339933"
                 }
             }
             cfRodal.push(CF);
-        }else if(rodalPuntosData[i].indicador_cod == 'cn'){
+        }else if(rodalCriteChart[i].indicador_cod == 'cn'){
             CN = {
                 "rodal": {
-                    "eje" :rodalPuntosData[i].indicador_cod,
-                    "id_rodal": rodalPuntosData[i].id_rodal,
-                    "nombre": rodalPuntosData[i].nombre,
-                    "valor": rodalPuntosData[i].valor
+                    "eje" :rodalCriteChart[i].indicador_cod,
+                    "id_rodal": rodalCriteChart[i].id_rodal,
+                    "name": rodalCriteChart[i].nombre,
+                    "y": rodalCriteChart[i].valor,
+                    "color": "#339933"
                 }
             }
             cnRodal.push(CN);
-        }else if(rodalPuntosData[i].indicador_cod == 'cp'){
+        }else if(rodalCriteChart[i].indicador_cod == 'cp'){
             CP = {
                 "rodal": {
-                    "eje" :rodalPuntosData[i].indicador_cod,
-                    "id_rodal": rodalPuntosData[i].id_rodal,
-                    "nombre": rodalPuntosData[i].nombre,
-                    "valor": rodalPuntosData[i].valor
+                    "eje" :rodalCriteChart[i].indicador_cod,
+                    "id_rodal": rodalCriteChart[i].id_rodal,
+                    "name": rodalCriteChart[i].nombre,
+                    "y": rodalCriteChart[i].valor,
+                    "color": "#339933"
                 }
             }
             cpRodal.push(CP);
-        }else if(rodalPuntosData[i].indicador_cod == 'dn'){
+        }else if(rodalCriteChart[i].indicador_cod == 'dn'){
             DN = {
                 "rodal": {
-                    "eje" :rodalPuntosData[i].indicador_cod,
-                    "id_rodal": rodalPuntosData[i].id_rodal,
-                    "nombre": rodalPuntosData[i].nombre,
-                    "valor": rodalPuntosData[i].valor
+                    "eje" :rodalCriteChart[i].indicador_cod,
+                    "id_rodal": rodalCriteChart[i].id_rodal,
+                    "name": rodalCriteChart[i].nombre,
+                    "y": rodalCriteChart[i].valor,
+                    "color": "#339933"
                 }
             }
             dnRodal.push(DN);
-        }else if(rodalPuntosData[i].indicador_cod == 'eb'){
+        }else if(rodalCriteChart[i].indicador_cod == 'eb'){
             EB = {
                 "rodal": {
-                    "eje" :rodalPuntosData[i].indicador_cod,
-                    "id_rodal": rodalPuntosData[i].id_rodal,
-                    "nombre": rodalPuntosData[i].nombre,
-                    "valor": rodalPuntosData[i].valor
+                    "eje" :rodalCriteChart[i].indicador_cod,
+                    "id_rodal": rodalCriteChart[i].id_rodal,
+                    "name": rodalCriteChart[i].nombre,
+                    "y": rodalCriteChart[i].valor,
+                    "color": "#339933"
                 }
             }
             ebRodal.push(EB);
-        }else if(rodalPuntosData[i].indicador_cod == 'ha'){
+        }else if(rodalCriteChart[i].indicador_cod == 'ha'){
             HA = {
                 "rodal": {
-                    "eje" :rodalPuntosData[i].indicador_cod,
-                    "id_rodal": rodalPuntosData[i].id_rodal,
-                    "nombre": rodalPuntosData[i].nombre,
-                    "valor": rodalPuntosData[i].valor
+                    "eje" :rodalCriteChart[i].indicador_cod,
+                    "id_rodal": rodalCriteChart[i].id_rodal,
+                    "name": rodalCriteChart[i].nombre,
+                    "y": rodalCriteChart[i].valor,
+                    "color": "#339933"
                 }
             }
             haRodal.push(HA);
-        }else if(rodalPuntosData[i].indicador_cod == 'hm'){
+        }else if(rodalCriteChart[i].indicador_cod == 'hm'){
             HM = {
                 "rodal": {
-                    "eje" :rodalPuntosData[i].indicador_cod,
-                    "id_rodal": rodalPuntosData[i].id_rodal,
-                    "nombre": rodalPuntosData[i].nombre,
-                    "valor": rodalPuntosData[i].valor
+                    "eje" :rodalCriteChart[i].indicador_cod,
+                    "id_rodal": rodalCriteChart[i].id_rodal,
+                    "name": rodalCriteChart[i].nombre,
+                    "y": rodalCriteChart[i].valor,
+                    "color": "#339933"
                 }
             }
             hmRodal.push(HM);
-        }else if(rodalPuntosData[i].indicador_cod == 'hr'){
+        }else if(rodalCriteChart[i].indicador_cod == 'hr'){
             HR = {
                 "rodal": {
-                    "eje" :rodalPuntosData[i].indicador_cod,
-                    "id_rodal": rodalPuntosData[i].id_rodal,
-                    "nombre": rodalPuntosData[i].nombre,
-                    "valor": rodalPuntosData[i].valor
+                    "eje" :rodalCriteChart[i].indicador_cod,
+                    "id_rodal": rodalCriteChart[i].id_rodal,
+                    "name": rodalCriteChart[i].nombre,
+                    "y": rodalCriteChart[i].valor,
+                    "color": "#339933"
                 }
             }
             hrRodal.push(HR);
-        }else if(rodalPuntosData[i].indicador_cod == 'sn'){
+        }else if(rodalCriteChart[i].indicador_cod == 'sn'){
             SN = {
                 "rodal": {
-                    "eje" :rodalPuntosData[i].indicador_cod,
-                    "id_rodal": rodalPuntosData[i].id_rodal,
-                    "nombre": rodalPuntosData[i].nombre,
-                    "valor": rodalPuntosData[i].valor
+                    "eje" :rodalCriteChart[i].indicador_cod,
+                    "id_rodal": rodalCriteChart[i].id_rodal,
+                    "name": rodalCriteChart[i].nombre,
+                    "y": rodalCriteChart[i].valor,
+                    "color": "#339933"
                 }
             }
             snRodal.push(SN);
@@ -340,18 +387,137 @@ function dataChartCrite(rodalCriteChart, rodalRefCriteChart){
 
 
     }
+    rodalBarras.push(arRodal,ceRodal, cfRodal, cnRodal, cpRodal, dnRodal,ebRodal, haRodal,hmRodal,hrRodal, snRodal)
 
-    rodalPuntos.push(nmRodal,ieRodal,hhRodal)
 
+    for(i=0; i<rodalRefCriteChart.length; i++){
+        if(rodalRefCriteChart[i].indicador_cod == 'ar'){
+            AR = {
+                "rodal": {
+                    "eje": rodalRefCriteChart[i].indicador_cod,
+                    "id_rodal": rodalRefCriteChart[i].id_rodal,
+                    "name": rodalRefCriteChart[i].nombre,
+                    "y": rodalRefCriteChart[i].valor
+                }
+            }
+            arRefRodal.push(AR);
+        }else if(rodalRefCriteChart[i].indicador_cod == 'ce'){
+            CE = {
+                "rodal": {
+                    "eje" :rodalRefCriteChart[i].indicador_cod,
+                    "id_rodal": rodalRefCriteChart[i].id_rodal,
+                    "name": rodalRefCriteChart[i].nombre,
+                    "y": rodalRefCriteChart[i].valor
+                }
+            }
+            ceRefRodal.push(CE);
+        }else if(rodalRefCriteChart[i].indicador_cod == 'cf'){
+            CF = {
+                "rodal": {
+                    "eje" :rodalRefCriteChart[i].indicador_cod,
+                    "id_rodal": rodalRefCriteChart[i].id_rodal,
+                    "name": rodalRefCriteChart[i].nombre,
+                    "y": rodalRefCriteChart[i].valor
+                }
+            }
+            cfRefRodal.push(CF);
+        }else if(rodalRefCriteChart[i].indicador_cod == 'cn'){
+            CN = {
+                "rodal": {
+                    "eje" :rodalRefCriteChart[i].indicador_cod,
+                    "id_rodal": rodalRefCriteChart[i].id_rodal,
+                    "name": rodalRefCriteChart[i].nombre,
+                    "y": rodalRefCriteChart[i].valor
+                }
+            }
+            cnRefRodal.push(CN);
+        }else if(rodalRefCriteChart[i].indicador_cod == 'cp'){
+            CP = {
+                "rodal": {
+                    "eje" :rodalRefCriteChart[i].indicador_cod,
+                    "id_rodal": rodalRefCriteChart[i].id_rodal,
+                    "name": rodalRefCriteChart[i].nombre,
+                    "y": rodalRefCriteChart[i].valor
+                }
+            }
+            cpRefRodal.push(CP);
+        }else if(rodalRefCriteChart[i].indicador_cod == 'dn'){
+            DN = {
+                "rodal": {
+                    "eje" :rodalRefCriteChart[i].indicador_cod,
+                    "id_rodal": rodalRefCriteChart[i].id_rodal,
+                    "name": rodalRefCriteChart[i].nombre,
+                    "y": rodalRefCriteChart[i].valor
+                }
+            }
+            dnRefRodal.push(DN);
+        }else if(rodalRefCriteChart[i].indicador_cod == 'eb'){
+            EB = {
+                "rodal": {
+                    "eje" :rodalRefCriteChart[i].indicador_cod,
+                    "id_rodal": rodalRefCriteChart[i].id_rodal,
+                    "name": rodalRefCriteChart[i].nombre,
+                    "y": rodalRefCriteChart[i].valor
+                }
+            }
+            ebRefRodal.push(EB);
+        }else if(rodalRefCriteChart[i].indicador_cod == 'ha'){
+            HA = {
+                "rodal": {
+                    "eje" :rodalRefCriteChart[i].indicador_cod,
+                    "id_rodal": rodalRefCriteChart[i].id_rodal,
+                    "name": rodalRefCriteChart[i].nombre,
+                    "y": rodalRefCriteChart[i].valor
+                }
+            }
+            haRefRodal.push(HA);
+        }else if(rodalRefCriteChart[i].indicador_cod == 'hm'){
+            HM = {
+                "rodal": {
+                    "eje" :rodalRefCriteChart[i].indicador_cod,
+                    "id_rodal": rodalRefCriteChart[i].id_rodal,
+                    "name": rodalRefCriteChart[i].nombre,
+                    "y": rodalRefCriteChart[i].valor
+                }
+            }
+            hmRefRodal.push(HM);
+        }else if(rodalRefCriteChart[i].indicador_cod == 'hr'){
+            HR = {
+                "rodal": {
+                    "eje" :rodalRefCriteChart[i].indicador_cod,
+                    "id_rodal": rodalRefCriteChart[i].id_rodal,
+                    "name": rodalRefCriteChart[i].nombre,
+                    "y": rodalRefCriteChart[i].valor
+                }
+            }
+            hrRefRodal.push(HR);
+        }else if(rodalRefCriteChart[i].indicador_cod == 'sn'){
+            SN = {
+                "rodal": {
+                    "eje" :rodalRefCriteChart[i].indicador_cod,
+                    "id_rodal": rodalRefCriteChart[i].id_rodal,
+                    "name": rodalRefCriteChart[i].nombre,
+                    "y": rodalRefCriteChart[i].valor
+                }
+            }
+            snRefRodal.push(SN);
+        }
+    }
+    rodalRefBarras.push(arRefRodal,ceRefRodal, cfRefRodal, cnRefRodal, cpRefRodal, dnRefRodal,ebRefRodal, haRefRodal,hmRefRodal,hrRefRodal, snRefRodal)
 
+    barCharData.push(rodalBarras, rodalRefBarras);
+
+    return barCharData;
 }
 
 var blockSelectores = function(){
     $('.scatterSelector').attr('disabled', 'disabled');
+    $('.barChartselector').attr('disabled', 'disabled');
 }
 
 var unblockSelectores = function(){
     $('.scatterSelector').removeAttr('disabled');
+    $('.barChartselector').removeAttr('disabled');
 }
 
 function rodalData(valorRodal){
@@ -376,7 +542,6 @@ function rodalData(valorRodal){
                 rodalCriteData = data.rodalCriteChart;
 
                 graficaScatterDefault();
-                console.log(data.rodalGraficoBarras);
 
                 if(rodalReferencia){
                     unblockSelectores();
@@ -449,7 +614,9 @@ function load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod){
 
                 //infoRodal = fata.infoRodal;
 
+
                 graficaScatterDefault();
+                graficaBarrasDefault();
 
                 if(rodalSelData){
                     if(rodalReferencia != null){
@@ -618,13 +785,38 @@ $('.graficaBarEjes').change(function(){
 });
 
 $('.graficaBarCrite').change(function(){
-    var dotsGraphDataSize = Object.keys(dotsGraphData[1]).length;
+    var barGraphDataSize = Object.keys(dataGraphCrite[1]).length;
     var criteOptionSelected = $(this).val();
+    valoresBarrasCrite = setBars(barGraphDataSize, criteOptionSelected);
+    graficaBarras2(valoresBarrasCrite);
 
-    console.log(dotsGraphDataSize);
-    console.log(criteOptionSelected);
 
 });
+
+function setBars(barGraphDataSize, criteOptionSelected){
+    rodalBarVal = [];
+    rodalRefBarVal = [];
+    var barData = [];
+
+    /*Rodal inicial*/
+    for (i=0; i<barGraphDataSize; i++){
+        for (x=0; x<barCharData[0][i].length; x++){
+                if(barCharData[0][i][x]['rodal']['eje'] == criteOptionSelected){
+                    rodalBarVal.push(barCharData[0][i][x]['rodal']);
+
+            }
+        }
+         /*Rodal con el que comparamos*/
+        for (x=0; x<barCharData[1][i].length; x++){
+            if(barCharData[1][i][x]['rodal']['eje'] == criteOptionSelected){
+                rodalRefBarVal.push(barCharData[1][i][x]['rodal']);
+            }
+        }
+    }
+
+    barData.push(rodalBarVal,rodalRefBarVal);
+    return barData;
+}
 
 function setPoints(dotsGraphDataSize, ejeOptionSelected){
     rodalVal = [];
@@ -638,7 +830,7 @@ function setPoints(dotsGraphDataSize, ejeOptionSelected){
         for (x=0; x<dotsGraphData[0][i].length; x++){
             if(dotsGraphData[0][i][x]['rodal']['eje'] == ejeOptionSelected){
                 rodalVal.push(dotsGraphData[0][i][x]['rodal']['valor']);
-                rodalNombres.push(dotsGraphData[0][i][x]['rodal']['nombre']);
+                rodalNombres.push(dotsGraphData[0][i][x]['rodal']['name']);
 
 
             }
@@ -647,7 +839,7 @@ function setPoints(dotsGraphDataSize, ejeOptionSelected){
         for (x=0; x<dotsGraphData[1][i].length; x++){
             if(dotsGraphData[1][i][x]['rodal']['eje'] == ejeOptionSelected){
                 rodalReferenciaVal.push(dotsGraphData[1][i][x]['rodal']['valor']);
-                rodalReferenciaNombres.push(dotsGraphData[1][i][x]['rodal']['nombre']);
+                rodalReferenciaNombres.push(dotsGraphData[1][i][x]['rodal']['name']);
 
             }
         }
@@ -658,14 +850,14 @@ function setPoints(dotsGraphDataSize, ejeOptionSelected){
 
     for(r=0; r<rodalVal.length; r++){
         rodal2 = [{
-            'nombre': rodalNombres[r],
+            'name': rodalNombres[r],
             'val': rodalVal[r],
             'color': '#339933'
         }]
     }
     for(rRef=0; rRef<rodalReferenciaVal.length; rRef++){
         rodalReferencia2[rRef] = {
-           'nombre': rodalReferenciaNombres[rRef],
+           'name': rodalReferenciaNombres[rRef],
             'val': rodalReferenciaVal[rRef]
         }
     }
@@ -679,14 +871,14 @@ function setCoordenadas(rodalX, rodalReferenciaX, rodalY, rodalReferenciaY){
     var coordenadasRodales = [];
 
     rXY = [{
-        'name': rodalX[0].nombre,
+        'name': rodalX[0].name,
         'x': rodalX[0].val,
         'y': rodalY[0].val
     }]
 
     for(r=0; r<rodalReferenciaX.length; r++){
         rRefXY[r] = {
-            'name': rodalReferenciaY[r].nombre,
+            'name': rodalReferenciaY[r].name,
             'x': rodalReferenciaX[r].val,
             'y': rodalReferenciaY[r].val
         }
@@ -740,13 +932,20 @@ var graficaEjes = function(datosEjes){
             max: 10,
             tickInterval: 1,
         }],
-
         tooltip: {
+
+            useHTML: true,
+            headerFormat: '<small>{point.key}</small><br>',
+            pointFormat: '<span style="font-weight: bold; color: #339933">{series.name}</span>: <b>{point.y:.1f}</b> ',
+            /*formatter: function(){
+                var nombreRodal = this.point.nombre;
+                return '<b>' + nombreRodal + '</b><br>Eje X: ' + this.point.y;
+            },*/
             shared: true
         },
 
         series: [{
-            name: 'Rainfall error',
+            name: ' ',
             type: 'errorbar',
             yAxis: 0,
             data: [[datosDesv[0].desvNeg, datosDesv[0].desvPos], [datosDesv[1].desvNeg, datosDesv[1].desvPos], [datosDesv[2].desvNeg, datosDesv[2].desvPos]],
@@ -764,11 +963,7 @@ var graficaEjes = function(datosEjes){
                 lineColor: '#339933',
 
             },
-            tooltip: {
-                useHTML: true,
-                headerFormat: '<small>{point.key}</small><br>',
-                pointFormat: '<span style="font-weight: bold; color: #339933">{series.name}</span>: <b>{point.y:.1f}</b> '
-            }
+
         },
         {
             name: 'Rodal 2',
@@ -801,6 +996,7 @@ var graficaCritNat = function(datosCritNat){
                  }
         }
     }
+
 
     Highcharts.chart('container2', {
         chart: {
@@ -1297,7 +1493,7 @@ var graficaBarras1 = function(valoresBarrasEjes){
     for(t=0; t<rodValores.length; t++){
         //for(x=0; x<rodValores[t].length; x++){
             //rodValores.push(valoresBarrasEjes[t][x]);
-            rodNombres.push(rodValores[t].nombre);
+            rodNombres.push(rodValores[t].name);
             //rodVal.push(rodValores[t].val);
 
             rodVal[t] = {
@@ -1337,7 +1533,10 @@ var graficaBarras1 = function(valoresBarrasEjes){
             }
         },
         tooltip: {
-            valueSuffix: ' millions'
+            formatter: function(){
+            var nombreRodal = this.point.name;
+            return '<b>' + nombreRodal + '</b><br>Valor: ' + this.y;
+        }
         },
         plotOptions: {
             bar: {
@@ -1359,7 +1558,33 @@ var graficaBarras1 = function(valoresBarrasEjes){
     });
 }
 
-var graficaBarras2 = function(){
+var graficaBarras2 = function(valoresBarrasCrite){
+    rodNombres = [];
+    rodValores = [];
+    rodVal = [];
+    valores = [];
+
+
+    for(t=0; t<valoresBarrasCrite.length; t++){
+        for(x=0; x<valoresBarrasCrite[t].length; x++){
+            valores.push(valoresBarrasCrite[t][x]);
+        }
+    }
+
+    var ord = valores.sort(function (a, b){
+        return (b.y - a.y)
+    });
+
+    for(z=0; z<valores.length; z++){
+        rodNombres.push(valores[z]['name']);
+        console.log(valores[z]['y']);
+        rodVal[z] = {
+            'y': valores[z]['y'],
+            'color': valores[z]['color']
+        }
+    }
+
+
     Highcharts.chart('graficaBarras2', {
         chart: {
             type: 'bar'
@@ -1369,7 +1594,7 @@ var graficaBarras2 = function(){
         },
         exporting: { enabled: false },
         xAxis: {
-            categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania','Asia', 'Europe', 'Oceania'],
+            categories: rodNombres,
             title: {
                 text: null
             }
@@ -1387,7 +1612,11 @@ var graficaBarras2 = function(){
             }
         },
         tooltip: {
-            valueSuffix: ' millions'
+            formatter: function(){
+            var nombreRodal = this.point.name;
+            console.log(this.point.nombre);
+            return '<b>' + nombreRodal + '</b><br>Valor: ' + this.y;
+            }
         },
         plotOptions: {
             bar: {
@@ -1403,11 +1632,76 @@ var graficaBarras2 = function(){
             color: '#FF6600',
             showInLegend: false,
             name: 'Year 1800',
-            data: [6, 5, {y:3, color:'#339933'}, 2, 2, 8, 6]
+            //data: [6, 5, {y:3, color:'#339933'}, 2, 2]
+            data: rodVal
         }]
     });
 }
 
+var graficaBarrasDefault = function(){
+
+    rodNombres = null;
+    rodValores = null;
+    rodVal = null;
+    valores = null;
+
+    $("#selecGrafBar1").val('null');
+    $("#selecGrafBar2").val('null');
+
+    var grafs = ['graficaBarras1', 'graficaBarras2'];
+    var rod = ['Rodal 1', 'Rodal 2'];
+
+    for (t=0; t<grafs.length; t++){
+
+        Highcharts.chart(grafs[t], {
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: ''
+            },
+            exporting: { enabled: false },
+            xAxis: {
+                categories: ['Rodal 1', 'Rodal 2'],
+
+            },
+            yAxis: {
+                min: 0,
+                max: 10,
+                tickInterval: 1,
+                title: {
+                    text: '',
+
+                },
+                labels: {
+                    overflow: 'justify'
+                }
+            },
+
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: false
+                    }
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'Rodal 1',
+                color: '#339933',
+                data: [0,0],
+            },
+            {
+                name: 'Rodal 2',
+                color: '#FF6600',
+                data: [0,0],
+            }],
+
+        });
+    }
+}
 
 function resetUITable(){
     /*$('td.diff-col').html('---');
@@ -1419,149 +1713,4 @@ function resetUITable(){
     $('.diff-col').removeAttr("style");*/
 }
 
-/*$('.scatterSelector').change(function(){
 
-    var ejeSelected = $(this).val();
-    var dotsGraphDataSize = Object.keys(dotsGraphData[1]).length;
-    var ejeX = null;
-    var ejeY = null;
-
-    if($(this).hasClass('grafica1')){
-        var ejeX = "ejeXGrafica1";
-        var ejeY = "ejeYGrafica1";
-    }else if($(this).hasClass('grafica2')){
-        var ejeX = "ejeXGrafica2";
-        var ejeY = "ejeYGrafica2";
-    }else if($(this).hasClass('grafica3')){
-        var ejeX = "ejeXGrafica3";
-        var ejeY = "ejeYGrafica3";
-    }
-
-    var ejeSelected = $(this).attr('id');
-    var ejeOptionSelected = $(this).val();
-
-    if(ejeSelected == ejeX){
-        rodalX = [];
-        rodalReferenciaX = [];
-        rodalXNombres = [];
-        rodalReferenciaXNombres = [];
-
-        //Rodal inicial
-        for (i=0; i<dotsGraphDataSize; i++){
-            for (x=0; x<dotsGraphData[0][i].length; x++){
-                if(dotsGraphData[0][i][x]['rodal']['eje'] == ejeOptionSelected){
-                    rodalX.push(dotsGraphData[0][i][x]['rodal']['valor']);
-                    rodalXNombres.push(dotsGraphData[0][i][x]['rodal']['nombre']);
-
-                }
-            }
-             //Rodal con el que comparamos
-            for (x=0; x<dotsGraphData[1][i].length; x++){
-                if(dotsGraphData[1][i][x]['rodal']['eje'] == ejeOptionSelected){
-                    rodalReferenciaX.push(dotsGraphData[1][i][x]['rodal']['valor']);
-                    rodalReferenciaXNombres.push(dotsGraphData[1][i][x]['rodal']['nombre']);
-                }
-            }
-        }
-
-
-        if(rodalY != null && rodalReferenciaY != null){
-            var rodalXY = [];
-            var rodalReferenciaXY = [];
-
-            rodalXY = [{
-                'name': rodalXNombres,
-                'x': rodalX[0],
-                'y': rodalY[0]
-            }]
-
-            for(r=0; r<rodalReferenciaX.length; r++){
-                rodalReferenciaXY[r] = {
-                    'name': rodalReferenciaYNombres[r],
-                    'x': rodalReferenciaX[r],
-                    'y': rodalReferenciaY[r]
-                }
-            }
-
-            var grafico;
-            if($(this).hasClass('grafica1')){
-                grafico = 'scatter1';
-                graficaScatter(rodalXY, rodalReferenciaXY, grafico);
-            }else if($(this).hasClass('grafica2')){
-                grafico = 'scatter2';
-                graficaScatter(rodalXY, rodalReferenciaXY, grafico);
-            }else if($(this).hasClass('grafica3')){
-                grafico = 'scatter3';
-                graficaScatter(rodalXY, rodalReferenciaXY, grafico);
-            }
-
-            rodalX = null;
-            rodalReferenciaX = null;
-            //rodalY = null;
-            //rodalReferenciaY = null;
-
-        }
-
-    }else if(ejeSelected == ejeY){
-        rodalY = [];
-        rodalReferenciaY = [];
-        //rodalYNombres = [];
-        //rodalReferenciaYNombres = [];
-
-        //Rodal inicial
-        for (i=0; i<dotsGraphDataSize; i++){
-            for (x=0; x<dotsGraphData[0][i].length; x++){
-                if(dotsGraphData[0][i][x]['rodal']['eje'] == ejeOptionSelected){
-                    rodalY.push(dotsGraphData[0][i][x]['rodal']['valor']);
-                    rodalYNombres.push(dotsGraphData[0][i][x]['rodal']['nombre']);
-                }
-            }
-        }
-
-        //Rodal de con el que comparamos
-        for (i=0; i<dotsGraphDataSize; i++){
-            for (x=0; x<dotsGraphData[1][i].length; x++){
-                if(dotsGraphData[1][i][x]['rodal']['eje'] == ejeOptionSelected){
-                    rodalReferenciaY.push(dotsGraphData[1][i][x]['rodal']['valor']);
-                    rodalReferenciaYNombres.push(dotsGraphData[1][i][x]['rodal']['nombre']);
-                }
-            }
-        }
-
-        if(rodalX != null && rodalReferenciaX != null){
-            var rodalXY = [];
-            var rodalReferenciaXY = [];
-
-            rodalXY = [{
-                'name': rodalXNombres,
-                'x': rodalX[0],
-                'y': rodalY[0]
-            }]
-
-            for(r=0; r<rodalReferenciaX.length; r++){
-                rodalReferenciaXY[r] = {
-                    'name': rodalReferenciaYNombres[r],
-                    'x': rodalReferenciaX[r],
-                    'y': rodalReferenciaY[r]
-                }
-            }
-
-            var grafico;
-            if($(this).hasClass('grafica1')){
-                grafico = 'scatter1';
-                graficaScatter(rodalXY, rodalReferenciaXY, grafico);
-            }else if($(this).hasClass('grafica2')){
-                grafico = 'scatter2';
-                graficaScatter(rodalXY, rodalReferenciaXY, grafico);
-            }else if($(this).hasClass('grafica3')){
-                grafico = 'scatter3';
-                graficaScatter(rodalXY, rodalReferenciaXY, grafico);
-
-            }
-            //rodalX = null;
-            //rodalReferenciaX = null;
-            rodalY = null;
-            rodalReferenciaY = null;
-        }
-    }
-});*/
