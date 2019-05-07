@@ -57,6 +57,7 @@ $(document).ready(function(){
     if(init_data){
         //select initial habitat
         $('#habitat').val(init_data.habitat_ini);
+        var valRodComp = null;
 
         //unblock selectors
         unblock('selector_ComAut');
@@ -81,7 +82,7 @@ $(document).ready(function(){
         $('#selector_rodales').val(init_data.rodal_ini);
 
         //show rodal Data in table
-        rodalData(init_data.rodal_ini);
+        rodalData(init_data.rodal_ini, valRodComp);
 
         //cache everything
         rodals_habitat_cached[init_data.habitat_ini] = init_data.rodals_ini_list;
@@ -491,7 +492,8 @@ $('#selector_RegBio').change(function(){
 
 $('#selector_rodales').change(function(){
     var valRod = $('.selector_rodal option:selected').val();
-    rodalData(valRod);
+    var valRodComp = $('.selector_rodales_comp option:selected').val();
+    rodalData(valRod, valRodComp);
 });
 
 $('#selector_rodales_comp').change(function(){
@@ -499,7 +501,9 @@ $('#selector_rodales_comp').change(function(){
     var idComAut = $('#selector_ComAut_Comp').val();
     var idRegBiogeo = $('#selector_RegBio_Comp').val();
     var valRod = $('#selector_rodales_comp option:selected').val();
-    load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod);
+    var rodPrincip = $('#selector_rodales option:selected').val();
+    console.log(rodPrincip);
+    load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod, rodPrincip);
 });
 
 var getRodRefVal = function(){

@@ -46,12 +46,14 @@ var rodNombres = [];
 var rodValores = [];
 var rodVal = [];
 var valores = [];
+var rodalName = [];
+var rodalNameRef = [];
 
 
-var dataGraph = function(valoresRodal, valoresRodalComp){
 
-    console.log(valoresRodal);
-    console.log(valoresRodalComp);
+var dataGraph = function(valoresRodal, valoresRodalComp, rodalName, rodalNameRef){
+
+
 
     var datosEjes = {
         "0": { "ref": "naturalidad",
@@ -68,7 +70,7 @@ var dataGraph = function(valoresRodal, valoresRodalComp){
                 "desv": valoresRodalComp.integridadEspacial.valor_desv },
     }
 
-    //console.log(datosEjes);
+
 
     var datosCritNat = {
         "0": { "ref": "composicion",
@@ -96,7 +98,7 @@ var dataGraph = function(valoresRodal, valoresRodalComp){
 
     }
 
-    //console.log(datosCritNat);
+
 
     var datosCritHu = {
         "0": { "ref": "antigua",
@@ -110,7 +112,7 @@ var dataGraph = function(valoresRodal, valoresRodalComp){
                 "desv": valoresRodalComp.huellaHumana.reciente.valor_desv },
     }
 
-    //console.log(datosCritNat);
+
 
 
     var datosCritIe = {
@@ -132,12 +134,14 @@ var dataGraph = function(valoresRodal, valoresRodalComp){
                 "desv": valoresRodalComp.integridadEspacial.conect.valor_desv },
     }
 
-    //console.log(datosCritIe);
 
-    graficaEjes(datosEjes);
-    graficaCritNat(datosCritNat);
-    graficaCritHu(datosCritHu);
-    graficaCritIe(datosCritIe);
+
+    graficaEjes(datosEjes, rodalName, rodalNameRef);
+    graficaCritNat(datosCritNat, rodalName, rodalNameRef);
+    graficaCritHu(datosCritHu, rodalName, rodalNameRef);
+    graficaCritIe(datosCritIe, rodalName, rodalNameRef);
+
+
 
 }
 
@@ -155,6 +159,17 @@ function dataScatterGraph(rodalPuntosData, rodalRefPuntosData){
 
     rodalPuntos = []
     rodalReferenciaPuntos = []
+
+
+    for(z=0; z<=rodalRefPuntosData.length; z++){
+        if(rodalRefPuntosData[i]){
+            if(rodalPuntosData[0].id_rodal == rodalRefPuntosData[i].id_rodal){
+                rodalRefPuntosData.splice(i,1);
+
+            }
+        }
+    }
+
 
     for(i=0; i<rodalPuntosData.length; i++){
         if(rodalPuntosData[i].indicador_cod == 'nm'){
@@ -228,9 +243,11 @@ function dataScatterGraph(rodalPuntosData, rodalRefPuntosData){
 
     }
 
+
+
     rodalReferenciaPuntos.push(nmRodalRef,ieRodalRef,hhRodalRef);
     dotsGraphData.push(rodalPuntos, rodalReferenciaPuntos);
-    //console.log(dotsGraphData);
+
     return dotsGraphData;
 }
 
@@ -260,6 +277,7 @@ function dataChartCrite(rodalCriteChart, rodalRefCriteChart){
     var hrRefRodal = [];
     var snRefRodal = [];
     var rodalRefBarras = [];
+    barCharData = [];
 
     for(i=0; i<rodalCriteChart.length; i++){
         if(rodalCriteChart[i].indicador_cod == 'ar'){
@@ -391,6 +409,7 @@ function dataChartCrite(rodalCriteChart, rodalRefCriteChart){
     rodalBarras.push(arRodal,ceRodal, cfRodal, cnRodal, cpRodal, dnRodal,ebRodal, haRodal,hmRodal,hrRodal, snRodal)
 
 
+
     for(i=0; i<rodalRefCriteChart.length; i++){
         if(rodalRefCriteChart[i].indicador_cod == 'ar'){
             AR = {
@@ -506,6 +525,8 @@ function dataChartCrite(rodalCriteChart, rodalRefCriteChart){
     }
     rodalRefBarras.push(arRefRodal,ceRefRodal, cfRefRodal, cnRefRodal, cpRefRodal, dnRefRodal,ebRefRodal, haRefRodal,hmRefRodal,hrRefRodal, snRefRodal)
 
+
+
     barCharData.push(rodalBarras, rodalRefBarras);
 
     return barCharData;
@@ -539,14 +560,18 @@ function rodalData(valorRodal){
             },
             success: function(data, textStatus, jqXHR) {
                 rodalSelData = data.rodal;
+                rodalName = data.rodalNombre;
                 rodalPuntosData = data.rodalGraficoPuntos;
                 rodalCriteData = data.rodalCriteChart;
+
+                console.log(rodalName);
 
                 graficaScatterDefault();
 
                 if(rodalReferencia){
                     unblockSelectores();
-                    dataGraph(rodalSelData, rodalReferencia);
+                    //dataGraph(rodalSelData, rodalReferencia);
+                    dataGraph(rodalSelData, rodalReferencia, rodalName, rodalNameRef);
                     dataGraph2 = dataScatterGraph(rodalPuntosData, rodalRefPuntosData);
                     dataGraphCrite = dataChartCrite(rodalCriteData, rodalRefCriteData);
 
@@ -573,7 +598,7 @@ function rodalData(valorRodal){
     }
 };
 
-function load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod){
+function load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod, rodPrincip){
     url = _rodal_ref_list;
     var params = [];
     if(idHabitat != "null"){
@@ -588,10 +613,15 @@ function load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod){
     if(valRod != "null"){
         params.push('vr='+escape(valRod));
     }
-
-    //params.push('rodRef='+escape(rodRef));
+    if(rodPrincip != "null"){
+        params.push('rodPrincip='+escape(rodPrincip));
+    }
 
     url = url + "?" + params.join('&');
+
+
+    console.log(url);
+
 
     if(valRod == "null"){
         resetUITable();
@@ -608,12 +638,16 @@ function load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod){
                 }
             },
             success: function( data, textStatus, jqXHR ) {
+                rodalNameRef = data.rodalNombre;
+                console.log(rodalNameRef);
+
                 rodalReferencia = data.rodal_referencia;
                 rodalRefPuntosData = data.rodalRefGraficoPuntos;
                 rodalRefCriteData = data.rodalRefCriteChart;
                 recorreArbre('', rodalReferencia);
 
                 //infoRodal = fata.infoRodal;
+
 
 
                 graficaScatterDefault();
@@ -624,7 +658,8 @@ function load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod){
                         //calcDiferencia();
                         unblockSelectores();
                         $('.grafico div').html('');
-                        dataGraph(rodalSelData, rodalReferencia);
+                        //dataGraph(rodalSelData, rodalReferencia);
+                        dataGraph(rodalSelData, rodalReferencia, rodalName, rodalNameRef);
                         dataGraph2 = dataScatterGraph(rodalPuntosData, rodalRefPuntosData);
                         dataGraphCrite = dataChartCrite(rodalCriteData, rodalRefCriteData);
 
@@ -891,13 +926,14 @@ function setCoordenadas(rodalX, rodalReferenciaX, rodalY, rodalReferenciaY){
 
 }
 
-var graficaEjes = function(datosEjes){
+var graficaEjes = function(datosEjes, rodalName, rodalNameRef){
 
     var dataSize = Object.keys(datosEjes).length;
     var datosDesv = [];
 
     for (i=0; i<=dataSize; i++){
         if(datosEjes[i] != null){
+            console.log(datosEjes[i]);
             datosDesv[i] =
                 { "desvNeg" : parseInt((datosEjes[i].valorRodalComp - datosEjes[i].desv).toFixed(2)),
                   "desvPos" : parseInt((datosEjes[i].valorRodalComp + datosEjes[i].desv).toFixed(2)),
@@ -955,7 +991,8 @@ var graficaEjes = function(datosEjes){
                 pointFormat: '(error range: {point.low}-{point.high} mm)<br/>'
             }
         }, {
-            name: 'Rodal 1',
+            //name: 'Rodal 1',
+            name: rodalName[0].nombre,
             type: 'scatter',
             data: [datosEjes[0].valorRodal, datosEjes[1].valorRodal, datosEjes[2].valorRodal],
             marker: {
@@ -967,7 +1004,8 @@ var graficaEjes = function(datosEjes){
 
         },
         {
-            name: 'Rodal 2',
+            //name: 'Rodal 2',
+            name: rodalNameRef[0].nombre,
             type: 'scatter',
             data: [datosEjes[0].valorRodalComp, datosEjes[1].valorRodalComp, datosEjes[2].valorRodalComp],
             marker: {
@@ -984,7 +1022,7 @@ var graficaEjes = function(datosEjes){
     });
 };
 
-var graficaCritNat = function(datosCritNat){
+var graficaCritNat = function(datosCritNat, rodalName, rodalNameRef){
 
     var dataSize = Object.keys(datosCritNat).length;
     var datosDesv = [];
@@ -1048,7 +1086,7 @@ var graficaCritNat = function(datosCritNat){
                 pointFormat: '(error range: {point.low}-{point.high} mm)<br/>'
             }
         }, {
-            name: 'Rodal 1',
+            name: rodalName[0].nombre,
             type: 'scatter',
             data: [
                 datosCritNat[0].valorRodal,
@@ -1070,7 +1108,7 @@ var graficaCritNat = function(datosCritNat){
             }
         },
         {
-            name: 'Rodal 2',
+            name: rodalNameRef[0].nombre,
             type: 'scatter',
             data: [
                 datosCritNat[0].valorRodalComp,
@@ -1096,7 +1134,7 @@ var graficaCritNat = function(datosCritNat){
 
 }
 
-var graficaCritHu = function(datosCritHu){
+var graficaCritHu = function(datosCritHu, rodalName, rodalNameRef){
 
     var dataSize = Object.keys(datosCritHu).length;
     var datosDesv = [];
@@ -1155,7 +1193,7 @@ var graficaCritHu = function(datosCritHu){
                 pointFormat: '(error range: {point.low}-{point.high} mm)<br/>'
             }
         }, {
-            name: 'Rodal 1',
+            name: rodalName[0].nombre,
             type: 'scatter',
             data: [datosCritHu[0].valorRodal, datosCritHu[1].valorRodal],
             marker: {
@@ -1170,7 +1208,7 @@ var graficaCritHu = function(datosCritHu){
             }
         },
         {
-            name: 'Rodal 2',
+            name: rodalNameRef[0].nombre,
             type: 'scatter',
             data: [datosCritHu[0].valorRodalComp, datosCritHu[1].valorRodalComp],
             marker: {
@@ -1187,7 +1225,7 @@ var graficaCritHu = function(datosCritHu){
     });
 };
 
-var graficaCritIe = function(datosCritIe){
+var graficaCritIe = function(datosCritIe, rodalName, rodalNameRef){
 
     var dataSize = Object.keys(datosCritIe).length;
     var datosDesv = [];
@@ -1247,7 +1285,7 @@ var graficaCritIe = function(datosCritIe){
                 pointFormat: '(error range: {point.low}-{point.high} mm)<br/>'
             }
         }, {
-            name: 'Rodal 1',
+            name: rodalName[0].nombre,
             type: 'scatter',
             data: [
                 datosCritIe[0].valorRodal,
@@ -1266,7 +1304,7 @@ var graficaCritIe = function(datosCritIe){
             }
         },
         {
-            name: 'Rodal 2',
+            name: rodalNameRef[0].nombre,
             type: 'scatter',
             data: [
                 datosCritIe[0].valorRodalComp,
@@ -1489,7 +1527,7 @@ var graficaBarras1 = function(valoresBarrasEjes){
     var ord = rodValores.sort(function (a, b){
         return (b.val - a.val)
     })
-    console.log(ord);
+
 
     for(t=0; t<rodValores.length; t++){
         //for(x=0; x<rodValores[t].length; x++){
@@ -1504,8 +1542,7 @@ var graficaBarras1 = function(valoresBarrasEjes){
         //}
     }
 
-    console.log(rodNombres);
-    console.log(rodVal);
+
 
     Highcharts.chart('graficaBarras1', {
         chart: {
@@ -1535,9 +1572,9 @@ var graficaBarras1 = function(valoresBarrasEjes){
         },
         tooltip: {
             formatter: function(){
-            var nombreRodal = this.point.name;
-            return '<b>' + nombreRodal + '</b><br>Valor: ' + this.y;
-        }
+                var nombreRodal = this.x;
+                return '<b>' + nombreRodal + '</b><br>Valor: ' + this.y;
+            }
         },
         plotOptions: {
             bar: {
@@ -1552,7 +1589,7 @@ var graficaBarras1 = function(valoresBarrasEjes){
         series: [{
             color: '#FF6600',
             showInLegend: false,
-            name: 'Year 1800',
+            name: rodVal.name,
             //data: [6, 5, {y:3, color:'#339933'}, 2, 2]
             data: rodVal
         }]
@@ -1565,7 +1602,9 @@ var graficaBarras2 = function(valoresBarrasCrite){
     var rodVal = [];
     var valores = [];
 
-    console.log(valoresBarrasCrite.length);
+
+
+
 
     for(t=0; t<valoresBarrasCrite.length; t++){
         for(x=0; x<valoresBarrasCrite[t].length; x++){
@@ -1579,7 +1618,7 @@ var graficaBarras2 = function(valoresBarrasCrite){
 
     for(z=0; z<valores.length; z++){
         rodNombres.push(valores[z]['name']);
-        console.log(valores[z]['y']);
+
         rodVal[z] = {
             'y': valores[z]['y'],
             'color': valores[z]['color']
@@ -1615,9 +1654,8 @@ var graficaBarras2 = function(valoresBarrasCrite){
         },
         tooltip: {
             formatter: function(){
-            var nombreRodal = this.point.name;
-            console.log(this.point.nombre);
-            return '<b>' + nombreRodal + '</b><br>Valor: ' + this.y;
+                var nombreRodal = this.x;
+                return '<b>' + nombreRodal + '</b><br>Valor: ' + this.y;
             }
         },
         plotOptions: {

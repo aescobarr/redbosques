@@ -709,12 +709,15 @@ def valorref_ajax(request):
     idComAut = request.query_params.get('comAut', None)
     idRegBiogeo = request.query_params.get('regBiogeo', None)
     rodRef = request.query_params.get('rodRef', None)
+    rodPrincip = request.query_params.get('rodPrincip', None)
+
 
 
     if cordRod is not None and cordRod != 'medRod':
         dades_rodal = RodalValorres2.objects.filter(id_rodal=cordRod)
         rodal_referencia = crearArbol(dades_rodal)
-        print(rodal_referencia)
+        rodalNombre = Rodal.objects.filter(id=cordRod).values('id', 'nombre')
+
         dadesGraficosPuntos = RodalValorres2.objects.filter(id_rodal=cordRod).filter(nivel='eje').values('id_rodal', 'indicador_cod', 'valor')
 
         idRodales = []
@@ -741,9 +744,10 @@ def valorref_ajax(request):
         infoRodalBarCrite = Rodal.objects.filter(id__in=idRodalesBarCrite).values('id', 'nombre')
         rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarrasCrite, infoRodalBarCrite)
 
-        context = {'rodal_referencia': rodal_referencia, 'rodalRefGraficos': rodalRefValNom, 'rodalRefGraficoPuntos': rodal_graficos_puntos, 'rodalRefCriteChart' : rodal_graficos_barras, 'infoRodal': infoRodal}
+        context = {'rodal_referencia': rodal_referencia, 'rodalNombre': rodalNombre, 'rodalRefGraficos': rodalRefValNom, 'rodalRefGraficoPuntos': rodal_graficos_puntos, 'rodalRefCriteChart' : rodal_graficos_barras, 'infoRodal': infoRodal}
 
     elif cordRod == 'medRod':
+
         dades_rodal2 = RodalValorres2.objects.all()
         if idRegBiogeo is not None and idRegBiogeo != 'all':
             dades_rodal2 = dades_rodal2.filter(regbio_cod=idRegBiogeo)
@@ -753,16 +757,15 @@ def valorref_ajax(request):
             dades_rodal2 = dades_rodal2.filter(lpeht_cod__startswith=idHab)
         if rodRef is not None and rodRef == '1':
             dades_rodal2 = dades_rodal2.filter(rodalref=True)
+        if rodPrincip is not None:
+            dades_rodal2 = dades_rodal2.exclude(id_rodal=rodPrincip)
 
+        rodalNombre = [{'nombre': 'Todos los rodales'}]
         dades_rodal = dades_rodal2.values('indicador_cod').annotate(mitjana=Avg('valor'), stddev=StdDev('valor'))
         rodal_referencia = crearArbolMedia(dades_rodal)
 
         ### Grafica puntos
         dadesGraficosPuntos = dades_rodal2.filter(nivel='eje').values('id_rodal', 'indicador_cod', 'valor')
-
-        ##Esta NO
-        #dadesGraficosPuntos = dades_rodal2.filter(nivel='eje').filter(id_rodal=id).distinct().values('id_rodal', 'indicador_cod', 'valor')
-
 
         idRodales = []
         for infRod in dadesGraficosPuntos:
@@ -778,18 +781,19 @@ def valorref_ajax(request):
 
         rodal_graficos_puntos = datosGraficasPuntos(dadesGraficosPuntos, infoRodal)
 
-        dadesGraficoBarrasCrite = RodalValorres2.objects.filter(lpeht_cod=idHab).filter(nivel='crite').values('id_rodal', 'indicador_cod', 'valor')
+        dadesGraficoBarrasCrite = RodalValorres2.objects.filter(lpeht_cod=idHab).filter(nivel='crite').exclude(id_rodal=rodPrincip).values('id_rodal', 'indicador_cod', 'valor')
 
         idRodalesBarCrite = []
         for infRod in dadesGraficoBarrasCrite:
             if infRod['id_rodal'] not in idRodalesBarCrite:
                 idRodalesBarCrite.append(infRod['id_rodal'])
 
-        infoRodalBarCrite = Rodal.objects.filter(id__in=idRodalesBarCrite).values('id', 'nombre')
+        infoRodalBarCrite = Rodal.objects.filter(id__in=idRodalesBarCrite).values('id', 'nombre').exclude(id=rodPrincip)
         rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarrasCrite, infoRodalBarCrite)
 
 
-        context = {'rodal_referencia': rodal_referencia, 'rodalRefGraficos': rodalRefValNom, 'rodalRefGraficoPuntos': rodal_graficos_puntos, 'rodalRefCriteChart' : rodal_graficos_barras}
+        context = {'rodal_referencia': rodal_referencia, 'rodalNombre': rodalNombre, 'rodalRefGraficos': rodalRefValNom, 'rodalRefGraficoPuntos': rodal_graficos_puntos, 'rodalRefCriteChart' : rodal_graficos_barras}
+
 
     return Response(context)
 
@@ -809,6 +813,7 @@ def valorRodal(request):
         if cordRod != 'medRod':
             dades_rodal2 = RodalValorres2.objects.filter(id_rodal=cordRod)
             rodal_referencia = crearArbol(dades_rodal2)
+            rodalNombre = Rodal.objects.filter(id=cordRod).values('id', 'nombre')
 
             dadesGraficosPuntos = RodalValorres2.objects.filter(id_rodal=cordRod).filter(nivel='eje').values('id_rodal', 'indicador_cod', 'valor')
 
@@ -845,6 +850,7 @@ def valorRodal(request):
 
             dades_rodal2 = RodalValorres2.objects.filter(lpeht_cod=habSel).values('indicador_cod').annotate(mitjana=Avg('valor'),stddev=StdDev('valor'))
             rodal_referencia = crearArbolMedia(dades_rodal2)
+            rodalNombre = [{'nombre': 'Todos los rodales'}]
 
             dadesGraficosPuntos = RodalValorres2.objects.filter(lpeht_cod=habSel).filter(nivel='eje').values('id_rodal', 'indicador_cod', 'valor')
 
@@ -879,7 +885,7 @@ def valorRodal(request):
 
 
         #rodal_referencia = crearArbol(dades_rodal2)
-        context = {'rodal': rodal_referencia, 'rodalGraficos': rodalValNom, 'rodalGraficoPuntos': rodal_graficos_puntos, 'rodalCriteChart': rodal_graficos_barras}
+        context = {'rodal': rodal_referencia, 'rodalNombre': rodalNombre, 'rodalGraficos': rodalValNom, 'rodalGraficoPuntos': rodal_graficos_puntos, 'rodalCriteChart': rodal_graficos_barras}
 
     return Response(context)
 
