@@ -714,7 +714,11 @@ def valorref_ajax(request):
 
 
     if cordRod is not None and cordRod != 'medRod':
-        dades_rodal = RodalValorres2.objects.filter(id_rodal=cordRod)
+        if rodPrincip is not None:
+            dades_rodal = RodalValorres2.objects.filter(id_rodal=cordRod).exclude(id_rodal=rodPrincip)
+        else:
+            dades_rodal = RodalValorres2.objects.filter(id_rodal=cordRod)
+
         rodal_referencia = crearArbol(dades_rodal)
         rodalNombre = Rodal.objects.filter(id=cordRod).values('id', 'nombre')
 
@@ -734,17 +738,20 @@ def valorref_ajax(request):
 
         rodal_graficos_puntos = datosGraficasPuntos(dadesGraficosPuntos, infoRodal)
 
-        dadesGraficoBarrasCrite = RodalValorres2.objects.filter(id_rodal=cordRod).filter(nivel='crite').values('id_rodal', 'indicador_cod', 'valor')
+        #dadesGraficoBarrasCrite = RodalValorres2.objects.filter(id_rodal=cordRod).filter(nivel='crite').values('id_rodal', 'indicador_cod', 'valor')
+        dadesGraficoBarras = RodalValorres2.objects.filter(id_rodal=cordRod).filter(Q(nivel='crite') | Q(nivel='eje')).values('id_rodal', 'indicador_cod', 'valor')
+
+
 
         idRodalesBarCrite = []
-        for infRod in dadesGraficoBarrasCrite:
+        for infRod in dadesGraficoBarras:
             if infRod['id_rodal'] not in idRodalesBarCrite:
                 idRodalesBarCrite.append(infRod['id_rodal'])
 
         infoRodalBarCrite = Rodal.objects.filter(id__in=idRodalesBarCrite).values('id', 'nombre')
-        rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarrasCrite, infoRodalBarCrite)
+        rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarras, infoRodalBarCrite)
 
-        context = {'rodal_referencia': rodal_referencia, 'rodalNombre': rodalNombre, 'rodalRefGraficos': rodalRefValNom, 'rodalRefGraficoPuntos': rodal_graficos_puntos, 'rodalRefCriteChart' : rodal_graficos_barras, 'infoRodal': infoRodal}
+        context = {'rodal_referencia': rodal_referencia, 'rodalNombre': rodalNombre, 'rodalRefGraficos': rodalRefValNom, 'rodalRefGraficoPuntos': rodal_graficos_puntos, 'rodalRefChart' : rodal_graficos_barras, 'infoRodal': infoRodal}
 
     elif cordRod == 'medRod':
 
@@ -781,18 +788,21 @@ def valorref_ajax(request):
 
         rodal_graficos_puntos = datosGraficasPuntos(dadesGraficosPuntos, infoRodal)
 
-        dadesGraficoBarrasCrite = RodalValorres2.objects.filter(lpeht_cod=idHab).filter(nivel='crite').exclude(id_rodal=rodPrincip).values('id_rodal', 'indicador_cod', 'valor')
+        #dadesGraficoBarrasCrite = RodalValorres2.objects.filter(lpeht_cod=idHab).filter(nivel='crite').exclude(id_rodal=rodPrincip).values('id_rodal', 'indicador_cod', 'valor')
+        dadesGraficoBarras = RodalValorres2.objects.filter(lpeht_cod=idHab).filter(Q(nivel='crite') | Q(nivel='eje')).exclude(id_rodal=rodPrincip).values('id_rodal', 'indicador_cod', 'valor')
+
 
         idRodalesBarCrite = []
-        for infRod in dadesGraficoBarrasCrite:
+        for infRod in dadesGraficoBarras:
             if infRod['id_rodal'] not in idRodalesBarCrite:
                 idRodalesBarCrite.append(infRod['id_rodal'])
 
         infoRodalBarCrite = Rodal.objects.filter(id__in=idRodalesBarCrite).values('id', 'nombre').exclude(id=rodPrincip)
-        rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarrasCrite, infoRodalBarCrite)
+        rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarras, infoRodalBarCrite)
 
 
-        context = {'rodal_referencia': rodal_referencia, 'rodalNombre': rodalNombre, 'rodalRefGraficos': rodalRefValNom, 'rodalRefGraficoPuntos': rodal_graficos_puntos, 'rodalRefCriteChart' : rodal_graficos_barras}
+
+        context = {'rodal_referencia': rodal_referencia, 'rodalNombre': rodalNombre, 'rodalRefGraficos': rodalRefValNom, 'rodalRefGraficoPuntos': rodal_graficos_puntos, 'rodalRefChart': rodal_graficos_barras}
 
 
     return Response(context)
@@ -831,17 +841,19 @@ def valorRodal(request):
 
             rodal_graficos_puntos = datosGraficasPuntos(dadesGraficosPuntos, infoRodal)
 
-            dadesGraficoBarrasCrite = RodalValorres2.objects.filter(id_rodal=cordRod).filter(nivel='crite').values('id_rodal', 'indicador_cod', 'valor')
+            #dadesGraficoBarrasCrite = RodalValorres2.objects.filter(id_rodal=cordRod).filter(nivel='crite').values('id_rodal', 'indicador_cod', 'valor')
+            dadesGraficoBarras = RodalValorres2.objects.filter(id_rodal=cordRod).filter(Q(nivel='crite') | Q(nivel='eje')).values('id_rodal', 'indicador_cod', 'valor')
+
 
             idRodalesBarCrite = []
-            for infRod in dadesGraficoBarrasCrite:
+            for infRod in dadesGraficoBarras:
                 if infRod['id_rodal'] not in idRodalesBarCrite:
                     idRodalesBarCrite.append(infRod['id_rodal'])
 
             infoRodalBarCrite = Rodal.objects.filter(id__in=idRodalesBarCrite).values('id', 'nombre')
 
             #rodal_graficos_barras = datosGraficasBarras(dadesGraficoBarrasCrite, infoRodalBarCrite)
-            rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarrasCrite, infoRodalBarCrite)
+            rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarras, infoRodalBarCrite)
 
         if cordRod == 'medRod':
             #dades_rodal2 = RodalValorres2.objects.all()
@@ -869,23 +881,23 @@ def valorRodal(request):
 
 
 
-            #dadesGraficoBarrasCrite = RodalValorres2.objects.filter(lpeht_cod=habSel).filter(Q(nivel='crite') | Q(nivel='eje')).values('id_rodal', 'indicador_cod', 'valor')
-            dadesGraficoBarrasCrite = RodalValorres2.objects.filter(lpeht_cod=habSel).filter(nivel='crite').values('id_rodal', 'indicador_cod', 'valor')
+            dadesGraficoBarras = RodalValorres2.objects.filter(lpeht_cod=habSel).filter(Q(nivel='crite') | Q(nivel='eje')).values('id_rodal', 'indicador_cod', 'valor')
+            #dadesGraficoBarrasCrite = RodalValorres2.objects.filter(lpeht_cod=habSel).filter(nivel='crite').values('id_rodal', 'indicador_cod', 'valor')
 
 
             idRodalesBarCrite = []
-            for infRod in dadesGraficoBarrasCrite:
+            for infRod in dadesGraficoBarras:
                 if infRod['id_rodal'] not in idRodalesBarCrite:
                     idRodalesBarCrite.append(infRod['id_rodal'])
 
             infoRodalBarCrite = Rodal.objects.filter(id__in=idRodalesBarCrite).values('id', 'nombre')
             #rodal_graficos_barras = datosGraficasBarras(dadesGraficoBarrasCrite)
-            rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarrasCrite, infoRodalBarCrite)
+            rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarras, infoRodalBarCrite)
 
-
+            print(rodal_graficos_barras);
 
         #rodal_referencia = crearArbol(dades_rodal2)
-        context = {'rodal': rodal_referencia, 'rodalNombre': rodalNombre, 'rodalGraficos': rodalValNom, 'rodalGraficoPuntos': rodal_graficos_puntos, 'rodalCriteChart': rodal_graficos_barras}
+        context = {'rodal': rodal_referencia, 'rodalNombre': rodalNombre, 'rodalGraficos': rodalValNom, 'rodalGraficoPuntos': rodal_graficos_puntos, 'rodalChart': rodal_graficos_barras}
 
     return Response(context)
 

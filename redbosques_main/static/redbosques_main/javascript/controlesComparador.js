@@ -491,8 +491,9 @@ $('#selector_RegBio').change(function(){
  });
 
 $('#selector_rodales').change(function(){
-    var valRod = $('.selector_rodal option:selected').val();
-    var valRodComp = $('.selector_rodales_comp option:selected').val();
+    var valRod = $('#selector_rodales option:selected').val();
+    var valRodComp = $('#selector_rodales_comp option:selected').val();
+
     rodalData(valRod, valRodComp);
 });
 
@@ -502,7 +503,7 @@ $('#selector_rodales_comp').change(function(){
     var idRegBiogeo = $('#selector_RegBio_Comp').val();
     var valRod = $('#selector_rodales_comp option:selected').val();
     var rodPrincip = $('#selector_rodales option:selected').val();
-    console.log(rodPrincip);
+
     load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod, rodPrincip);
 });
 

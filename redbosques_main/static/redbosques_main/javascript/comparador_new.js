@@ -3,7 +3,7 @@ $(document).ready(function(){
 
 });
 
-function load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod){
+function load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod, rodPrincip){
     url = _rodal_ref_list;
     var params = [];
     if(idHabitat != "null"){
@@ -17,6 +17,9 @@ function load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod){
     }
     if(valRod != "null"){
         params.push('vr='+escape(valRod));
+    }
+    if(rodPrincip != "null"){
+        params.push('rodPrincip='+escape(rodPrincip));
     }
 
     //params.push('rodRef='+escape(rodRef));
