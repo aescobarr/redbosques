@@ -1,7 +1,6 @@
 {% extends "redbosques_main/base.html" %}
 {% load static %}
 {% block extra_css %}
-
 {% endblock %}
 {% block main %}
 <div class="container-fluid subheader">
@@ -146,6 +145,14 @@
                 <!-- **************************************************************************** -->
             </div>
         </div>
+</div>
+<div class="container menu-data-show">
+    <ul class="nav nav-tabs">
+        <li class="val-graf grafica"><a href="{% url 'comparador_new' %}#filtro-graficas">Gráfica/Valores</a></li>
+        <li class="active val-graf"><a data-toggle="tab" href="{% url 'comparadorGraficos' %}">Gráficas</a></li>
+        <li class="val-graf valores"><a href="{% url 'comparador_new' %}#filtro-valores">Valores</a></li>
+        <li class="val-metr metrica"><a href="{% url 'comparador_new' %}#filtro-metrica">Valores métricos</a></li>
+    </ul>
 </div>
 
 

@@ -55,7 +55,7 @@ var desvPos = [];
 
 
 
-var dataGraph = function(valoresRodal, valoresRodalComp, rodalName, rodalNameRef){
+var dataGraphEixosCrite = function(valoresRodal, valoresRodalComp, rodalName, rodalNameRef){
 
 
 
@@ -247,14 +247,8 @@ function dataScatterGraph(rodalPuntosData, rodalRefPuntosData){
 
     }
 
-
-
     rodalReferenciaPuntos.push(nmRodalRef,ieRodalRef,hhRodalRef);
     dotsGraphData.push(rodalPuntos, rodalReferenciaPuntos);
-
-    /*var ejeSelected = $(".grafica1").attr('id');
-    var ejeOptionSelected = $(ejeSelected).val();
-    grafica1(ejeSelected, ejeOptionSelected);*/
 
     return dotsGraphData;
 }
@@ -657,7 +651,7 @@ function rodalData(valorRodal, valRodComp){
                 if(rodalReferencia){
                     unblockSelectores();
                     //dataGraph(rodalSelData, rodalReferencia);
-                    dataGraph(rodalSelData, rodalReferencia, rodalName, rodalNameRef);
+                    dataGraphEixosCrite(rodalSelData, rodalReferencia, rodalName, rodalNameRef);
                     dataGraph2 = dataScatterGraph(rodalPuntosData, rodalRefPuntosData);
                     dataChartGraph = dataChartCrite(rodalChartData, rodalRefChartData);
 
@@ -758,25 +752,19 @@ function load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod, rodPrincip){
                             unblockSelectores();
                             $('.grafico div').html('');
                             //dataGraph(rodalSelData, rodalReferencia);
-                            dataGraph(rodalSelData, rodalReferencia, rodalName, rodalNameRef);
+                            dataGraphEixosCrite(rodalSelData, rodalReferencia, rodalName, rodalNameRef);
                             dataGraph2 = dataScatterGraph(rodalPuntosData, rodalRefPuntosData);
                             dataChartGraph = dataChartCrite(rodalChartData, rodalRefChartData);
 
                             grafica1();
                             grafica2();
                             grafica3();
-
-
                             graficaBarras1();
                             graficaBarras2();
 
                             var ejeSelected = $(".scatterSelector").attr('id');
                             var ejeId = "#" + ejeSelected;
                             var ejeOptionSelected = $(ejeId).val();
-
-                            //grafica3(ejeSelected, ejeOptionSelected);
-
-
 
                             g1EjeYSelectedPoints = null;
                             g1EjeXSelectedPoints = null;
@@ -883,60 +871,26 @@ function grafica3(){
     }
 };
 
-/*$('.graficaBarEjes').change(function(){
-    var dotsGraphDataSize = Object.keys(dotsGraphData[1]).length;
-    var optionSelected = $(this).val();
-    valoresBarrasEjes = setBars(dotsGraphDataSize, optionSelected);
-    console.log(valoresBarrasEjes);
-    graficaBarras1(valoresBarrasEjes);
-
-});*/
-
-/*$('.graficaBarCrite').change(function(){
-    var barGraphDataSize = Object.keys(dataGraphCrite[1]).length;
-    var optionSelected = $(this).val();
-    valoresBarrasCrite = setBars(barGraphDataSize, optionSelected);
-    graficaBarras2(valoresBarrasCrite);
-
-
-});*/
-
 function setBars(barGraphDataSize, optionSelected){
     var rodalBarVal = [];
     var rodalRefBarVal = [];
     var barData = [];
 
-
-
-
     /*Rodal inicial*/
     for (i=0; i<barGraphDataSize; i++){
-        //for (x=0; x<barCharData[0][i].length; x++){
-            //console.log(optionSelected);
-            //console.log(barCharData[0][i][0]['rodal']['eje']);
-            //var test = barCharData[0][i][0]['rodal']['eje'];
-            if(barCharData[0][i][0]['rodal']['eje'] == optionSelected){
-                //console.log(i);
-                //console.log(barCharData[0][i][0]['rodal']);
-                rodalBarVal.push(barCharData[0][i][0]['rodal']);
-            }
-        //}
+        if(barCharData[0][i][0]['rodal']['eje'] == optionSelected){
+            rodalBarVal.push(barCharData[0][i][0]['rodal']);
+        }
     }
 
     /*Rodal con el que comparamos*/
     for (t=0; t<barGraphDataSize; t++){
-        //for (x=0; x<barCharData[1][i].length; x++){
-            if(barCharData[1][t][0]['rodal']['eje'] == optionSelected){
-                //console.log(t);
-                //console.log(barCharData[1][t][0]['rodal']);
-                rodalRefBarVal.push(barCharData[1][t][0]['rodal']);
-            }
-        //}
+        if(barCharData[1][t][0]['rodal']['eje'] == optionSelected){
+            rodalRefBarVal.push(barCharData[1][t][0]['rodal']);
+        }
     }
 
     barData.push(rodalBarVal,rodalRefBarVal);
-    //barData = null;
-
 
     return barData;
 }
@@ -1760,12 +1714,12 @@ var graficaBarras1 = function(){
     var rodVal = [];
 
     var barGraphDataSize = Object.keys(dataChartGraph[0]).length;
-    console.log(barGraphDataSize);
+    //console.log(barGraphDataSize);
     var optionSelected = $("#selecGrafBar1").val();
-    console.log(optionSelected);
+    //console.log(optionSelected);
 
     valoresBarrasEjes = setBars(barGraphDataSize, optionSelected);
-    console.log(valoresBarrasEjes);
+    //console.log(valoresBarrasEjes);
 
 
     for(t=0; t<valoresBarrasEjes.length; t++){
@@ -1775,7 +1729,7 @@ var graficaBarras1 = function(){
     }
 
     var ord = rodValores.sort(function (a, b){
-        return (b.val - a.val)
+        return (b.y - a.y)
     })
 
 
