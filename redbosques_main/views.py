@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht, Tesaurus, User, TeCategoria, FotosRodal, DocsRodal, Institucion, DatosUsuario, AuthUser,TeMunicipi,TeIndicador
+from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht, Tesaurus, User, TeCategoria, FotosRodal, DocsRodal, Institucion, DatosUsuario, AuthUser,TeMunicipi,TeIndicador, RodalProsp, WebMapaRodalProsp
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.urls import reverse
@@ -147,25 +147,70 @@ def initialData():
     for r in rodales:
         rodalesData.append({'id_rodal': r.id_rodal, 'nombre': r.nombre})
 
-    # context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'habitatData': habitatData, 'llista_rodals':llista_rodals, 'URL_BASE': URL_BASE}
+
     context = {'herramientas': 'Herramienta de evaluación de rodales maduros',
                'habitatData': habitatData,
                'subHabitatData': subHabitatData,
-               'rodalesData': rodalesData}
+               'rodalesData': rodalesData
+               }
 
     return context
+
+
+def initialDataFase1():
+    # Carga de datos para el selector de Habitat
+    habitatData=[]
+    habData = Habitat.objects.filter(seleccion=True).exclude(cod='4').exclude(cod__contains='.').order_by('nombre')
+    for h in habData:
+        habitatData.append({'cod': h.cod, 'nombre': h.nombre})
+
+    subHabitatDataProsp=[]
+    hp = WebMapaRodalProsp.objects.all()
+
+    shabProsp = hp.values_list('habitat_cod', flat=True)
+
+    habpr = Habitat.objects.filter(cod__in=shabProsp.values_list('habitat_cod', flat=True)).order_by('nombre')
+
+    for hprosp in habpr:
+        subHabitatDataProsp.append({'cod': hprosp.cod, 'nombre': hprosp.nombre})
+
+
+    rodalesProspData = []
+
+    rodProsp = WebMapaRodalProsp.objects.all().order_by('nombre')
+
+    for rd in rodProsp:
+        rodalesProspData.append({'id_rodal': rd.id_rodal, 'nombre': rd.nombre})
+
+    context = {'herramientas': 'Herramienta de evaluación de rodales maduros',
+               'habitatData': habitatData,
+               'subHabitatDataProsp': subHabitatDataProsp,
+               'rodalesProspData': rodalesProspData}
+
+    return context
+
+
+
+
+
+
+
+
+
+
 
 #@login_required(login_url="login/")
 def herramientas(request, id=None):
 
     if id is None:
-        #context = initialData()
         data = initialData()
-        context = {'initial_data': data, 'coordenadas_rodal': 'null'}
+        dataFase1 = initialDataFase1()
+        context = {'initial_data': data, 'initial_data_fase1': dataFase1, 'coordenadas_rodal': 'null'}
     else:
         coordenadas_rodal = cordRodal(id)
         data = initialData()
-        context = {'initial_data': data, 'coordenadas_rodal': coordenadas_rodal}
+        dataFase1 = initialDataFase1()
+        context = {'initial_data': data, 'initial_data_fase1': dataFase1,'coordenadas_rodal': coordenadas_rodal}
 
     return render(request, 'redbosques_main/herramientas.html', context)
 
@@ -191,7 +236,12 @@ def cordRodal(id):
 
 @api_view(['GET'])
 def dataCleaner(request):
-    resultado = initialData()
+    fase = request.query_params.get('f', None)
+
+    if fase == 'fase2':
+        resultado = initialData()
+    elif fase == 'fase1':
+        resultado = initialDataFase1()
     return Response(resultado)
 
 
@@ -244,6 +294,41 @@ def habitatData(request):
 
 
 @api_view(['GET'])
+def habitatDataProsp(request):
+    codiHabitat = request.query_params.get('ch', None)
+    newSubHabitatData = []
+    newRodalesData = []
+
+    allSub = WebMapaRodalProsp.objects.all()
+    allSub2 = allSub.all().values_list('habitat_cod', flat=True)
+
+    subHabExist = Habitat.objects.filter(cod__in=allSub2.values_list('habitat_cod', flat=True))
+
+    if codiHabitat == 'null':
+        subHabExistFilter = subHabExist.filter(cod__contains='.').order_by('nombre')
+        rodales = WebMapaRodalProsp.objects.all().order_by('nombre')
+    else:
+        subHabExistFilter = subHabExist.filter(cod__startswith=codiHabitat).filter(cod__contains='.').order_by('nombre')
+        rodales = WebMapaRodalProsp.objects.filter(habitat_cod__startswith=codiHabitat).order_by('nombre')
+
+    for habitat in subHabExistFilter:
+        newSubHabitatData.append({'cod': habitat.cod, 'nombre': habitat.nombre})
+
+    for r in rodales:
+        newRodalesData.append({
+            'id_rodal':r.id_rodal,
+            'x':r.geom.x,
+            'y':r.geom.y,
+            'nombre': r.nombre,
+            'Comunidad_autonoma': r.ccaa_nombre,
+            'habitat_nom': r.habitat_nom,
+            'valor': r.volarrodal
+        })
+
+    context = {'newSubHabitatData': newSubHabitatData, 'newRodalesData': newRodalesData}
+    return Response(context)
+
+@api_view(['GET'])
 def subHabitatData(request):
     codiSubhabitat = request.query_params.get('csh', None)
     codiAmbito = request.query_params.get('ca', None)
@@ -278,6 +363,32 @@ def subHabitatData(request):
 
 
 @api_view(['GET'])
+def subHabitatDataProsp(request):
+    codiSubhabitat = request.query_params.get('csh', None)
+    newRodalesData2 = []
+
+    if codiSubhabitat == 'null':
+        rodales = WebMapaRodalProsp.objects.all().order_by('nombre')
+    else:
+        rodales = WebMapaRodalProsp.objects.filter(habitat_cod__startswith=codiSubhabitat).order_by('nombre')
+
+
+    for r in rodales:
+        newRodalesData2.append({
+            'id_rodal':r.id_rodal,
+            'x':r.geom.x,
+            'y':r.geom.y,
+            'nombre': r.nombre,
+            'Comunidad_autonoma': r.ccaa_nombre,
+            'habitat_nom': r.habitat_nom,
+            'valor': r.volarrodal
+        })
+
+    context = {'newRodalesData2': newRodalesData2}
+    return Response(context)
+
+
+@api_view(['GET'])
 def rodalData(request):
     codiRodal = request.query_params.get('cr', None)
     codiAmbito = request.query_params.get('ca', None)
@@ -303,6 +414,31 @@ def rodalData(request):
             'valor_ie': r.ie,
             'valor_nm': r.nm,
             'regionBiogeo': r.nombre_es
+        })
+
+    context = {'rodalData': rodalData}
+    return Response(context)
+
+
+@api_view(['GET'])
+def rodalDataProsp(request):
+    codiRodal = request.query_params.get('cr', None)
+    rodalData = []
+
+    if codiRodal == 'null':
+        rod = WebMapaRodalProsp.objects.all().order_by('nombre')
+    else:
+        rod = WebMapaRodalProsp.objects.filter(id_rodal=codiRodal).order_by('nombre')
+
+    for r in rod:
+        rodalData.append({
+            'id_rodal':r.id_rodal,
+            'x':r.geom.x,
+            'y':r.geom.y,
+            'nombre': r.nombre,
+            'Comunidad_autonoma': r.ccaa_nombre,
+            'habitat_nom': r.habitat_nom,
+            'valor': r.volarrodal
         })
 
     context = {'rodalData': rodalData}
@@ -382,8 +518,24 @@ def datos_mapa(request):
                     'regionBiogeo': punt.nombre_es
                 })
 
+    rodalesFase1 = []
+    rod = WebMapaRodalProsp.objects.all()
 
-    context = {'llista_punts': llista_punts, 'llista_habitats': llista_habitats}
+
+    for t in rod:
+        rodalesFase1.append({
+            'id_rodal': t.id_rodal,
+            'x': t.geom.x,
+            'y': t.geom.y,
+            'nombre': t.nombre,
+            'Comunidad_autonoma': t.ccaa_nombre,
+            'habitat_nom': t.habitat_nom,
+            'valor': t.volarrodal
+        })
+
+    #print(rodalesFase1)
+
+    context = {'llista_punts': llista_punts, 'llista_habitats': llista_habitats, 'llista_punts_RodalsProsp': rodalesFase1}
     return Response(context)
 
 

@@ -182,7 +182,7 @@ ul.nav-pills li.active a {
     margin-top: 1%;
 }
 
-#mapid {
+#mapid, #mapidFase1 {
     height: 640px;
 }
 
@@ -777,3 +777,6 @@ td.errorAlert{
     padding-right: 0;
     padding-top: 2%;
 }
+
+.leaflet-fade-anim .leaflet-tile,.leaflet-zoom-anim .leaflet-zoom-animated { will-change:auto !important; }
+

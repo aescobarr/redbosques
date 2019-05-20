@@ -28,32 +28,23 @@
         <h3>Mapa de rodales de referencia RedBosques</h3>
     </div>
 </div>
-<div class="container">
+
+<div class="container menu-data-show">
+    <ul class="nav nav-tabs">
+        <li class="mapaFase1Tab"><a data-toggle="tab" href="#mapaFase1">Mapa fase 1</a></li>
+        <li class="active mapaFase2Tab"><a data-toggle="tab" href="#mapaFase2">Mapa fase 2</a></li>
+    </ul>
+</div>
+
+<div class="container mapaFase2">
     <div class="row mapa-selectores">
         <div id="mapid" class="col-lg-9"></div>
 
         <div class="col-lg-3 map-options">
             <a class="btn btn-selector-mapa" href="{% url 'menu' %}">Menú</a>
-            <!--<button type="btn" class="btn btn-selector-mapa">Comparar</button>-->
-
-            <!--<button class="btn btn-selector-mapa selectorFiltro" onclick="changeFilter()" value="0">Valoración Humana</button>-->
-
-            <!--<div class="seleccio_rodal">
-                <h5>Selecciona un rodal</h5>
-                <select class="form-control selector_rodal" onchange="updateMapData()">
-                    <option value="" selected="selected">------</option>
-                    {% for rodal in llista_punts %}
-                        <option class="rodal" value="{{ rodal.id }}">
-                            {{ rodal.nombre }}
-                        </option>
-                        {% endfor %}
-                </select>
-            </div>-->
-
             <div class="seleccio_habitat">
                 <div class="habitatd">
                     <h5>Tipo de bosque:</h5>
-                        <!--<select class="form-control tipo_habitat" onclick="updateMapData()">-->
                         <select class="form-control tipo_habitat" onchange="habitatData()">
                             <option value="" selected="selected">------</option>
                             {% for habitat in initial_data.habitatData %}
@@ -72,7 +63,6 @@
                             {% endfor %}
                         </select>
                     <h5>Rodal:</h5>
-                        <!--<select class="form-control selector_rodal" onchange="updateMapData()">-->
                         <select class="form-control selector_rodal" onchange="rodalData()">
                             <option value="" selected="selected">------</option>
                             {% for rodal in initial_data.rodalesData %}
@@ -83,17 +73,12 @@
                         </select>
                 </div>
 
-                <!--<div class="valoracion">
-                    <h5>Valoración</h5>
-                    <form class="checkbox selector_valoracion"></form>
-                </div>-->
             </div>
             <div class="limpiarFiltros">
                     <button class="btn btn-selector-mapa" onclick="limpiarFiltros()">Limpiar filtros</button>
             </div>
 
             <h5>Opciones de visualización</h5>
-            <!--<select class="form-control selector_clasificacio" onclick="updateMapData()">-->
             <select class="form-control selector_clasificacio" onchange="ambitoData()">
                 <option class="tip_clas" value="nm" selected="selected">Naturalidad</option>
                 <option class="tip_clas" value="hh">Huella humana</option>
@@ -103,15 +88,53 @@
         </div>
 
     </div>
-    <!--<div class="row bottom-buttons">
-        <div class="col-lg-offset-2 col-lg-3">
-                <a class="btn btn-selector-mapa" href="{% url 'menu' %}">Volver al menú</a>
-        </div>
-        <div class="col-lg-offset-2 col-lg-3">
-                <a class="btn btn-selector-mapa" href="{% url 'logout' %}">Salir de la aplicación</a>
-        </div>
-    </div>-->
 
+</div>
+
+
+<div class="container mapaFase1" style="display: None">
+    <div class="row mapa-selectores">
+        <div id="mapidFase1" class="col-lg-9"></div>
+
+        <div class="col-lg-3 map-options">
+            <a class="btn btn-selector-mapa" href="{% url 'menu' %}">Menú</a>
+            <div class="seleccio_habitat">
+                <div class="habitatd">
+                    <h5>Tipo de bosque:</h5>
+                        <select class="form-control tipo_habitat_prospeccio" onchange="habitatDataProsp()">
+                            <option value="" selected="selected">------</option>
+                            {% for habitat in initial_data_fase1.habitatData %}
+                            <option class="tipo_bosque" value="{{ habitat.cod }}">
+                                {{ habitat.nombre }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    <h5>Hábitat:</h5>
+                        <select class="form-control tipo_habitat_sel_prospeccio" onchange="subHabitatDataProsp()">
+                            <option value="" selected="selected">------</option>
+                            {% for subHabitat in initial_data_fase1.subHabitatDataProsp %}
+                            <option class="tipo_bosque" value="{{ subHabitat.cod }}">
+                                {{ subHabitat.nombre }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    <h5>Rodal:</h5>
+                        <select class="form-control selector_rodal_prospeccio" onchange="rodalDataProsp()">
+                            <option value="" selected="selected">------</option>
+                            {% for rodal in initial_data_fase1.rodalesProspData %}
+                                <option class="rodal" value="{{ rodal.id_rodal }}">
+                                    {{ rodal.nombre }}
+                                </option>
+                                {% endfor %}
+                        </select>
+                </div>
+            </div>
+            <div class="limpiarFiltros">
+                    <button class="btn btn-selector-mapa" onclick="limpiarFiltrosProsp()">Limpiar filtros</button>
+            </div>
+        </div>
+
+    </div>
 </div>
 {% endblock %}
 {% block extra_js %}
@@ -131,7 +154,16 @@
     var markers = L.layerGroup();
     var zoomRodal = {{ coordenadas_rodal | safe }};
 
-
+    var mymapFase1;
+    var markerLayerFase1;
+    var urlFase1 = "{% url 'datos_mapa' %}";
+    var puntuacionFase1={};
+    var setMapDataFase1;
+    var url_dataFase1;
+    var id_tipo_habitat_selFase1;
+    var id_tipo_habitatFase1;
+    var codi_rodalFase1;
+    var zoomRodalFase1 = {{ coordenadas_rodal | safe }};
 
 
 

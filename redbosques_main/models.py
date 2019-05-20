@@ -507,6 +507,67 @@ class DatosUsuario(models.Model):
         db_table = 'datos_usuario'
 
 
+class RodalProsp(models.Model):
+    id = models.AutoField(primary_key=True, max_length=100)
+    geom = models.GeometryField(blank=True, null=True)
+    datosrestringidos = models.BooleanField(blank=True, null=True)
+    metodo_cod = models.CharField(max_length=5)
+    nombre = models.CharField(max_length=150)
+
+    #comautonom_cod = models.ForeignKey('TeProvincia', models.DO_NOTHING, db_column='RodalProsp.comautonom_cod')
+    #provincia_cod = models.ForeignKey('TeProvincia', models.DO_NOTHING, db_column='RodalProsp.provincia_cod', blank=True, null=True)
+
+    comautonom_cod = models.ForeignKey(TeProvincia, db_column='comautonom_cod', related_name='TeProvincia_comautonom_cod_RodalProsp', on_delete=models.CASCADE)
+    provincia_cod = models.ForeignKey(TeProvincia, db_column='provincia_cod', related_name='TeProvincia_prvincia_cod_RodalProsp', on_delete=models.CASCADE, blank=True, null=True)
+    municipio = models.CharField(max_length=150, blank=True, null=True)
+    municipio1 = models.ForeignKey('TeMunicipi', models.DO_NOTHING, db_column='municipio1', blank=True, null=True)
+    propietario = models.CharField(max_length=150, blank=True, null=True)
+    lpeht_cod = models.ForeignKey('TeLpeht', models.DO_NOTHING, db_column='lpeht_cod')
+    hic_cod = models.CharField(max_length=5, blank=True, null=True)
+    regbio_cod = models.ForeignKey('TeRegbio', models.DO_NOTHING, db_column='regbio_cod')
+    fecha = models.DateField(blank=True, null=True)
+    equipo = models.CharField(max_length=255, blank=True, null=True)
+    tiempoempl = models.IntegerField(blank=True, null=True)
+    tipobosque = models.CharField(max_length=1, blank=True, null=True)
+    otroespflora = models.CharField(max_length=1, blank=True, null=True)
+    otrohics = models.CharField(max_length=1, blank=True, null=True)
+    otroinfo = models.CharField(max_length=1, blank=True, null=True)
+    volarrodal = models.IntegerField(blank=True, null=True)
+    valspparb = models.BooleanField()
+    valmasa = models.BooleanField()
+    valestratos = models.BooleanField()
+    valarboexcep = models.BooleanField()
+    valmmpie = models.BooleanField()
+    valmmsuelo = models.BooleanField()
+    valmicrohab = models.BooleanField()
+    valhuecos = models.BooleanField()
+    valregen = models.BooleanField()
+    hhantigua = models.CharField(max_length=1, blank=True, null=True)
+    hhreciente = models.CharField(max_length=1, blank=True, null=True)
+    notes = models.CharField(max_length=1, blank=True, null=True)
+    usuario = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'rodal_prosp'
+
+
+class WebMapaRodalProsp(models.Model):
+    id_view = models.BigIntegerField(blank=True, null=True)
+    id_rodal = models.IntegerField(blank=True, null=False, primary_key=True)
+    geom = models.GeometryField(blank=True, null=True)
+    datosrestringidos = models.BooleanField(blank=True, null=True)
+    nombre = models.CharField(max_length=150, blank=True, null=True)
+    ccaa_nom = models.CharField(max_length=5, blank=True, null=True)
+    ccaa_nombre = models.CharField(max_length=1, blank=True, null=True)
+    habitat_cod = models.CharField(max_length=10, blank=True, null=True)
+    habitat_nom = models.CharField(max_length=255, blank=True, null=True)
+    volarrodal = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False  # Created from a view. Don't remove.
+        db_table = 'web_mapa_Rodal_prosp'
+
 
 
 
