@@ -563,11 +563,29 @@ class WebMapaRodalProsp(models.Model):
     habitat_cod = models.CharField(max_length=10, blank=True, null=True)
     habitat_nom = models.CharField(max_length=255, blank=True, null=True)
     volarrodal = models.IntegerField(blank=True, null=True)
+    tipobosque = models.CharField(max_length=1, blank=True, null=True)
+    foto = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         managed = False  # Created from a view. Don't remove.
         db_table = 'web_mapa_Rodal_prosp'
 
+
+def urlFotosProsp(instance, filename):
+    #print(str(instance.id_rodal.id))
+    return os.path.join("fotos_prosp", str(instance.id_rodal.id), filename)
+
+class FotosRodalProsp(models.Model):
+    id_foto = models.AutoField(primary_key=True)
+    id_rodal = models.ForeignKey('RodalProsp', models.DO_NOTHING, db_column='id_rodal')
+    nombre_foto = models.CharField(max_length=200, blank=True, null=True)
+    foto = models.ImageField(upload_to=urlFotosProsp)
+    fotoprincipal = models.BooleanField()
+
+    class Meta:
+        managed = False
+        db_table = 'fotos_rodal_prosp'
+        unique_together = (('id_foto', 'id_rodal', 'fotoprincipal'),)
 
 
 

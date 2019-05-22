@@ -190,15 +190,6 @@ def initialDataFase1():
     return context
 
 
-
-
-
-
-
-
-
-
-
 #@login_required(login_url="login/")
 def herramientas(request, id=None):
 
@@ -218,9 +209,6 @@ def herramientas(request, id=None):
 def cordRodal(id):
 
     rodal = WebMapaValAmb.objects.filter(id_rodal=id).filter(eje_cod='nm')
-
-
-
     coordenadas_rodal = []
     for punt in rodal:
         coordenadas_rodal.append({
@@ -322,7 +310,9 @@ def habitatDataProsp(request):
             'nombre': r.nombre,
             'Comunidad_autonoma': r.ccaa_nombre,
             'habitat_nom': r.habitat_nom,
-            'valor': r.volarrodal
+            'tipodebosque': r.tipobosque,
+            'valor': r.volarrodal,
+            'foto': r.foto
         })
 
     context = {'newSubHabitatData': newSubHabitatData, 'newRodalesData': newRodalesData}
@@ -381,7 +371,9 @@ def subHabitatDataProsp(request):
             'nombre': r.nombre,
             'Comunidad_autonoma': r.ccaa_nombre,
             'habitat_nom': r.habitat_nom,
-            'valor': r.volarrodal
+            'tipodebosque': r.tipobosque,
+            'valor': r.volarrodal,
+            'foto': r.foto
         })
 
     context = {'newRodalesData2': newRodalesData2}
@@ -438,7 +430,9 @@ def rodalDataProsp(request):
             'nombre': r.nombre,
             'Comunidad_autonoma': r.ccaa_nombre,
             'habitat_nom': r.habitat_nom,
-            'valor': r.volarrodal
+            'tipodebosque': r.tipobosque,
+            'valor': r.volarrodal,
+            'foto': r.foto
         })
 
     context = {'rodalData': rodalData}
@@ -530,7 +524,9 @@ def datos_mapa(request):
             'nombre': t.nombre,
             'Comunidad_autonoma': t.ccaa_nombre,
             'habitat_nom': t.habitat_nom,
-            'valor': t.volarrodal
+            'tipodebosque': t.tipobosque,
+            'valor': t.volarrodal,
+            'foto': t.foto
         })
 
     #print(rodalesFase1)
