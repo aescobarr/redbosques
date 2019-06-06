@@ -588,4 +588,20 @@ class FotosRodalProsp(models.Model):
         unique_together = (('id_foto', 'id_rodal', 'fotoprincipal'),)
 
 
+class DatosGeneralesRodal(models.Model):
+    id_rodal = models.IntegerField(primary_key=True)
+    geom = models.GeometryField(blank=True, null=True)
+    provincia = models.CharField(max_length=100, blank=True, null=True)
+    com_aut = models.CharField(max_length=100, blank=True, null=True)
+    nombre_rodal = models.CharField(max_length=150, blank=True, null=True)
+    municipio = models.CharField(max_length=255, blank=True, null=True)
+    propietario = models.CharField(max_length=150, blank=True, null=True)
+    lpeht = models.CharField(max_length=255, blank=True, null=True)
+    hic = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False  # Created from a view. Don't remove.
+        db_table = 'datos_generales_rodal'
+
+
 

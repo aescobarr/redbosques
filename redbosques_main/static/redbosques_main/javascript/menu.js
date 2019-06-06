@@ -59,27 +59,27 @@ var zoomRodalMapa = function(){
 };
 
 
-var crearPDF = function(){
 
+var fichaRodal = function(){
     var rodalSelected = $('.rodalPDFselected').val();
-
-    url = '/redbosques/crearPDF/' + rodalSelected
-    $.ajax({
-        url: url,
-        method: "GET",
-        beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type)) {
-                var csrftoken = getCookie('csrftoken');
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-        },
-        success: function( data, textStatus, jqXHR ) {
-            alert("La descarga se ha realizado con éxito !!")
-        },
-            error: function(jqXHR, textStatus, errorThrown){
-                console.log(errorThrown);
-            }
-        });
-
-
+    if (rodalSelected === ''){
+        location.href = "/redbosques/menu";
+    }else{
+        location.href = "/redbosques/fichaRodal/" + rodalSelected + "/";
+    }
 }
+
+
+/*$.ajaxSetup({
+  beforeSend:function(jqXHR,settings){
+    if (settings.dataType === 'binary'){
+      settings.xhr().responseType='arraybuffer';
+      settings.processData=false;
+    }
+  }
+})*/
+
+
+
+
+

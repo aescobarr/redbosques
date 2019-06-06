@@ -2,16 +2,15 @@
 body{
     font-family: "Open Sans", Arial, sans-serif !important;
     font-size: 11px;
+    color: red;
 }
 
-html,body
-{
+html,body{
     width: 100%;
     height: 100%;
     margin: 0px;
     padding: 0px;
     overflow-x: hidden;
-
 }
 
 
@@ -130,4 +129,15 @@ label .boolRodRef{
 
 .infoRodal td{
     text-align: left;
+}
+
+h3{
+    text-align: center;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+h4{
+    border-bottom: 1px solid black;
+
 }

@@ -382,7 +382,7 @@ body .mapa-selectores #mapid .leaflet-popup-content{
     margin-top: 15px;
 }
 
-.rodalSelected, .editRodalSelected{
+.rodalSelected, .editRodalSelected, .rodalPDFselected{
     margin-left: 5px;
 }
 

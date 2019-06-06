@@ -71,7 +71,8 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('registration_complete/', views.registration_complete, name='registration_complete'),
     path('contacto/', views.contacto, name='contacto'),
-    path('crearPDF/<int:id>/', views.html_to_pdf_view, name='crearPDF'),
+    path('crearPDF/<int:id>/', views.crearPDF, name='crearPDF'),
+    path('fichaRodal/<int:id>/', views.verFichaRodal, name='verFichaRodal'),
     path('comparadorGraficos/', views.comparadorGraficos, name='comparadorGraficos'),
     path('comparadorGraficos/<int:id>/', views.comparadorGraficos, name='comparadorGraficos'),
 

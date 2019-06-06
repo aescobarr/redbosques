@@ -221,14 +221,12 @@ $(document).ready(function() {
     }
 
 
-
-
-
-
     if( missatge_geometria ){
         toastr.error(missatge_geometria,'No hay geometría');
     }
 });
+
+
 
 var disEnEspecieAcomp = function(){
     var espcomp_cod = $("#id_espcomp_cod").val();

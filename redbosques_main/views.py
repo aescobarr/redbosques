@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht, Tesaurus, User, TeCategoria, FotosRodal, DocsRodal, Institucion, DatosUsuario, AuthUser,TeMunicipi,TeIndicador, RodalProsp, WebMapaRodalProsp
+from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht, Tesaurus, User, TeCategoria, FotosRodal, DocsRodal, Institucion, DatosUsuario, AuthUser,TeMunicipi,TeIndicador, RodalProsp, WebMapaRodalProsp, DatosGeneralesRodal
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.urls import reverse
@@ -16,6 +16,7 @@ from django.contrib import messages
 from django.contrib import auth
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon
 from osgeo import ogr
+import tempfile
 
 
 from django.contrib.auth import authenticate
@@ -46,16 +47,21 @@ from django.db.models import Q
 from redbosques_main.serializers import DatosUsuarioSerializer
 from django.contrib.auth.models import User as dUser
 import copy
-from django.template.loader import get_template
 from django.core.mail import EmailMessage
 from redbosques import settings
 from django.core.files.storage import FileSystemStorage
-from django.template.loader import render_to_string
+from django.template.loader import render_to_string, get_template
 from weasyprint import HTML, CSS
 from django.db.models import Q
 from json.decoder import JSONDecodeError
 from django.contrib import messages
-
+import reportlab
+import io
+from reportlab.pdfgen import canvas
+from django.core.files import File
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
+from django.template import RequestContext
 
 def namedtuplefetchall(cursor):
     #Return all rows from a cursor as a namedtuple
@@ -3419,28 +3425,126 @@ def registration_complete(request):
 def contacto(request):
     return render(request, 'redbosques_main/contacto.html')
 
+@api_view(['GET','POST'])
+def crearPDF(request, id):
 
-def html_to_pdf_view(request, id):
+    #print(request.query_params.get('imagen', None))
+    #test = request.query_params.get('img', None)
+    #print(test)
+
+    imagen = request.data['image']
+
+
+
     dades_rodal = RodalValorres2.objects.filter(id_rodal=id)
     info_rodal = WebCompDataValAmb.objects.filter(id_rodal=id).filter(eje_cod="nm")
     rodalArbol = crearArbol(dades_rodal)
+    datgen = DatosGeneralesRodal.objects.filter(id_rodal=id)
 
-    paragraphs = ['first paragraph', 'second paragraph', 'third paragraph']
-    html_string = render_to_string('pdf_templates/pdf_template.html', {'paragraphs': paragraphs, 'rodal': rodalArbol})
-    css_string = render_to_string('pdf_templates/pdfStyles.css')
-    # css_btsrp = render_to_string('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    datosGenerales = []
+    for dg in datgen:
+        area = dg.geom.area
+        areaHect = round(area / 10000, 1)
 
-    html = HTML(string=html_string)
-    css = CSS(string=css_string)
-    html.write_pdf(target='/tmp/mypdf.pdf', stylesheets=[css]);
+        datosGenerales = {
+            'id_rodal': dg.id_rodal,
+            'nombre': dg.nombre_rodal,
+            'geom': dg.geom,
+            'provincia': dg.provincia,
+            'comAut': dg.com_aut,
+            'muni': dg.municipio,
+            'propietario': dg.propietario,
+            'lpeht': dg.lpeht,
+            'hic': dg.hic,
+            'area': areaHect
+        }
 
-    fs = FileSystemStorage('/tmp')
-    with fs.open('mypdf.pdf') as pdf:
-        response = HttpResponse(pdf, content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="mypdf.pdf"'
-        return response
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment'
+    response['Content-Disposition'] = 'filename="RODAL.pdf"'
+    html_string = render_to_string("pdf_templates/pdf_template.html", {'rodal': rodalArbol, 'datosGenerales': datosGenerales, 'imagen': imagen})
+    #response.write(HTML(string=html_string, base_url='http://127.0.0.1:8000/redbosques/crearPDF/91').write_pdf())
+    #response.write(HTML(string=html_string).write_pdf())
+    pdf_file = HTML(string=html_string, base_url=URL_BASE).write_pdf()
+    response.write(pdf_file)
+
+
+
+    #response.write(HTML(string=html_string, base_url=request.build_absolute_uri()).write_pdf(stylesheets=[CSS(settings.STATIC_URL + 'redbosques_main/css/redbosques.css')],presentational_hints=True))
+    #pdf = response.write_pdf(stylesheets=[CSS(settings.STATIC_URL + '/css/redbosques.css')],presentational_hints=True);
 
     return response
+
+
+
+
+
+def verFichaRodal(request, id):
+    dades_rodal = RodalValorres2.objects.filter(id_rodal=id)
+    info_rodal = WebCompDataValAmb.objects.filter(id_rodal=id).filter(eje_cod="nm")
+    rodalArbol = crearArbol(dades_rodal)
+    datgen = DatosGeneralesRodal.objects.filter(id_rodal=id)
+
+
+
+
+    datosGenerales = []
+    for dg in datgen:
+        area = dg.geom.area
+        areaHect = round(area/10000, 1)
+
+        datosGenerales = {
+            'id_rodal': dg.id_rodal,
+            'nombre': dg.nombre_rodal,
+            'geom': dg.geom,
+            'provincia': dg.provincia,
+            'comAut': dg.com_aut,
+            'muni': dg.municipio,
+            'propietario': dg.propietario,
+            'lpeht': dg.lpeht,
+            'hic': dg.hic,
+            'area': areaHect
+        }
+
+        buffer = []
+        if dg.geom != 'null':
+            geom = dg.geom
+            geom.transform(4326)
+            g = ogr.CreateGeometryFromJson(geom.json)
+
+            # buffer = []
+            for idx, f in enumerate(g):
+                geojson_string = f.ExportToJson()
+                buffer.append(dict(type="Feature", geometry=json.loads(geojson_string)))
+
+            geojsoncollection_string = json.dumps({"type": "FeatureCollection", "features": buffer})
+        else:
+            buffer.append(dict(type="Feature", geometry=""))
+            geojsoncollection_string = json.dumps({"type": "FeatureCollection", "features": buffer})
+
+
+
+    #########333############ FUNCIONA ###
+    #paragraphs = ['first paragraph', 'second paragraph', 'third paragraph']
+    #html_string = render_to_string('pdf_templates/pdf_template.html', {'paragraphs': paragraphs, 'rodal': rodalArbol})
+    #css_string = render_to_string('pdf_templates/pdfStyles.css')
+    #css = CSS(string=css_string)
+    #response = HttpResponse(content_type='application/pdf')
+    #response['Content-Disposition'] = 'attachment'
+    #html_string = render_to_string("pdf_templates/pdf_template.html", {'rodal': rodalArbol})
+    #response.write(HTML(string=html_string).write_pdf(response))
+    #return response
+    ####################################################
+
+
+    context = {'rodal': rodalArbol, 'datosGenerales': datosGenerales, 'geojson_string': geojsoncollection_string}
+    return render(request, 'redbosques_main/fichaRodal.html', context)
+
+
+
+
+
+
 
 def comparadorGraficos(request, id = None):
     init_params = {}
