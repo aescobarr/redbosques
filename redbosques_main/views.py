@@ -3499,7 +3499,7 @@ def crearPDF(request, id):
 
 
 
-
+@login_required(login_url="login/")
 def verFichaRodal(request, id):
     dades_rodal = RodalValorres2.objects.filter(id_rodal=id)
     info_rodal = WebCompDataValAmb.objects.filter(id_rodal=id).filter(eje_cod="nm")
