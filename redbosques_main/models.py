@@ -596,8 +596,18 @@ class DatosGeneralesRodal(models.Model):
     nombre_rodal = models.CharField(max_length=150, blank=True, null=True)
     municipio = models.CharField(max_length=255, blank=True, null=True)
     propietario = models.CharField(max_length=150, blank=True, null=True)
+    datosrestringidos = models.BooleanField(blank=True, null=True)
+    regbio_cod = models.CharField(max_length=4, blank=True, null=True)
+    regbio = models.CharField(max_length=100, blank=True, null=True)
     lpeht = models.CharField(max_length=255, blank=True, null=True)
     hic = models.CharField(max_length=100, blank=True, null=True)
+    lpeht_cod = models.CharField(max_length=10, blank=True, null=True)
+    hic_cod = models.CharField(max_length=5, blank=True, null=True)
+    fecha = models.DateField(blank=True, null=True)
+    equipo = models.CharField(max_length=255, blank=True, null=True)
+    otroespflora = models.CharField(max_length=255, blank=True, null=True)
+    otrohics = models.CharField(max_length=255, blank=True, null=True)
+    otroinfo = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False  # Created from a view. Don't remove.

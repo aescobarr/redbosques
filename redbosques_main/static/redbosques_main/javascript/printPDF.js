@@ -48,17 +48,17 @@ $(document).ready(function() {
       });
 
     var baseLayers = {
-        //"Bing maps": bing,
+        "Bing maps": bing,
         "Open street map": base,
-        //"IGN": ign,
-        //"Open cycle map": openCycle
+        "IGN": ign,
+        "Open cycle map": openCycle
     };
 
     map = L.map('mapaID', {
             preferCanvas:true,
             center: [40.0000000, -4.0000000],
             zoom: 6,
-            layers: [base]
+            layers: [base, bing, ign, openCycle]
     });
 
     L.control.layers(baseLayers).addTo(map);
@@ -84,10 +84,19 @@ $(document).ready(function() {
 
 });
 
+function enableSpinner() {
+    document.getElementById('spinner').style.display = 'block';
+    document.getElementById('dwnButton').style.display = 'none'
+}
 
+function disableSpinner() {
+    document.getElementById('spinner').style.display = 'none';
+    document.getElementById('dwnButton').style.display = 'block'
+}
 
 var crearPDF = function(id_rodal,token){
 
+    enableSpinner();
     url = '/redbosques/crearPDF/' + id_rodal;
     var filename = "Nombre.pdf";
     var img = document.createElement('img');
@@ -102,6 +111,7 @@ var crearPDF = function(id_rodal,token){
         img.height = dimensions.y;
         img.src = canvas.toDataURL("image/png");
         img.id = 'printMapImage'
+
 
         document.getElementById('images').innerHTML = '';
         document.getElementById('images').appendChild(img);
@@ -131,6 +141,7 @@ var crearPDF = function(id_rodal,token){
                 var blob = new Blob([xhr.response], {type: 'application/pdf', filename: 'test.pdf'});
                 var objectUrl = URL.createObjectURL(blob);
                 var a = document.createElement('a'), blob;
+                disableSpinner();
                 window.open(objectUrl);
             }
         }

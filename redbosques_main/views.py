@@ -3432,7 +3432,7 @@ def crearPDF(request, id):
     #test = request.query_params.get('img', None)
     #print(test)
 
-    imagen = request.data['image']
+    imagenMapa = request.data['image']
 
 
 
@@ -3440,6 +3440,17 @@ def crearPDF(request, id):
     info_rodal = WebCompDataValAmb.objects.filter(id_rodal=id).filter(eje_cod="nm")
     rodalArbol = crearArbol(dades_rodal)
     datgen = DatosGeneralesRodal.objects.filter(id_rodal=id)
+    imgRodal = FotosRodal.objects.filter(id_rodal=id).filter(fotoprincipal="True")
+
+    imagenRodal = []
+    for i in imgRodal:
+        imagenRodal = {
+            'id_rodal': i.id_rodal,
+            'id_foto': i.id_foto,
+            'nombre_foto': i.nombre_foto,
+            'foto': i.foto,
+            'fotoprincipal': i.fotoprincipal
+        }
 
     datosGenerales = []
     for dg in datgen:
@@ -3450,19 +3461,29 @@ def crearPDF(request, id):
             'id_rodal': dg.id_rodal,
             'nombre': dg.nombre_rodal,
             'geom': dg.geom,
+            'datosRestringidos': dg.datosrestringidos,
+            'regbio_cod': dg.regbio_cod,
+            'regbio': dg.regbio,
             'provincia': dg.provincia,
             'comAut': dg.com_aut,
             'muni': dg.municipio,
             'propietario': dg.propietario,
             'lpeht': dg.lpeht,
             'hic': dg.hic,
+            'lpeht_cod': dg.lpeht_cod,
+            'hic_cod': dg.hic_cod,
+            'fecha': dg.fecha,
+            'equipo': dg.equipo,
+            'otroespflora': dg.otroespflora,
+            'otrohics': dg.otrohics,
+            'otroinfo': dg.otroinfo,
             'area': areaHect
         }
 
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment'
     response['Content-Disposition'] = 'filename="RODAL.pdf"'
-    html_string = render_to_string("pdf_templates/pdf_template.html", {'rodal': rodalArbol, 'datosGenerales': datosGenerales, 'imagen': imagen})
+    html_string = render_to_string("pdf_templates/pdf_template.html", {'rodal': rodalArbol, 'datosGenerales': datosGenerales, 'imagenMapa': imagenMapa, 'imagenRodal': imagenRodal})
     #response.write(HTML(string=html_string, base_url='http://127.0.0.1:8000/redbosques/crearPDF/91').write_pdf())
     #response.write(HTML(string=html_string).write_pdf())
     pdf_file = HTML(string=html_string, base_url=URL_BASE).write_pdf()
@@ -3484,7 +3505,18 @@ def verFichaRodal(request, id):
     info_rodal = WebCompDataValAmb.objects.filter(id_rodal=id).filter(eje_cod="nm")
     rodalArbol = crearArbol(dades_rodal)
     datgen = DatosGeneralesRodal.objects.filter(id_rodal=id)
+    imgRodal = FotosRodal.objects.filter(id_rodal=id).filter(fotoprincipal="True")
 
+
+    imagenRodal = []
+    for i in imgRodal:
+        imagenRodal = {
+            'id_rodal': i.id_rodal,
+            'id_foto': i.id_foto,
+            'nombre_foto': i.nombre_foto,
+            'foto': i.foto,
+            'fotoprincipal': i.fotoprincipal
+        }
 
 
 
@@ -3497,12 +3529,22 @@ def verFichaRodal(request, id):
             'id_rodal': dg.id_rodal,
             'nombre': dg.nombre_rodal,
             'geom': dg.geom,
+            'datosRestringidos': dg.datosrestringidos,
+            'regbio_cod': dg.regbio_cod,
+            'regbio': dg.regbio,
             'provincia': dg.provincia,
             'comAut': dg.com_aut,
             'muni': dg.municipio,
             'propietario': dg.propietario,
             'lpeht': dg.lpeht,
             'hic': dg.hic,
+            'lpeht_cod': dg.lpeht_cod,
+            'hic_cod': dg.hic_cod,
+            'fecha': dg.fecha,
+            'equipo': dg.equipo,
+            'otroespflora': dg.otroespflora,
+            'otrohics': dg.otrohics,
+            'otroinfo': dg.otroinfo,
             'area': areaHect
         }
 
@@ -3537,7 +3579,7 @@ def verFichaRodal(request, id):
     ####################################################
 
 
-    context = {'rodal': rodalArbol, 'datosGenerales': datosGenerales, 'geojson_string': geojsoncollection_string}
+    context = {'rodal': rodalArbol, 'datosGenerales': datosGenerales, 'geojson_string': geojsoncollection_string, 'imagenRodal': imagenRodal}
     return render(request, 'redbosques_main/fichaRodal.html', context)
 
 

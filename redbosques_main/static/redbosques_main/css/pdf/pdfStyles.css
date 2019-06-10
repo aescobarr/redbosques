@@ -21,6 +21,15 @@
     margin-left: -15px;
 }
 
+.subheader h4 a, h4, h5 {
+    color: #9ac635 !important;
+}
+
+.tituloInforme{
+    border-bottom: none;
+    text-align: center;
+}
+
 
 
 body{
@@ -165,8 +174,12 @@ h3{
     border-bottom: 1px solid black;
 }
 
-h4{
+h4, h5{
     border-bottom: 1px solid black;
+}
+
+h5.infoComp{
+    border-bottom: none;
 }
 
 table {
@@ -176,7 +189,8 @@ table {
 
 .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
     padding: 4px;
-    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-top: 0px;
 }
 
 .table > caption + thead > tr:first-child > td, .table > caption + thead > tr:first-child > th, .table > colgroup + thead > tr:first-child > td, .table > colgroup + thead > tr:first-child > th, .table > thead:first-child > tr:first-child > td, .table > thead:first-child > tr:first-child > th {
@@ -208,27 +222,42 @@ table {
 
 
 .logoRBHeader{
-    width: 70%;
-    margin-left: 20px;
-    margin-bottom: 20px;
-    margin-right: 20px;
+    width: 60%;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .logoLifeHeader{
-    width: 95%;
+    width: 100%;
     margin: 0 auto;
-    padding-top: 25px;
-
 }
 
-.logosNat2000Header{
-    width: 95%;
-    margin: 0 auto;
-    padding-top: 18px;
-}
+
 
 .logosColab{
     text-align:center;
+}
+
+.headerContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 745px;
+
+}
+
+.logoRBHeaderCont{
+    width: 130px;
+    margin: auto;
+}
+
+.tituloInformeCont{
+    width: 380px;
+}
+
+.logoLifeHeaderCont{
+    width: 130px;
+    margin: auto;
 }
 
 @media print {
@@ -6082,8 +6111,11 @@ button.close {
 
 #mapaID {
     height: 400px;
-    border: 1px solid black;
 }
 
+.saltoDePagina{
+    display:block;
+    page-break-before:always;
+}
 
 
