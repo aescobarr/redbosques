@@ -1,13 +1,15 @@
-<!DOCTYPE html>
 {% load static %}
+<!DOCTYPE html>
 <html lang="es">
     <head>
+        {% block meta %}
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
         <title>PDF Exportado</title>
+        {% endblock %}
         {% block basic_css %}
             <!--<link rel="stylesheet" href="{% static 'redbosques_main/bootstrap-3.3.7-dist/css/bootstrap.css' %}">-->
             <link href="{% static 'redbosques_main/leaflet/leaflet.css' %}" rel="stylesheet">
