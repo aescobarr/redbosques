@@ -3483,7 +3483,7 @@ def crearPDF(request, id):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment'
     response['Content-Disposition'] = 'filename="RODAL.pdf"'
-    html_string = render_to_string("pdf_templates/pdf_template.html", {'rodal': rodalArbol, 'datosGenerales': datosGenerales, 'imagenMapa': imagenMapa, 'imagenRodal': imagenRodal, 'url_base': URL_BASE})
+    html_string = render_to_string("pdf_templates/pdf_template.html", {'rodal': rodalArbol, 'datosGenerales': datosGenerales, 'imagenMapa': imagenMapa, 'imagenRodal': imagenRodal, 'app_base_url': APP_BASE_URL})
     #response.write(HTML(string=html_string, base_url='http://127.0.0.1:8000/redbosques/crearPDF/91').write_pdf())
     #response.write(HTML(string=html_string).write_pdf())
     pdf_file = HTML(string=html_string, base_url=STATIC_PDF_ROOT).write_pdf()
