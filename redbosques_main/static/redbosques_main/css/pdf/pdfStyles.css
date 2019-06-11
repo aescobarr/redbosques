@@ -30,7 +30,17 @@
     text-align: center;
 }
 
+.imagenRodal img{
+    width:50%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
 
+.imagenRodal{
+    text-align: center !important;
+    margin-top: 5px;
+}
 
 body{
     font-family: "Open Sans", Arial, sans-serif !important;

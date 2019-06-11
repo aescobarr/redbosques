@@ -240,3 +240,7 @@ table {
     margin-bottom: 10px;
     border-bottom: none;
 }
+
+.imagenRodal img{
+    width:50%;
+}

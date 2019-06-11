@@ -315,7 +315,7 @@ h5{
 }
 
 .imagenRodal{
-    text-align: center;
+    text-align: center !important;
     margin-top: 5px;
 }
 
