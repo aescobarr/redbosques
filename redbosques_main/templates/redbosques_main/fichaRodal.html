@@ -45,31 +45,101 @@
                                 <b>NO</b>
                             {% endif %}
                         </td>
-                        <td class="TablaDatosGen" colspan="2">Área: <b>{{ datosGenerales.area }} ha</b></td>
+                        <td class="TablaDatosGen" colspan="2">Área:
+                            {% if datosGenerales.area %}
+                                <b>{{ datosGenerales.area }} ha</b>
+                            {% else %}
+                                <b>-</b>
+                            {% endif %}
+
+
+                        </td>
                     </tr>
                     <tr>
-                        <td class="TablaDatosGen" colspan="2">Comunidad Autónoma: <b>{{ datosGenerales.comAut }}</b></td>
-                        <td class="TablaDatosGen" colspan="2">Provincia: <b>{{ datosGenerales.provincia }}</b></td>
-                        <td class="TablaDatosGen" colspan="2">Término municipal: <b>{{ datosGenerales.muni }}</b></td>
+                        <td class="TablaDatosGen" colspan="2">Comunidad Autónoma:
+                            {% if datosGenerales.comAut %}
+                                <b>{{ datosGenerales.comAut }}</b>
+                            {% else %}
+                                <b>-</b>
+                            {% endif %}
+
+                        </td>
+                        <td class="TablaDatosGen" colspan="2">Provincia:
+                            {% if datosGenerales.provincia %}
+                                <b>{{ datosGenerales.provincia }}</b>
+                            {% else %}
+                                <b>-</b>
+                            {% endif %}
+                        </td>
+                        <td class="TablaDatosGen" colspan="2">Término municipal:
+                            {% if datosGenerales.muni %}
+                                <b>{{ datosGenerales.muni }}</b>
+                            {% else %}
+                                <b>-</b>
+                            {% endif %}
+                        </td>
                     </tr>
                     <tr>
-                        <td class="TablaDatosGen" colspan="6">Propietario: <b>{{ datosGenerales.propietario }}</b></td>
+                        <td class="TablaDatosGen" colspan="6">Propietario:
+                            {% if datosGenerales.propietario %}
+                                <b>{{ datosGenerales.propietario }}</b>
+                            {% else %}
+                                <b>-</b>
+                            {% endif %}
+
+                        </td>
                     </tr>
                     <tr>
 
                     </tr>
                     <tr class="headerTablaDatosGen">
-                        <td class="TablaDatosGen" colspan="2">Hábitat CORINE/LPEHT Código: <b>{{ datosGenerales.lpeht_cod }}</b></td>
-                        <td class="TablaDatosGen" colspan="4">Nombre: <b>{{ datosGenerales.lpeht }}</b></td>
+                        <td class="TablaDatosGen" colspan="2">Hábitat CORINE/LPEHT Código:
+                            {% if datosGenerales.lpeht_cod %}
+                                <b>{{ datosGenerales.lpeht_cod }}</b>
+                            {% else %}
+                                <b>-</b>
+                            {% endif %}
+                        </td>
+                        <td class="TablaDatosGen" colspan="4">Nombre:
+                            {% if datosGenerales.lpeht %}
+                                <b>{{ datosGenerales.lpeht }}</b>
+                            {% else %}
+                                <b>-</b>
+                            {% endif %}
+                        </td>
                     </tr>
                     <tr>
-                        <td class="TablaDatosGen" colspan="2">Hábitat Interés comunitario(HIC): Código: <b>{{ datosGenerales.hic_cod }}</b></td>
-                        <td class="TablaDatosGen" colspan="4">Nombre: <b>{{ datosGenerales.hic }}</b> </td>
+                        <td class="TablaDatosGen" colspan="2">Hábitat Interés comunitario(HIC): Código:
+                            {% if datosGenerales.hic_cod %}
+                                <b>{{ datosGenerales.hic_cod }}</b>
+                            {% else %}
+                                <b>-</b>
+                            {% endif %}
+                        </td>
+                        <td class="TablaDatosGen" colspan="4">Nombre:
+                            {% if datosGenerales.hic %}
+                                <b>{{ datosGenerales.hic }}</b>
+                            {% else %}
+                                <b>-</b>
+                            {% endif %}
+                        </td>
                     </tr>
                     <tr>
                         <!--<td class="TablaDatosGen" colspan="2"><h5>Muestreo</h5></td>-->
-                        <td class="TablaDatosGen" colspan="3">Fecha: <b>{{ datosGenerales.fecha }}</b></td>
-                        <td class="TablaDatosGen" colspan="3">Equipo: <b>{{ datosGenerales.equipo }}</b></td>
+                        <td class="TablaDatosGen" colspan="3">Fecha:
+                            {% if datosGenerales.fecha %}
+                                <b>{{ datosGenerales.fecha }}</b>
+                            {% else %}
+                                <b>-</b>
+                            {% endif %}
+                        </td>
+                        <td class="TablaDatosGen" colspan="3">Equipo:
+                            {% if datosGenerales.equipo %}
+                                <b>{{ datosGenerales.equipo }}</b>
+                            {% else %}
+                                <b>-</b>
+                            {% endif %}
+                        </td>
                     </tr>
                 </tbody>
             </table>

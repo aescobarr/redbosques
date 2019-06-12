@@ -88,7 +88,7 @@ $(document).ready(function() {
                 var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
                 '<b>' + punt.nombre + '</b><br><b>Hábitat: </b>' + punt.habitat_nom + '<br>' + '<b>Tipo de Bosque: </b>' + punt.tipobosque_nombre +
                 '<br><b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br><b>Región biogeográfica: </b>' + punt.regionBiogeo + '<br>' +
-                '<a href="#"><b>Ficha </b></a>&nbsp;<a href="/redbosques/comparador_new/' + punt.id_rodal + '/"><b> Comparar</b></a><br><br>' +
+                '<a href="/redbosques/fichaRodal/' + punt.id_rodal + '/"><b>Ficha </b></a>&nbsp;<a href="/redbosques/comparador_new/' + punt.id_rodal + '/"><b> Comparar</b></a><br><br>' +
                 '<div class="popup-table" style="text-align: center; width: 250px;"><table class="table"><tr><th>Ámbito</th>'+
                 '<th style="text-align: center;">Valor</th></tr><tr><td style="text-align: left;">Naturalidad</td><td>'+ punt.valor_nm +'</td></tr><tr>'+
                 '<td style="text-align: left;">Huella humana</td><td>'+ punt.valor_hh +'</td></tr><tr><td style="text-align: left;">Integridad Espacial</td><td>'+ punt.valor_ie +'</td></tr></table></div>' +
@@ -98,7 +98,7 @@ $(document).ready(function() {
                 var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
                 '<b>' + punt.nombre + '</b><br><b>Hábitat: </b>' + punt.habitat_nom + '<br>' + '<b>Tipo de Bosque: </b>' + punt.tipobosque_nombre +
                 '<br><b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br><b>Región biogeográfica: </b>' + punt.regionBiogeo + '<br>' +
-                '<a href="#"><b>Ficha </b></a>&nbsp;<a href="/redbosques/comparador_new/' + punt.id_rodal + '/"><b> Comparar</b></a><br><br>' +
+                '<a href="/redbosques/fichaRodal/' + punt.id_rodal + '/"><b>Ficha </b></a>&nbsp;<a href="/redbosques/comparador_new/' + punt.id_rodal + '/"><b> Comparar</b></a><br><br>' +
                 '<div class="popup-table" style="text-align: center; width: 250px;"><table class="table"><tr><th>Ámbito</th>'+
                 '<th style="text-align: center;">Valor</th></tr><tr><td style="text-align: left;">Naturalidad</td><td>'+ punt.valor_nm +'</td></tr><tr>'+
                 '<td style="text-align: left;">Huella humana</td><td>'+ punt.valor_hh +'</td></tr><tr><td style="text-align: left;">Integridad Espacial</td><td>'+ punt.valor_ie +'</td></tr></table></div>' +
