@@ -63,6 +63,8 @@ from django.http import FileResponse
 from reportlab.pdfgen import canvas
 from django.template import RequestContext
 
+import logging
+
 def namedtuplefetchall(cursor):
     #Return all rows from a cursor as a namedtuple
     desc = cursor.description
@@ -3434,7 +3436,8 @@ def crearPDF(request, id):
 
     imagenMapa = request.data['image']
 
-
+    logger = logging.getLogger('weasyprint')
+    logger.addHandler(logging.FileHandler('/tmp/weasyprint.log'))
 
     dades_rodal = RodalValorres2.objects.filter(id_rodal=id)
     info_rodal = WebCompDataValAmb.objects.filter(id_rodal=id).filter(eje_cod="nm")
@@ -3451,7 +3454,7 @@ def crearPDF(request, id):
             'id_rodal': i.id_rodal,
             'id_foto': i.id_foto,
             'nombre_foto': i.nombre_foto,
-            'foto': urlFoto,
+            'foto': foto,
             'fotoprincipal': i.fotoprincipal
         }
 
@@ -3486,7 +3489,7 @@ def crearPDF(request, id):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment'
     response['Content-Disposition'] = 'filename="RODAL.pdf"'
-    html_string = render_to_string("pdf_templates/pdf_template.html", {'rodal': rodalArbol, 'datosGenerales': datosGenerales, 'imagenMapa': imagenMapa, 'imagenRodal': imagenRodal, 'app_base_url': APP_BASE_URL, 'fotoRodal': urlFoto})
+    html_string = render_to_string("pdf_templates/pdf_template.html", {'rodal': rodalArbol, 'datosGenerales': datosGenerales, 'imagenMapa': imagenMapa, 'imagenRodal': imagenRodal, 'app_base_url': APP_BASE_URL, 'fotoRodal': foto})
     #response.write(HTML(string=html_string, base_url='http://127.0.0.1:8000/redbosques/crearPDF/91').write_pdf())
     #response.write(HTML(string=html_string).write_pdf())
     pdf_file = HTML(string=html_string, base_url=STATIC_PDF_ROOT).write_pdf()
