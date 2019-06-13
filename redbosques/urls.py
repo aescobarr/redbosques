@@ -29,9 +29,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^robots.txt', lambda x: HttpResponse("User-Agent: *\nDisallow:/", content_type="text/plain"), name="robots_file"),
     #path('accounts/', include('django.contrib.auth.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
 
-
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 '''if settings.DEBUG:
     import debug_toolbar
