@@ -189,14 +189,14 @@ $(document).ready(function() {
                 var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
                 '<b>' + punt.nombre + '</b><br><b>Hábitat: </b>' + punt.habitat_nom + '<br>' + '<b>Tipo de Bosque: </b>' + punt.tipodebosque +
                 '<br><b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br>' +
-                '<b>Valor: </b>' + punt.valor + '<br>' +
+                '<b>Valor: </b>' + punt.valor + '<br>' + '<a href="/redbosques/fichaRodalFase1/' + punt.id_rodal + '/"><b>Ficha </b></a>' +
                 '<div class="imagenRodal"><img src="/static/redbosques_main/css/logo.png" alt="'+ punt.nombre +'" height="100"></div>'
                 );
             }else{
                 var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
                 '<b>' + punt.nombre + '</b><br><b>Hábitat: </b>' + punt.habitat_nom + '<br>' + '<b>Tipo de Bosque: </b>' + punt.tipodebosque +
                 '<br><b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br>' +
-                '<b>Valor: </b>' + punt.valor + '<br>' +
+                '<b>Valor: </b>' + punt.valor + '<br>' + '<a href="/redbosques/fichaRodalFase1/' + punt.id_rodal + '/"><b>Ficha </b></a>' +
                 '<div class="imagenRodal"><img src="/media/'+ punt.foto +'" alt="'+ punt.nombre +'" width="250" height="150"></div>'
                 );
             }
