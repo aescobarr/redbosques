@@ -508,30 +508,27 @@ class DatosUsuario(models.Model):
 
 
 class RodalProsp(models.Model):
+
     id = models.AutoField(primary_key=True, max_length=100)
-    geom = models.GeometryField(blank=True, null=True)
+    geom = models.GeometryField(blank=True, null=True, srid=25830)
     datosrestringidos = models.BooleanField(blank=True, null=True)
-    metodo_cod = models.CharField(max_length=5)
+    metodo_cod = models.CharField(max_length=150)
     nombre = models.CharField(max_length=150)
-
-    #comautonom_cod = models.ForeignKey('TeProvincia', models.DO_NOTHING, db_column='RodalProsp.comautonom_cod')
-    #provincia_cod = models.ForeignKey('TeProvincia', models.DO_NOTHING, db_column='RodalProsp.provincia_cod', blank=True, null=True)
-
     comautonom_cod = models.ForeignKey(TeProvincia, db_column='comautonom_cod', related_name='TeProvincia_comautonom_cod_RodalProsp', on_delete=models.CASCADE)
     provincia_cod = models.ForeignKey(TeProvincia, db_column='provincia_cod', related_name='TeProvincia_prvincia_cod_RodalProsp', on_delete=models.CASCADE, blank=True, null=True)
     municipio = models.CharField(max_length=150, blank=True, null=True)
     municipio1 = models.ForeignKey('TeMunicipi', models.DO_NOTHING, db_column='municipio1', blank=True, null=True)
     propietario = models.CharField(max_length=150, blank=True, null=True)
     lpeht_cod = models.ForeignKey('TeLpeht', models.DO_NOTHING, db_column='lpeht_cod')
-    hic_cod = models.CharField(max_length=5, blank=True, null=True)
+    hic_cod = models.ForeignKey(TeHic, models.DO_NOTHING, db_column='hic_cod', blank=True, null=True)
     regbio_cod = models.ForeignKey('TeRegbio', models.DO_NOTHING, db_column='regbio_cod')
     fecha = models.DateField(blank=True, null=True)
     equipo = models.CharField(max_length=255, blank=True, null=True)
     tiempoempl = models.IntegerField(blank=True, null=True)
-    tipobosque = models.CharField(max_length=1, blank=True, null=True)
-    otroespflora = models.CharField(max_length=1, blank=True, null=True)
-    otrohics = models.CharField(max_length=1, blank=True, null=True)
-    otroinfo = models.CharField(max_length=1, blank=True, null=True)
+    tipobosque = models.CharField(max_length=150, blank=True, null=True)
+    otroespflora = models.CharField(max_length=200, blank=True, null=True)
+    otrohics = models.CharField(max_length=200, blank=True, null=True)
+    otroinfo = models.CharField(max_length=200, blank=True, null=True)
     volarrodal = models.IntegerField(blank=True, null=True)
     valspparb = models.BooleanField()
     valmasa = models.BooleanField()
@@ -542,10 +539,10 @@ class RodalProsp(models.Model):
     valmicrohab = models.BooleanField()
     valhuecos = models.BooleanField()
     valregen = models.BooleanField()
-    hhantigua = models.CharField(max_length=1, blank=True, null=True)
-    hhreciente = models.CharField(max_length=1, blank=True, null=True)
-    notes = models.CharField(max_length=1, blank=True, null=True)
-    usuario = models.IntegerField()
+    hhantigua = models.CharField(max_length=200, blank=True, null=True)
+    hhreciente = models.CharField(max_length=200, blank=True, null=True)
+    notes = models.CharField(max_length=200, blank=True, null=True)
+    usuario = models.ForeignKey('AuthUser', models.DO_NOTHING, db_column='usuario')
 
     class Meta:
         managed = False
@@ -575,6 +572,9 @@ def urlFotosProsp(instance, filename):
     #print(str(instance.id_rodal.id))
     return os.path.join("fotos_prosp", str(instance.id_rodal.id), filename)
 
+def urlDocsProsp(instance, filename):
+    return os.path.join("docs_prosp", str(instance.id_rodal.id), filename)
+
 class FotosRodalProsp(models.Model):
     id_foto = models.AutoField(primary_key=True)
     id_rodal = models.ForeignKey('RodalProsp', models.DO_NOTHING, db_column='id_rodal')
@@ -587,6 +587,28 @@ class FotosRodalProsp(models.Model):
         db_table = 'fotos_rodal_prosp'
         unique_together = (('id_foto', 'id_rodal', 'fotoprincipal'),)
 
+    def delete(self, *args, **kwargs):
+        self.foto.delete()
+        super().delete(*args, **kwargs)
+
+
+class DocsRodalProsp(models.Model):
+    id_doc = models.AutoField(primary_key=True)
+    id_rodal = models.ForeignKey('RodalProsp', models.DO_NOTHING, db_column='id_rodal')
+    nombre_doc = models.CharField(max_length=200, blank=True, null=True)
+    doc = models.FileField(upload_to=urlDocsProsp)
+
+    class Meta:
+        managed = False
+        db_table = 'docs_rodal_prosp'
+        unique_together = (('id_doc', 'id_rodal'),)
+
+
+    def delete(self, *args, **kwargs):
+        self.doc.delete()
+        super().delete(*args, **kwargs)
+
+
 
 class DatosGeneralesRodal(models.Model):
     id_rodal = models.IntegerField(primary_key=True)
@@ -594,7 +616,6 @@ class DatosGeneralesRodal(models.Model):
     provincia = models.CharField(max_length=100, blank=True, null=True)
     com_aut = models.CharField(max_length=100, blank=True, null=True)
     nombre_rodal = models.CharField(max_length=150, blank=True, null=True)
-    municipio = models.CharField(max_length=255, blank=True, null=True)
     propietario = models.CharField(max_length=150, blank=True, null=True)
     datosrestringidos = models.BooleanField(blank=True, null=True)
     regbio_cod = models.CharField(max_length=4, blank=True, null=True)
@@ -608,10 +629,60 @@ class DatosGeneralesRodal(models.Model):
     otroespflora = models.CharField(max_length=255, blank=True, null=True)
     otrohics = models.CharField(max_length=255, blank=True, null=True)
     otroinfo = models.CharField(max_length=255, blank=True, null=True)
+    municipio_id = models.IntegerField(blank=True, null=True)
+    nombre = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False  # Created from a view. Don't remove.
         db_table = 'datos_generales_rodal'
+
+
+class RodalProspDatosgen(models.Model):
+    id_rodal = models.IntegerField(primary_key=True)
+    geom = models.GeometryField(blank=True, null=True)
+    provincia = models.CharField(max_length=100, blank=True, null=True)
+    com_aut = models.CharField(max_length=100, blank=True, null=True)
+    nombre_rodal = models.CharField(max_length=150, blank=True, null=True)
+    propietario = models.CharField(max_length=150, blank=True, null=True)
+    datosrestringidos = models.BooleanField(blank=True, null=True)
+    regbio_cod = models.CharField(max_length=10, blank=True, null=True)
+    regbio = models.CharField(max_length=100, blank=True, null=True)
+    lpeht = models.CharField(max_length=255, blank=True, null=True)
+    hic = models.CharField(max_length=100, blank=True, null=True)
+    lpeht_cod = models.CharField(max_length=10, blank=True, null=True)
+    hic_cod = models.CharField(max_length=5, blank=True, null=True)
+    fecha = models.DateField(blank=True, null=True)
+    equipo = models.CharField(max_length=255, blank=True, null=True)
+    otroespflora = models.CharField(max_length=255, blank=True, null=True)
+    otrohics = models.CharField(max_length=255, blank=True, null=True)
+    otroinfo = models.CharField(max_length=255, blank=True, null=True)
+    municipio_id = models.IntegerField(blank=True, null=True)
+    nombre = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False  # Created from a view. Don't remove.
+        db_table = 'rodal_prosp_datosGen'
+
+
+
+class RodalProspValores(models.Model):
+    id_rodal = models.IntegerField(primary_key=True)
+    nombre = models.CharField(max_length=150, blank=True, null=True)
+    valspparb = models.BooleanField(blank=True, null=True)
+    valmasa = models.BooleanField(blank=True, null=True)
+    valestratos = models.BooleanField(blank=True, null=True)
+    valarboexcep = models.BooleanField(blank=True, null=True)
+    valmmpie = models.BooleanField(blank=True, null=True)
+    valmmsuelo = models.BooleanField(blank=True, null=True)
+    valmicrohab = models.BooleanField(blank=True, null=True)
+    valhuecos = models.BooleanField(blank=True, null=True)
+    valregen = models.BooleanField(blank=True, null=True)
+    volarrodal = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False  # Created from a view. Don't remove.
+        db_table = 'rodal_prosp_valores'
+
 
 
 

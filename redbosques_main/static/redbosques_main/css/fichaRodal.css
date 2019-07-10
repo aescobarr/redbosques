@@ -247,3 +247,10 @@ table {
     margin-right: auto;
     display: block;
 }
+
+@media print{
+    .saltoDePagina{
+        display:block;
+        page-break-before:always;
+    }
+}

@@ -5,13 +5,14 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms import DateTimeField
 from bootstrap_datepicker_plus import DatePickerInput
-from redbosques_main.models import Rodal, Tesaurus, TeProvincia, Habitat, TeLpeht, TeHic, TeRegbio, TeTaxon, TeCategoria, TeIndicador, FotosRodal, DocsRodal, TeMunicipi
+from redbosques_main.models import Rodal, Tesaurus, TeProvincia, Habitat, TeLpeht, TeHic, TeRegbio, TeTaxon, TeCategoria, TeIndicador, FotosRodal, DocsRodal, TeMunicipi, RodalProsp, FotosRodalProsp, DocsRodalProsp
 from redbosques_main import validators
 from django.core.exceptions import ValidationError
 from bootstrap_datepicker.widgets import DatePicker
 from django.contrib import messages
 from redbosques.settings import MAX_UPLOAD_SIZE, MAX_UPLOAD_DOC_SIZE
 import itertools
+from django.forms import Textarea
 
 #from django.utils.translation import gettext as _
 
@@ -222,6 +223,7 @@ class rodalFormFields(forms.ModelForm):
             'municipio1': forms.HiddenInput()
         }
 
+
 class rodalFormFields2(forms.ModelForm):
 
     numesparb = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
@@ -418,6 +420,7 @@ class rodalFormFields2(forms.ModelForm):
                   'volmmsuelo', 'volmmprop', 'nummicrohab', 'numfasessil', 'valagropasant', 'valforestant', 'valpropbosc56',
                   'valforestrec', 'valespinvas', 'valfragment', 'valcaza', 'valherbiv', 'valfrecuent', 'valdurabusos',
                   'rodalref', 'volmmtotal')
+
         widgets = {
             'valagropasant': forms.HiddenInput(),
             'valforestant': forms.HiddenInput(),
@@ -431,8 +434,6 @@ class rodalFormFields2(forms.ModelForm):
             'valpropbosc56': forms.HiddenInput()
 
         }
-
-
 
 
 class rodalFormFields3(ModelForm):
@@ -459,6 +460,7 @@ class rodalFormFields3Foto(ModelForm):
         else:
             raise ValidationError("No se pudo leer la imagen cargada")
 
+
 class rodalFormFields3Fotoprincipal(ModelForm):
     class Meta:
         model = FotosRodal
@@ -468,6 +470,94 @@ class rodalFormFields3Fotoprincipal(ModelForm):
 class rodalFormFields3Doc(ModelForm):
     class Meta:
         model = DocsRodal
+        fields = ('doc', )
+
+    def clean_doc(self):
+        doc = self.cleaned_data.get('doc', False)
+        maxSize = (MAX_UPLOAD_DOC_SIZE /1024)/1024
+        if doc:
+            if doc.size > MAX_UPLOAD_DOC_SIZE:
+                raise ValidationError("El documento es demasiado grande ( > " + str(maxSize) + " mb )")
+                #raise ValidationError("El documento es demasiado grande ( > 2 mb )")
+            return doc
+        else:
+            raise ValidationError("No se pudo leer el documento cargado")
+
+
+class rodalFormFase1Fields(ModelForm):
+    datosrestringidos = forms.BooleanField(widget=forms.CheckboxInput(attrs={'id': 'datosRestringidos'}), required=False)
+    metodos = Tesaurus.objects.filter().order_by('cod', 'nombre_es')
+    metodo_cod = forms.ModelChoiceField(queryset=metodos, widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Método", required=False)
+    nombre = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del rodal'}), required=True)
+    propietario = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Propietario'}), required=True)
+    habLPEHT = TeLpeht.objects.filter(seleccion='True').filter(cod__contains='.').order_by('nombre')
+    lpeht_cod = forms.ModelChoiceField(queryset=habLPEHT, widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Hábitat CORINE (LPHE)", required=True)
+    habitatsHIC = TeHic.objects.order_by('nombre_es')
+    hic_cod = forms.ModelChoiceField(queryset=habitatsHIC, widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Hábitat de interés comunitario HIC", required=True)
+    regionesBiogeo = TeRegbio.objects.order_by('nombre_es')
+    regbio_cod = forms.ModelChoiceField(queryset=regionesBiogeo, widget=forms.Select(attrs={'class': 'form-control'}),empty_label="Región biogeográfica", required=True)
+    fecha = forms.DateField(label="Fecha", widget=DatePickerInput(format='%d/%m/%Y', attrs={'placeholder': 'Fecha'}),required=False)
+    equipo = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Equipo de campo'}), required=True)
+    tiempoempl = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tiempo empleado'}), required=False)
+    tipobosque = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tipo de bosque'}), required=False)
+    otroespflora = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}), required=False)
+    otrohics = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}), required=False)
+    otroinfo = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}), required=False)
+    #hhantigua = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}), required=False)
+    #hhreciente = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}), required=False)
+
+
+    class Meta:
+        model = RodalProsp
+        fields = ('datosrestringidos', 'metodo_cod', 'nombre', 'comautonom_cod', 'provincia_cod', 'municipio',
+                  'municipio1', 'propietario', 'lpeht_cod', 'hic_cod', 'regbio_cod', 'fecha', 'equipo', 'tiempoempl',
+                  'tipobosque', 'otroespflora', 'otrohics', 'otroinfo', 'valspparb','valmasa', 'valestratos',
+                  'valarboexcep', 'valmmpie', 'valmmsuelo', 'valmicrohab', 'valhuecos', 'valregen', 'hhantigua',
+                  'volarrodal', 'hhreciente', 'notes')
+
+        widgets = {
+            'comautonom_cod': forms.HiddenInput(),
+            'provincia_cod': forms.HiddenInput(),
+            'municipio1': forms.HiddenInput(),
+            'valspparb': forms.HiddenInput(),
+            'valmasa' : forms.HiddenInput(),
+            'valestratos': forms.HiddenInput(),
+            'valarboexcep': forms.HiddenInput(),
+            'valmmpie': forms.HiddenInput(),
+            'valmmsuelo': forms.HiddenInput(),
+            'valmicrohab': forms.HiddenInput(),
+            'valhuecos': forms.HiddenInput(),
+            'valregen': forms.HiddenInput(),
+            'hhantigua': forms.HiddenInput(),
+            'hhreciente': forms.HiddenInput(),
+            'volarrodal': forms.HiddenInput(),
+        }
+
+
+class rodalFormFieldsFase1Foto(ModelForm):
+    class Meta:
+        model = FotosRodalProsp
+        fields = ('foto', )
+
+    def clean_foto(self):
+        foto = self.cleaned_data.get('foto', False)
+        if foto:
+            if foto.size > MAX_UPLOAD_SIZE:
+                raise ValidationError("Imagen demasiado grande ( > 2mb )")
+            return foto
+        else:
+            raise ValidationError("No se pudo leer la imagen cargada")
+
+
+class rodalFormFieldsFase1Fotoprincipal(ModelForm):
+    class Meta:
+        model = FotosRodalProsp
+        fields = ('fotoprincipal', )
+
+
+class rodalFormFieldsFase1Doc(ModelForm):
+    class Meta:
+        model = DocsRodalProsp
         fields = ('doc', )
 
     def clean_doc(self):

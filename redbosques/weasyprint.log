@@ -1,0 +1,302 @@
+Ignored `text-rendering:auto` at 5:153, unknown property.
+Ignored `filter:none` at 5:2054, unknown property.
+Ignored `text-rendering:auto` at 5:153, unknown property.
+Ignored `filter:none` at 5:2054, unknown property.
+Ignored `overflow-x: hidden` at 12:5, unknown property.
+Expected a media type, got screen/**/and/**/(max-width: 768px)
+Invalid media type " screen and (max-width: 768px) " the whole @media rule was ignored at 88:1.
+Ignored `pointer-events: all` at 478:5, unknown property.
+Ignored `will-change:auto ` at 775:78, unknown property.
+Ignored `overflow-x: hidden` at 56:5, unknown property.
+Ignored `pointer-events: all` at 132:5, unknown property.
+Font-face "Glyphicons Halflings" cannot be loaded
+Ignored `outline: 5px auto -webkit-focus-ring-color` at 1713:3, invalid value.
+Ignored `outline-offset: -2px` at 1714:3, unknown property.
+Ignored `box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .25)` at 2137:11, unknown property.
+Ignored `box-shadow: none` at 2144:11, unknown property.
+Ignored `word-break: break-all` at 2153:3, unknown property.
+Ignored `overflow-y: scroll` at 2169:3, unknown property.
+Expected a media type, got (min-width: 1200px)
+Invalid media type " (min-width: 1200px) " the whole @media rule was ignored at 2178:1.
+Expected a media type, got (min-width: 1200px)
+Invalid media type " (min-width: 1200px) " the whole @media rule was ignored at 2356:1.
+Ignored `overflow-x: auto` at 2697:3, unknown property.
+Ignored `margin-top: 1px \	` at 2731:3, invalid value.
+Ignored `outline: 5px auto -webkit-focus-ring-color` at 2748:3, invalid value.
+Ignored `outline-offset: -2px` at 2749:3, unknown property.
+Ignored `box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075)` at 2771:11, unknown property.
+Ignored `box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6)` at 2780:11, unknown property.
+Invalid or unsupported selector '.form-control:-ms-input-placeholder ', ('Unknown pseudo-class', '-ms-input-placeholder')
+Expected a media type, got screen/**/and/**/(-webkit-min-device-pixel-ratio: 0)
+Invalid media type " screen and (-webkit-min-device-pixel-ratio: 0) " the whole @media rule was ignored at 2812:1.
+Ignored `margin-top: 4px \	` at 2863:3, invalid value.
+Ignored `pointer-events: none` at 3006:3, unknown property.
+Ignored `box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075)` at 3037:11, unknown property.
+Ignored `box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #67b168` at 3042:11, unknown property.
+Ignored `box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075)` at 3067:11, unknown property.
+Ignored `box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #c0a16b` at 3072:11, unknown property.
+Ignored `box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075)` at 3097:11, unknown property.
+Ignored `box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #ce8483` at 3102:11, unknown property.
+Ignored `touch-action: manipulation` at 3157:7, unknown property.
+Ignored `user-select: none` at 3162:11, unknown property.
+Ignored `outline: 5px auto -webkit-focus-ring-color` at 3173:3, invalid value.
+Ignored `outline-offset: -2px` at 3174:3, unknown property.
+Ignored `box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125)` at 3187:11, unknown property.
+Ignored `filter: alpha(opacity=65)` at 3193:3, unknown property.
+Ignored `box-shadow: none` at 3195:11, unknown property.
+Ignored `pointer-events: none` at 3200:3, unknown property.
+Ignored `box-shadow: none` at 3556:11, unknown property.
+Ignored `border-top: 4px solid \	` at 3652:3, invalid value.
+Ignored `box-shadow: 0 6px 12px rgba(0, 0, 0, .175)` at 3683:11, unknown property.
+Ignored `filter: progid:DXImageTransform.Microsoft.gradient(enabled = false)` at 3729:3, unknown property.
+Ignored `box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125)` at 3850:11, unknown property.
+Ignored `box-shadow: none` at 3854:11, unknown property.
+Ignored `pointer-events: none` at 3935:3, unknown property.
+Ignored `box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1)` at 4494:11, unknown property.
+Ignored `box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15)` at 4506:11, unknown property.
+Ignored `background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)` at 4513:3, invalid value.
+Ignored `background-image:      -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)` at 4514:3, invalid value.
+Ignored `background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)` at 4529:3, invalid value.
+Ignored `background-image:      -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)` at 4530:3, invalid value.
+Ignored `background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)` at 4537:3, invalid value.
+Ignored `background-image:      -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)` at 4538:3, invalid value.
+Ignored `background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)` at 4545:3, invalid value.
+Ignored `background-image:      -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)` at 4546:3, invalid value.
+Ignored `background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)` at 4553:3, invalid value.
+Ignored `background-image:      -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)` at 4554:3, invalid value.
+Ignored `zoom: 1` at 4566:3, unknown property.
+Ignored `box-shadow: 0 1px 1px rgba(0, 0, 0, .05)` at 4817:11, unknown property.
+Ignored `box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05)` at 5188:11, unknown property.
+Ignored `text-shadow: 0 1px 0 #fff` at 5208:3, unknown property.
+Ignored `filter: alpha(opacity=20)` at 5209:3, unknown property.
+Ignored `filter: alpha(opacity=50)` at 5217:3, unknown property.
+Ignored `overflow-x: hidden` at 5258:3, unknown property.
+Ignored `overflow-y: auto` at 5259:3, unknown property.
+Ignored `box-shadow: 0 3px 9px rgba(0, 0, 0, .5)` at 5276:11, unknown property.
+Ignored `filter: alpha(opacity=0)` at 5288:3, unknown property.
+Ignored `filter: alpha(opacity=50)` at 5292:3, unknown property.
+Expected a media type, got (min-width: 768px)
+Invalid media type " (min-width: 768px) " the whole @media rule was ignored at 5332:1.
+Expected a media type, got (min-width: 992px)
+Invalid media type " (min-width: 992px) " the whole @media rule was ignored at 5345:1.
+Ignored `text-align: start` at 5360:3, invalid value.
+Ignored `text-shadow: none` at 5362:3, unknown property.
+Ignored `word-break: normal` at 5365:3, unknown property.
+Ignored `filter: alpha(opacity=0)` at 5369:3, unknown property.
+Ignored `line-break: auto` at 5372:3, unknown property.
+Ignored `filter: alpha(opacity=90)` at 5375:3, unknown property.
+Ignored `text-align: start` at 5479:3, invalid value.
+Ignored `text-shadow: none` at 5481:3, unknown property.
+Ignored `word-break: normal` at 5484:3, unknown property.
+Ignored `box-shadow: 0 5px 10px rgba(0, 0, 0, .2)` at 5495:11, unknown property.
+Ignored `line-break: auto` at 5497:3, unknown property.
+Expected a media type, got all/**/and/**/(transform-3d)
+Invalid media type " all and (transform-3d), (-webkit-transform-3d) " the whole @media rule was ignored at 5617:1.
+Ignored `text-shadow: 0 1px 2px rgba(0, 0, 0, .6)` at 5687:3, unknown property.
+Ignored `filter: alpha(opacity=50)` at 5689:3, unknown property.
+Ignored `background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .0001) 100%)` at 5693:3, invalid value.
+Ignored `background-image:      -o-linear-gradient(left, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .0001) 100%)` at 5694:3, invalid value.
+Ignored `background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, .5)), to(rgba(0, 0, 0, .0001)))` at 5695:3, invalid value.
+Ignored `filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#80000000", endColorstr="#00000000", GradientType=1)` at 5697:3, unknown property.
+Ignored `background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, .0001) 0%, rgba(0, 0, 0, .5) 100%)` at 5703:3, invalid value.
+Ignored `background-image:      -o-linear-gradient(left, rgba(0, 0, 0, .0001) 0%, rgba(0, 0, 0, .5) 100%)` at 5704:3, invalid value.
+Ignored `background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, .0001)), to(rgba(0, 0, 0, .5)))` at 5705:3, invalid value.
+Ignored `filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#00000000", endColorstr="#80000000", GradientType=1)` at 5707:3, unknown property.
+Ignored `filter: alpha(opacity=90)` at 5714:3, unknown property.
+Ignored `background-color: #000 \	` at 5769:3, invalid value.
+Ignored `text-shadow: 0 1px 2px rgba(0, 0, 0, .6)` at 5790:3, unknown property.
+Ignored `text-shadow: none` at 5793:3, unknown property.
+Expected a media type, got screen/**/and/**/(min-width: 768px)
+Invalid media type " screen and (min-width: 768px) " the whole @media rule was ignored at 5795:1.
+Ignored `text-shadow: none` at 5898:3, unknown property.
+Expected a media type, got (max-width: 767px)
+Invalid media type " (max-width: 767px) " the whole @media rule was ignored at 5931:1.
+Expected a media type, got (max-width: 767px)
+Invalid media type " (max-width: 767px) " the whole @media rule was ignored at 5946:1.
+Expected a media type, got (max-width: 767px)
+Invalid media type " (max-width: 767px) " the whole @media rule was ignored at 5951:1.
+Expected a media type, got (max-width: 767px)
+Invalid media type " (max-width: 767px) " the whole @media rule was ignored at 5956:1.
+Expected a media type, got (min-width: 768px)and/**/(max-width: 991px)
+Invalid media type " (min-width: 768px) and (max-width: 991px) " the whole @media rule was ignored at 5961:1.
+Expected a media type, got (min-width: 768px)and/**/(max-width: 991px)
+Invalid media type " (min-width: 768px) and (max-width: 991px) " the whole @media rule was ignored at 5976:1.
+Expected a media type, got (min-width: 768px)and/**/(max-width: 991px)
+Invalid media type " (min-width: 768px) and (max-width: 991px) " the whole @media rule was ignored at 5981:1.
+Expected a media type, got (min-width: 768px)and/**/(max-width: 991px)
+Invalid media type " (min-width: 768px) and (max-width: 991px) " the whole @media rule was ignored at 5986:1.
+Expected a media type, got (min-width: 992px)and/**/(max-width: 1199px)
+Invalid media type " (min-width: 992px) and (max-width: 1199px) " the whole @media rule was ignored at 5991:1.
+Expected a media type, got (min-width: 992px)and/**/(max-width: 1199px)
+Invalid media type " (min-width: 992px) and (max-width: 1199px) " the whole @media rule was ignored at 6006:1.
+Expected a media type, got (min-width: 992px)and/**/(max-width: 1199px)
+Invalid media type " (min-width: 992px) and (max-width: 1199px) " the whole @media rule was ignored at 6011:1.
+Expected a media type, got (min-width: 992px)and/**/(max-width: 1199px)
+Invalid media type " (min-width: 992px) and (max-width: 1199px) " the whole @media rule was ignored at 6016:1.
+Expected a media type, got (min-width: 1200px)
+Invalid media type " (min-width: 1200px) " the whole @media rule was ignored at 6021:1.
+Expected a media type, got (min-width: 1200px)
+Invalid media type " (min-width: 1200px) " the whole @media rule was ignored at 6036:1.
+Expected a media type, got (min-width: 1200px)
+Invalid media type " (min-width: 1200px) " the whole @media rule was ignored at 6041:1.
+Expected a media type, got (min-width: 1200px)
+Invalid media type " (min-width: 1200px) " the whole @media rule was ignored at 6046:1.
+Expected a media type, got (max-width: 767px)
+Invalid media type " (max-width: 767px) " the whole @media rule was ignored at 6051:1.
+Expected a media type, got (min-width: 768px)and/**/(max-width: 991px)
+Invalid media type " (min-width: 768px) and (max-width: 991px) " the whole @media rule was ignored at 6056:1.
+Expected a media type, got (min-width: 992px)and/**/(max-width: 1199px)
+Invalid media type " (min-width: 992px) and (max-width: 1199px) " the whole @media rule was ignored at 6061:1.
+Expected a media type, got (min-width: 1200px)
+Invalid media type " (min-width: 1200px) " the whole @media rule was ignored at 6066:1.
+Ignored `text-rendering:auto` at 5:153, unknown property.
+Ignored `filter:none` at 5:2054, unknown property.
+Ignored `text-rendering:auto` at 5:153, unknown property.
+Ignored `filter:none` at 5:2054, unknown property.
+Ignored `overflow-x: hidden` at 12:5, unknown property.
+Expected a media type, got screen/**/and/**/(max-width: 768px)
+Invalid media type " screen and (max-width: 768px) " the whole @media rule was ignored at 88:1.
+Ignored `pointer-events: all` at 478:5, unknown property.
+Ignored `will-change:auto ` at 775:78, unknown property.
+Ignored `overflow-x: hidden` at 56:5, unknown property.
+Ignored `pointer-events: all` at 132:5, unknown property.
+Font-face "Glyphicons Halflings" cannot be loaded
+Ignored `outline: 5px auto -webkit-focus-ring-color` at 1713:3, invalid value.
+Ignored `outline-offset: -2px` at 1714:3, unknown property.
+Ignored `box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .25)` at 2137:11, unknown property.
+Ignored `box-shadow: none` at 2144:11, unknown property.
+Ignored `word-break: break-all` at 2153:3, unknown property.
+Ignored `overflow-y: scroll` at 2169:3, unknown property.
+Expected a media type, got (min-width: 1200px)
+Invalid media type " (min-width: 1200px) " the whole @media rule was ignored at 2178:1.
+Expected a media type, got (min-width: 1200px)
+Invalid media type " (min-width: 1200px) " the whole @media rule was ignored at 2356:1.
+Ignored `overflow-x: auto` at 2697:3, unknown property.
+Ignored `margin-top: 1px \	` at 2731:3, invalid value.
+Ignored `outline: 5px auto -webkit-focus-ring-color` at 2748:3, invalid value.
+Ignored `outline-offset: -2px` at 2749:3, unknown property.
+Ignored `box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075)` at 2771:11, unknown property.
+Ignored `box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6)` at 2780:11, unknown property.
+Invalid or unsupported selector '.form-control:-ms-input-placeholder ', ('Unknown pseudo-class', '-ms-input-placeholder')
+Expected a media type, got screen/**/and/**/(-webkit-min-device-pixel-ratio: 0)
+Invalid media type " screen and (-webkit-min-device-pixel-ratio: 0) " the whole @media rule was ignored at 2812:1.
+Ignored `margin-top: 4px \	` at 2863:3, invalid value.
+Ignored `pointer-events: none` at 3006:3, unknown property.
+Ignored `box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075)` at 3037:11, unknown property.
+Ignored `box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #67b168` at 3042:11, unknown property.
+Ignored `box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075)` at 3067:11, unknown property.
+Ignored `box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #c0a16b` at 3072:11, unknown property.
+Ignored `box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075)` at 3097:11, unknown property.
+Ignored `box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #ce8483` at 3102:11, unknown property.
+Ignored `touch-action: manipulation` at 3157:7, unknown property.
+Ignored `user-select: none` at 3162:11, unknown property.
+Ignored `outline: 5px auto -webkit-focus-ring-color` at 3173:3, invalid value.
+Ignored `outline-offset: -2px` at 3174:3, unknown property.
+Ignored `box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125)` at 3187:11, unknown property.
+Ignored `filter: alpha(opacity=65)` at 3193:3, unknown property.
+Ignored `box-shadow: none` at 3195:11, unknown property.
+Ignored `pointer-events: none` at 3200:3, unknown property.
+Ignored `box-shadow: none` at 3556:11, unknown property.
+Ignored `border-top: 4px solid \	` at 3652:3, invalid value.
+Ignored `box-shadow: 0 6px 12px rgba(0, 0, 0, .175)` at 3683:11, unknown property.
+Ignored `filter: progid:DXImageTransform.Microsoft.gradient(enabled = false)` at 3729:3, unknown property.
+Ignored `box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125)` at 3850:11, unknown property.
+Ignored `box-shadow: none` at 3854:11, unknown property.
+Ignored `pointer-events: none` at 3935:3, unknown property.
+Ignored `box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1)` at 4494:11, unknown property.
+Ignored `box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15)` at 4506:11, unknown property.
+Ignored `background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)` at 4513:3, invalid value.
+Ignored `background-image:      -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)` at 4514:3, invalid value.
+Ignored `background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)` at 4529:3, invalid value.
+Ignored `background-image:      -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)` at 4530:3, invalid value.
+Ignored `background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)` at 4537:3, invalid value.
+Ignored `background-image:      -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)` at 4538:3, invalid value.
+Ignored `background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)` at 4545:3, invalid value.
+Ignored `background-image:      -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)` at 4546:3, invalid value.
+Ignored `background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)` at 4553:3, invalid value.
+Ignored `background-image:      -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)` at 4554:3, invalid value.
+Ignored `zoom: 1` at 4566:3, unknown property.
+Ignored `box-shadow: 0 1px 1px rgba(0, 0, 0, .05)` at 4817:11, unknown property.
+Ignored `box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05)` at 5188:11, unknown property.
+Ignored `text-shadow: 0 1px 0 #fff` at 5208:3, unknown property.
+Ignored `filter: alpha(opacity=20)` at 5209:3, unknown property.
+Ignored `filter: alpha(opacity=50)` at 5217:3, unknown property.
+Ignored `overflow-x: hidden` at 5258:3, unknown property.
+Ignored `overflow-y: auto` at 5259:3, unknown property.
+Ignored `box-shadow: 0 3px 9px rgba(0, 0, 0, .5)` at 5276:11, unknown property.
+Ignored `filter: alpha(opacity=0)` at 5288:3, unknown property.
+Ignored `filter: alpha(opacity=50)` at 5292:3, unknown property.
+Expected a media type, got (min-width: 768px)
+Invalid media type " (min-width: 768px) " the whole @media rule was ignored at 5332:1.
+Expected a media type, got (min-width: 992px)
+Invalid media type " (min-width: 992px) " the whole @media rule was ignored at 5345:1.
+Ignored `text-align: start` at 5360:3, invalid value.
+Ignored `text-shadow: none` at 5362:3, unknown property.
+Ignored `word-break: normal` at 5365:3, unknown property.
+Ignored `filter: alpha(opacity=0)` at 5369:3, unknown property.
+Ignored `line-break: auto` at 5372:3, unknown property.
+Ignored `filter: alpha(opacity=90)` at 5375:3, unknown property.
+Ignored `text-align: start` at 5479:3, invalid value.
+Ignored `text-shadow: none` at 5481:3, unknown property.
+Ignored `word-break: normal` at 5484:3, unknown property.
+Ignored `box-shadow: 0 5px 10px rgba(0, 0, 0, .2)` at 5495:11, unknown property.
+Ignored `line-break: auto` at 5497:3, unknown property.
+Expected a media type, got all/**/and/**/(transform-3d)
+Invalid media type " all and (transform-3d), (-webkit-transform-3d) " the whole @media rule was ignored at 5617:1.
+Ignored `text-shadow: 0 1px 2px rgba(0, 0, 0, .6)` at 5687:3, unknown property.
+Ignored `filter: alpha(opacity=50)` at 5689:3, unknown property.
+Ignored `background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .0001) 100%)` at 5693:3, invalid value.
+Ignored `background-image:      -o-linear-gradient(left, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .0001) 100%)` at 5694:3, invalid value.
+Ignored `background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, .5)), to(rgba(0, 0, 0, .0001)))` at 5695:3, invalid value.
+Ignored `filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#80000000", endColorstr="#00000000", GradientType=1)` at 5697:3, unknown property.
+Ignored `background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, .0001) 0%, rgba(0, 0, 0, .5) 100%)` at 5703:3, invalid value.
+Ignored `background-image:      -o-linear-gradient(left, rgba(0, 0, 0, .0001) 0%, rgba(0, 0, 0, .5) 100%)` at 5704:3, invalid value.
+Ignored `background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, .0001)), to(rgba(0, 0, 0, .5)))` at 5705:3, invalid value.
+Ignored `filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#00000000", endColorstr="#80000000", GradientType=1)` at 5707:3, unknown property.
+Ignored `filter: alpha(opacity=90)` at 5714:3, unknown property.
+Ignored `background-color: #000 \	` at 5769:3, invalid value.
+Ignored `text-shadow: 0 1px 2px rgba(0, 0, 0, .6)` at 5790:3, unknown property.
+Ignored `text-shadow: none` at 5793:3, unknown property.
+Expected a media type, got screen/**/and/**/(min-width: 768px)
+Invalid media type " screen and (min-width: 768px) " the whole @media rule was ignored at 5795:1.
+Ignored `text-shadow: none` at 5898:3, unknown property.
+Expected a media type, got (max-width: 767px)
+Invalid media type " (max-width: 767px) " the whole @media rule was ignored at 5931:1.
+Expected a media type, got (max-width: 767px)
+Invalid media type " (max-width: 767px) " the whole @media rule was ignored at 5946:1.
+Expected a media type, got (max-width: 767px)
+Invalid media type " (max-width: 767px) " the whole @media rule was ignored at 5951:1.
+Expected a media type, got (max-width: 767px)
+Invalid media type " (max-width: 767px) " the whole @media rule was ignored at 5956:1.
+Expected a media type, got (min-width: 768px)and/**/(max-width: 991px)
+Invalid media type " (min-width: 768px) and (max-width: 991px) " the whole @media rule was ignored at 5961:1.
+Expected a media type, got (min-width: 768px)and/**/(max-width: 991px)
+Invalid media type " (min-width: 768px) and (max-width: 991px) " the whole @media rule was ignored at 5976:1.
+Expected a media type, got (min-width: 768px)and/**/(max-width: 991px)
+Invalid media type " (min-width: 768px) and (max-width: 991px) " the whole @media rule was ignored at 5981:1.
+Expected a media type, got (min-width: 768px)and/**/(max-width: 991px)
+Invalid media type " (min-width: 768px) and (max-width: 991px) " the whole @media rule was ignored at 5986:1.
+Expected a media type, got (min-width: 992px)and/**/(max-width: 1199px)
+Invalid media type " (min-width: 992px) and (max-width: 1199px) " the whole @media rule was ignored at 5991:1.
+Expected a media type, got (min-width: 992px)and/**/(max-width: 1199px)
+Invalid media type " (min-width: 992px) and (max-width: 1199px) " the whole @media rule was ignored at 6006:1.
+Expected a media type, got (min-width: 992px)and/**/(max-width: 1199px)
+Invalid media type " (min-width: 992px) and (max-width: 1199px) " the whole @media rule was ignored at 6011:1.
+Expected a media type, got (min-width: 992px)and/**/(max-width: 1199px)
+Invalid media type " (min-width: 992px) and (max-width: 1199px) " the whole @media rule was ignored at 6016:1.
+Expected a media type, got (min-width: 1200px)
+Invalid media type " (min-width: 1200px) " the whole @media rule was ignored at 6021:1.
+Expected a media type, got (min-width: 1200px)
+Invalid media type " (min-width: 1200px) " the whole @media rule was ignored at 6036:1.
+Expected a media type, got (min-width: 1200px)
+Invalid media type " (min-width: 1200px) " the whole @media rule was ignored at 6041:1.
+Expected a media type, got (min-width: 1200px)
+Invalid media type " (min-width: 1200px) " the whole @media rule was ignored at 6046:1.
+Expected a media type, got (max-width: 767px)
+Invalid media type " (max-width: 767px) " the whole @media rule was ignored at 6051:1.
+Expected a media type, got (min-width: 768px)and/**/(max-width: 991px)
+Invalid media type " (min-width: 768px) and (max-width: 991px) " the whole @media rule was ignored at 6056:1.
+Expected a media type, got (min-width: 992px)and/**/(max-width: 1199px)
+Invalid media type " (min-width: 992px) and (max-width: 1199px) " the whole @media rule was ignored at 6061:1.
+Expected a media type, got (min-width: 1200px)
+Invalid media type " (min-width: 1200px) " the whole @media rule was ignored at 6066:1.

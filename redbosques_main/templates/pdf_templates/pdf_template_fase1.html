@@ -1,0 +1,342 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        {% block meta %}
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>PDF Exportado</title>
+        {% endblock %}
+        {% block basic_css %}
+            <link rel="stylesheet" href="{% static 'redbosques_main/fontawesome-free-5.3.1-web/css/fontawesome.min.css' %}">
+            <link rel="stylesheet" href="{% static 'redbosques_main/fontawesome-free-5.3.1-web/css/all.min.css' %}">
+            <link rel="stylesheet" href="{% static 'redbosques_main/css/redbosques.css' %}">
+            <link rel="stylesheet" href="{% static 'redbosques_main/css/pdf/pdfStyles.css' %}">
+        {% endblock %}
+    </head>
+    <body>
+        <div class="headerContainer">
+            <div class="logoRBHeaderCont">
+                <img class="logoRBHeader" src="{% static 'redbosques_main/css/logo.png' %}">
+            </div>
+            <div class="tituloInformeCont">
+                <h4 class="tituloInforme">IDENTIFICACIÓN DE RODALES MADUROS DE REFERENCIA</h4>
+                <h4 class="tituloInforme">Fase I: Prospección</h4>
+            </div>
+            <div class="logoLifeHeaderCont">
+                <img class="logoLifeHeader" src="{% static 'redbosques_main/css/logoLifeNatura.png' %}">
+            </div>
+        </div>
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h4>Datos Generales</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <table class="table responsive">
+                        <tbody>
+                            <tr>
+                                <td class="TablaDatosGen" colspan="2">Nombre: <b>{{ datosGenerales.nombre }}</b></td>
+                                <td class="TablaDatosGen" colspan="2">Datos restringidos:
+                                    {% if datosGenerales.datosRestringidos %}
+                                        <b>SI</b>
+                                    {% else %}
+                                        <b>NO</b>
+                                    {% endif %}
+                                </td>
+                                <td class="TablaDatosGen" colspan="2">Propietario:
+                                    {% if datosGenerales.propietario %}
+                                        <b>{{ datosGenerales.propietario }}</b>
+                                    {% else %}
+                                        <b>-</b>
+                                    {% endif %}
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="TablaDatosGen" colspan="2">Comunidad Autónoma:
+                                    {% if datosGenerales.comAut %}
+                                        <b>{{ datosGenerales.comAut }}</b>
+                                    {% else %}
+                                        <b>-</b>
+                                    {% endif %}
+
+                                </td>
+                                <td class="TablaDatosGen" colspan="2">Provincia:
+                                    {% if datosGenerales.provincia %}
+                                        <b>{{ datosGenerales.provincia }}</b>
+                                    {% else %}
+                                        <b>-</b>
+                                    {% endif %}
+                                </td>
+                                <td class="TablaDatosGen" colspan="2">Término municipal:
+                                    {% if datosGenerales.muni %}
+                                        <b>{{ datosGenerales.muni }}</b>
+                                    {% else %}
+                                        <b>-</b>
+                                    {% endif %}
+                                </td>
+                            </tr>
+
+                            <tr class="headerTablaDatosGen">
+                                <td class="TablaDatosGen" colspan="4">Hábitat CORINE/LPEHT Nombre:
+                                    {% if datosGenerales.lpeht %}
+                                        <b>{{ datosGenerales.lpeht }}</b>
+                                    {% else %}
+                                        <b>-</b>
+                                    {% endif %}
+                                </td>
+                                <td class="TablaDatosGen" colspan="2">Código:
+                                    {% if datosGenerales.lpeht_cod %}
+                                        <b>{{ datosGenerales.lpeht_cod }}</b>
+                                    {% else %}
+                                        <b>-</b>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="TablaDatosGen" colspan="4">Hábitat Interés comunitario(HIC) Nombre:
+                                    {% if datosGenerales.hic %}
+                                        <b>{{ datosGenerales.hic }}</b>
+                                    {% else %}
+                                        <b>-</b>
+                                    {% endif %}
+                                </td>
+                                <td class="TablaDatosGen" colspan="2">Código:
+                                    {% if datosGenerales.hic_cod %}
+                                        <b>{{ datosGenerales.hic_cod }}</b>
+                                    {% else %}
+                                        <b>-</b>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+
+                                <td class="TablaDatosGen" colspan="3">Fecha:
+                                    {% if datosGenerales.fecha %}
+                                        <b>{{ datosGenerales.fecha }}</b>
+                                    {% else %}
+                                        <b>-</b>
+                                    {% endif %}
+                                </td>
+                                <td class="TablaDatosGen" colspan="3">Equipo:
+                                    {% if datosGenerales.equipo %}
+                                        <b>{{ datosGenerales.equipo }}</b>
+                                    {% else %}
+                                        <b>-</b>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <h4>Valoración de la madurez</h4>
+                </div>
+                <div class="col-lg-6">
+                    <h4>Imagen del rodal</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="data-table tabla-datos"><!--         Naturalidad                       -->
+                        <table class="table responsive" style="width: 100%;">
+                            <thead>
+                                <tr class="headerTabla">
+                                    <th colspan="3" style="width: auto"></th>
+                                    <!--<th style="width: auto; text-align: center;"></th>
+                                    <th style="width: auto; text-align: center;"></th>-->
+                                    <th style="width: auto; text-align: center;">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="lv3 lv3Nat">
+                                    <td colspan="3" class="identValores"><span>Especies arbóreas en el dosel</span></td>
+                                    {% if valores.valspparb %}
+                                        <td id="valspparb" class="bgColorRod valRodFase1">1 (SI)</td>
+                                    {% elif valores.valspparb == False %}
+                                        <td id="valspparb" class="bgColorRod valRodFase1">0 (NO)</td>
+                                    {% else %}
+                                        <td id="valspparb" class="bgColorRod valRodFase1">-</td>
+                                    {% endif %}
+                                </tr>
+
+                                <tr class="lv3 lv3Nat">
+                                    <td colspan="3" class="identValores"><span>Diversidad estructural</span></td>
+                                    {% if valores.valmasa %}
+                                        <td id="valmasa" class="bgColorRod valRodFase1">1 (SI)</td>
+                                    {% elif valores.valmasa == False %}
+                                        <td id="valmasa" class="bgColorRod valRodFase1">0 (NO)</td>
+                                    {% else %}
+                                        <td id="valmasa" class="bgColorRod valRodFase1">-</td>
+                                    {% endif %}
+                                </tr>
+                                <tr class="lv3 lv3Nat">
+                                    <td colspan="3" class="identValores"><span>Estratos verticales arbóreos</span></td>
+                                    {% if valores.valestratos %}
+                                        <td id="valestratos" class="bgColorRod valRodFase1">1 (SI)</td>
+                                    {% elif valores.valestratos == False %}
+                                        <td id="valestratos" class="bgColorRod valRodFase1">0 (NO)</td>
+                                    {% else %}
+                                        <td id="valestratos" class="bgColorRod valRodFase1">-</td>
+                                    {% endif %}
+                                </tr>
+                                <tr class="lv3 lv3Nat">
+                                    <td colspan="3" class="identValores"><span>Árboles excepcionales</span></td>
+                                    {% if valores.valarboexcep %}
+                                        <td id="valarboexcep" class="bgColorRod valRodFase1">1 (SI)</td>
+                                    {% elif valores.valarboexcep == False %}
+                                        <td id="valarboexcep" class="bgColorRod valRodFase1">0 (NO)</td>
+                                    {% else %}
+                                        <td id="valarboexcep" class="bgColorRod valRodFase1">-</td>
+                                    {% endif %}
+                                </tr>
+                                <tr class="lv3 lv3Nat">
+                                    <td colspan="3" class="identValores"><span>Madera muerta en pie</span></td>
+                                    {% if valores.valmmpie %}
+                                        <td id="valmmpie" class="bgColorRod valRodFase1">1 (SI)</td>
+                                    {% elif valores.valmmpie == False %}
+                                        <td id="valmmpie" class="bgColorRod valRodFase1">0 (NO)</td>
+                                    {% else %}
+                                        <td id="valmmpie" class="bgColorRod valRodFase1">-</td>
+                                    {% endif %}
+                                </tr>
+                                <tr class="lv3 lv3Nat">
+                                    <td colspan="3" class="identValores"><span>Madera muerta en suelo</span></td>
+                                    {% if valores.valmmsuelo %}
+                                        <td id="valmmsuelo" class="bgColorRod valRodFase1">1 (SI)</td>
+                                    {% elif valores.valmmsuelo == False %}
+                                        <td id="valmmsuelo" class="bgColorRod valRodFase1">0 (NO)</td>
+                                    {% else %}
+                                        <td id="valmmsuelo" class="bgColorRod valRodFase1">-</td>
+                                    {% endif %}
+                                </tr>
+                                <tr class="lv3 lv3Nat">
+                                    <td colspan="3" class="identValores"><span>Microhábitats en pies vivos</span></td>
+                                    {% if valores.valmicrohab %}
+                                        <td id="valmicrohab" class="bgColorRod valRodFase1">1 (SI)</td>
+                                    {% elif valores.valmicrohab == False %}
+                                        <td id="valmicrohab" class="bgColorRod valRodFase1">0 (NO)</td>
+                                    {% else %}
+                                        <td id="valmicrohab" class="bgColorRod valRodFase1">-</td>
+                                    {% endif %}
+                                </tr>
+
+                                <tr class="lv3 lv3Nat">
+                                    <td colspan="3" class="identValores"><span>Huecos en el dosel</span></td>
+                                    {% if valores.valhuecos %}
+                                        <td id="valhuecos" class="bgColorRod valRodFase1">1 (SI)</td>
+                                    {% elif valores.valhuecos == False %}
+                                        <td id="valhuecos" class="bgColorRod valRodFase1">0 (NO)</td>
+                                    {% else %}
+                                        <td id="valhuecos" class="bgColorRod valRodFase1">-</td>
+                                    {% endif %}
+                                </tr>
+                                <tr class="lv3 lv3Nat">
+                                    <td colspan="3" class="identValores"><span>Regenerado avanzado</span></td>
+                                    {% if valores.valregen %}
+                                        <td id="valregen" class="bgColorRod valRodFase1">1 (SI)</td>
+                                    {% elif valores.valregen == False %}
+                                        <td id="valregen" class="bgColorRod valRodFase1">0 (NO)</td>
+                                    {% else %}
+                                        <td id="valregen" class="bgColorRod valRodFase1">-</td>
+                                    {% endif %}
+                                </tr>
+                                <tr class="lv3 lv3Nat">
+                                    <td colspan="3" class="identValores green-font"><span><b>Valor Rodal</b></span></td>
+                                    <td id="volarrodal" class="bgColorRod valRodFase1">{{ valores.volarrodal }}(*)</td>
+                                </tr>
+                                <tr>
+                                    {% if valores.volarrodal >= 1 and valores.volarrodal <= 1 %}
+                                        <td colspan="4" class="identValores green-font"><span><b>(*) Rodal con naturalidad baja</b></span></td>
+                                    {% elif valores.volarrodal >= 4 and valores.volarrodal <= 6 %}
+                                        <td colspan="4" class="identValores green-font"><span><b>(*) Rodal con tendencia a la naturalidad</b></span></td>
+                                    {% elif valores.volarrodal >= 7 and valores.volarrodal <= 9 %}
+                                        <td colspan="4" class="identValores green-font"><span><b>(*) Rodal con indicios consistentes de un nivel elevado de naturalidad</b></span></td>
+                                    {% endif %}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="imagenRodal">
+                        <img class="img-responsive" style="width: 100%; margin-top: 5%;" src="{{ fotoRodal }}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h4>Localización</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-offset-1 col-lg-10">
+                    <img class="img-responsive" style="width: 700px;" src="{{ imagenMapa }}">
+                </div>
+            </div>
+            <div class="saltoDePagina"></div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h4>Información complementaria</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h5 class="infoComp"><b>Otras especies de flora acompañantes</b> (exóticas, protegidas, amenazadas, indicadoras...)</h5>
+                    {% if datosGenerales.otroespflora %}
+                        <p>{{ datosGenerales.otroespflora }}</p>
+                    {% else %}
+                        <p>-</p>
+                    {% endif %}
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h5 class="infoComp"><b>Hábitats de interés comunitario</b> (otros hábitats arbolados o no)</h5>
+                    {% if datosGenerales.otrohics %}
+                        <p>{{ datosGenerales.otrohics }}</p>
+                    {% else %}
+                        <p>-</p>
+                    {% endif %}
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h5 class="infoComp"><b>Otra información relavante</b></h5>
+                    {% if datosGenerales.otroinfo %}
+                        <p>{{ datosGenerales.otroinfo }}</p>
+                    {% else %}
+                        <p>-</p>
+                    {% endif %}
+                </div>
+            </div>
+
+
+        </div>
+    </body>
+</html>
+{% block extra_js %}
+<script type="text/javascript">
+    var geo = '';
+    {% if geojson_string %}
+        geo = '{{ geojson_string | safe }}';
+    {% endif %}
+    var id_rodal = {{ datosGenerales.id_rodal }}
+</script>
+<script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
+<script src="{% static 'redbosques_main/javascript/leaflet-bing-layer.min.js' %}"></script>
+<script src='https://cdn.jsdelivr.net/npm/leaflet-image@0.4.0/leaflet-image.js'></script>
+<script src="{% static 'redbosques_main/javascript/printPDFFase1.js' %}"></script>
+{% endblock %}

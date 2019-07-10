@@ -1,0 +1,783 @@
+{% extends "redbosques_main/base.html" %}
+{% load static %}
+{% block extra_css %}
+    <link href="{% static 'redbosques_main/leaflet/leaflet.css' %}" rel="stylesheet">
+    <link href="{% static 'redbosques_main/Leaflet.Draw.static/src/leaflet.draw.css' %}" rel="stylesheet">
+    <link href="{% static 'redbosques_main/ajaxuploader/css/fileuploader.css' %}" rel="stylesheet">
+    <link href="{% static 'redbosques_main/jquery-ui-1.12.1.custom/jquery-ui.min.css' %}" rel="stylesheet">
+    <link href="{% static 'redbosques_main/toastr/toastr.min.css' %}" rel="stylesheet">
+
+    <style>
+        .qq-upload-button{
+            background-color: #9ac635;
+            width: 100%;
+        }
+    </style>
+    <!--<link href="{% static 'redbosques_main/leaflet.draw.css' %}">-->
+    {{ form.media.css }}
+{% endblock %}
+{% block extrahead %}
+    <script src="{% static 'redbosques_main/jquery/dist/jquery.min.js' %}"></script>
+{% endblock %}
+{% block main %}
+<div class="container-fluid subheader">
+    <div class="row">
+        <div class="col-lg-12 subfield">
+            <p>
+                <h4>
+                    <a href="{% url 'index' %}">Inicio</a> /
+                    <a href="{% url 'menu' %}">Menú</a> /
+                    <!--<a href="{% url 'herramientas' %}">Mapa de rodales</a>-->
+                    Información rodal
+                </h4>
+            </p>
+            <h2>{{ herramientas }}</h2>
+            <!--<h2>Herramienta de evaluación de rodales maduros</h2>-->
+        </div>
+    </div>
+</div>
+<div class="container menu-header">
+    <div class="row">
+            <h3>Datos obligatorios del rodal</h3>
+        </div>
+    </div>
+</div>
+
+
+<div class="container form-rodal">
+    <div class="row">
+        <div class="col-lg-offset-3 col-lg-7">
+            <h4>DATOS GENERALES</h4>
+        </div>
+    </div>
+    <form action="{% url 'rodalFormFase1' %}" method="POST">
+        {% csrf_token %}
+        <div class="row form-group restrData">
+            <div class="col-lg-offset-3 col-lg-7">
+                {{ form.datosrestringidos }}
+                {{ form.datosrestringidos.errors }}
+                <label for="datosRestringidos">Datos restringidos</label>
+            </div>
+        </div> <!-- Datos Restringidos -->
+        <div class="row form-group">
+            <div class="col-lg-offset-3 col-lg-7">
+                <h4>Datos generales y administrativos</h4>
+                <div class="nombreRodal">
+                    <div class="inputCont">
+                        <div class="inputRodalField">
+                            {{ form.nombre }}
+                            {% if form.nombre.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.nombre.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="errorIcon">
+                            {% if form.nombre.errors %}
+                                <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="comAut">
+                    <div class="inputCont">
+                        <div class="inputRodalField">
+                            <select class="form-control selectBox" name="comautonom_cod_sel" id="id_comautonom" onchange="ccaa_rodalForm()">
+                                <option value="null" selected="selected">Comunidad Autónoma</option>
+                                    {% for ca in comAut %}
+                                        <option value="{{ ca.cod }}">{{ ca.nombre }}</option>
+                                    {% endfor %}
+                            </select>
+                            {{ form.comautonom_cod }}
+                            {% if form.comautonom_cod.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.comautonom_cod.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="errorIcon">
+                            {% if form.comautonom_cod.errors %}
+                                <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="provincia">
+                    <div class="inputCont">
+                        <div class="inputRodalField">
+                            <select class="form-control selectBox" name="provincia_cod_sel" id="id_provincia" onchange="prov_rodalForm()">
+                                <option value="null" selected="selected">Provincia</option>
+                                    {% for p in provincias %}
+                                        <option class="provincia" value="{{ p.cod }}">{{ p.nombre }}</option>
+                                    {% endfor %}
+                            </select>
+                            {{ form.provincia_cod }}
+                            {% if form.provincia_cod.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.provincia_cod.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="errorIcon">
+                            {% if form.provincia_cod.errors %}
+                                <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="terminoMunicipal">
+                    <div class="inputCont">
+                        <div class="inputRodalField">
+                            <select class="form-control selectBox" name="municipio_cod_sel" id="id_municipio_cod" onchange="muni_rodalForm()">
+                                <option value="null" selected="selected">Municipio</option>
+                                    {% for m in municipio %}
+                                        <option class="municipio" value="{{ m.id }}">{{ m.nombre }}</option>
+                                    {% endfor %}
+                            </select>
+                            {{ form.municipio1 }}
+                            {% if form.municipio1.errores %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.municipio1.errores }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="errorIcon">
+                            {% if form.municipio1.errores %}
+                                <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="propietario">
+                    <div class="inputCont">
+                        <div class="inputRodalField">
+                            {{ form.propietario }}
+                            {% if form.propietario.errores %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.propietario.errores }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="errorIcon">
+                            {% if form.propietario.errores %}
+                                <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="tipoBosque">
+                    <div class="inputCont">
+                        <div class="inputRodalField">
+                            {{ form.tipobosque }}
+                            {% if form.tipobosque.errores %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.tipobosque.errores }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="errorIcon">
+                            {% if form.tipobosque.errores %}
+                                <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div> <!--Datos generales y administrativos-->
+        <div class="row form-group">
+            <div class="col-lg-offset-1 col-lg-10">
+                <div id="map" class="mapaPoligonos" style="width: 100%; height: 500px;"></div>
+                <input id="marker_string" name="marker_string" type="hidden" value=""/>
+            </div>
+        </div> <!-- Localización -->
+        <div class="row form-group">
+            <div class="col-lg-offset-3 col-lg-7">
+                <h4>Hábitat</h4>
+                <div class="inputCont">
+                    <div class="inputRodalField">
+                        <div class="habitatCorine">
+                            {{ form.lpeht_cod }}
+                            {% if form.lpeht_cod.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.lpeht_cod.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="errorIcon">
+                        {% if form.lpeht_cod.errors %}
+                            <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="inputCont">
+                    <div class="inputRodalField">
+                        <div class="habitatHIC">
+                            {{ form.hic_cod }}
+                            {% if form.hic_cod.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.hic_cod.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="errorIcon">
+                        {% if form.hic_cod.errors %}
+                            <div class="form-group has-errors text-danger small">
+                                <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="inputCont">
+                    <div class="inputRodalField">
+                        <div class="regionBiogeo">
+                            {{ form.regbio_cod }}
+                            {% if form.regbio_cod.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.regbio_cod.errors }}
+                                </div>
+                            {% endif %}
+                            <div class="errorIcon">
+                                {% if form.regbio_cod.errors %}
+                                    <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- Habitat -->
+        <div class="row form-group">
+            <div class="col-lg-offset-3 col-lg-7">
+                <h4>Muestreo</h4>
+                <div class="inputCont">
+                    <div class="inputRodalField">
+                        <div class="fecha">
+                            {{ form.media }}
+                            {{ form.fecha }}
+                            {% if form.fecha.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.fecha.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="errorIcon">
+                        {% if form.fecha.errors %}
+                            <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="inputCont">
+                    <div class="inputRodalField">
+                        <div class="tiempoempl">
+                            {{ form.tiempoempl }}
+                            {% if form.tiempoempl.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.tiempoempl.errors }}
+                                </div>
+                            {% endif %}
+                            <div class="errorIcon">
+                                {% if form.tiempoempl.errors %}
+                                    <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="inputCont">
+                    <div class="inputRodalField">
+                        <div class="equipoDeCampo">
+                            {{ form.equipo }}
+                            {% if form.equipo.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.equipo.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="errorIcon">
+                        {% if form.equipo.errors %}
+                            <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div> <!-- Muestreo -->
+
+
+
+        <div class="row form-group">
+            <div class="col-lg-offset-3 col-lg-7">
+                <table>
+                    <tr>
+                        <td>
+                             <h4>NATURALIDAD</h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <h5>Composición</h5>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="rodal_label valspparb">
+                            <label for="id_valspparb_sel">Especies arbóreas en el dosel</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.valspparb.errors }}
+                            </div>
+                        </td>
+                        <td class="rodal_data">
+                            <select id="id_valspparb_sel" class="form-control selectBox" name="id_valspparb_sel" onchange="sumar(this.value);">
+                                <option value="null" selected="selected">---------</option>
+                                <option value="True">SI</option>
+                                <option value="False">NO</option>
+                            </select>
+                            {{ form.valspparb }}
+                        </td>
+                        <td class="errorIcon">
+                            {% if form.valspparb.errors %}
+                                <p>
+                                    <i class="fas fa-exclamation-circle fa-2x"></i>
+                                </p>
+                            {% endif %}
+                        </td>
+                    </tr><!-- Especies arbóreas en el dosel -->
+<!-- -------------------------------------------------------------------------------------------------- -->
+                    <tr>
+                        <td colspan="3">
+                            <h5>Complejidad</h5>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="rodal_label valmasa">
+                            <label for="id_valmasa_sel">Diversidad estructural</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.valmasa.errors }}
+                            </div>
+                        </td>
+                        <td class="rodal_data">
+                            <select id="id_valmasa_sel" class="form-control selectBox" name="id_valmasa_sel" onchange="sumar(this.value);">
+                                <option value="null" selected="selected">---------</option>
+                                <option value="True">SI</option>
+                                <option value="False">NO</option>
+                            </select>
+                            {{ form.valmasa }}
+                        </td>
+                        <td class="errorIcon">
+                            {% if form.valspparb.errors %}
+                                <p>
+                                    <i class="fas fa-exclamation-circle fa-2x"></i>
+                                </p>
+                            {% endif %}
+                        </td>
+                    </tr> <!-- Diversidad estructural -->
+                    <tr>
+                        <td class="rodal_label valestratos">
+                            <label for="id_valestratos_sel">Estratos verticales arbóreos</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.valestratos.errors }}
+                            </div>
+                        </td>
+                        <td class="rodal_data">
+                            <select id="id_valestratos_sel" class="form-control selectBox" name="id_valestratos_sel" onchange="sumar(this.value);">
+                                <option value="null" selected="selected">---------</option>
+                                <option value="True">SI</option>
+                                <option value="False">NO</option>
+                            </select>
+                            {{ form.valestratos }}
+                        </td>
+                        <td class="errorIcon">
+                        {% if form.valspparb.errors %}
+                            <p>
+                                <i class="fas fa-exclamation-circle fa-2x"></i>
+                            </p>
+                        {% endif %}
+                    </td>
+                    </tr> <!-- Estratos verticales arbóreos -->
+<!-- -------------------------------------------------------------------------------------------------- -->
+                    <tr>
+                        <td colspan="3">
+                            <h5>Senectud</h5>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="rodal_label valarboexcep">
+                            <label for="id_valarboexcep_sel">Árboles excepcionales</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.valarboexcep.errors }}
+                            </div>
+                        </td>
+                        <td class="rodal_data">
+                            <select id="id_valarboexcep_sel" class="form-control selectBox" name="id_valarboexcep_sel" onchange="sumar(this.value);">
+                                <option value="null" selected="selected">---------</option>
+                                <option value="True">SI</option>
+                                <option value="False">NO</option>
+                            </select>
+                            {{ form.valarboexcep }}
+                        </td>
+                        <td class="errorIcon">
+                            {% if form.espprincip_h0.errors %}
+                                <p>
+                                    <i class="fas fa-exclamation-circle fa-2x"></i>
+                                </p>
+                            {% endif %}
+                        </td>
+                    </tr> <!-- Árboles excepcionales -->
+                    <tr>
+                        <td class="rodal_label valmmpie">
+                            <label for="id_valmmpie_sel">Madera muerta en pie</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.valmmpie.errors }}
+                            </div>
+                        </td>
+                        <td class="rodal_data">
+                            <select id="id_valmmpie_sel" class="form-control selectBox" name="id_valmmpie_sel" onchange="sumar(this.value);">
+                                <option value="null" selected="selected">---------</option>
+                                <option value="True">SI</option>
+                                <option value="False">NO</option>
+                            </select>
+                            {{ form.valmmpie }}
+                        </td>
+                        <td class="errorIcon">
+                        {% if form.espprincip_h0.errors %}
+                            <p>
+                                <i class="fas fa-exclamation-circle fa-2x"></i>
+                            </p>
+                        {% endif %}
+                    </td>
+                    </tr><!-- Volumen madera en pie -->
+                    <tr>
+                        <td class="rodal_label valmmsuelo">
+                            <label for="id_valmmsuelo_sel">Madera muerta en suelo</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.valmmsuelo.errors }}
+                            </div>
+                        </td>
+                        <td class="rodal_data">
+                            <select id="id_valmmsuelo_sel" class="form-control selectBox" name="id_valmmsuelo_sel" onchange="sumar(this.value);">
+                                <option value="null" selected="selected">---------</option>
+                                <option value="True">SI</option>
+                                <option value="False">NO</option>
+                            </select>
+                            {{ form.valmmsuelo }}
+                        </td>
+                        <td class="errorIcon">
+                            {% if form.espprincip_h0.errors %}
+                                <p>
+                                    <i class="fas fa-exclamation-circle fa-2x"></i>
+                                </p>
+                            {% endif %}
+                        </td>
+                    </tr><!-- Volumen madera en suelo -->
+<!-- -------------------------------------------------------------------------------------------------- -->
+                    <tr>
+                        <td colspan="3">
+                            <h5>Microhábitats</h5>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="rodal_label valmicrohab">
+                            <label for="id_valmicrohab_sel">Microhábitats en pies vivos</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.valmicrohab.errors }}
+                            </div>
+                        </td>
+                        <td class="rodal_data">
+                            <select id="id_valmicrohab_sel" class="form-control selectBox" name="id_valmicrohab_sel" onchange="sumar(this.value);">
+                                <option value="null" selected="selected">---------</option>
+                                <option value="True">SI</option>
+                                <option value="False">NO</option>
+                            </select>
+                            {{ form.valmicrohab }}
+                        </td>
+                        <td class="errorIcon">
+                            {% if form.espprincip_h0.errors %}
+                                <p>
+                                    <i class="fas fa-exclamation-circle fa-2x"></i>
+                                </p>
+                            {% endif %}
+                        </td>
+                    </tr><!-- Microhábitats en pies vivos -->
+<!-- -------------------------------------------------------------------------------------------------- -->
+
+
+                    <tr>
+                        <td class="rodal_label valhuecos">
+                            <label for="id_valhuecos_sel">Huecos en el dosel</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.valhuecos.errors }}
+                            </div>
+                        </td>
+                        <td class="rodal_data">
+                            <select id="id_valhuecos_sel" class="form-control selectBox" name="id_valhuecos_sel" onchange="sumar(this.value);">
+                                <option value="null" selected="selected">---------</option>
+                                <option value="True">SI</option>
+                                <option value="False">NO</option>
+                            </select>
+                            {{ form.valhuecos }}
+                        </td>
+                        <td class="errorIcon">
+                            {% if form.espprincip_h0.errors %}
+                                <p>
+                                    <i class="fas fa-exclamation-circle fa-2x"></i>
+                                </p>
+                            {% endif %}
+                        </td>
+                    </tr><!-- Huecos en el dosel -->
+
+                    <tr>
+                        <td class="rodal_label valregen">
+                            <label for="id_valregen_sel">Regenerado avanzado</label>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.valregen.errors }}
+                            </div>
+                        </td>
+                        <td class="rodal_data">
+                            <select id="id_valregen_sel" class="form-control selectBox" name="id_valregen_sel" onchange="sumar(this.value);">
+                                <option value="null" selected="selected">---------</option>
+                                <option value="True">SI</option>
+                                <option value="False">NO</option>
+                            </select>
+                            {{ form.valregen }}
+                        </td>
+                    </tr><!-- Regenerado avanzado -->
+
+                    <tr>
+                        <td class="rodal_label volarrodal">
+                            <!--<label for="id_volarrodal_sel">VALORACIÓN</label>-->
+                            <h5>Valoración</h5>
+                            <p class="valTxt">-</p>
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.volarrodal.errors }}
+                            </div>
+                        </td>
+                        <td class="rodal_data">
+                            <input type="text" name="volarrodal" class="form-control" required="" id="id_volarrodal_val">
+                            {{ form.volarrodal }}
+                        </td>
+                    </tr>
+<!-- -------------------------------------------------------------------------------------------------- -->
+                </table>
+            </div>
+        </div>
+
+        <!--<div class="row form-group restrData">
+            <div class="col-lg-offset-3 col-lg-7">
+                <h4>HUELLA HUMANA</h4>
+                <div class="inputCont">
+                    <h5>Antigua</h5>
+                    <div class="inputRodalField">
+                        <div class="fecha">
+                            {{ form.hhantigua }}
+                            {% if form.hhantigua.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.hhantigua.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="errorIcon">
+                        {% if form.hhantigua.errors %}
+                            <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group restrData">
+            <div class="col-lg-offset-3 col-lg-7">
+                <div class="inputCont">
+                    <h5>Reciente</h5>
+                    <div class="inputRodalField">
+                        <div class="fecha">
+                            {{ form.hhreciente }}
+                            {% if form.hhreciente.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.hhreciente.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="errorIcon">
+                        {% if form.hhreciente.errors %}
+                            <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>-->
+               <div class="row form-group restrData">
+            <div class="col-lg-offset-3 col-lg-7">
+                <h4>Información complementaria</h4>
+                <div class="inputCont">
+                    <h5>Otras especies de flora acompañante</h5>
+                    <div class="inputRodalField">
+                        <div class="fecha">
+                            {{ form.otroespflora }}
+                            {% if form.otroespflora.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.otroespflora.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="errorIcon">
+                        {% if form.otroespflora.errors %}
+                            <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group restrData">
+            <div class="col-lg-offset-3 col-lg-7">
+                <div class="inputCont">
+                    <h5>Hábitats de interés comunitario</h5>
+                    <div class="inputRodalField">
+                        <div class="fecha">
+                            {{ form.otrohics }}
+                            {% if form.otrohics.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.otrohics.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="errorIcon">
+                        {% if form.otrohics.errors %}
+                            <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group restrData">
+            <div class="col-lg-offset-3 col-lg-7">
+                <div class="inputCont">
+                    <h5>Otra información relevante</h5>
+                    <div class="inputRodalField">
+                        <div class="fecha">
+                            {{ form.otroinfo }}
+                            {% if form.otroinfo.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.otroinfo.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="errorIcon">
+                        {% if form.otroinfo.errors %}
+                            <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div> <!-- Otra Información -->
+        <div class="row">
+            <div class="col-lg-offset-2 col-lg-10">
+                <div class="row">
+                    <div class="col-lg-offset-1  col-lg-4">
+                        <a class="btn btn-selector-mapa" href="{% url 'menu' %}">Volver al menú</a>
+                    </div>
+                    <div class="col-lg-4">
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-selector-mapa" id="btnSubmitForm" value="Siguiente">
+                        <div class="form-group has-errors text-danger small">
+                            <p class="rodalOblig">- Los límites del rodal son obligatorios.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+{% endblock %}
+{% block extra_js %}
+    {{ form.media.js }}
+    <script>
+        var geo;
+        geo = {% if json_geometry %} JSON.parse('{{ json_geometry | safe }}') {% else %} null {% endif %};
+        var csrf_token = '{{ csrf_token }}';
+        var _ajax_upload_url = '{% url 'ajax_upload' %}';
+        var _import_shapefile_url = '{% url 'process_shapefile' %}';
+        var _ccaaFilter_url = '{% url 'comAutFilt' %}';
+        var _provFilter_url = '{% url 'provFilt' %}';
+        var missatge_geometria = '';
+        {% if messages %}
+            {% for message in messages %}
+            missatge_geometria += '{{ message }}' + '\n';
+            {% endfor %}
+        {% endif %}
+        var selected_ccaa = '';
+        {% if selected_ccaa %}
+        selected_ccaa = '{{ selected_ccaa }}';
+        {% endif %}
+        var selected_prov = '';
+        {% if selected_prov %}
+        selected_prov = '{{ selected_prov }}';
+        {% endif %}
+        var selected_muni = '';
+        {% if selected_muni %}
+        selected_muni = '{{ selected_muni }}';
+        {% endif %}
+
+
+    </script>
+    <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
+
+
+    <script src="{% static 'redbosques_main/leaflet/leaflet.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/Leaflet.draw.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/Leaflet.Draw.Event.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/Toolbar.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/Tooltip.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/ext/GeometryUtil.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/ext/LatLngUtil.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/ext/LineUtil.Intersect.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/ext/Polygon.Intersect.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/ext/Polyline.Intersect.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/ext/TouchEvents.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/DrawToolbar.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.Feature.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.SimpleShape.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.Polyline.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.Marker.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.Circle.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.CircleMarker.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.Polygon.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/draw/handler/Draw.Rectangle.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/EditToolbar.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/EditToolbar.Edit.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/EditToolbar.Delete.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/Control.Draw.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.Poly.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.SimpleShape.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.Rectangle.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.Marker.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.CircleMarker.js' %}"></script>
+    <script src="{% static 'redbosques_main/Leaflet.Draw.static/src/edit/handler/Edit.Circle.js' %}"></script>
+    <script src="{% static 'redbosques_main/javascript/leaflet-bing-layer.min.js' %}"></script>
+
+
+    <script src="{% static 'redbosques_main/javascript/jsts.min.js' %}"></script>
+    <script src="{% static 'redbosques_main/javascript/validacion_geometria.js' %}"></script>
+    <script src="{% static 'redbosques_main/ajaxuploader/js/fileuploader.js' %}"></script>
+    <script src="{% static 'redbosques_main/javascript/comAut_prov_muni.js' %}"></script>
+    <script src="{% static 'redbosques_main/javascript/forms.js' %}"></script>
+    <script src="{% static 'redbosques_main/toastr/toastr.min.js' %}"></script>
+    <script src="{% static 'redbosques_main/javascript/rodalesFormFase1.js' %}"></script>
+{% endblock %}

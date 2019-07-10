@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht, Tesaurus, User, TeCategoria, FotosRodal, DocsRodal, Institucion, DatosUsuario, AuthUser,TeMunicipi,TeIndicador, RodalProsp, WebMapaRodalProsp, DatosGeneralesRodal
+from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, \
+    WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht, Tesaurus, User, TeCategoria, FotosRodal, DocsRodal, \
+    Institucion, DatosUsuario, AuthUser,TeMunicipi,TeIndicador, RodalProsp, WebMapaRodalProsp, DatosGeneralesRodal, \
+    FotosRodalProsp, DocsRodalProsp, RodalProspDatosgen, RodalProspValores
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.urls import reverse
@@ -11,10 +14,12 @@ from django.db.models import Avg, StdDev
 from redbosques.settings_local import URL_BASE
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from redbosques.forms import RegistrationForm, LoginForm, rodalFormFields, rodalFormFields2, rodalFormFields3, rodalFormFields3Foto, rodalFormFields3Doc, rodalFormFields3Fotoprincipal
+from redbosques.forms import RegistrationForm, LoginForm, rodalFormFields, rodalFormFields2, rodalFormFields3, \
+    rodalFormFields3Foto, rodalFormFields3Doc, rodalFormFields3Fotoprincipal, rodalFormFase1Fields, \
+    rodalFormFieldsFase1Foto, rodalFormFieldsFase1Doc
 from django.contrib import messages
 from django.contrib import auth
-from django.contrib.gis.geos import GEOSGeometry, MultiPolygon
+from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Point
 from osgeo import ogr
 import tempfile
 
@@ -2179,6 +2184,9 @@ def editrodalForm(request, id=None):
     context = {'form': form, 'geojson_string': geojsoncollection_string, 'id': id, 'comAut': comAut, 'provincias': provincias, 'municipio': municipio}
     return render(request, 'redbosques_main/editrodalForm.html', context)
 
+
+
+
 @login_required(login_url="login/")
 def eliminarRodal(request, id=None):
     Rodal.objects.filter(id=id).delete()
@@ -2200,21 +2208,30 @@ def menuData(request):
 
 
     rodalesSelector = []
-    #rodals_list = WebMapa.objects.filter(eje_cod='nm').order_by('nombre')
-    #rodals_list = Rodal.objects.filter(usuario=user).order_by('nombre')
-
-    #rodals_list = Rodal.objects.all().order_by('nombre')
+    rodalesFase1Selector = []
     rodals_list = Rodal.objects.exclude(geom__isnull=True).order_by('nombre')
-
-
-
+    rodalsF1_list = RodalProsp.objects.exclude(geom__isnull=True).order_by('nombre')
 
     for r in rodals_list:
-        #rodalesSelector.append({'id_rodal': r.id_rodal, 'nombre': r.nombre})
         if r.usuario.id == du.id:
             rodalesSelector.append({'id_rodal': r.id, 'nombre': r.nombre + '(*)'})
         else:
             rodalesSelector.append({'id_rodal': r.id, 'nombre': r.nombre})
+
+    for f1 in rodalsF1_list:
+        if f1.usuario.id == du.id:
+            rodalesFase1Selector.append({'id_rodal': f1.id, 'nombre': f1.nombre + '(*)'})
+        else:
+            rodalesFase1Selector.append({'id_rodal': f1.id, 'nombre': f1.nombre})
+
+    rodalesFicha = []
+    rodPDF = DatosGeneralesRodal.objects.all().order_by('nombre_rodal')
+
+    for t in rodPDF:
+        rodalesFicha.append({
+            'id_rodal': t.id_rodal,
+            'nombre': t.nombre_rodal
+        })
 
 
     rodalesSelectorEditor = []
@@ -2238,7 +2255,7 @@ def menuData(request):
             rodalesSelectorEditor.append({'id_rodal': test['id'], 'nombre': test['nombre']})
 
 
-    context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'rodalesSelector': rodalesSelector, 'du': du, 'rodalesSelectorEditor': rodalesSelectorEditor}
+    context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'rodalesSelector': rodalesSelector, 'du': du, 'rodalesSelectorEditor': rodalesSelectorEditor, 'datosGenFichaPDF': rodalesFicha, 'rodalesFase1Selector': rodalesFase1Selector}
 
     return context
 
@@ -2629,6 +2646,7 @@ def rodalForm3(request, id):
         return render(request, 'redbosques_main/rodalesForm3.html', context)
 
 
+############################ CRUD Images/Docs ##################################
 
 @login_required(login_url="login/")
 def uploadImage(request, id):
@@ -2767,6 +2785,8 @@ def deleteDoc(request, id):
     context = {'id': id_rodal, 'docs': 'docs'}
 
     return Response(context)
+
+######################################################################################
 
 ######################## Filtres data table rodales ##################################
 
@@ -3234,22 +3254,26 @@ def process_shapefile(request):
                     presumed_shapefile = magic.from_file(BASE_DIR + "/media/uploads/" + filename + "/" + file)
                     if presumed_shapefile.lower().startswith('esri shapefile'):
                         sf = shapefile.Reader(BASE_DIR + "/media/uploads/" + filename + "/" + file)
-                        fields = sf.fields[1:]
-                        field_names = [field[0] for field in fields]
-                        buffer = []
-                        for sr in sf.shapeRecords():
-                            atr = dict(zip(field_names, sr.record))
-                            geom = sr.shape.__geo_interface__
-                            buffer.append(dict(type="Feature", geometry=geom, properties=atr))
-                        geojson = json.dumps({"type": "FeatureCollection", "features": buffer})
-                        content = {'success': True, 'detail': geojson}
-                        return Response(data=content, status=200)
+                        if sf.shapeTypeName == 'POLYGONZ':
+                            content = {'success': False, 'detail': 'El archivo shapefile tiene que ser en 2D'}
+                            return Response(data=content, status=400)
+                        else:
+                            fields = sf.fields[1:]
+                            field_names = [field[0] for field in fields]
+                            buffer = []
+                            for sr in sf.shapeRecords():
+                                atr = dict(zip(field_names, sr.record))
+                                geom = sr.shape.__geo_interface__
+                                buffer.append(dict(type="Feature", geometry=geom, properties=atr))
+                            geojson = json.dumps({"type": "FeatureCollection", "features": buffer})
+                            content = {'success': True, 'detail': geojson}
+                            return Response(data=content, status=200)
                     else:
-                        content = {'success': False, 'detail': 'El fitxer shapefile té un format incorrecte'}
-                        return Response(data=content, status=200)
+                        content = {'success': False, 'detail': 'El archivo shapefile tiene un formato incorrecto'}
+                        return Response(data=content, status=400)
                 content = {'success': False,
-                           'detail': 'No he trobat cap fitxer amb extensió *.shp dins del zip, no puc importar res.'}
-                return Response(data=content, status=200)
+                           'detail': 'No se ha encontrado ningún fichero con exetensión *.shp dentro del zip, no puedo importar nada.'}
+                return Response(data=content, status=400)
 
 
 @login_required(login_url="login/")
@@ -3445,18 +3469,24 @@ def crearPDF(request, id):
     datgen = DatosGeneralesRodal.objects.filter(id_rodal=id)
     imgRodal = FotosRodal.objects.filter(id_rodal=id).filter(fotoprincipal="True")
 
-    imagenRodal = []
-    for i in imgRodal:
-        foto = i.foto.url
-        urlFoto = APP_BASE_URL + foto
 
-        imagenRodal = {
-            'id_rodal': i.id_rodal,
-            'id_foto': i.id_foto,
-            'nombre_foto': i.nombre_foto,
-            'foto': foto,
-            'fotoprincipal': i.fotoprincipal
-        }
+    if imgRodal is not None:
+        imagenRodal = []
+        for i in imgRodal:
+            foto = i.foto.url
+            urlFoto = APP_BASE_URL + foto
+
+            imagenRodal = {
+                'id_rodal': i.id_rodal,
+                'id_foto': i.id_foto,
+                'nombre_foto': i.nombre_foto,
+                'foto': foto,
+                'fotoprincipal': i.fotoprincipal
+            }
+    else:
+        imagenRodal = ""
+        foto = ""
+
 
     datosGenerales = []
     for dg in datgen:
@@ -3472,7 +3502,7 @@ def crearPDF(request, id):
             'regbio': dg.regbio,
             'provincia': dg.provincia,
             'comAut': dg.com_aut,
-            'muni': dg.municipio,
+            'muni': dg.nombre,
             'propietario': dg.propietario,
             'lpeht': dg.lpeht,
             'hic': dg.hic,
@@ -3501,9 +3531,6 @@ def crearPDF(request, id):
     #pdf = response.write_pdf(stylesheets=[CSS(settings.STATIC_URL + '/css/redbosques.css')],presentational_hints=True);
 
     return response
-
-
-
 
 @login_required(login_url="login/")
 def verFichaRodal(request, id):
@@ -3540,7 +3567,7 @@ def verFichaRodal(request, id):
             'regbio': dg.regbio,
             'provincia': dg.provincia,
             'comAut': dg.com_aut,
-            'muni': dg.municipio,
+            'muni': dg.nombre,
             'propietario': dg.propietario,
             'lpeht': dg.lpeht,
             'hic': dg.hic,
@@ -3583,16 +3610,13 @@ def verFichaRodal(request, id):
     #response.write(HTML(string=html_string).write_pdf(response))
     #return response
     ####################################################
-
+    print(rodalArbol)
+    print(datosGenerales)
+    print(geojsoncollection_string)
+    print(imagenRodal)
 
     context = {'rodal': rodalArbol, 'datosGenerales': datosGenerales, 'geojson_string': geojsoncollection_string, 'imagenRodal': imagenRodal}
     return render(request, 'redbosques_main/fichaRodal.html', context)
-
-
-
-
-
-
 
 def comparadorGraficos(request, id = None):
     init_params = {}
@@ -3672,3 +3696,542 @@ def comparadorGraficos(request, id = None):
 
     return render(request, 'redbosques_main/comparadorGraficos.html', context)
 
+@login_required(login_url="login/")
+def rodalFormFase1(request, id=None):
+    form = rodalFormFase1Fields()
+
+    ccaa = TeProvincia.objects.filter(nivel='Com. autònoma').order_by('nombre_es')
+    prov = TeProvincia.objects.filter(nivel='Província').order_by('nombre_es')
+    muni = TeMunicipi.objects.all().order_by('nombre').order_by('nombre')
+
+    selected_ccaa = None
+    selected_prov = None
+    selected_muni = None
+    #json_geometry = None
+    rodalMarker = []
+
+    comAut = []
+    for x in ccaa:
+        comAut.append({
+            'cod': x.cod,
+            'nombre': x.nombre_es
+        })
+
+    provincias = []
+    for p in prov:
+        provincias.append({
+            'cod': p.cod,
+            'nombre': p.nombre_es
+        })
+
+    municipio = []
+    for m in muni:
+        municipio.append({
+            'id': m.id,
+            'nombre': m.nombre
+        })
+
+    #json_geometry = None
+
+    if request.method == 'POST':
+
+        form = rodalFormFase1Fields(request.POST or None)
+
+        # ccaa = TeProvincia.objects.get(codigo=form.data['comautonom_cod'], nivel='Com. autònoma')
+        selected_ccaa = form.data['comautonom_cod']
+        # prov = TeProvincia.objects.get(codigo=form.data['provincia_cod'], nivel='Província')
+        selected_prov = form.data['provincia_cod']
+        # muni = TeMunicipi.objects.get(id=form.data['municipio1'])
+        selected_muni = form.data['municipio1']
+        current_user = request.user.id
+        user = AuthUser.objects.get(id=current_user)
+
+        if request.POST.get("marker_string", "") != '':
+            try:
+                json_marker = request.POST["marker_string"]
+                json_marker_dict = json.loads(json_marker)
+
+                feature_marker = GEOSGeometry(json.dumps(json_marker_dict['geometry']))
+                feature_marker.transform(25830)
+
+            except JSONDecodeError:
+                pass
+
+        if len(feature_marker) == 0:
+            messages.add_message(request, messages.ERROR,
+                                 'No has entrado los límites del rodal. Por favor, éntralos y vuelve a intentar guardar')
+        else:
+
+            if form.is_valid():
+                dades = form.save(commit=False)
+                dades.usuario = user
+                dades.geom = feature_marker
+                dades.save()
+
+                return redirect('rodalFormFase1_2', id=dades.id)
+
+    else:
+        form = rodalFormFase1Fields()
+
+
+    context = {
+        'form': form,
+        'comAut': comAut, 'provincias': provincias, 'municipio': municipio,
+        'selected_ccaa': selected_ccaa, 'selected_prov': selected_prov, 'selected_muni': selected_muni,
+        #'json_geometry': json_geometry
+    }
+
+
+    return render(request, 'redbosques_main/rodalFormFase1.html', context)
+
+
+@login_required(login_url="login/")
+def rodalFormFase1_2(request, id=None):
+    #datos = get_object_or_404(Rodal, id=id)
+
+    id_rodal = id
+
+    allFotos = FotosRodalProsp.objects.all()
+    listaFotos = allFotos.filter(id_rodal=id_rodal)
+
+    fotos = []
+    for lf in listaFotos:
+        fotos.append({
+            'id_foto': lf.id_foto,
+            'nombre_foto': lf.nombre_foto,
+            'foto': lf.foto,
+            'fotoPrincipal': lf.fotoprincipal
+        })
+
+    allDocs = DocsRodalProsp.objects.all()
+    listaDocs = allDocs.filter(id_rodal=id_rodal)
+
+    docs = []
+    for ld in listaDocs:
+        docs.append({
+            'id_doc': ld.id_doc,
+            'nombre_doc': ld.nombre_doc,
+            'doc': ld.doc
+        })
+
+    #context = {'listaFotos': fotos, 'id': id_rodal, 'listaDocs': docs, 'form': form}
+    context = {'listaFotos': fotos, 'id': id_rodal, 'listaDocs': docs}
+    return render(request, 'redbosques_main/rodalFormFase1_2.html', context)
+
+
+
+    #return redirect('menu')
+
+
+@login_required(login_url="login/")
+def editRodalFormFase1(request, id=None):
+
+    datos = get_object_or_404(RodalProsp, id=id)
+    #form = rodalFormFields(instance=datos)
+
+    ccaa = TeProvincia.objects.filter(nivel='Com. autònoma').order_by('nombre_es')
+    prov = TeProvincia.objects.filter(nivel='Província').order_by('nombre_es')
+    muni = TeMunicipi.objects.all().order_by('nombre').order_by('nombre')
+
+    comAut = []
+    for x in ccaa:
+        comAut.append({
+            'cod': x.cod,
+            'nombre': x.nombre_es
+        })
+
+    provincias = []
+    for p in prov:
+        provincias.append({
+            'cod': p.cod,
+            'nombre': p.nombre_es
+        })
+
+    municipio = []
+    for m in muni:
+        municipio.append({
+            'id': m.id,
+            'nombre': m.nombre
+        })
+
+    geojsoncollection_string = None
+
+    if request.method == 'POST':
+        form = rodalFormFase1Fields(request.POST or None, instance=datos)
+        
+
+        current_user = request.user.id
+        user = AuthUser.objects.get(id=current_user)
+        json_geometry = None
+        multipoligon = []
+
+        if request.POST.get("marker_string", "") != '':
+            try:
+                json_marker = request.POST["marker_string"]
+                json_marker_dict = json.loads(json_marker)
+                print(json_marker)
+                print(json_marker_dict)
+
+                #if hasattr(json_marker_dict, 'geometry'):
+                #if (json_marker_dict).has_key('geometry'):
+                if 'geometry' in json_marker_dict:
+                    geometria = json.dumps(json_marker_dict["geometry"])
+                else:
+                    geometria = json.dumps(json_marker_dict)
+                print(geometria)
+
+                feature_marker = GEOSGeometry(geometria)
+                feature_marker.transform(25830)
+
+
+            except JSONDecodeError:
+                pass
+
+        if len(feature_marker) == 0:
+            messages.add_message(request, messages.ERROR,'No has entrado los límites del rodal. Por favor, éntralos y vuelve a intentar guardar')
+        else:
+            if form.is_valid():
+                dades = form.save(commit=False)
+                dades.usuario = user
+
+                #mp = MultiPolygon(multipoligon)
+                dades.geom = feature_marker
+                dades.save()
+
+                return HttpResponseRedirect('/redbosques/rodalFormFase1_2/' + str(dades.id) + '/')
+                # return redirect('menu')
+            else:
+                geojsoncollection_string = request.POST["marker_string"]
+    else:
+        datos = get_object_or_404(RodalProsp, id=id)
+        form = rodalFormFase1Fields(instance=datos)
+
+        buffer = []
+        if datos.geom != 'null':
+            geom = datos.geom
+            geom.transform(4326)
+            buffer = geom.geojson
+            geojsoncollection_string = json.dumps(buffer)
+
+        else:
+            buffer.append(dict(type="Feature", geometry=""))
+            geojsoncollection_string = json.dumps({"type": "Feature", "properties": {}, "geometry": buffer})
+
+
+    context = {'form': form, 'geojson_string': buffer, 'id': id, 'comAut': comAut, 'provincias': provincias, 'municipio': municipio}
+    return render(request, 'redbosques_main/editRodalFormFase1.html', context)
+
+
+
+@login_required(login_url="login/")
+def eliminarRodalFase1(request, id=None):
+    RodalProsp.objects.filter(id=id).delete()
+    context = menuData(request)
+    return redirect('menu')
+
+
+@login_required(login_url="login/")
+def verFichaRodalFase1(request, id):
+    dades_rodal = RodalProspDatosgen.objects.filter(id_rodal=id)
+    valRod = RodalProspValores.objects.filter(id_rodal=id)
+    imgRodal = FotosRodalProsp.objects.filter(id_rodal=id).filter(fotoprincipal="True")
+
+    imagenRodal = []
+    for i in imgRodal:
+        imagenRodal = {
+            'id_rodal': i.id_rodal,
+            'id_foto': i.id_foto,
+            'nombre_foto': i.nombre_foto,
+            'foto': i.foto,
+            'fotoprincipal': i.fotoprincipal
+        }
+
+    datosGenerales = []
+
+    for dg in dades_rodal:
+        datosGenerales = {
+            'id_rodal': dg.id_rodal,
+            'nombre': dg.nombre_rodal,
+            'geom': dg.geom,
+            'datosRestringidos': dg.datosrestringidos,
+            'regbio_cod': dg.regbio_cod,
+            'regbio': dg.regbio,
+            'provincia': dg.provincia,
+            'comAut': dg.com_aut,
+            'muni': dg.nombre,
+            'propietario': dg.propietario,
+            'lpeht': dg.lpeht,
+            'hic': dg.hic,
+            'lpeht_cod': dg.lpeht_cod,
+            'hic_cod': dg.hic_cod,
+            'fecha': dg.fecha,
+            'equipo': dg.equipo,
+            'otroespflora': dg.otroespflora,
+            'otrohics': dg.otrohics,
+            'otroinfo': dg.otroinfo,
+        }
+
+
+        buffer = []
+        if dg.geom != 'null':
+            geom = dg.geom
+            geom.transform(4326)
+            g = ogr.CreateGeometryFromJson(geom.json)
+
+            # buffer = []
+            buffer.append(dict(type="Feature", geometry=json.loads(geom.json)))
+            geojsoncollection_string = json.dumps({"type": "FeatureCollection", "features": buffer})
+            '''for idx, f in enumerate(g):
+                geojson_string = f.ExportToJson()
+                buffer.append(dict(type="Feature", geometry=json.loads(g)))
+
+            geojsoncollection_string = json.dumps({"type": "FeatureCollection", "features": buffer})'''
+        else:
+            buffer.append(dict(type="Feature", geometry=""))
+            geojsoncollection_string = json.dumps({"type": "FeatureCollection", "features": buffer})
+
+
+    valores = []
+    for v in valRod:
+        valores = {
+            'valspparb': v.valspparb,
+            'valmasa': v.valmasa,
+            'valestratos': v.valestratos,
+            'valarboexcep': v.valarboexcep,
+            'valmmpie': v.valmmpie,
+            'valmmsuelo': v.valmmsuelo,
+            'valmicrohab': v.valmicrohab,
+            'valhuecos': v.valhuecos,
+            'valregen': v.valregen,
+            'volarrodal': v.volarrodal
+
+        }
+
+    print(datosGenerales)
+    print(valores)
+    print(imagenRodal)
+
+    context = {'datosGenerales': datosGenerales, 'geojson_string': geojsoncollection_string,
+               'imagenRodal': imagenRodal, 'valores': valores}
+    return render(request, 'redbosques_main/fichaRodalFase1.html', context)
+
+
+
+
+
+############################ CRUD Images/Docs ##################################
+
+@login_required(login_url="login/")
+def uploadImageFase1(request, id):
+    if request.method == 'POST':
+
+        form = rodalFormFieldsFase1Foto(request.POST, request.FILES)
+
+        if form.is_valid():
+            foto = form.save(commit=False)
+            foto.id_rodal = RodalProsp.objects.get(id=id)
+            foto.nombre_foto = foto.foto.name
+            foto.fotoprincipal = False
+            foto.save()
+
+            oldSelectedExists = FotosRodalProsp.objects.filter(id_rodal=id).filter(fotoprincipal=True)
+
+            oldSelected = None
+
+            if (oldSelectedExists):
+                oldSelected = FotosRodalProsp.objects.filter(id_rodal=id).filter(fotoprincipal=True).update(
+                    fotoprincipal=False)
+                newSelected = FotosRodalProsp.objects.filter(id_foto=foto.id_foto).update(fotoprincipal=True)
+            else:
+                newSelected = FotosRodalProsp.objects.filter(id_foto=foto.id_foto).update(fotoprincipal=True)
+
+            data = {'is_valid': True, 'nombre_foto': foto.nombre_foto, 'url': foto.foto.url, 'id_foto': foto.id_foto,
+                    'oldSelected': oldSelected, 'newSelected': newSelected}
+
+        else:
+            errorMessage = "La imagen supera el tamaño permitido (2MB)"
+            data = {'is_valid': False, 'error_imagen': form.errors['foto']}
+        return JsonResponse(data)
+    else:
+        id_rodal = id
+        allFotos = FotosRodalProsp.objects.all()
+        listaFotos = allFotos.filter(id_rodal=id_rodal)
+
+        fotos = []
+        for lf in listaFotos:
+            fotos.append({
+                'id_foto': lf.id_foto,
+                'nombre_foto': lf.nombre_foto,
+                'foto': lf.foto
+            })
+
+        context = {'listaFotos': fotos, 'id': id_rodal}
+        return render(request, 'redbosques_main/rodalesFormFase1_2.html', context)
+
+@api_view(['POST'])
+@login_required(login_url="login/")
+def deleteImageFase1(request, id):
+
+    rd = FotosRodalProsp.objects.filter(id_foto=id).values('id_rodal')
+
+    rodalFotos = []
+    for r in rd:
+        id_rodal = r['id_rodal']
+        '''rodalFotos.append({
+            'id_rodal': 
+        })'''
+
+    if request.method == 'POST':
+        foto = FotosRodalProsp.objects.get(id_foto=id)
+        foto.delete()
+
+    context = {'id': id_rodal, 'imagen': 'imagen'}
+
+    return Response(context)
+
+
+@api_view(['POST'])
+def mainImageFase1(request, idRodal, fotoSelected):
+    oldSelected = FotosRodalProsp.objects.filter(id_rodal=idRodal).filter(fotoprincipal=True).update(fotoprincipal=False)
+    newSelected = FotosRodalProsp.objects.filter(id_foto=fotoSelected).update(fotoprincipal=True)
+
+    context = {'oldSelected': oldSelected, 'newSelected': newSelected}
+
+    return Response(context)
+
+
+@login_required(login_url="login/")
+def uploadDocsFase1(request, id):
+
+    if request.method == 'POST':
+
+        form = rodalFormFieldsFase1Doc(request.POST, request.FILES)
+
+        if form.is_valid():
+            doc = form.save(commit=False)
+            doc.id_rodal = RodalProsp.objects.get(id=id)
+            doc.nombre_doc = doc.doc.name
+            doc.save()
+            data = {'is_valid': True, 'nombre_doc': doc.nombre_doc, 'url': doc.doc.url, 'id_doc': doc.id_doc}
+        else:
+            data = {'is_valid': False, 'error_documento': form.errors['doc']}
+        return JsonResponse(data)
+    else:
+        id_rodal = id
+        allDocs = DocsRodalProsp.objects.all()
+        listaDocs = allDocs.filter(id_rodal=id_rodal)
+
+        docs = []
+        for ld in listaDocs:
+            docs.append({
+                'id_doc': ld.id_doc,
+                'nombre_doc': ld.nombre_doc,
+                'doc': ld.doc
+            })
+
+        context = {'listaFotos': docs, 'id': id_rodal}
+        return render(request, 'redbosques_main/rodalesFormFase1.html', context)
+
+@api_view(['POST'])
+@login_required(login_url="login/")
+def deleteDocFase1(request, id):
+
+    rd = DocsRodalProsp.objects.filter(id_doc=id).values('id_rodal')
+
+    rodalFotos = []
+    for d in rd:
+        id_rodal = d['id_rodal']
+        '''rodalFotos.append({
+            'id_rodal': 
+        })'''
+
+    if request.method == 'POST':
+        doc = DocsRodalProsp.objects.get(id_doc=id)
+        doc.delete()
+    #return redirect('rodalForm3', id=id_rodal)
+
+    context = {'id': id_rodal, 'docs': 'docs'}
+
+    return Response(context)
+
+######################################################################################
+
+@api_view(['GET','POST'])
+def crearPDFFase1(request, id):
+    imagenMapa = request.data['image']
+
+    logger = logging.getLogger('weasyprint')
+    logger.addHandler(logging.FileHandler('/tmp/weasyprint.log'))
+
+    dades_rodal = RodalProspDatosgen.objects.filter(id_rodal=id)
+    valRod = RodalProspValores.objects.filter(id_rodal=id)
+    imgRodal = FotosRodalProsp.objects.filter(id_rodal=id).filter(fotoprincipal="True")
+
+    if not imgRodal:
+        imagenRodal = ""
+        foto = ""
+    else:
+        imagenRodal = []
+        for i in imgRodal:
+            foto = i.foto.url
+            urlFoto = APP_BASE_URL + foto
+
+            imagenRodal = {
+                'id_rodal': i.id_rodal,
+                'id_foto': i.id_foto,
+                'nombre_foto': i.nombre_foto,
+                'foto': foto,
+                'fotoprincipal': i.fotoprincipal
+            }
+
+    datosGenerales = []
+
+    for dg in dades_rodal:
+        datosGenerales = {
+            'id_rodal': dg.id_rodal,
+            'nombre': dg.nombre_rodal,
+            'geom': dg.geom,
+            'datosRestringidos': dg.datosrestringidos,
+            'regbio_cod': dg.regbio_cod,
+            'regbio': dg.regbio,
+            'provincia': dg.provincia,
+            'comAut': dg.com_aut,
+            'muni': dg.nombre,
+            'propietario': dg.propietario,
+            'lpeht': dg.lpeht,
+            'hic': dg.hic,
+            'lpeht_cod': dg.lpeht_cod,
+            'hic_cod': dg.hic_cod,
+            'fecha': dg.fecha,
+            'equipo': dg.equipo,
+            'otroespflora': dg.otroespflora,
+            'otrohics': dg.otrohics,
+            'otroinfo': dg.otroinfo,
+        }
+
+    valores = []
+    for v in valRod:
+        valores = {
+            'valspparb': v.valspparb,
+            'valmasa': v.valmasa,
+            'valestratos': v.valestratos,
+            'valarboexcep': v.valarboexcep,
+            'valmmpie': v.valmmpie,
+            'valmmsuelo': v.valmmsuelo,
+            'valmicrohab': v.valmicrohab,
+            'valhuecos': v.valhuecos,
+            'valregen': v.valregen,
+            'volarrodal': v.volarrodal
+
+        }
+
+
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment'
+    response['Content-Disposition'] = 'filename="RODAL.pdf"'
+    html_string = render_to_string("pdf_templates/pdf_template_fase1.html", {'datosGenerales': datosGenerales, 'valores': valores, 'imagenMapa': imagenMapa, 'imagenRodal': imagenRodal, 'app_base_url': APP_BASE_URL, 'fotoRodal': foto})
+    pdf_file = HTML(string=html_string, base_url=STATIC_PDF_ROOT).write_pdf()
+    response.write(pdf_file)
+
+    return response

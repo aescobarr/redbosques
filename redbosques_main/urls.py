@@ -73,9 +73,19 @@ urlpatterns = [
     path('contacto/', views.contacto, name='contacto'),
     path('crearPDF/<int:id>/', views.crearPDF, name='crearPDF'),
     path('fichaRodal/<int:id>/', views.verFichaRodal, name='verFichaRodal'),
+    path('fichaRodalFase1/<int:id>/', views.verFichaRodalFase1, name='verFichaRodalFase1'),
     path('comparadorGraficos/', views.comparadorGraficos, name='comparadorGraficos'),
     path('comparadorGraficos/<int:id>/', views.comparadorGraficos, name='comparadorGraficos'),
-
+    path('rodalFormFase1', views.rodalFormFase1, name='rodalFormFase1'),
+    path('rodalFormFase1_2/<int:id>/', views.rodalFormFase1_2, name='rodalFormFase1_2'),
+    path('editRodalFormFase1/<int:id>/', views.editRodalFormFase1, name='editRodalFormFase1'),
+    path('eliminarRodalFase1/<int:id>/', views.eliminarRodalFase1, name='eliminarRodalFase1'),
+    path('uploadImageFase1/<int:id>/', views.uploadImageFase1, name='uploadImageFase1'),
+    path('eliminarImagenFase1/<int:id>/', views.deleteImageFase1, name='eliminarImagenFase1'),
+    path('mainImageFase1/<int:idRodal>/<int:fotoSelected>/', views.mainImageFase1, name='mainImageFase1'),
+    path('uploadDocsFase1/<int:id>/', views.uploadDocsFase1, name='uploadDocsFase1'),
+    path('eliminarDocFase1/<int:id>/', views.deleteDocFase1, name='eliminarDocFase1'),
+    path('crearPDFFase1/<int:id>/', views.crearPDFFase1, name='crearPDFFase1'),
 ]
 
 

@@ -2,6 +2,8 @@ $(document).ready(function() {
     var eje = eje;
 
 
+    redirectFaseMap();
+
 
     setMapData = function(data, eje){
 
@@ -1014,6 +1016,29 @@ var rodalDataProsp = function(){
         });
 }
 
+
+
+var redirectFaseMap = function(){
+        var pathname = window.location.href;
+        console.log(pathname);
+        var faseMap = window.location.hash;
+
+        if (faseMap == "#mapaFase1"){
+            $('.mapaFase1Tab').addClass("active");
+            $('.mapaFase2Tab').removeClass("active");
+
+            $('.mapaFase1').css("display", "block")
+            $('.mapaFase2').css("display", "none")
+
+        }else if (faseMap == "#mapaFase2"){
+            $('.mapaFase1Tab').removeClass("active");
+            $('.mapaFase2Tab').addClass("active");
+
+            $('.mapaFase1').css("display", "none")
+            $('.mapaFase2').css("display", "block")
+        }
+
+    }
 
 
 

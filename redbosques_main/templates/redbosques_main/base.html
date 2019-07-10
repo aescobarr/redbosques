@@ -37,68 +37,15 @@
 </head>
 <body>
 {% block nav %}
-<!--<nav class="navbar navbar-default">
-    <div class="container-fluid">
-
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-
-
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <div class="row">
-                <div class="col-lg-offset-1 col-lg-3 col-md-6 col-sm-6 logoCont">
-                    <a class="navbar-brand" href="#">
-                        <img src="{% static 'redbosques_main/css/logo.png' %}">
-                    </a>
-                </div>
-                <div class="col-lg-4 col-lg-offset-2 col-md-6 col-sm-6">
-                    <form class="navbar-form navbar-right">
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-lg-6 logo-inst">
-                                    <img src="{% static 'redbosques_main/css/logo-life.jpg' %}">
-                                </div>
-                                <div class="col-lg-6 logo-inst">
-                                    <img src="{% static 'redbosques_main/css/logo-rn2000.jpg' %}">
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </form>
-                </div>
-
-
-            </div>
-        <div class="row">
-            <div class="col-lg-9 col-lg-offset-2">
-                <ul class="nav navbar-nav">
-                    <li class="menu-options active"><a href="/redbosques">INICIO<span class="sr-only">(current)</span></a></li>
-                    <li class="menu-options active"><a href="#">MENÚ DE RODALES<span class="sr-only">(current)</span></a></li>
-                    <li class="menu-options active"><a href="#">COMPARADOR DE RODALES<span class="sr-only">(current)</span></a></li>
-                    <li class="menu-options active"><a href="#">MAPA DE RODALES<span class="sr-only">(current)</span></a></li>
-                    {% if user.is_authenticated %}
-                        <li class="userLogout">
-                            <p>Hola, {{ user.first_name }} | <a href="{% url 'logout' %}">Salir <i class="fas fa-sign-out-alt"></i></a></p>
-                        </li>
-                    {% else %}
-                        <li class="menu-options active"><a href="/redbosques/login/?next=/redbosques/menu">Iniciar sesión <i class="fas fa-sign-in-alt"></i><span class="sr-only">(current)</span></a></li>
-                    {% endif %}
-                </ul>
-
-            </div>
-
-        </div>
+<!--<div class="container">
+    <div class="row">
+        <div class="col-lg-12 logo-inst" style="float: left;">
+            <img src="{% static 'redbosques_main/css/logoLifeNatura.png' %}">
         </div>
     </div>
-</nav>-->
+</div>-->
+
+
 <nav class="navbar navbar-default">
     <div class="container">
 
@@ -120,64 +67,41 @@
                         <img src="{% static 'redbosques_main/css/logo.png' %}">
                     </a>
                 </div>
-                <div class="col-lg-offset-1 col-lg-7" style="margin-top: 3%">
-                <ul class="nav navbar-nav">
-                    <li class="menu-options active"><a href="/redbosques">INICIO<span class="sr-only">(current)</span></a></li>
-                    <li class="menu-options active"><a href="{% url 'menu' %}">MENÚ PRINCIPAL<span class="sr-only">(current)</span></a></li>
-                    <li class="menu-options active"><a href="{% url 'herramientas' %}">MAPA<span class="sr-only">(current)</span></a></li>
-                    <li class="menu-options active"><a href="{% url 'comparador_new' %}">COMPARADOR<span class="sr-only">(current)</span></a></li>
-                    <li class="menu-options active"><a href="{% url 'contacto' %}">CONTACTO<span class="sr-only">(current)</span></a></li>
-                    {% if user.is_authenticated %}
-                        <li class="userLogout">
-                            <p>Hola, {{ user.first_name }} | <a href="{% url 'logout' %}">Salir <i class="fas fa-sign-out-alt"></i></a></p>
-                        </li>
-                    {% else %}
-                        <li class="menu-options active"><a href="/redbosques/login/?next=/redbosques/menu">Iniciar sesión <i class="fas fa-sign-in-alt"></i><span class="sr-only">(current)</span></a></li>
-                    {% endif %}
-                </ul>
-
-            </div>
-
-
-
-
-                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 1%">
-                    <form class="navbar-form navbar-right">
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-lg-6 logo-inst">
-                                    <img src="{% static 'redbosques_main/css/logo-life.jpg' %}">
-                                </div>
-                                <div class="col-lg-6 logo-inst">
-                                    <img src="{% static 'redbosques_main/css/logo-rn2000.jpg' %}">
-                                </div>
+                <div class="col-lg-8" style="margin-top: 4%">
+                    <ul class="nav navbar-nav" style="text-align:center;">
+                        <li class="menu-options active"><a href="/redbosques">INICIO<span class="sr-only">(current)</span></a></li>
+                        <li class="menu-options active"><a href="{% url 'menu' %}">MENÚ PRINCIPAL<span class="sr-only">(current)</span></a></li>
+                        <li class="menu-options active"><a href="{% url 'herramientas' %}">MAPA<span class="sr-only">(current)</span></a></li>
+                        <li class="menu-options active dropdown">
+                            <a href="javascript:void(0)" class="dropbtn">COMPARADORES
+                                <span class="sr-only">(current)</span>
+                            </a>
+                            <div class="dropdown-content">
+                                <a href="{% url 'comparador_new' %}">COMPARADOR DE RODALES</a>
+                                <!--<a href="#">COMPARADOR IFN</a>-->
                             </div>
+                        </li>
 
-
-                        </div>
-                    </form>
+                        <li class="menu-options active"><a href="{% url 'contacto' %}">CONTACTO<span class="sr-only">(current)</span></a></li>
+                        {% if user.is_authenticated %}
+                            <li class="userLogout">
+                                <p>Hola, {{ user.first_name }} | <a href="{% url 'logout' %}">Salir <i class="fas fa-sign-out-alt"></i></a></p>
+                            </li>
+                        {% else %}
+                            <li class="menu-options active"><a href="/redbosques/login/?next=/redbosques/menu">Iniciar sesión <i class="fas fa-sign-in-alt"></i><span class="sr-only">(current)</span></a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="col-lg-2 logo-inst" style="float: left; margin-top: 2%; padding: 0px;">
+                    <img src="{% static 'redbosques_main/css/logoLifeNatura.png' %}">
                 </div>
 
 
+
+
+
+
             </div>
-        <!--<div class="row">
-            <div class="col-lg-9 col-lg-offset-2">
-                <ul class="nav navbar-nav">
-                    <li class="menu-options active"><a href="/redbosques">INICIO<span class="sr-only">(current)</span></a></li>
-                    <li class="menu-options active"><a href="#">MENÚ DE RODALES<span class="sr-only">(current)</span></a></li>
-                    <li class="menu-options active"><a href="#">COMPARADOR DE RODALES<span class="sr-only">(current)</span></a></li>
-                    <li class="menu-options active"><a href="#">MAPA DE RODALES<span class="sr-only">(current)</span></a></li>
-                    {% if user.is_authenticated %}
-                        <li class="userLogout">
-                            <p>Hola, {{ user.first_name }} | <a href="{% url 'logout' %}">Salir <i class="fas fa-sign-out-alt"></i></a></p>
-                        </li>
-                    {% else %}
-                        <li class="menu-options active"><a href="/redbosques/login/?next=/redbosques/menu">Iniciar sesión <i class="fas fa-sign-in-alt"></i><span class="sr-only">(current)</span></a></li>
-                    {% endif %}
-                </ul>
-
-            </div>-->
-
         </div>
         </div>
     </div>

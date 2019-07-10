@@ -25,11 +25,65 @@
 <div class="container menuOptions">
     <div class="row">
         <div class="col-lg-offset-4 col-lg-4">
-            <a class="btn btn-selector-mapa" onclick="zoomRodalMapa()">Ver mapa de rodales</a>
-            <!--<a class="btn btn-selector-mapa" href="{% url 'herramientas' %}" onclick="zoomRodalMapa()">Ver mapa de rodales</a>-->
-            <a type="btn" href="{% url 'rodalForm' %}" class="btn btn-selector-mapa">Entrada de nuevo rodal</a>
-            <!--<button type="btn" class="btn btn-selector-mapa" disabled>Importar datos desde xls? Csv?</button>-->
+
+            <h4>Visualizar rodales en el mapa</h4>
+            <div class="row">
+                <div class="col-lg-6">
+                    <a class="btn btn-selector-mapa" href="{% url 'herramientas' %}#mapaFase1">Mapa Fase 1</a>
+                </div>
+                <div class="col-lg-6">
+                    <a class="btn btn-selector-mapa" href="{% url 'herramientas' %}#mapaFase2">Mapa Fase 2</a>
+                    <!--<a class="btn btn-selector-mapa" href="{% url 'herramientas' %}" onclick="zoomRodalMapa()">Ver mapa de rodales</a>-->
+                </div>
+            </div>
             <hr>
+            <h4>Comparador</h4>
+            <div class="row">
+                <!--<div class="col-lg-6">
+                    <a type="btn" class="btn btn-selector-mapa" href="{% url 'comparador_new' %}">Comparar rodales</a>
+                </div>
+                <div class="col-lg-6">
+                    <a type="btn" class="btn btn-selector-mapa" href="#">Comparar con IFN</a>
+                </div>-->
+                <div class="col-lg-12">
+                    <a type="btn" class="btn btn-selector-mapa" href="{% url 'comparador_new' %}">Comparar rodales</a>
+                </div>
+            </div>
+
+
+            <hr>
+            <h4>Administrar rodales Fase 1</h4>
+            <select class="form-control editRodalF1Selected">
+                <option value="" selected="selected">------</option>
+                    {% for rodalF1 in rodalesFase1Selector %}
+                        <option class="tipo_bosque" value="{{ rodalF1.id_rodal }}">
+                            {{ rodalF1.nombre }}
+                        </option>
+                    {% endfor %}
+            </select>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <button type="btn" class="btn btn-selector-mapa" onclick="editarRodalFase1()">Editar</button>
+                </div>
+
+                <div class="col-lg-4">
+                    <button type="btn" class="btn btn-selector-mapa" onclick="fichaRodalFase1()">Ver ficha</button>
+                </div>
+
+                <div class="col-lg-4">
+                    <button type="btn" class="btn btn-eliminar-rodal" onclick="eliminarRodalFase1()">Eliminar</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <a type="btn" href="{% url 'rodalFormFase1' %}" class="btn btn-selector-mapa">Entrada de nuevo rodal</a>
+                </div>
+            </div>
+
+
+            <hr>
+            <h4>Administrar rodales Fase 2</h4>
             <select class="form-control editRodalSelected">
                 <option value="" selected="selected">------</option>
                     {% for rodal in rodalesSelectorEditor %}
@@ -38,43 +92,26 @@
                         </option>
                     {% endfor %}
             </select>
+
             <div class="row">
-                <div class="col-lg-6">
-                    <button type="btn" class="btn btn-selector-mapa" onclick="editarRodal()">Editar Rodal</button>
-                </div>
-                <div class="col-lg-6">
-                    <button type="btn" class="btn btn-eliminar-rodal" onclick="eliminarRodal()">Eliminar Rodal</button>
+                <div class="col-lg-4">
+                    <button type="btn" class="btn btn-selector-mapa" onclick="editarRodal()">Editar</button>
                 </div>
 
+                <div class="col-lg-4">
+                    <button type="btn" class="btn btn-selector-mapa" onclick="fichaRodal()">Ver ficha</button>
+                </div>
+
+                <div class="col-lg-4">
+                    <button type="btn" class="btn btn-eliminar-rodal" onclick="eliminarRodal()">Eliminar</button>
+                </div>
             </div>
-
-            <!--<button type="btn" class="btn btn-selector-mapa" disabled>Exportar (csv?, shp?, sql?)</button>-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <a type="btn" href="{% url 'rodalForm' %}" class="btn btn-selector-mapa">Entrada de nuevo rodal</a>
+                </div>
+            </div>
             <hr>
-            <select class="form-control rodalPDFselected">
-                <option value="" selected="selected">------</option>
-                    {% for rodal in rodalesSelectorEditor %}
-                        <option class="tipo_bosque" value="{{ rodal.id_rodal }}">
-                            {{ rodal.nombre }}
-                        </option>
-                    {% endfor %}
-            </select>
-            <a class="btn btn-selector-mapa" onclick="fichaRodal()">Ver ficha</a>
-
-
-
-
-            <hr>
-            <select class="form-control rodalSelected">
-                <option value="" selected="selected">------</option>
-                    {% for rodal in rodalesSelector %}
-                        <option class="tipo_bosque" value="{{ rodal.id_rodal }}">
-                            {{ rodal.nombre }}
-                        </option>
-                    {% endfor %}
-            </select>
-            <button type="btn" class="btn btn-selector-mapa" onclick="compararRodal()">Comparar</button>
-            <hr>
-            <!--<button type="btn" class="btn btn-selector-mapa">Terminar</button>-->
             <a class="btn btn-selector-mapa" href="{% url 'logout' %}">Salir</a>
             {% if du and du.admin_institucion %}
             <a class="btn btn-selector-mapa-admin" href="{% url 'user_admin' %}">Gestionar usuarios de la institucion</a>

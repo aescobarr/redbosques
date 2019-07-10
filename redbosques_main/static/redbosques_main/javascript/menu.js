@@ -5,6 +5,8 @@ $(document).ready(function() {
 
 });
 
+/*------- Fase 2---------- */
+
 var editarRodal = function(){
         var editRodalSelected = $('.editRodalSelected').val();
 
@@ -32,8 +34,57 @@ var eliminarRodal = function(){
         }
 };
 
+var fichaRodal = function(){
+    var rodalSelected = $('.editRodalSelected').val();
+    if (rodalSelected === ''){
+        //location.href = "/redbosques/menu";
+        alert("Por favor seleccione un rodal.")
+    }else{
+        location.href = "/redbosques/fichaRodal/" + rodalSelected + "/";
+    }
+}
 
 
+/*------- Fase 1---------- */
+
+var editarRodalFase1 = function(){
+        var editRodalF1Selected = $('.editRodalF1Selected').val();
+
+        if (editRodalF1Selected === ''){
+            //location.href = "/redbosques/comparador";
+            alert("Por favor seleccione un rodal.")
+        }else{
+            console.log(editRodalF1Selected);
+            location.href = "/redbosques/editRodalFormFase1/" + editRodalF1Selected + "/";
+        }
+};
+
+
+
+var eliminarRodalFase1 = function(){
+        var rodalF1Selected = $('.editRodalF1Selected').val();
+
+        if (rodalF1Selected === ''){
+            alert("Por favor seleccione un rodal.")
+        }else{
+            var resp = confirm("Estas seguro que deseas eliminar el rodal?");
+
+            if(resp == true){
+                location.href = "/redbosques/eliminarRodalFase1/" + rodalF1Selected + "/";
+            }
+        }
+};
+
+var fichaRodalFase1 = function(){
+    var rodalF1Selected = $('.editRodalF1Selected').val();
+    if (rodalF1Selected === ''){
+        alert("Por favor seleccione un rodal.")
+    }else{
+        location.href = "/redbosques/fichaRodalFase1/" + rodalF1Selected + "/";
+    }
+}
+
+/* ------------------------------------------------------------------------------------------- */
 
 
 var compararRodal = function(){
@@ -60,14 +111,7 @@ var zoomRodalMapa = function(){
 
 
 
-var fichaRodal = function(){
-    var rodalSelected = $('.rodalPDFselected').val();
-    if (rodalSelected === ''){
-        location.href = "/redbosques/menu";
-    }else{
-        location.href = "/redbosques/fichaRodal/" + rodalSelected + "/";
-    }
-}
+
 
 
 /*$.ajaxSetup({

@@ -1,0 +1,149 @@
+{% extends "redbosques_main/base.html" %}
+{% load static %}
+{% block extra_css %}
+
+<link href="{% static 'redbosques_main/jQuery-File-Upload-9.28.0/css/jquery.fileupload-ui.css' %}" rel="stylesheet">
+<link href="{% static 'redbosques_main/jQuery-File-Upload-9.28.0/css/jquery.fileupload.css' %}" rel="stylesheet">
+<link href="{% static 'redbosques_main/jQuery-File-Upload-9.28.0/css/style.css' %}" rel="stylesheet">
+<link href="{% static 'redbosques_main/jQuery-File-Upload-9.28.0/css/github/blueimp-gallery.min.css' %}" rel="stylesheet">
+<style>
+    body{
+        padding-top: 0px;
+    }
+</style>
+{% endblock %}
+{% block main %}
+<div class="container-fluid subheader">
+    <div class="row">
+        <div class="col-lg-12 subfield">
+            <p>
+                <h4>
+                    <a href="{% url 'index' %}">Inicio</a> /
+                    <a href="{% url 'menu' %}">Menú</a> /
+                    <!--<a href="{% url 'herramientas' %}">Mapa de rodales</a>-->
+                    Información rodal
+                </h4>
+            </p>
+            <!--<h2>{{ herramientas }}</h2>-->
+            <!--<h2>Herramienta de evaluación de rodales maduros</h2>-->
+        </div>
+    </div>
+</div>
+<div class="container menu-header">
+    <div class="row">
+            <h3>Datos opcionales del rodal</h3>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row form-group">
+        <div class="col-lg-offset-3 col-lg-6">
+
+                <h4>FOTOGRAFÍAS</h4>
+
+                <!--{# 1. BUTTON TO TRIGGER THE ACTION #}-->
+                <button type="button" class="btn btn-primary js-upload-photos">
+                    <span class="glyphicon glyphicon-cloud-upload"></span> Subir fotografias ilustrativas del rodal
+                </button>
+                <p>{{ data.result.error_imagen }}</p>
+                <input id="fileupload" type="file" name="foto" style="display: none" multiple data-url="{% url 'uploadImageFase1' id %}" data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
+                <table id="gallery" class="table table-bordered" style="margin-top: 15px;">
+                  <thead>
+                    <tr>
+                      <th colspan="2" style="text-align: center;">Fotos del rodal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for f in listaFotos %}
+                      <tr>
+                          <td>
+                              <a target="_blank" href="{{ f.foto.url }}"><img style="height: 150px;" src="{{ f.foto.url }}"></a>
+                          </td>
+                          <td>
+                                <p>Nombre: {{ f.nombre_foto }}</p>
+                                <p name="fotoPrinc" value="{{ f.id_foto }}">{{ f.id_foto }}</p>
+                                <!--<form method="post" enctype="multipart/form-data" action="{% url 'eliminarImagen' f.id_foto %}">-->
+                                {% csrf_token %}
+                                <button class="btn btn-danger btn-sm btn-del btn-del-img imatgeRodal deleteFoto" id="{{ f.id_foto }}" type="submit">Eliminar</button>
+                                <!--</form>-->
+                                <div class="fotoPrincipal" style="padding-top: 10px;">
+                                  <p>Foto principal</p>
+                                  {% if f.fotoPrincipal %}
+                                    <input id="{{ f.id_foto }}" type="radio" class="fotoPrinc" name="fotoPrinc" value="ture" checked="checked" onchange="fotoPrincipal()">
+                                  {% else %}
+                                    <input id="{{ f.id_foto }}" type="radio" class="fotoPrinc" name="fotoPrinc" value="false" onchange="fotoPrincipal()">
+                                  {% endif %}
+                                </div>
+                          </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                {% csrf_token %}
+                <h4>OTROS DOCUMENTOS</h4>
+                <!--<a class="btn btn-selector-mapa" href="#">Subir documentos relevantes</a>
+                <input type="file" name="documentosRodal"/>-->
+
+                <!--{# 1. BUTTON TO TRIGGER THE ACTION #}-->
+                <button type="button" class="btn btn-primary js-upload-docs">
+                    <span class="glyphicon glyphicon-cloud-upload"></span> Subir documentos relevantes
+                </button>
+
+                <input id="docupload" type="file" name="doc" style="display: none" multiple data-url="{% url 'uploadDocsFase1' id %}" data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
+
+                <table id="library" class="table table-bordered" style="margin-top: 15px;">
+                  <thead>
+                    <tr>
+                      <th  style="text-align: center;">Documentos del rodal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for d in listaDocs %}
+                      <tr>
+                          <td>
+                              <a target="_blank" href="{{ d.doc.url }}"><img style="height: 100px;" src="{% static 'redbosques_main/images/fileIcon2.png' %}"></a>
+                              <p>Nombre: {{ d.nombre_doc }}</p>
+                              <button class="btn btn-danger btn-sm btn-del btn-del-doc documentRodal deleteDoc" id="{{ d.id_doc }}" type="submit" onclick="deleteDocFase1()">Eliminar</button>
+
+                          </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+            <form action="{% url 'rodalForm3' id %}" method="POST">
+                <h4>INFORMACIÓN COMPLEMENTARIA</h4>
+                    {{ form.otroespflora }}
+                    {{ form.otrohics }}
+                    {{ form.otroinfo }}
+                    {% csrf_token %}
+                <!--<input type="submit" class="btn btn-selector-mapa" value="Terminar">-->
+
+
+
+                <td colspan="2">
+                    <div class="col-lg-6">
+                        <a class="btn btn-selector-mapa" href="{% url 'editRodalFormFase1' id %}">Volver atrás</a>
+                    </div>
+                    <div class="col-lg-6">
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-selector-mapa" value="Terminar">
+                    </div>
+                </td>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
+<script src="{% static 'redbosques_main/javascript/rodalFormFase1_2.js' %}"></script>
+<script src="{% static 'redbosques_main/jQuery-File-Upload-9.28.0/js/vendor/jquery.ui.widget.js' %}"></script>
+<script src="{% static 'redbosques_main/jQuery-File-Upload-9.28.0/js/jquery.iframe-transport.js' %}"></script>
+<script src="{% static 'redbosques_main/jQuery-File-Upload-9.28.0/js/jquery.fileupload.js' %}"></script>
+<script>
+    var fileIconUrl = "{% static 'redbosques_main/images/fileIcon2.png' %}";
+</script>
+
+
+{% endblock %}
