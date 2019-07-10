@@ -661,7 +661,7 @@ class RodalProspDatosgen(models.Model):
 
     class Meta:
         managed = False  # Created from a view. Don't remove.
-        db_table = 'rodal_prosp_datosGen'
+        db_table = 'rodal_prosp_datosgen'
 
 
 

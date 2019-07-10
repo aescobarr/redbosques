@@ -46,7 +46,6 @@ urlpatterns = [
     path('mainImage/<int:idRodal>/<int:fotoSelected>/', views.mainImage, name='mainImage'),
     path('uploadDocs/<int:id>/', views.uploadDocs, name='uploadDocs'),
     path('eliminarDoc/<int:id>/', views.deleteDoc, name='eliminarDoc'),
-
     path('filtraxhabitat', views.filtraxhabitat, name='filtraxhabitat'),
     path('filtrarxComAut', views.filtrarxComAut, name='filtrarxComAut'),
     path('filtrarxRegBiogeo', views.filtrarxRegBiogeo, name='filtrarxRegBiogeo'),
