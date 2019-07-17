@@ -92,8 +92,11 @@ class rodalFormFields(forms.ModelForm):
     metodo_cod = forms.ModelChoiceField(queryset=metodos, widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Método", required=True)
     fecha = forms.DateField(label="Fecha", widget=DatePickerInput(format='%d/%m/%Y', attrs={'placeholder': 'Fecha'}))
     equipo = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Equipo de campo'}), required=True)
+
     habLPEHT = TeLpeht.objects.filter(seleccion='True').filter(cod__contains='.').order_by('nombre')
     lpeht_cod = forms.ModelChoiceField(queryset=habLPEHT, widget=forms.Select(attrs={'class': 'form-control', 'value': ''}), empty_label="Hábitat CORINE (LPHE)", required=True)
+
+
     habitatsHIC = TeHic.objects.order_by('nombre_es')
     hic_cod = forms.ModelChoiceField(queryset=habitatsHIC, widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Hábitat de interés comunitario HIC", required=True)
     regionesBiogeo = TeRegbio.objects.order_by('nombre_es')
@@ -499,7 +502,7 @@ class rodalFormFase1Fields(ModelForm):
     fecha = forms.DateField(label="Fecha", widget=DatePickerInput(format='%d/%m/%Y', attrs={'placeholder': 'Fecha'}),required=False)
     equipo = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Equipo de campo'}), required=True)
     tiempoempl = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tiempo empleado'}), required=False)
-    tipobosque = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tipo de bosque'}), required=False)
+    tipobosque = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '3', 'placeholder': 'Tipo de bosque: Descripción de las características de madurez'}), required=False)
     otroespflora = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}), required=False)
     otrohics = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}), required=False)
     otroinfo = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}), required=False)

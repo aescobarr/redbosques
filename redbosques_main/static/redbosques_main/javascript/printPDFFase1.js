@@ -32,6 +32,7 @@ $(document).ready(function() {
         id: 'mapbox.streets'
     });
 
+
     var bing = L.tileLayer.bing('AisLQm3JkrOKysYfF9FiIkwkH-kIryIOeJcEs4JV-Qb9fgdBZk3tM4NmTe-e94Zr');
 
     var openCycle = L.tileLayer('https://tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=dda4faab5df24211a8d46b5b607f51d6', {
@@ -104,6 +105,17 @@ var crearPDFFase1 = function(id_rodal,token){
     var filename = "Nombre.pdf";
     var img = document.createElement('img');
     var imagen;
+
+
+
+
+    /*html2canvas(document.querySelector("#geometria_string")).then(canvas => {
+        document.body.appendChild(canvas)
+    });*/
+
+    /*window.html2canvas("#geometria_string").then(function(canvas) {
+        document.body.appendChild(canvas);
+    });*/
 
 
 

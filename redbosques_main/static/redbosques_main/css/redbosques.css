@@ -225,6 +225,7 @@ ul.nav-pills li.active a {
     height: 640px;
 }
 
+
 .mapa-selectores{
     color: black;
     margin-top: 2%;
@@ -240,6 +241,10 @@ ul.nav-pills li.active a {
 .map-options{
     height: 640px;
     position:relative;
+}
+
+#mapidFase1 .leaflet-popup-content{
+    width: 250px;
 }
 
 .bottom-buttons{
@@ -321,32 +326,38 @@ h5{
 .icon_10{ color: #0033cc; }
 .icon_null{ color: gray; }*/
 
-.icon_0{ color: #a50026; }
-.icon_1{ color: #d73027; }
-.icon_2{ color: #f46d43; }
-.icon_3{ color: #fdae61; }
-.icon_4{ color: #fee08b; }
-.icon_5{ color: #ffffbf; }
-.icon_6{ color: #d9ef8b; }
-.icon_7{ color: #a6d96a; }
-.icon_8{ color: #66bd63; }
-.icon_9{ color: #1a9850; }
-.icon_10{ color: #006837; }
-.icon_null{ color: #000000; }
+.icon_0{ color: #a50026;}
+.icon_1{ color: #d73027;}
+.icon_2{ color: #f46d43;}
+.icon_3{ color: #fdae61;}
+.icon_4{ color: #fee08b;}
+.icon_5{ color: #ffffbf;}
+.icon_6{ color: #d9ef8b;}
+.icon_7{ color: #a6d96a;}
+.icon_8{ color: #66bd63;}
+.icon_9{ color: #1a9850;}
+.icon_10{ color: #006837;}
+.icon_null{ color: #000000;}
 
 
-.iconHH_0{ color: #006837; }
-.iconHH_1{ color: #1a9850; }
-.iconHH_2{ color: #66bd63; }
-.iconHH_3{ color: #a6d96a; }
-.iconHH_4{ color: #d9ef8b; }
-.iconHH_5{ color: #ffffbf; }
-.iconHH_6{ color: #fee08b; }
-.iconHH_7{ color: #fdae61; }
-.iconHH_8{ color: #f46d43; }
-.iconHH_9{ color: #d73027; }
-.iconHH_10{ color: #a50026; }
+.iconHH_0{ color: #006837;}
+.iconHH_1{ color: #1a9850;}
+.iconHH_2{ color: #66bd63;}
+.iconHH_3{ color: #a6d96a;}
+.iconHH_4{ color: #d9ef8b;}
+.iconHH_5{ color: #ffffbf;}
+.iconHH_6{ color: #fee08b;}
+.iconHH_7{ color: #fdae61;}
+.iconHH_8{ color: #f46d43;}
+.iconHH_9{ color: #d73027;}
+.iconHH_10{ color: #a50026;}
 .iconHH_null{ color: #000000; }
+
+.mapa-selectores .fa-circle{
+    stroke: black;
+    stroke-width: 50px;
+
+}
 
 .logos-colab{
     margin-top: 4%;
@@ -582,7 +593,7 @@ label .boolRodRef{
     margin-bottom: 0px;
 }
 
-.form-rodal input, .form-rodal select{
+.form-rodal input, .form-rodal select, .form-rodal textarea{
     margin-top: 5px;
     margin-bottom: 5px;
     border-color: #9ac635;
@@ -816,3 +827,4 @@ td.errorAlert{
 .valRodFase1{
     text-align: center;
 }
+

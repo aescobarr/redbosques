@@ -86,6 +86,8 @@ $(document).ready(function() {
             }
 
 
+
+
             if (punt.imagen == null){
                 var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
                 '<b>' + punt.nombre + '</b><br><b>Hábitat: </b>' + punt.habitat_nom + '<br>' + '<b>Tipo de Bosque: </b>' + punt.tipobosque_nombre +
@@ -185,18 +187,27 @@ $(document).ready(function() {
                 current_icon = html_icon_default;
             }
 
+            var valFrase = null;
+            if (punt.valor >= 1 && punt.valor <= 3){
+                valFrase = "Rodal con naturalidad baja"
+            }else if (punt.valor >= 4 && punt.valor <= 6){
+                valFrase = "Rodal con tendencia a la naturalidad"
+            }else if (punt.valor >= 7 && punt.valor <= 9){
+                valFrase = "Rodal con indicios consistentes de un nivel elevado de naturalidad"
+            }
+
             if (punt.foto == null){
                 var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
                 '<b>' + punt.nombre + '</b><br><b>Hábitat: </b>' + punt.habitat_nom + '<br>' + '<b>Tipo de Bosque: </b>' + punt.tipodebosque +
                 '<br><b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br>' +
-                '<b>Valor: </b>' + punt.valor + '<br>' + '<a href="/redbosques/fichaRodalFase1/' + punt.id_rodal + '/"><b>Ficha </b></a>' +
+                '<b>Valor: </b>' + punt.valor + ' - '+ valFrase +'<br>' + '<a href="/redbosques/fichaRodalFase1/' + punt.id_rodal + '/"><b>Ficha </b></a>' +
                 '<div class="imagenRodal"><img src="/static/redbosques_main/css/logo.png" alt="'+ punt.nombre +'" height="100"></div>'
                 );
             }else{
                 var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
                 '<b>' + punt.nombre + '</b><br><b>Hábitat: </b>' + punt.habitat_nom + '<br>' + '<b>Tipo de Bosque: </b>' + punt.tipodebosque +
                 '<br><b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br>' +
-                '<b>Valor: </b>' + punt.valor + '<br>' + '<a href="/redbosques/fichaRodalFase1/' + punt.id_rodal + '/"><b>Ficha </b></a>' +
+                '<b>Valor: </b>' + punt.valor +' - '+ valFrase + '<br>' + '<a href="/redbosques/fichaRodalFase1/' + punt.id_rodal + '/"><b>Ficha </b></a>' +
                 '<div class="imagenRodal"><img src="/media/'+ punt.foto +'" alt="'+ punt.nombre +'" width="250" height="150"></div>'
                 );
             }

@@ -1227,6 +1227,7 @@ var graficaEjes = function(datosEjes, rodalName, rodalNameRef){
                 symbol: 'circle',
                 fillColor: '#339933',
                 lineColor: '#339933',
+                radius: 10,
             },
             tooltip: {
                 useHTML: true,
@@ -1357,7 +1358,9 @@ var graficaCritNat = function(datosCritNat, rodalName, rodalNameRef){
             marker: {
                 symbol: 'circle',
                 fillColor: '#339933',
-                lineColor: '#339933'
+                lineColor: '#339933',
+                radius: 10,
+
             },
 
             tooltip: {
@@ -1480,7 +1483,8 @@ var graficaCritHu = function(datosCritHu, rodalName, rodalNameRef){
             marker: {
                 symbol: 'circle',
                 fillColor: '#339933',
-                lineColor: '#339933'
+                lineColor: '#339933',
+                radius: 10,
             },
             tooltip: {
                 useHTML: true,
@@ -1603,7 +1607,8 @@ var graficaCritIe = function(datosCritIe, rodalName, rodalNameRef){
             marker: {
                 symbol: 'circle',
                 fillColor: '#339933',
-                lineColor: '#339933'
+                lineColor: '#339933',
+                radius: 10,
             },
             tooltip: {
                 useHTML: true,

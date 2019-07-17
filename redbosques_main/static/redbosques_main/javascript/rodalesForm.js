@@ -1,5 +1,8 @@
 $(document).ready(function() {
 
+    $(".rodalOblig").show();
+    $("#btnSubmitForm").prop("disabled", true);
+
     toastr.options.timeOut = 0;
     toastr.options.extendedTimeOut = 0;
     toastr.options.closeButton = true;

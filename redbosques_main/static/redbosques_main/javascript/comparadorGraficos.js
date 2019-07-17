@@ -1088,6 +1088,7 @@ var graficaEjes = function(datosEjes, rodalName, rodalNameRef){
                 symbol: 'circle',
                 fillColor: '#339933',
                 lineColor: '#339933',
+                radius: 10,
             },
             tooltip: {
                 useHTML: true,

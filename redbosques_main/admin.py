@@ -3,6 +3,8 @@ from django.contrib import admin
 # Register your models here.
 from django.contrib import admin
 from redbosques_main.models import Institucion, DatosUsuario, Rodal, AuthUser
+import csv
+from django.http import HttpResponse
 
 
 class DatosUsuarioAdmin(admin.ModelAdmin):
@@ -24,6 +26,20 @@ class RodalAdmin(admin.ModelAdmin):
         if db_field.name == "usuario":
             kwargs["queryset"] = AuthUser.objects.all().order_by('username')
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+    '''def export_users_csv(request):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="users.csv"'
+
+        writer = csv.writer(response)
+        writer.writerow(['Username', 'First name', 'Last name', 'Email address'])
+
+        users = Rodal.objects.all()
+        for user in users:
+            writer.writerow(user)
+
+        return response'''
 
 
 admin.site.register(Institucion, InstitucionAdmin)

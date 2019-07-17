@@ -253,7 +253,8 @@ function resetUIRodalComp(){
     resetUITable();
     rodalReferencia = null;
     $('#selector_rodales_comp').empty();
-    $('#selector_rodales_comp').append('<option value="null" selected="selected">Rodal / Conjunto de rodales a comparar</option>');
+    //$('#selector_rodales_comp').append('<option value="null" selected="selected">Rodal / Conjunto de rodales a comparar</option>');
+    $('#selector_rodales_comp').append('<option value="null" selected="selected">----------</option>');
     $('#selector_rodales_comp').append('<option value="medRod">Todos los rodales</option>');
     //$('.bgColorRod').html('');
 }

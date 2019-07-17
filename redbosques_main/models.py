@@ -79,13 +79,14 @@ class TeHic(models.Model):
     cod = models.CharField(primary_key=True, max_length=5)
     corine_cod = models.ForeignKey('TeLpeht', models.DO_NOTHING, db_column='corine_cod')
     nombre_es = models.CharField(max_length=100, blank=True, null=True)
+    codnombre = models.CharField(max_length=300, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'te_hic'
 
     def __str__(self):
-        return '%s' % (self.nombre_es)
+        return '%s' % (self.codnombre)
 
 
 class TeLpeht(models.Model):
@@ -93,13 +94,15 @@ class TeLpeht(models.Model):
     cod = models.CharField(primary_key=True, max_length=50)
     nombre = models.CharField(max_length=255, blank=True, null=True)
     seleccion = models.BooleanField(blank=True, null=True)
+    codnombre = models.CharField(max_length=300, blank=True, null=True)
+
 
     class Meta:
         managed = False
         db_table = 'te_lpeht'
 
     def __str__(self):
-        return '%s' % (self.nombre)
+        return '%s' % (self.codnombre)
 
 
 class TeRegbio(models.Model):

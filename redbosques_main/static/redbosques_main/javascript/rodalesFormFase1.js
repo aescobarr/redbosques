@@ -2,6 +2,9 @@ $(document).ready(function() {
     var Marker = {};
     $('#id_volarrodal').val(0);
 
+    $(".rodalOblig").show();
+    $("#btnSubmitForm").prop("disabled", true);
+
     var base = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
             maxZoom: 18,
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
@@ -81,7 +84,12 @@ $(document).ready(function() {
 
         var string_json = JSON.stringify(Marker.toGeoJSON());
         $('#marker_string').val(string_json);
-        //blockUnblockSubmit(string_json);
+
+        /*$(".rodalOblig").hide();
+        $("#btnSubmitForm").prop("disabled", false);*/
+
+
+        blockUnblockSubmit(string_json);
     });
 
     map.on(L.Draw.Event.EDITED, function (e) {
@@ -95,15 +103,15 @@ $(document).ready(function() {
 
         var string_json = JSON.stringify(Marker.toGeoJSON());
         $('#marker_string').val(string_json);
-        //blockUnblockSubmit(string_json);
+        blockUnblockSubmit(string_json);
     });
 
     map.on(L.Draw.Event.DELETED, function(e){
         $('#marker_string').val('');
+        $("#btnSubmitForm").prop("disabled", true);
         string_json = '';
-        //blockUnblockSubmit(string_json);
+        blockUnblockSubmit(string_json);
     });
-
 
 
 });
@@ -154,3 +162,13 @@ function sumar(valor) {
 	    "-"
 	}
 }
+
+var blockUnblockSubmit = function(string_json){
+    if(string_json == ""){
+        $(".rodalOblig").show();
+        $("#btnSubmitForm").prop("disabled", true);
+    }else{
+        $(".rodalOblig").hide();
+        $("#btnSubmitForm").prop("disabled", false);
+    }
+};
