@@ -18,35 +18,35 @@ $(document).ready(function() {
             legendHH.addTo(mymap);
             mymap.removeControl(legend);
 
-            var html_icon_0 = L.divIcon({className: "iconHH_0", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_0"></i>'});
-            var html_icon_1 = L.divIcon({className: "iconHH_1", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_1"></i>'});
-            var html_icon_2 = L.divIcon({className: "iconHH_2", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_2"></i>'});
-            var html_icon_3 = L.divIcon({className: "iconHH_3", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_3"></i>'});
-            var html_icon_4 = L.divIcon({className: "iconHH_4", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_4"></i>'});
-            var html_icon_5 = L.divIcon({className: "iconHH_5", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_5"></i>'});
-            var html_icon_6 = L.divIcon({className: "iconHH_6", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_6"></i>'});
-            var html_icon_7 = L.divIcon({className: "iconHH_7", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_7"></i>'});
-            var html_icon_8 = L.divIcon({className: "iconHH_8", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_8"></i>'});
-            var html_icon_9 = L.divIcon({className: "iconHH_9", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_9"></i>'});
-            var html_icon_10 = L.divIcon({className: "iconHH_10", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_10"></i>'});
-            var html_icon_default = L.divIcon({className: "iconHH_null", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_null"></i>'});
+            var html_icon_0 = L.divIcon({className: "iconHH_0", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_0"></i>'});
+            var html_icon_1 = L.divIcon({className: "iconHH_1", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_1"></i>'});
+            var html_icon_2 = L.divIcon({className: "iconHH_2", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_2"></i>'});
+            var html_icon_3 = L.divIcon({className: "iconHH_3", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_3"></i>'});
+            var html_icon_4 = L.divIcon({className: "iconHH_4", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_4"></i>'});
+            var html_icon_5 = L.divIcon({className: "iconHH_5", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_5"></i>'});
+            var html_icon_6 = L.divIcon({className: "iconHH_6", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_6"></i>'});
+            var html_icon_7 = L.divIcon({className: "iconHH_7", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_7"></i>'});
+            var html_icon_8 = L.divIcon({className: "iconHH_8", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_8"></i>'});
+            var html_icon_9 = L.divIcon({className: "iconHH_9", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_9"></i>'});
+            var html_icon_10 = L.divIcon({className: "iconHH_10", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_10"></i>'});
+            var html_icon_default = L.divIcon({className: "iconHH_null", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle iconHH_null"></i>'});
 
         }else{
             legend.addTo(mymap);
             mymap.removeControl(legendHH);
 
-            var html_icon_0 = L.divIcon({className: "icon_0", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_0"></i>'});
-            var html_icon_1 = L.divIcon({className: "icon_1", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_1"></i>'});
-            var html_icon_2 = L.divIcon({className: "icon_2", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_2"></i>'});
-            var html_icon_3 = L.divIcon({className: "icon_3", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_3"></i>'});
-            var html_icon_4 = L.divIcon({className: "icon_4", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_4"></i>'});
-            var html_icon_5 = L.divIcon({className: "icon_5", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_5"></i>'});
-            var html_icon_6 = L.divIcon({className: "icon_6", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_6"></i>'});
-            var html_icon_7 = L.divIcon({className: "icon_7", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_7"></i>'});
-            var html_icon_8 = L.divIcon({className: "icon_8", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_8"></i>'});
-            var html_icon_9 = L.divIcon({className: "icon_9", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_9"></i>'});
-            var html_icon_10 = L.divIcon({className: "icon_10", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_10"></i>'});
-            var html_icon_default = L.divIcon({className: "icon_null", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_null"></i>'});
+            var html_icon_0 = L.divIcon({className: "icon_0", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_0"></i>'});
+            var html_icon_1 = L.divIcon({className: "icon_1", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_1"></i>'});
+            var html_icon_2 = L.divIcon({className: "icon_2", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_2"></i>'});
+            var html_icon_3 = L.divIcon({className: "icon_3", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_3"></i>'});
+            var html_icon_4 = L.divIcon({className: "icon_4", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_4"></i>'});
+            var html_icon_5 = L.divIcon({className: "icon_5", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_5"></i>'});
+            var html_icon_6 = L.divIcon({className: "icon_6", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_6"></i>'});
+            var html_icon_7 = L.divIcon({className: "icon_7", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_7"></i>'});
+            var html_icon_8 = L.divIcon({className: "icon_8", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_8"></i>'});
+            var html_icon_9 = L.divIcon({className: "icon_9", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_9"></i>'});
+            var html_icon_10 = L.divIcon({className: "icon_10", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_10"></i>'});
+            var html_icon_default = L.divIcon({className: "icon_null", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_null"></i>'});
         }
 
         var taula_icons = {
@@ -136,21 +136,24 @@ $(document).ready(function() {
 
         //###########################Icono/Leyenda##########################################
 
+
+        //iconAnchor: [8,8]
+
         legendFase1.addTo(mymapFase1);
         //mymapFase1.removeControl(legendHH);
 
-        var html_icon_0 = L.divIcon({className: "icon_0", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_0"></i>'});
-        var html_icon_1 = L.divIcon({className: "icon_1", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_1"></i>'});
-        var html_icon_2 = L.divIcon({className: "icon_2", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_2"></i>'});
-        var html_icon_3 = L.divIcon({className: "icon_3", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_3"></i>'});
-        var html_icon_4 = L.divIcon({className: "icon_4", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_4"></i>'});
-        var html_icon_5 = L.divIcon({className: "icon_5", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_5"></i>'});
-        var html_icon_6 = L.divIcon({className: "icon_6", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_6"></i>'});
-        var html_icon_7 = L.divIcon({className: "icon_7", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_7"></i>'});
-        var html_icon_8 = L.divIcon({className: "icon_8", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_8"></i>'});
-        var html_icon_9 = L.divIcon({className: "icon_9", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_9"></i>'});
+        var html_icon_0 = L.divIcon({className: "icon_0", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_0"></i>'});
+        var html_icon_1 = L.divIcon({className: "icon_1", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_1"></i>'});
+        var html_icon_2 = L.divIcon({className: "icon_2", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_2"></i>'});
+        var html_icon_3 = L.divIcon({className: "icon_3", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_3"></i>'});
+        var html_icon_4 = L.divIcon({className: "icon_4", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_4"></i>'});
+        var html_icon_5 = L.divIcon({className: "icon_5", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_5"></i>'});
+        var html_icon_6 = L.divIcon({className: "icon_6", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_6"></i>'});
+        var html_icon_7 = L.divIcon({className: "icon_7", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_7"></i>'});
+        var html_icon_8 = L.divIcon({className: "icon_8", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_8"></i>'});
+        var html_icon_9 = L.divIcon({className: "icon_9", iconSize: [16,16], iconAnchor: [8,8], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_9"></i>'});
         //var html_icon_10 = L.divIcon({className: "icon_10", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_10"></i>'});
-        var html_icon_default = L.divIcon({className: "icon_null", iconAnchor: [18, 24], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_null"></i>'});
+        var html_icon_default = L.divIcon({className: "icon_null", iconAnchor: [18, 24], iconSize: [16,16], labelAnchor: [-6, 0], popupAnchor: [-8, -23], html: '<i class="fas fa-circle icon_null"></i>'});
 
 
         var taula_iconsFase1 = {

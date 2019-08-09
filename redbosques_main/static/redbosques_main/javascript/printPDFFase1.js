@@ -85,6 +85,7 @@ $(document).ready(function() {
     }
 
 
+
 });
 
 function enableSpinner() {
@@ -107,15 +108,26 @@ var crearPDFFase1 = function(id_rodal,token){
     var imagen;
 
 
+    html2canvas($('#mapaID'), {
+        onrendered: function (canvas) {
+            var canvasImg = canvas.toDataURL("image/png");
+            var src = encodeURI(canvasImg);
+
+            console.log(src);
+            //console.log('<img src="'+canvasImg+'" alt="" width="300" height="200">');
+            //$('.mapImage').html('<img src="'+canvasImg+'" alt="" width="300" height="200">');
+
+            /*img.width = 300;
+            img.height = 200;
+            img.src = canvasImg.toDataURL("image/png");
+            img.id = 'printMapImage2'
+
+            console.log(img.src);*/
+
+        }
+    });
 
 
-    /*html2canvas(document.querySelector("#geometria_string")).then(canvas => {
-        document.body.appendChild(canvas)
-    });*/
-
-    /*window.html2canvas("#geometria_string").then(function(canvas) {
-        document.body.appendChild(canvas);
-    });*/
 
 
 

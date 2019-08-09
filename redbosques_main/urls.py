@@ -85,6 +85,11 @@ urlpatterns = [
     path('uploadDocsFase1/<int:id>/', views.uploadDocsFase1, name='uploadDocsFase1'),
     path('eliminarDocFase1/<int:id>/', views.deleteDocFase1, name='eliminarDocFase1'),
     path('crearPDFFase1/<int:id>/', views.crearPDFFase1, name='crearPDFFase1'),
+    path('comparador_ifn/', views.comparadorIFN, name='comparador_ifn'),
+    path('comparador_ifn/<int:id>/', views.comparadorIFN, name='comparador_ifn'),
+    path('valorRodalParcelaIFN', views.valorRodalParcelaIFN, name='valorRodalParcelaIFN'),
+    #path('valorrefIFN_ajax', views.valorrefIFN_ajax, name='valorrefIFN_ajax')
+
 ]
 
 

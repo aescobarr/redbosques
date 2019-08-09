@@ -838,6 +838,7 @@ function rodalData(valorRodal, valRodComp){
 };
 
 function load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod, rodPrincip){
+    console.log(valRod);
     url = _rodal_ref_list;
     var params = [];
     if(idHabitat != "null"){

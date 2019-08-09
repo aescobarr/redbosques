@@ -828,3 +828,13 @@ td.errorAlert{
     text-align: center;
 }
 
+.ifnBarsGraph{
+    min-width: 310px;
+    max-width: 435px;
+    margin: 4%;
+}
+
+.ifnGraphCont{
+    border: 1px solid black;
+    height: 220px;
+}

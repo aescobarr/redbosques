@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, \
     WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht, Tesaurus, User, TeCategoria, FotosRodal, DocsRodal, \
     Institucion, DatosUsuario, AuthUser,TeMunicipi,TeIndicador, RodalProsp, WebMapaRodalProsp, DatosGeneralesRodal, \
-    FotosRodalProsp, DocsRodalProsp, RodalProspDatosgen, RodalProspValores
+    FotosRodalProsp, DocsRodalProsp, RodalProspDatosgen, RodalProspValores, Parcelaifn3Valorres, RodalValorres
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.urls import reverse
@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 import decimal
 import json
-from django.db.models import Avg, StdDev
+from django.db.models import Avg, StdDev, Max
 from redbosques.settings_local import URL_BASE
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -60,6 +60,9 @@ from weasyprint import HTML, CSS
 from django.db.models import Q
 from json.decoder import JSONDecodeError
 from django.contrib import messages
+from django.db.models import Count
+import numpy
+
 import reportlab
 import io
 from reportlab.pdfgen import canvas
@@ -4235,3 +4238,516 @@ def crearPDFFase1(request, id):
     response.write(pdf_file)
 
     return response
+
+
+############################# IFN #############################################
+
+def comparadorIFN(request, id=None):
+
+    init_params = {}
+    if id is not None:
+        valors_ini = WebMapaValAmb.objects.filter(id_rodal=id).distinct().values('habitat_cod','ccaa_nom','regbio_cod').first()
+
+        if valors_ini is None:
+            raise Http404("No hay datos de comparacion para el rodal seleccionado")
+
+        # recuperar hàbitat inicial, ccaa inicial, regio inicial
+        habitat_ini = valors_ini['habitat_cod']
+        #ccaa_ini = valors_ini['ccaa_nom']
+        #regbio_ini = valors_ini['regbio_cod']
+
+        dades_ini = list(WebMapaValAmb.objects.filter(habitat_cod=habitat_ini).values())
+
+        if len(dades_ini) > 0:
+            cc_aa_ini_list = []
+            reg_ini_list = []
+            rodals_ini_list = []
+            # carregar comunitats per hàbitat inicial
+
+            already_in_there = set()
+            for d in dades_ini:
+                if not d['ccaa_nombre'] in already_in_there:
+                    already_in_there.add(d['ccaa_nombre'])
+                    cc_aa_ini_list.append({'codigo': d['ccaa_nom'], 'nombre_es': d['ccaa_nombre']})
+            cc_aa_ini_list.sort(key=lambda x: x['nombre_es'])
+
+            # carregar regio per comunitat autonoma
+            already_in_there = set()
+            for d in dades_ini:
+                if not d['regbio_cod'] in already_in_there:
+                    already_in_there.add(d['regbio_cod'])
+                    reg_ini_list.append({'cod': d['regbio_cod'], 'nombre_es': d['nombre_es']})
+            reg_ini_list.sort(key=lambda x: x['nombre_es'])
+
+            # carregar rodals per regió i cc_aa
+            already_in_there = set()
+            for d in dades_ini:
+                if not d['id_rodal'] in already_in_there:
+                    already_in_there.add(d['id_rodal'])
+                    if d['rodalref'] == True:
+                        rodals_ini_list.append({ 'id_rodal': d['id_rodal'],'nombre': d['nombre'],'rodalref': 1 })
+                    else:
+                        rodals_ini_list.append({'id_rodal': d['id_rodal'], 'nombre': d['nombre'],'rodalref': 0 })
+            rodals_ini_list.sort(key=lambda x: x['nombre'])
+
+            init_params['rodal_ini'] = id
+            init_params['habitat_ini']=habitat_ini
+            #init_params['ccaa_ini']=ccaa_ini
+            #init_params['regbio_ini'] = regbio_ini
+            init_params['cc_aa_ini_list'] = cc_aa_ini_list
+            init_params['reg_ini_list'] = reg_ini_list
+            init_params['rodals_ini_list'] = rodals_ini_list
+
+        else:
+            raise Http404("No hay datos de comparacion para el rodal seleccionado")
+
+    tb_in_data = WebMapaValAmb.objects.all().distinct().values('tipobosque_cod')
+    hab_in_data = WebMapaValAmb.objects.all().distinct().values('habitat_cod')
+
+    tb = Habitat.objects.filter(cod__in=tb_in_data).order_by('nombre')
+    hb = Habitat.objects.filter(cod__in=hab_in_data).order_by('nombre')
+    tipoBosqueData = []
+    habitatData = []
+    for t in tb:
+        tipoBosqueData.append({'tipobosque_cod': t.cod, 'tipobosque_nombre': t.nombre})
+    for h in hb:
+        habitatData.append({'habitat_cod': h.cod, 'habitat_nombre': h.nombre})
+
+    if not bool(init_params):
+        context = {'tiposDeBosque': tipoBosqueData, 'habitats': habitatData }
+    else:
+        context = {'tiposDeBosque': tipoBosqueData, 'habitats': habitatData, 'init_params': init_params }
+
+    return render(request, 'redbosques_main/comparador_ifn.html', context)
+
+
+
+'''def crearArbolrodalIFN(dades):
+
+    #######Asignación de los valores a las variables##########
+        for valor2 in dades:
+            if valor2.indicador_cod == 'nm':
+                if valor2.valor == None:
+                    nm_valor = "---"
+                else:
+                    nm_valor = round(valor2.valor, 2)
+
+            if valor2.indicador_cod == 'cp':
+                if valor2.valor == None:
+                    cp_valor = "---"
+                else:
+                    cp_valor = round(valor2.valor, 2)
+
+            if valor2.indicador_cod == 'ea':
+                if valor2.valor == None:
+                    ea_valor = "---"
+                else:
+                    ea_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'ce':
+                if valor2.valor == None:
+                    ce_valor = "---"
+                else:
+                    ce_valor = round(valor2.valor, 2)
+
+            if valor2.indicador_cod == 'ab':
+                if valor2.valor == None:
+                    ab_valor = "---"
+                else:
+                    ab_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'de':
+                if valor2.valor == None:
+                    de_valor = "---"
+                else:
+                    de_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'sn':
+                if valor2.valor == None:
+                    sn_valor = "---"
+                else:
+                    sn_valor = round(valor2.valor, 2)
+
+            if valor2.indicador_cod == 'ae':
+                if valor2.valor == None:
+                    ae_valor = "---"
+                else:
+                    ae_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'mp':
+                if valor2.valor == None:
+                    mp_valor = "---"
+                else:
+                    mp_valor = round(valor2.valor)
+
+            if valor2.indicador_cod == 'pi':
+                if valor2.valor == None:
+                    pi_valor = "---"
+                else:
+                    pi_valor = round(valor2.valor)
+
+    ######   Valores del rodal    #########
+        rodal_referencia = {
+            'naturalidad': {
+                'valor': nm_valor,
+                'composicion': {
+                    'valor': cp_valor,
+                    'especies_arboreas': {'valor': ea_valor}
+                },
+                'complejidad': {
+                    'valor': ce_valor,
+                    'area_basimetrica': {'valor': ab_valor},
+                    'diversidad_estructural': {'valor': de_valor}
+                },
+                'senectud': {
+                    'valor': sn_valor,
+                    'arb_tam_excep': {'valor': ae_valor},
+                    'abund_mad_muerta': {'valor': mp_valor},
+                    'prop_madera_muerta': {'valor': pi_valor}
+                }
+            }
+        }
+
+        return rodal_referencia
+
+'''
+
+
+@api_view(['GET'])
+def valorRodalParcelaIFN(request):
+
+    cordRod = request.query_params.get('vr', None)
+    habSel = request.query_params.get('idHab', None)
+    comAut = request.query_params.get('comAut', None)
+    regBiogeo = request.query_params.get('regBiogeo', None)
+    comAutComp = request.query_params.get('comAutComp', None)
+    regBiogeoComp = request.query_params.get('regBiogeoComp', None)
+
+    ab_parIFN = {}
+    cp_parIFN = {}
+    ea_parIFN = {}
+    ce_parIFN = {}
+    de_parIFN = {}
+    ae_parIFN = {}
+    mp_parIFN = {}
+    pi_parIFN = {}
+    nm_parIFN = {}
+    sn_parIFN = {}
+
+    ab_rod = {}
+    cp_rod = {}
+    ea_rod = {}
+    ce_rod = {}
+    de_rod = {}
+    ae_rod = {}
+    mp_rod = {}
+    pi_rod = {}
+    nm_rod = {}
+    sn_rod = {}
+
+    ab_parIFN_2_val = []
+    ea_parIFN_2_val = []
+    de_parIFN_2_val = []
+    ae_parIFN_2_val = []
+    mp_parIFN_2_val = []
+    pi_parIFN_2_val = []
+
+
+    if cordRod == None:
+        context = {}
+
+    if cordRod != None:
+
+        if comAutComp != None and regBiogeoComp != None:
+            parIFN = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).filter(comautonom_cod=comAutComp).filter(regbio_cod=regBiogeoComp).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+            parIFN_2 = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).filter(comautonom_cod=comAutComp).filter(regbio_cod=regBiogeoComp).values('dato', 'indicador_cod').order_by('indicador_cod', '-dato')
+            #parIFN_2 = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).filter(comautonom_cod=comAutComp).filter(regbio_cod=regBiogeoComp).values('dato', 'indicador_cod').aggregate(Max('dato'))
+        elif comAutComp != None and regBiogeoComp == None:
+            parIFN = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).filter(comautonom_cod=comAutComp).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+            parIFN_2 = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).filter(comautonom_cod=comAutComp).values('dato', 'indicador_cod').order_by('indicador_cod', '-dato')
+        elif comAutComp == None and regBiogeoComp != None:
+            parIFN = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).filter(regbio_cod=regBiogeoComp).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+            parIFN_2 = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).filter(regbio_cod=regBiogeoComp).values('dato', 'indicador_cod').order_by('indicador_cod', '-dato')
+        elif comAutComp == None and regBiogeoComp == None:
+            parIFN = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+            parIFN_2 = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).values('dato', 'indicador_cod').order_by('indicador_cod', '-dato')
+
+        valoresMetricos = calcValMetIFN(parIFN_2)
+
+        if comAut != None and regBiogeo != None:
+            rod = RodalValorres.objects.filter(id=cordRod).filter(comautonom_cod=comAut).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+        elif comAut != None and regBiogeo == None:
+            rod = RodalValorres.objects.filter(id=cordRod).filter(comautonom_cod=comAut).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+        elif comAut == None and regBiogeo != None:
+            rod = RodalValorres.objects.filter(id=cordRod).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+        elif comAut == None and regBiogeo == None:
+            rod = RodalValorres.objects.filter(id=cordRod).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+
+        for p in parIFN:
+            if p['indicador_cod'] == 'ab':
+                val = p['valor']
+                ab_parIFN[val] = p['total']
+            elif p['indicador_cod'] == 'cp':
+                val = p['valor']
+                cp_parIFN[val] = p['total']
+            elif p['indicador_cod'] == 'ea':
+                val = p['valor']
+                ea_parIFN[val] = p['total']
+            elif p['indicador_cod'] == 'ce':
+                val = p['valor']
+                ce_parIFN[val] = p['total']
+            elif p['indicador_cod'] == 'de':
+                val = p['valor']
+                de_parIFN[val] = p['total']
+            elif p['indicador_cod'] == 'ae':
+                val = p['valor']
+                ae_parIFN[val] = p['total']
+            elif p['indicador_cod'] == 'mp':
+                val = p['valor']
+                mp_parIFN[val] = p['total']
+            elif p['indicador_cod'] == 'pi':
+                val = p['valor']
+                pi_parIFN[val] = p['total']
+            elif p['indicador_cod'] == 'nm':
+                val = p['valor']
+                nm_parIFN[val] = p['total']
+            elif p['indicador_cod'] == 'sn':
+                val = p['valor']
+                sn_parIFN[val] = p['total']
+
+        for r in rod:
+            if r['indicador_cod'] == 'ab':
+                val = r['valor']
+                ab_rod[val] = r['total']
+            elif r['indicador_cod'] == 'cp':
+                val = r['valor']
+                cp_rod[val] = r['total']
+            elif r['indicador_cod'] == 'ea':
+                val = r['valor']
+                ea_rod[val] = r['total']
+            elif r['indicador_cod'] == 'ce':
+                val = r['valor']
+                ce_rod[val] = r['total']
+            elif r['indicador_cod'] == 'de':
+                val = r['valor']
+                de_rod[val] = r['total']
+            elif r['indicador_cod'] == 'ae':
+                val = r['valor']
+                ae_rod[val] = r['total']
+            elif r['indicador_cod'] == 'mp':
+                val = r['valor']
+                mp_rod[val] = r['total']
+            elif r['indicador_cod'] == 'pi':
+                val = r['valor']
+                pi_rod[val] = r['total']
+            elif r['indicador_cod'] == 'nm':
+                val = r['valor']
+                nm_rod[val] = r['total']
+            elif r['indicador_cod'] == 'sn':
+                val = r['valor']
+                sn_rod[val] = r['total']
+
+        data = []
+
+        cp = {'ind': 'cp', 'ifn': cp_parIFN, 'rod': cp_rod}
+        ea = {'ind': 'ea', 'ifn': ea_parIFN, 'rod': ea_rod}
+        ce = {'ind': 'ce', 'ifn': ce_parIFN, 'rod': ce_rod}
+        ab = {'ind': 'ab', 'ifn': ab_parIFN, 'rod': ab_rod}
+        de = {'ind': 'de', 'ifn': de_parIFN, 'rod': de_rod}
+        ae = {'ind': 'ae', 'ifn': ae_parIFN, 'rod': ae_rod}
+        mp = {'ind': 'mp', 'ifn': mp_parIFN, 'rod': mp_rod}
+        pi = {'ind': 'pi', 'ifn': pi_parIFN, 'rod': pi_rod}
+        nm = {'ind': 'nm', 'ifn': nm_parIFN, 'rod': nm_rod}
+        sn = {'ind': 'sn', 'ifn': sn_parIFN, 'rod': sn_rod}
+
+        data.append({"cp": cp})
+        data.append({"ea": ea})
+        data.append({"ce": ce})
+        data.append({"ab": ab})
+        data.append({"de": de})
+        data.append({"ae": ae})
+        data.append({"mp": mp})
+        data.append({"pi": pi})
+        data.append({"nm": nm})
+        data.append({"sn": sn})
+
+        for p in parIFN_2:
+            if p['indicador_cod'] == 'ab':
+                ab_parIFN_2_val.append(p['dato'])
+            elif p['indicador_cod'] == 'ea':
+                ea_parIFN_2_val.append(p['dato'])
+            elif p['indicador_cod'] == 'de':
+                de_parIFN_2_val.append(p['dato'])
+            elif p['indicador_cod'] == 'ae':
+                ae_parIFN_2_val.append(p['dato'])
+            elif p['indicador_cod'] == 'mp':
+                mp_parIFN_2_val.append(p['dato'])
+            elif p['indicador_cod'] == 'pi':
+                pi_parIFN_2_val.append(p['dato'])
+
+    context = {'data': data, 'valoresMetricos': valoresMetricos}
+    return Response(context)
+
+
+def calcValMetIFN(parIFN_2):
+    ab_parIFN_2 = []
+    ea_parIFN_2 = []
+    de_parIFN_2 = []
+    ae_parIFN_2 = []
+    mp_parIFN_2 = []
+    pi_parIFN_2 = []
+
+    nullValues = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]
+
+    for p in parIFN_2:
+        if p['indicador_cod'] == 'ab':
+            ab_parIFN_2.append(p['dato'])
+        elif p['indicador_cod'] == 'ea':
+            ea_parIFN_2.append(p['dato'])
+        elif p['indicador_cod'] == 'de':
+            de_parIFN_2.append(p['dato'])
+        elif p['indicador_cod'] == 'ae':
+            ae_parIFN_2.append(p['dato'])
+        elif p['indicador_cod'] == 'mp':
+            mp_parIFN_2.append(p['dato'])
+        elif p['indicador_cod'] == 'pi':
+            pi_parIFN_2.append(p['dato'])
+
+    ab = {'ind': 'ab', 'ifn': ab_parIFN_2}
+    ea = {'ind': 'ea', 'ifn': ea_parIFN_2}
+    de = {'ind': 'de', 'ifn': de_parIFN_2}
+    ae = {'ind': 'ae', 'ifn': ae_parIFN_2}
+    mp = {'ind': 'mp', 'ifn': mp_parIFN_2}
+    pi = {'ind': 'pi', 'ifn': pi_parIFN_2}
+
+    if ab['ifn'][0] == 0 or ab['ifn'][0] is None:
+        abInterv = nullValues
+        abValoresMetricos = []
+        array_length = len(abInterv)
+        for t in range(array_length):
+            abValoresMetricos.append({str(abInterv[t]): 0})
+    elif ab['ifn'][0] > 0:
+        valGran = ab['ifn'][0]
+        abInterv = calcInterv(valGran)
+        abValoresMetricos = clasValMetricos(abInterv, ab_parIFN_2)
+
+
+    if ea['ifn'][0] == 0 or ea['ifn'][0] is None:
+        eaInterv = nullValues
+        eaValoresMetricos = []
+        array_length = len(eaInterv)
+        for t in range(array_length):
+            eaValoresMetricos.append({str(eaInterv[t]): 0})
+    elif ea['ifn'][0] > 0:
+        valGran = ea['ifn'][0]
+        eaInterv = calcInterv(valGran)
+        eaValoresMetricos = clasValMetricos(eaInterv, ea_parIFN_2)
+
+    if de['ifn'][0] == 0 or de['ifn'][0] is None:
+        deInterv = nullValues
+        deValoresMetricos = []
+        array_length = len(deInterv)
+        for t in range(array_length):
+            deValoresMetricos.append({str(deInterv[t]): 0})
+    elif de['ifn'][0] > 0:
+        valGran = de['ifn'][0]
+        deInterv = calcInterv(valGran)
+        deValoresMetricos = clasValMetricos(deInterv, de_parIFN_2)
+
+    if ae['ifn'][0] == 0 or ae['ifn'][0] is None:
+        aeInterv = nullValues
+        aeValoresMetricos = []
+        array_length = len(aeInterv)
+        for t in range(array_length):
+            aeValoresMetricos.append({str(aeInterv[t]): 0})
+    elif ae['ifn'][0] > 0:
+        valGran = ae['ifn'][0]
+        aeInterv = calcInterv(valGran)
+        aeValoresMetricos = clasValMetricos(aeInterv, ae_parIFN_2)
+
+    if mp['ifn'][0] == 0 or mp['ifn'][0] is None:
+        mpInterv = nullValues
+        mpValoresMetricos = []
+
+        array_length = len(mpInterv)
+        for t in range(array_length):
+            mpValoresMetricos.append({str(mpInterv[t]): 0})
+    elif mp['ifn'][0] > 0:
+        valGran = mp['ifn'][0]
+        mpInterv = calcInterv(valGran)
+        mpValoresMetricos = clasValMetricos(mpInterv, mp_parIFN_2)
+
+    if pi['ifn'][0] == 0 or pi['ifn'][0] is None:
+        piInterv = nullValues
+        piValoresMetricos = []
+
+        array_length = len(piInterv)
+        for t in range(array_length):
+            piValoresMetricos.append({str(piInterv[t]): 0})
+    elif pi['ifn'][0] > 0:
+        valGran = pi['ifn'][0]
+        piInterv = calcInterv(valGran)
+        piValoresMetricos = clasValMetricos(piInterv, pi_parIFN_2)
+
+    data2 = []
+
+    data2.append({"abInterv": abInterv, "valores": abValoresMetricos})
+    data2.append({"eaInterv": eaInterv, "valores": eaValoresMetricos})
+    data2.append({"deInterv": deInterv, "valores": deValoresMetricos})
+    data2.append({"aeInterv": aeInterv, "valores": aeValoresMetricos})
+    data2.append({"mpInterv": mpInterv, "valores": mpValoresMetricos})
+    data2.append({"piInterv": piInterv, "valores": piValoresMetricos})
+
+    return data2
+
+
+def calcInterv(valGran):
+    inte = numpy.linspace(start=0, stop=valGran, num=12)
+    interv = [[inte[0], inte[1]], [inte[1], inte[2]], [inte[2], inte[3]],
+              [inte[3], inte[4]], [inte[4], inte[5]], [inte[5], inte[6]],
+              [inte[6], inte[7]], [inte[7], inte[8]], [inte[8], inte[9]],
+              [inte[9], inte[10]], [inte[10], inte[11]]]
+    return interv
+
+def clasValMetricos(interv, valores):
+    int_0 = 0
+    int_1 = 0
+    int_2 = 0
+    int_3 = 0
+    int_4 = 0
+    int_5 = 0
+    int_6 = 0
+    int_7 = 0
+    int_8 = 0
+    int_9 = 0
+    int_10 = 0
+
+    for p in valores:
+        if p >= interv[0][0] and p < interv[0][1]:
+            int_0 += 1
+        elif p >= interv[1][0] and p < interv[1][1]:
+            int_1 += 1
+        elif p >= interv[2][0] and p < interv[2][1]:
+            int_2 += 1
+        elif p >= interv[3][0] and p < interv[3][1]:
+            int_3 += 1
+        elif p >= interv[4][0] and p < interv[4][1]:
+            int_4 += 1
+        elif p >= interv[5][0] and p < interv[5][1]:
+            int_5 += 1
+        elif p >= interv[6][0] and p < interv[6][1]:
+            int_6 += 1
+        elif p >= interv[7][0] and p < interv[7][1]:
+            int_7 += 1
+        elif p >= interv[8][0] and p < interv[8][1]:
+            int_8 += 1
+        elif p >= interv[9][0] and p < interv[9][1]:
+            int_9 += 1
+        elif p >= interv[10][0] and p <= interv[10][1]:
+            int_10 += 1
+
+    valMetPar = []
+    valMetPar.append({str(interv[0]): int_0, str(interv[1]): int_1, str(interv[2]): int_2, str(interv[3]): int_3, str(interv[4]): int_4, str(interv[5]): int_5, str(interv[6]): int_6, str(interv[7]): int_7, str(interv[8]): int_8, str(interv[9]): int_9, str(interv[10]): int_10})
+    print(valMetPar)
+
+    return valMetPar

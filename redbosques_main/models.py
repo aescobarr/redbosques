@@ -687,5 +687,47 @@ class RodalProspValores(models.Model):
         db_table = 'rodal_prosp_valores'
 
 
+class Parcelaifn3Valorres(models.Model):
+    id = models.IntegerField(primary_key=True)
+    lpeht_cod = models.CharField(max_length=50, blank=True, null=True)
+    calidadesta = models.IntegerField(blank=True, null=True)
+    regbio_cod = models.CharField(max_length=4, blank=True, null=True)
+    comautonom_cod = models.CharField(max_length=5, blank=True, null=True)
+    fccarborea = models.IntegerField(blank=True, null=True)
+    abtotal = models.FloatField(blank=True, null=True)
+    tipobosque = models.IntegerField(blank=True, null=True)
+    nivel = models.CharField(max_length=100, blank=True, null=True)
+    indicador_cod = models.TextField(blank=True, null=True)
+    version_calidadesta = models.IntegerField(blank=True, null=True)
+    version_metrica = models.IntegerField(blank=True, null=True)
+    version_indicador = models.IntegerField(blank=True, null=True)
+    valor = models.FloatField(blank=True, null=True)
+    indic_null = models.FloatField(blank=True, null=True)
+    parent_cod = models.CharField(max_length=2, blank=True, null=True)
+    dato = models.FloatField(blank=True, null=True)
 
+    class Meta:
+        managed = False  # Created from a view. Don't remove.
+        db_table = 'parcelaifn3_valorres'
+        unique_together = (('id', 'indicador_cod'))
 
+class RodalValorres(models.Model):
+    id = models.IntegerField(primary_key=True)
+    lpeht_cod = models.CharField(max_length=10, blank=True, null=True)
+    calidadesta = models.IntegerField(blank=True, null=True)
+    regbio_cod = models.CharField(max_length=4, blank=True, null=True)
+    comautonom_cod = models.CharField(max_length=2, blank=True, null=True)
+    nivel = models.CharField(max_length=100, blank=True, null=True)
+    indicador_cod = models.TextField(blank=True, null=True)
+    version_calidadesta = models.IntegerField(blank=True, null=True)
+    version_metrica = models.IntegerField(blank=True, null=True)
+    version_indicador = models.IntegerField(blank=True, null=True)
+    valor = models.FloatField(blank=True, null=True)
+    indic_null = models.FloatField(blank=True, null=True)
+    parent_cod = models.CharField(max_length=2, blank=True, null=True)
+
+    class Meta:
+        managed = False  # Created from a view. Don't remove.
+        #db_table = 'rodal_valorres'
+        db_table = u'"ifn\".\"rodal_valorres"'
+        unique_together = (('id', 'indicador_cod'))
