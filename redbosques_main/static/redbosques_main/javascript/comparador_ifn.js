@@ -23,13 +23,13 @@ var unblockSelectores = function(){
 
 
 function load_rodal_ref(valRod, valComAut_Comp, valRegBio_Comp, idHabitat, idComAut, idRegBiogeo){
-    console.log(idHabitat);
-    console.log(idComAut);
-    console.log(idRegBiogeo);
-    console.log(valRod);
+    //console.log(idHabitat);
+    //console.log(idComAut);
+    //console.log(idRegBiogeo);
+    //console.log(valRod);
 
-    console.log(valComAut_Comp);
-    console.log(valRegBio_Comp);
+    //console.log(valComAut_Comp);
+    //console.log(valRegBio_Comp);
 
 
 
@@ -87,8 +87,14 @@ function load_rodal_ref(valRod, valComAut_Comp, valRegBio_Comp, idHabitat, idCom
                 },
                 success: function( data, textStatus, jqXHR ) {
                     test = data.data;
+                    valMet = data.valoresMetricos;
                     console.log(test);
+                    console.log(valMet);
+
                     graficaTEST(test);
+                    graficaValoresMetricos(valMet);
+
+
                     $('.graphsTree').removeClass("asyncload-big");
                 },
                 error: function(jqXHR, textStatus, errorThrown){
@@ -112,6 +118,7 @@ function resetUITable(){
 }
 
 var graficaTEST = function(test){
+    console.log(test);
     for(i=0; i<test.length; i++){
         ind = test[i][Object.keys(test[i])[0]]['ind'];
         parcelas = test[i][Object.keys(test[i])[0]]['ifn'];
@@ -159,11 +166,51 @@ var graficaTEST = function(test){
     }
 }
 
+/*var graficaValoresMetricos = function(valMet){
+    for(i=0; i<valMet.length; i++){
+
+        console.log(valMet);
+
+        ind = valMet[i]['ind'];
+        interv = valMet[i]['interv'];
+        valores = valMet[i]['valores'];
+
+        if (!valores['0.0']){ valores['0.0'] = 0; }
+        if (!valores['1.0']){ valores['1.0'] = 0; }
+        if (!valores['2.0']){ valores['2.0'] = 0; }
+        if (!valores['3.0']){ valores['3.0'] = 0; }
+        if (!valores['4.0']){ valores['4.0'] = 0; }
+        if (!valores['5.0']){ valores['5.0'] = 0; }
+        if (!valores['6.0']){ valores['6.0'] = 0; }
+        if (!valores['7.0']){ valores['7.0'] = 0; }
+        if (!valores['8.0']){ valores['8.0'] = 0; }
+        if (!valores['9.0']){ valores['9.0'] = 0; }
+        if (!valores['10.0']){ valores['10.0'] = 0; }
+
+        nombre = [["0", parcelas['0.0']],
+                ["1", parcelas['1.0']],
+                ["2", parcelas['2.0']],
+                ["3", parcelas['3.0']],
+                ["4", parcelas['4.0']],
+                ["5", parcelas['5.0']],
+                ["6", parcelas['6.0']],
+                ["7", parcelas['7.0']],
+                ["8", parcelas['8.0']],
+                ["9", parcelas['9.0']],
+                ["10", parcelas['10.0']]
+        ];
+
+
+    grafconstvalmet(ind, valores);
+
+    }
+
+
+}*/
+
 var grafconst = function(ind, parcelas, rodal){
 
     indGrafica = 'grafica_' + ind;
-    //console.log(indGrafica);
-    //console.log(Object.keys(rodal));
 
     Highcharts.chart(indGrafica, {
         chart: {
@@ -230,6 +277,105 @@ var grafconst = function(ind, parcelas, rodal){
     });
 
 }
+
+
+var graficaValoresMetricos = function(valMet){
+    for(i=0; i<valMet.length; i++){
+        indGrafica = 'grafica_' + valMet[i]['ind'] + '_valMet';
+        valores = valMet[i]['valores'];
+
+        if (!valores['0.0']){ valores['0.0'] = 0; }
+        if (!valores['1.0']){ valores['1.0'] = 0; }
+        if (!valores['2.0']){ valores['2.0'] = 0; }
+        if (!valores['3.0']){ valores['3.0'] = 0; }
+        if (!valores['4.0']){ valores['4.0'] = 0; }
+        if (!valores['5.0']){ valores['5.0'] = 0; }
+        if (!valores['6.0']){ valores['6.0'] = 0; }
+        if (!valores['7.0']){ valores['7.0'] = 0; }
+        if (!valores['8.0']){ valores['8.0'] = 0; }
+        if (!valores['9.0']){ valores['9.0'] = 0; }
+        if (!valores['10.0']){ valores['10.0'] = 0; }
+
+        nombre = [["0", valores['0.0']],
+                ["1", valores['1.0']],
+                ["2", valores['2.0']],
+                ["3", valores['3.0']],
+                ["4", valores['4.0']],
+                ["5", valores['5.0']],
+                ["6", valores['6.0']],
+                ["7", valores['7.0']],
+                ["8", valores['8.0']],
+                ["9", valores['9.0']],
+                ["10", valores['10.0']]
+        ];
+
+        Highcharts.chart(indGrafica, {
+            chart: {
+                type: 'column',
+                height: 150,
+            },
+            exporting: { enabled: false },
+            title: {
+                text: ' '
+            },
+            xAxis: {
+                title: {
+                    text: 'Puntuación'
+                },
+                type: 'category',
+                labels: {
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                },
+                plotLines: [{
+                    color: '#339933',
+                    width: 2,
+                    //value: Object.keys(rodal),
+                    value: 5,
+                    zIndex: 5,
+                    events: {
+                        click: function () {
+                            //alert("HOLA");
+                        },
+                        mouseover: function () {
+                            //alert("in");
+                        },
+                        mouseout: function () {
+                            //alert("out");
+                        }
+                    }
+                }]
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Cantidad'
+                }
+            },
+            plotOptions: {
+               series: {
+                 groupPadding: 0,
+                 pointPadding: 0.1,
+                 borderWidth: 0
+               }
+            },
+            legend: {
+                enabled: false
+            },
+            /*tooltip: {
+                pointFormat: 'Número de parcelas: <b>{point.y}</b>'
+            },*/
+            series: [{
+                name: ' ',
+                data: valores,
+                color: '#FF6600'
+            }]
+        });
+    }
+}
+
 
 function rodalData(valRod, valComAut_Comp, valRegBio_Comp){
     //var rodPrincip = valRod;

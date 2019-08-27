@@ -4471,6 +4471,7 @@ def valorRodalParcelaIFN(request):
         elif comAutComp == None and regBiogeoComp == None:
             parIFN = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
             parIFN_2 = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).values('dato', 'indicador_cod').order_by('indicador_cod', '-dato')
+            parIFN_2_TEST = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).values('dato', 'indicador_cod').annotate(total=Count('dato')).order_by('indicador_cod', '-dato')
 
         valoresMetricos = calcValMetIFN(parIFN_2)
 
@@ -4571,19 +4572,9 @@ def valorRodalParcelaIFN(request):
         data.append({"nm": nm})
         data.append({"sn": sn})
 
-        for p in parIFN_2:
-            if p['indicador_cod'] == 'ab':
-                ab_parIFN_2_val.append(p['dato'])
-            elif p['indicador_cod'] == 'ea':
-                ea_parIFN_2_val.append(p['dato'])
-            elif p['indicador_cod'] == 'de':
-                de_parIFN_2_val.append(p['dato'])
-            elif p['indicador_cod'] == 'ae':
-                ae_parIFN_2_val.append(p['dato'])
-            elif p['indicador_cod'] == 'mp':
-                mp_parIFN_2_val.append(p['dato'])
-            elif p['indicador_cod'] == 'pi':
-                pi_parIFN_2_val.append(p['dato'])
+
+        print(data)
+        print(valoresMetricos)
 
     context = {'data': data, 'valoresMetricos': valoresMetricos}
     return Response(context)
@@ -4643,6 +4634,8 @@ def calcValMetIFN(parIFN_2):
         eaInterv = calcInterv(valGran)
         eaValoresMetricos = clasValMetricos(eaInterv, ea_parIFN_2)
 
+
+
     if de['ifn'][0] == 0 or de['ifn'][0] is None:
         deInterv = nullValues
         deValoresMetricos = []
@@ -4653,6 +4646,8 @@ def calcValMetIFN(parIFN_2):
         valGran = de['ifn'][0]
         deInterv = calcInterv(valGran)
         deValoresMetricos = clasValMetricos(deInterv, de_parIFN_2)
+
+
 
     if ae['ifn'][0] == 0 or ae['ifn'][0] is None:
         aeInterv = nullValues
@@ -4691,12 +4686,12 @@ def calcValMetIFN(parIFN_2):
 
     data2 = []
 
-    data2.append({"abInterv": abInterv, "valores": abValoresMetricos})
-    data2.append({"eaInterv": eaInterv, "valores": eaValoresMetricos})
-    data2.append({"deInterv": deInterv, "valores": deValoresMetricos})
-    data2.append({"aeInterv": aeInterv, "valores": aeValoresMetricos})
-    data2.append({"mpInterv": mpInterv, "valores": mpValoresMetricos})
-    data2.append({"piInterv": piInterv, "valores": piValoresMetricos})
+    data2.append({'ind': 'ab', "interv": abInterv, "valores": abValoresMetricos})
+    data2.append({'ind': 'ea', "interv": eaInterv, "valores": eaValoresMetricos})
+    data2.append({'ind': 'de', "interv": deInterv, "valores": deValoresMetricos})
+    data2.append({'ind': 'ae', "interv": aeInterv, "valores": aeValoresMetricos})
+    data2.append({'ind': 'mp', "interv": mpInterv, "valores": mpValoresMetricos})
+    data2.append({'ind': 'pi', "interv": piInterv, "valores": piValoresMetricos})
 
     return data2
 
@@ -4747,7 +4742,18 @@ def clasValMetricos(interv, valores):
             int_10 += 1
 
     valMetPar = []
-    valMetPar.append({str(interv[0]): int_0, str(interv[1]): int_1, str(interv[2]): int_2, str(interv[3]): int_3, str(interv[4]): int_4, str(interv[5]): int_5, str(interv[6]): int_6, str(interv[7]): int_7, str(interv[8]): int_8, str(interv[9]): int_9, str(interv[10]): int_10})
-    print(valMetPar)
+    #valMetPar.append({str(interv[0]): int_0, str(interv[1]): int_1, str(interv[2]): int_2, str(interv[3]): int_3, str(interv[4]): int_4, str(interv[5]): int_5, str(interv[6]): int_6, str(interv[7]): int_7, str(interv[8]): int_8, str(interv[9]): int_9, str(interv[10]): int_10})
+    #valMetPar.append({'0': int_0, '1': int_1, '2': int_2, '3': int_3, '4': int_4, '5': int_5, '6': int_6, '7': int_7, '8': int_8, '9': int_9, '10': int_10})
+    valMetPar.append(int_0)
+    valMetPar.append(int_1)
+    valMetPar.append(int_2)
+    valMetPar.append(int_3)
+    valMetPar.append(int_4)
+    valMetPar.append(int_5)
+    valMetPar.append(int_6)
+    valMetPar.append(int_7)
+    valMetPar.append(int_8)
+    valMetPar.append(int_9)
+    valMetPar.append(int_10)
 
     return valMetPar
