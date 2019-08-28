@@ -835,6 +835,10 @@ td.errorAlert{
 }
 
 .ifnGraphCont{
-    border: 1px solid black;
     height: 220px;
+}
+
+.graphTitles{
+    border-bottom: 1px solid gray;
+    margin-bottom: 20px;
 }

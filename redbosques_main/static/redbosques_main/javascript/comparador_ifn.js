@@ -23,15 +23,6 @@ var unblockSelectores = function(){
 
 
 function load_rodal_ref(valRod, valComAut_Comp, valRegBio_Comp, idHabitat, idComAut, idRegBiogeo){
-    //console.log(idHabitat);
-    //console.log(idComAut);
-    //console.log(idRegBiogeo);
-    //console.log(valRod);
-
-    //console.log(valComAut_Comp);
-    //console.log(valRegBio_Comp);
-
-
 
     if(valRod != "null"){
         url = _rodal_IFN;
@@ -118,7 +109,6 @@ function resetUITable(){
 }
 
 var graficaTEST = function(test){
-    console.log(test);
     for(i=0; i<test.length; i++){
         ind = test[i][Object.keys(test[i])[0]]['ind'];
         parcelas = test[i][Object.keys(test[i])[0]]['ifn'];
@@ -148,65 +138,9 @@ var graficaTEST = function(test){
                 ["9", parcelas['9.0']],
                 ["10", parcelas['10.0']]
         ];
-
-        /*nombre = [["0", 0],
-                ["1", test[i].ifn['1.0']],
-                ["2", test[i].ifn['2.0']],
-                ["3", test[i].ifn['3.0']],
-                ["4", test[i].ifn['4.0']],
-                ["5", test[i].ifn['5.0']],
-                ["6", test[i].ifn['6.0']],
-                ["7", test[i].ifn['7.0']],
-                ["8", test[i].ifn['8.0']],
-                ["9", test[i].ifn['9.0']],
-                ["10", test[i].ifn['10.0']]
-        ];*/
-
         grafconst(ind, nombre, rodal);
     }
 }
-
-/*var graficaValoresMetricos = function(valMet){
-    for(i=0; i<valMet.length; i++){
-
-        console.log(valMet);
-
-        ind = valMet[i]['ind'];
-        interv = valMet[i]['interv'];
-        valores = valMet[i]['valores'];
-
-        if (!valores['0.0']){ valores['0.0'] = 0; }
-        if (!valores['1.0']){ valores['1.0'] = 0; }
-        if (!valores['2.0']){ valores['2.0'] = 0; }
-        if (!valores['3.0']){ valores['3.0'] = 0; }
-        if (!valores['4.0']){ valores['4.0'] = 0; }
-        if (!valores['5.0']){ valores['5.0'] = 0; }
-        if (!valores['6.0']){ valores['6.0'] = 0; }
-        if (!valores['7.0']){ valores['7.0'] = 0; }
-        if (!valores['8.0']){ valores['8.0'] = 0; }
-        if (!valores['9.0']){ valores['9.0'] = 0; }
-        if (!valores['10.0']){ valores['10.0'] = 0; }
-
-        nombre = [["0", parcelas['0.0']],
-                ["1", parcelas['1.0']],
-                ["2", parcelas['2.0']],
-                ["3", parcelas['3.0']],
-                ["4", parcelas['4.0']],
-                ["5", parcelas['5.0']],
-                ["6", parcelas['6.0']],
-                ["7", parcelas['7.0']],
-                ["8", parcelas['8.0']],
-                ["9", parcelas['9.0']],
-                ["10", parcelas['10.0']]
-        ];
-
-
-    grafconstvalmet(ind, valores);
-
-    }
-
-
-}*/
 
 var grafconst = function(ind, parcelas, rodal){
 
@@ -283,6 +217,7 @@ var graficaValoresMetricos = function(valMet){
     for(i=0; i<valMet.length; i++){
         indGrafica = 'grafica_' + valMet[i]['ind'] + '_valMet';
         valores = valMet[i]['valores'];
+        rodal = Object.keys(valMet[i]['rodalValue'])[0]
 
         if (!valores['0.0']){ valores['0.0'] = 0; }
         if (!valores['1.0']){ valores['1.0'] = 0; }
@@ -332,8 +267,8 @@ var graficaValoresMetricos = function(valMet){
                 plotLines: [{
                     color: '#339933',
                     width: 2,
-                    //value: Object.keys(rodal),
                     value: 5,
+                    value: rodal,
                     zIndex: 5,
                     events: {
                         click: function () {

@@ -4473,7 +4473,7 @@ def valorRodalParcelaIFN(request):
             parIFN_2 = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).values('dato', 'indicador_cod').order_by('indicador_cod', '-dato')
             parIFN_2_TEST = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).values('dato', 'indicador_cod').annotate(total=Count('dato')).order_by('indicador_cod', '-dato')
 
-        valoresMetricos = calcValMetIFN(parIFN_2)
+
 
         if comAut != None and regBiogeo != None:
             rod = RodalValorres.objects.filter(id=cordRod).filter(comautonom_cod=comAut).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
@@ -4572,21 +4572,26 @@ def valorRodalParcelaIFN(request):
         data.append({"nm": nm})
         data.append({"sn": sn})
 
-
-        print(data)
-        print(valoresMetricos)
+        valoresMetricos = calcValMetIFN(parIFN_2, rod)
 
     context = {'data': data, 'valoresMetricos': valoresMetricos}
     return Response(context)
 
 
-def calcValMetIFN(parIFN_2):
+def calcValMetIFN(parIFN_2, rod):
     ab_parIFN_2 = []
     ea_parIFN_2 = []
     de_parIFN_2 = []
     ae_parIFN_2 = []
     mp_parIFN_2 = []
     pi_parIFN_2 = []
+
+    ab_rod_2 = {}
+    ea_rod_2 = {}
+    de_rod_2 = {}
+    ae_rod_2 = {}
+    mp_rod_2 = {}
+    pi_rod_2 = {}
 
     nullValues = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]
 
@@ -4603,6 +4608,26 @@ def calcValMetIFN(parIFN_2):
             mp_parIFN_2.append(p['dato'])
         elif p['indicador_cod'] == 'pi':
             pi_parIFN_2.append(p['dato'])
+
+    for r in rod:
+        if r['indicador_cod'] == 'ab':
+            val = r['valor']
+            ab_rod_2[val] = r['total']
+        elif r['indicador_cod'] == 'ea':
+            val = r['valor']
+            ea_rod_2[val] = r['total']
+        elif r['indicador_cod'] == 'de':
+            val = r['valor']
+            de_rod_2[val] = r['total']
+        elif r['indicador_cod'] == 'ae':
+            val = r['valor']
+            ae_rod_2[val] = r['total']
+        elif r['indicador_cod'] == 'mp':
+            val = r['valor']
+            mp_rod_2[val] = r['total']
+        elif r['indicador_cod'] == 'pi':
+            val = r['valor']
+            pi_rod_2[val] = r['total']
 
     ab = {'ind': 'ab', 'ifn': ab_parIFN_2}
     ea = {'ind': 'ea', 'ifn': ea_parIFN_2}
@@ -4634,8 +4659,6 @@ def calcValMetIFN(parIFN_2):
         eaInterv = calcInterv(valGran)
         eaValoresMetricos = clasValMetricos(eaInterv, ea_parIFN_2)
 
-
-
     if de['ifn'][0] == 0 or de['ifn'][0] is None:
         deInterv = nullValues
         deValoresMetricos = []
@@ -4646,8 +4669,6 @@ def calcValMetIFN(parIFN_2):
         valGran = de['ifn'][0]
         deInterv = calcInterv(valGran)
         deValoresMetricos = clasValMetricos(deInterv, de_parIFN_2)
-
-
 
     if ae['ifn'][0] == 0 or ae['ifn'][0] is None:
         aeInterv = nullValues
@@ -4686,12 +4707,12 @@ def calcValMetIFN(parIFN_2):
 
     data2 = []
 
-    data2.append({'ind': 'ab', "interv": abInterv, "valores": abValoresMetricos})
-    data2.append({'ind': 'ea', "interv": eaInterv, "valores": eaValoresMetricos})
-    data2.append({'ind': 'de', "interv": deInterv, "valores": deValoresMetricos})
-    data2.append({'ind': 'ae', "interv": aeInterv, "valores": aeValoresMetricos})
-    data2.append({'ind': 'mp', "interv": mpInterv, "valores": mpValoresMetricos})
-    data2.append({'ind': 'pi', "interv": piInterv, "valores": piValoresMetricos})
+    data2.append({'ind': 'ab', "interv": abInterv, "valores": abValoresMetricos, "rodalValue": ab_rod_2})
+    data2.append({'ind': 'ea', "interv": eaInterv, "valores": eaValoresMetricos, "rodalValue": ea_rod_2})
+    data2.append({'ind': 'de', "interv": deInterv, "valores": deValoresMetricos, "rodalValue": de_rod_2})
+    data2.append({'ind': 'ae', "interv": aeInterv, "valores": aeValoresMetricos, "rodalValue": ae_rod_2})
+    data2.append({'ind': 'mp', "interv": mpInterv, "valores": mpValoresMetricos, "rodalValue": mp_rod_2})
+    data2.append({'ind': 'pi', "interv": piInterv, "valores": piValoresMetricos, "rodalValue": pi_rod_2})
 
     return data2
 
