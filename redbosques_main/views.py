@@ -4707,12 +4707,12 @@ def calcValMetIFN(parIFN_2, rod):
 
     data2 = []
 
-    data2.append({'ind': 'ab', "interv": abInterv, "valores": abValoresMetricos, "rodalValue": ab_rod_2})
-    data2.append({'ind': 'ea', "interv": eaInterv, "valores": eaValoresMetricos, "rodalValue": ea_rod_2})
-    data2.append({'ind': 'de', "interv": deInterv, "valores": deValoresMetricos, "rodalValue": de_rod_2})
-    data2.append({'ind': 'ae', "interv": aeInterv, "valores": aeValoresMetricos, "rodalValue": ae_rod_2})
-    data2.append({'ind': 'mp', "interv": mpInterv, "valores": mpValoresMetricos, "rodalValue": mp_rod_2})
-    data2.append({'ind': 'pi', "interv": piInterv, "valores": piValoresMetricos, "rodalValue": pi_rod_2})
+    data2.append({'ind': 'ab', "interv": abInterv, "valores": abValoresMetricos, "rodalValue": ab_rod_2, "intervEje": abInterv[0]['intervEje']})
+    data2.append({'ind': 'ea', "interv": eaInterv, "valores": eaValoresMetricos, "rodalValue": ea_rod_2, "intervEje": eaInterv[0]['intervEje']})
+    data2.append({'ind': 'de', "interv": deInterv, "valores": deValoresMetricos, "rodalValue": de_rod_2, "intervEje": deInterv[0]['intervEje']})
+    data2.append({'ind': 'ae', "interv": aeInterv, "valores": aeValoresMetricos, "rodalValue": ae_rod_2, "intervEje": aeInterv[0]['intervEje']})
+    data2.append({'ind': 'mp', "interv": mpInterv, "valores": mpValoresMetricos, "rodalValue": mp_rod_2, "intervEje": mpInterv[0]['intervEje']})
+    data2.append({'ind': 'pi', "interv": piInterv, "valores": piValoresMetricos, "rodalValue": pi_rod_2, "intervEje": piInterv[0]['intervEje']})
 
     return data2
 
@@ -4723,7 +4723,25 @@ def calcInterv(valGran):
               [inte[3], inte[4]], [inte[4], inte[5]], [inte[5], inte[6]],
               [inte[6], inte[7]], [inte[7], inte[8]], [inte[8], inte[9]],
               [inte[9], inte[10]], [inte[10], inte[11]]]
-    return interv
+
+    intervEje = [
+        [round((interv[0][0] + interv[0][1])/2, 1)],
+        [round((interv[1][0] + interv[1][1])/2, 1)],
+        [round((interv[2][0] + interv[2][1])/2, 1)],
+        [round((interv[3][0] + interv[3][1])/2, 1)],
+        [round((interv[4][0] + interv[4][1])/2, 1)],
+        [round((interv[5][0] + interv[5][1])/2, 1)],
+        [round((interv[6][0] + interv[6][1])/2, 1)],
+        [round((interv[7][0] + interv[7][1])/2, 1)],
+        [round((interv[8][0] + interv[8][1])/2, 1)],
+        [round((interv[9][0] + interv[9][1])/2, 1)],
+        [round((interv[10][0] + interv[10][1])/2, 1)],
+    ]
+
+    intervalos = []
+    intervalos.append({'interv': interv, 'intervEje': intervEje})
+
+    return intervalos
 
 def clasValMetricos(interv, valores):
     int_0 = 0
@@ -4739,27 +4757,27 @@ def clasValMetricos(interv, valores):
     int_10 = 0
 
     for p in valores:
-        if p >= interv[0][0] and p < interv[0][1]:
+        if p >= interv[0]['interv'][0][0] and p < interv[0]['interv'][0][1]:
             int_0 += 1
-        elif p >= interv[1][0] and p < interv[1][1]:
+        elif p >= interv[0]['interv'][1][0] and p < interv[0]['interv'][1][1]:
             int_1 += 1
-        elif p >= interv[2][0] and p < interv[2][1]:
+        elif p >= interv[0]['interv'][2][0] and p < interv[0]['interv'][2][1]:
             int_2 += 1
-        elif p >= interv[3][0] and p < interv[3][1]:
+        elif p >= interv[0]['interv'][3][0] and p < interv[0]['interv'][3][1]:
             int_3 += 1
-        elif p >= interv[4][0] and p < interv[4][1]:
+        elif p >= interv[0]['interv'][4][0] and p < interv[0]['interv'][4][1]:
             int_4 += 1
-        elif p >= interv[5][0] and p < interv[5][1]:
+        elif p >= interv[0]['interv'][5][0] and p < interv[0]['interv'][5][1]:
             int_5 += 1
-        elif p >= interv[6][0] and p < interv[6][1]:
+        elif p >= interv[0]['interv'][6][0] and p < interv[0]['interv'][6][1]:
             int_6 += 1
-        elif p >= interv[7][0] and p < interv[7][1]:
+        elif p >= interv[0]['interv'][7][0] and p < interv[0]['interv'][7][1]:
             int_7 += 1
-        elif p >= interv[8][0] and p < interv[8][1]:
+        elif p >= interv[0]['interv'][8][0] and p < interv[0]['interv'][8][1]:
             int_8 += 1
-        elif p >= interv[9][0] and p < interv[9][1]:
+        elif p >= interv[0]['interv'][9][0] and p < interv[0]['interv'][9][1]:
             int_9 += 1
-        elif p >= interv[10][0] and p <= interv[10][1]:
+        elif p >= interv[0]['interv'][10][0] and p <= interv[0]['interv'][10][1]:
             int_10 += 1
 
     valMetPar = []

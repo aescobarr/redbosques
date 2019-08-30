@@ -54,8 +54,6 @@ function load_rodal_ref(valRod, valComAut_Comp, valRegBio_Comp, idHabitat, idCom
 
         url = url + "?" + params.join('&');
 
-        console.log(url);
-
         if(valRod == "null"){
             resetUITable();
         }else{
@@ -79,8 +77,6 @@ function load_rodal_ref(valRod, valComAut_Comp, valRegBio_Comp, idHabitat, idCom
                 success: function( data, textStatus, jqXHR ) {
                     test = data.data;
                     valMet = data.valoresMetricos;
-                    console.log(test);
-                    console.log(valMet);
 
                     graficaTEST(test);
                     graficaValoresMetricos(valMet);
@@ -162,7 +158,7 @@ var grafconst = function(ind, parcelas, rodal){
             type: 'category',
             labels: {
                 style: {
-                    fontSize: '13px',
+                    fontSize: '10px',
                     fontFamily: 'Verdana, sans-serif'
                 }
             },
@@ -260,10 +256,11 @@ var graficaValoresMetricos = function(valMet){
                 type: 'category',
                 labels: {
                     style: {
-                        fontSize: '13px',
+                        fontSize: '10px',
                         fontFamily: 'Verdana, sans-serif'
                     }
                 },
+                categories: valMet[i]['intervEje'],
                 plotLines: [{
                     color: '#339933',
                     width: 2,
@@ -322,3 +319,41 @@ function rodalData(valRod, valComAut_Comp, valRegBio_Comp){
     load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod);
 }
 
+
+$('.lv1').on("click", function(){
+
+    var classLvl = this.className;
+
+    if(classLvl == "lv1 lv1Nat"){
+        $('.lv2Nat').toggle();
+    }
+
+    var validation = $('.lv2Nat').css("display");
+
+    if(($('.lv2Nat').css("display")) == "none"){
+        $('.lv3Nat').hide();
+    }
+
+});
+
+$('.lv2').on("click", function(){
+    var classLvl2 = this.className;
+
+    if(classLvl2 == "lv2 lv2Nat"){
+        $('.lv3Nat').toggle();
+    }
+});
+
+$('.showAll').on("click", function(){
+    $('.lv2Nat').toggle();
+
+    var validation = $('.lv2Nat').css("display");
+
+    if(($('.lv2Nat').css("display")) == "none"){
+        $('.lv3Nat').hide();
+    }
+});
+
+$('.hideAll').on("click", function(){
+    $('.lv2Nat').hide();
+});
