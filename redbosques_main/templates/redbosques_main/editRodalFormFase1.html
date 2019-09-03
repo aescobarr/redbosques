@@ -1,5 +1,6 @@
 {% extends "redbosques_main/base.html" %}
 {% load static %}
+{% load i18n %}
 {% block extra_css %}
     <link href="{% static 'redbosques_main/leaflet/leaflet.css' %}" rel="stylesheet">
     <link href="{% static 'redbosques_main/Leaflet.Draw.static/src/leaflet.draw.css' %}" rel="stylesheet">
@@ -388,17 +389,17 @@
                 <table>
                     <tr>
                         <td>
-                             <h4>NATURALIDAD</h4>
+                             <h4>{% trans 'nm' %}</h4>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <h5>Composición</h5>
+                            <h5>{% trans 'cp' %}</h5>
                         </td>
                     </tr>
                     <tr>
                         <td class="rodal_label valspparb">
-                            <label for="id_valspparb_sel">Especies arbóreas en el dosel</label>
+                            <label for="id_valspparb_sel">{% trans 'ea' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valspparb.errors }}
                             </div>
@@ -422,12 +423,12 @@
 <!-- -------------------------------------------------------------------------------------------------- -->
                     <tr>
                         <td colspan="3">
-                            <h5>Complejidad</h5>
+                            <h5>{% trans 'ce' %}</h5>
                         </td>
                     </tr>
                     <tr>
                         <td class="rodal_label valmasa">
-                            <label for="id_valmasa_sel">Diversidad estructural</label>
+                            <label for="id_valmasa_sel">{% trans 'de' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valmasa.errors }}
                             </div>
@@ -450,7 +451,7 @@
                     </tr> <!-- Diversidad estructural -->
                     <tr>
                         <td class="rodal_label valestratos">
-                            <label for="id_valestratos_sel">Estratos verticales arbóreos</label>
+                            <label for="id_valestratos_sel">{% trans 'ev' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valestratos.errors }}
                             </div>
@@ -474,12 +475,12 @@
 <!-- -------------------------------------------------------------------------------------------------- -->
                     <tr>
                         <td colspan="3">
-                            <h5>Senectud</h5>
+                            <h5>{% trans 'sn' %}</h5>
                         </td>
                     </tr>
                     <tr>
                         <td class="rodal_label valarboexcep">
-                            <label for="id_valarboexcep_sel">Árboles excepcionales</label>
+                            <label for="id_valarboexcep_sel">{% trans 'ae' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valarboexcep.errors }}
                             </div>
@@ -502,7 +503,7 @@
                     </tr> <!-- Árboles excepcionales -->
                     <tr>
                         <td class="rodal_label valmmpie">
-                            <label for="id_valmmpie_sel">Madera muerta en pie</label>
+                            <label for="id_valmmpie_sel">{% trans 'mp' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valmmpie.errors }}
                             </div>
@@ -525,7 +526,7 @@
                     </tr><!-- Volumen madera en pie -->
                     <tr>
                         <td class="rodal_label valmmsuelo">
-                            <label for="id_valmmsuelo_sel">Madera muerta en suelo</label>
+                            <label for="id_valmmsuelo_sel">{% trans 'ms' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valmmsuelo.errors }}
                             </div>
@@ -549,7 +550,7 @@
 <!-- -------------------------------------------------------------------------------------------------- -->
                     <tr>
                         <td colspan="3">
-                            <h5>Microhábitats</h5>
+                            <h5>{% trans 'hm' %}</h5>
                         </td>
                     </tr>
                     <tr>

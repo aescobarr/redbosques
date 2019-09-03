@@ -1,5 +1,6 @@
 {% extends "redbosques_main/base.html" %}
 {% load static %}
+{% load i18n %}
 {% block extra_css %}
 {% endblock %}
 {% block main %}
@@ -194,7 +195,7 @@
 
                     <!--         Naturalidad                       -->
                         <tr class="lv1 lv1Nat">
-                            <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>NATURALIDAD</span></th>
+                            <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans "nm" %}</span></th>
                             <td id="_naturalidad" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
@@ -213,7 +214,7 @@
 
                         </tr>
                         <tr class="lv2 lv2Nat" style="display: none">
-                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Composición</span></th>
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'cp' %}</span></th>
                             <td class="bgColorRod"></td>
                             <td id="_naturalidad_composicion" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
@@ -231,7 +232,7 @@
 
                         </tr>
                         <tr class="lv3 lv3Nat" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Especies arbóreas</span></td>
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>{% trans 'ea' %}</span></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
                             <td id="_naturalidad_composicion_especies_arboreas" class="bgColorRod">---</td>
@@ -248,7 +249,7 @@
                         </tr>
 
                         <tr class="lv2 lv2Nat" style="display: none">
-                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Complejidad</span></th>
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'ce' %}</span></th>
                             <td class="bgColorRod"></td>
                             <td id="_naturalidad_complejidad" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
@@ -266,7 +267,7 @@
 
 
                         <tr class="lv3 lv3Nat" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;"><span>Área bisimétrica</span></td>
+                            <td class="identValores" style="text-indent: 15px;"><span>{% trans 'ab' %}</span></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
                             <td id="_naturalidad_complejidad_area_basimetrica" class="bgColorRod">---</td>
@@ -283,7 +284,7 @@
                         </tr>
 
                         <tr class="lv3 lv3Nat" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;"><span>Estratificación vertical</span></td>
+                            <td class="identValores" style="text-indent: 15px;"><span>{% trans 'ev' %}</span></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
                             <td id="_naturalidad_complejidad_estratificacion_vertical" class="bgColorRod">---</td>
@@ -299,7 +300,7 @@
 
                         </tr>
                         <tr class="lv3 lv3Nat" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;"><span>Diversidad estructural</span></td>
+                            <td class="identValores" style="text-indent: 15px;"><span>{% trans 'de' %}</span></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
                             <td id="_naturalidad_complejidad_diversidad_estructural" class="bgColorRod">---</td>
@@ -318,7 +319,7 @@
                         </tr>
 
                         <tr class="lv2 lv2Nat" style="display: none">
-                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Senectud</span></th>
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'sn' %}</span></th>
                             <td class="bgColorRod"></td>
                             <td id="_naturalidad_senectud" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
@@ -334,7 +335,7 @@
                             <td id="naturalidad_senectud_dif" class="diff-col">---</td>
                         </tr>
                     <tr class="lv3 lv3Nat" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;"><span>Àrboles de tamaño excepcional</span></td>
+                            <td class="identValores" style="text-indent: 15px;"><span>{% trans 'ae' %}</span></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
 
@@ -352,7 +353,7 @@
                             <td id="naturalidad_senectud_arb_tam_excep_dif" class="diff-col">---</td>
                     </tr>
                     <tr class="lv3 lv3Nat" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;"><span>Abundancia de madera muerta</span></td>
+                            <td class="identValores" style="text-indent: 15px;"><span>{% trans 'mm' %}</span></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
 
@@ -368,7 +369,7 @@
                             <td id="naturalidad_senectud_abund_mad_muerta_dif" class="diff-col">---</td>
                     </tr>
                         <tr class="lv3 lv3Nat" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;"><span>Proporción de madera muerta</span></td>
+                            <td class="identValores" style="text-indent: 15px;"><span>{% trans 'pm' %}</span></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
 
@@ -385,7 +386,7 @@
                         </tr>
 
                         <tr class="lv2 lv2Nat" style="display: none">
-                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Microhábitats</span></th>
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'hm' %}</span></th>
                             <td class="bgColorRod"></td>
 
                                 <td id="_naturalidad_micro_habitats" class="bgColorRod">---</td>
@@ -404,7 +405,7 @@
                             <td id="naturalidad_micro_habitats_dif" class="diff-col">---</td>
                         </tr>
                         <tr class="lv3 lv3Nat" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;"><span>Microhábitats de pies vivos</span></td>
+                            <td class="identValores" style="text-indent: 15px;"><span>{% trans 'mh' %}</span></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
 
@@ -423,7 +424,7 @@
                         </tr>
 
                         <tr class="lv2 lv2Nat" style="display: none">
-                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Dinámica</span></th>
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'dn' %}</span></th>
                             <td class="bgColorRod"></td>
 
                                 <td id="_naturalidad_dinamica" class="bgColorRod">---</td>
@@ -440,7 +441,7 @@
                             <td id="naturalidad_dinamica_dif" class="col-diff">---</td>
                         </tr>
                         <tr class="lv3 lv3Nat" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;"><span>Ciclo silvogenético</span></td>
+                            <td class="identValores" style="text-indent: 15px;"><span>{% trans 'cs' %}</span></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
 
@@ -458,7 +459,7 @@
 
                     <!--         Huella Humana                     -->
                         <tr class="lv1 lv1Hh">
-                            <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>HUELLA HUMANA</span></th>
+                            <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'hh' %}</span></th>
 
                                 <td id="_huellaHumana" class="bgColorRod">---</td>
 
@@ -477,7 +478,7 @@
                             <td id="huellaHumana_dif" class="col-diff">---</td>
                         </tr>
                         <tr class="lv2 lv2Hh" style="display: none">
-                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Antigua</span></th>
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'ha' %}</span></th>
                             <td class="bgColorRod"></td>
 
                                 <td id="_huellaHumana_antigua" class="bgColorRod">---</td>
@@ -494,7 +495,7 @@
                             <td id="huellaHumana_antigua_dif" class="col-diff">---</td>
                         </tr>
                         <tr class="lv3 lv3Hh" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Continuidad temporal</span></td>
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>{% trans 'tb' %}</span></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
 
@@ -510,7 +511,7 @@
                             <td id="huellaHumana_antigua_cont_temp_dif" class="col-diff">---</td>
                         </tr>
                         <tr class="lv3 lv3Hh" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Usos agropastorales</span></td>
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>{% trans 'ua' %}</span></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
 
@@ -526,7 +527,7 @@
                             <td id="huellaHumana_antigua_usos_agropast_dif" class="col-diff">---</td>
                         </tr>
                         <tr class="lv3 lv3Hh" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Usos forestales</span></td>
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>{% trans 'fa' %}</span></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
 
@@ -544,7 +545,7 @@
 
 
                         <tr class="lv2 lv2Hh" style="display: none">
-                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Reciente</span></th>
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'hr' %}</span></th>
                             <td class="bgColorRod"></td>
 
                                 <td id="_huellaHumana_reciente" class="bgColorRod">---</td>
@@ -561,7 +562,7 @@
                             <td id="huellaHumana_reciente_dif" class="col-diff">---</td>
                         </tr>
                         <tr class="lv3 lv3Hh" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Usos forestales</span></td>
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>{% trans 'fr' %}</span></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
 
@@ -577,7 +578,7 @@
                             <td id="huellaHumana_reciente_usos_forestales_dif" class="col-diff">---</td>
                         </tr>
                         <tr class="lv3 lv3Hh" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Especies invasoras</span></td>
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>{% trans 'ei' %}</span></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
 
@@ -593,7 +594,7 @@
                             <td id="huellaHumana_reciente_especies_inv_dif" class="col-diff">---</td>
                         </tr>
                     <tr class="lv3 lv3Hh" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Causas de fragmentación</span></td>
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>{% trans 'fg' %}</span></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
 
@@ -609,7 +610,7 @@
                         <td id="huellaHumana_reciente_causa_fragment_dif" class="col-diff">---</td>
                     </tr>
                         <tr class="lv3 lv3Hh" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Actividad cinegética</span></td>
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>{% trans 'cz' %}</span></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
 
@@ -625,7 +626,7 @@
                             <td id="huellaHumana_reciente_actv_cineget_dif" class="col-diff">---</td>
                         </tr>
                         <tr class="lv3 lv3Hh" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Herbívora y/o ramoneo</span></td>
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>{% trans 'hb' %}</span></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
 
@@ -641,7 +642,7 @@
                             <td id="huellaHumana_reciente_herv_rom_dif" class="col-diff">---</td>
                         </tr>
                         <tr class="lv3 lv3Hh" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Frecuentación</span></td>
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>{% trans 'fc' %}</span></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
 
@@ -657,7 +658,7 @@
                             <td id="huellaHumana_reciente_frecuent_dif" class="col-diff">---</td>
                         </tr>
                         <tr class="lv3 lv3Hh" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>Durabilidad de los usos</span></td>
+                            <td class="identValores" style="text-indent: 15px;" scope="row"><span>{% trans 'du' %}</span></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
 
@@ -676,7 +677,7 @@
                  <!--         Integridad Espacial                  -->
 
                         <tr class="lv1 lv1Ie">
-                            <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>INTEGRIDAD ESPACIAL</span></th>
+                            <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'ie' %}</span></th>
 
                                 <td id="_integridadEspacial" class="bgColorRod">---</td>
 
@@ -693,7 +694,7 @@
                             <td id="integridadEspacial_dif" class="col-diff">---</td>
                         </tr>
                         <tr class="lv2 lv2Ie" style="display: none">
-                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Tamaño</span></th>
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'ar' %}</span></th>
                             <td class="bgColorRod"></td>
 
                                 <td id="_integridadEspacial_tamano" class="bgColorRod">---</td>
@@ -710,7 +711,7 @@
                             <td id="integridadEspacial_tamano_dif" class="col-diff">---</td>
                         </tr>
                         <tr class="lv2 lv2Ie" style="display: none">
-                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Continuidad forestal</span></th>
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'cf' %}</span></th>
                             <td class="bgColorRod"></td>
 
                                 <td id="_integridadEspacial_cont_forest" class="bgColorRod">---</td>
@@ -727,7 +728,7 @@
                             <td id="integridadEspacial_cont_forest_dif" class="col-diff">---</td>
                         </tr>
                         <tr class="lv2 lv2Ie" style="display: none">
-                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Efecto borde</span></th>
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'eb' %}</span></th>
                             <td class="bgColorRod"></td>
 
                                 <td id="_integridadEspacial_efect_borde" class="bgColorRod">---</td>
@@ -744,7 +745,7 @@
                             <td id="integridadEspacial_efect_borde_dif" class="col-diff">---</td>
                         </tr>
                         <tr class="lv2 lv2Ie" style="display: none">
-                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Conectividad</span></th>
+                            <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'cn' %}</span></th>
                             <td class="bgColorRod"></td>
 
                                 <td id="_integridadEspacial_conect" class="bgColorRod">---</td>
@@ -796,9 +797,9 @@
                     <th colspan="3">Criterios</th>
                 </tr>
                 <tr>
-                    <th>Naturalidad</th>
-                    <th>Huella</th>
-                    <th>Integridad Espacial</th>
+                    <th>{% trans 'nm' %}</th>
+                    <th>{% trans 'hh' %}</th>
+                    <th>{% trans 'ie' %}</th>
                 </tr>
                 <tr>
                     <td><div id="container" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div></td>
@@ -810,32 +811,32 @@
                 <tr>
                     <td>
                         <ul>
-                            <li><strong>Nat</strong> => Naturalidad</li>
-                            <li><strong>HH</strong> => Huella humana</li>
-                             <li><strong>IE</strong> => Integridad Espacial</li>
+                            <li><strong>Nat</strong> => {% trans 'nm' %}</li>
+                            <li><strong>HH</strong> => {% trans 'hh' %}</li>
+                             <li><strong>IE</strong> => {% trans 'ie' %}</li>
                         </ul>
                     </td>
                     <td>
                         <ul>
-                            <li><strong>Comp</strong> => Composición</li>
-                            <li><strong>Compl</strong> => Complejidad</li>
-                            <li><strong>Sen</strong> => Senectud</li>
-                            <li><strong>MicHab</strong> => Microhábitats</li>
-                            <li><strong>Din</strong> => Dinamica</li>
+                            <li><strong>Comp</strong> => {% trans 'cp' %}</li>
+                            <li><strong>Compl</strong> => {% trans 'nm' %}</li>
+                            <li><strong>Sen</strong> => {% trans 'sn' %}</li>
+                            <li><strong>MicHab</strong> => {% trans 'hm' %}</li>
+                            <li><strong>Din</strong> => {% trans 'dn' %}</li>
                         </ul>
                     </td>
                     <td>
                         <ul>
-                            <li><strong>HAnt</strong> => Huella antigua</li>
-                            <li><strong>HRec</strong> => Huella reciente</li>
+                            <li><strong>HAnt</strong> => {% trans 'ha' %}</li>
+                            <li><strong>HRec</strong> => {% trans 'hr' %}</li>
                         </ul>
                     </td>
                     <td>
                         <ul>
-                            <li><strong>Tam</strong> => Tamaño</li>
-                            <li><strong>CF</strong> => Continuidad forestal</li>
-                            <li><strong>EB</strong> => Efecto borde</li>
-                            <li><strong>Conec</strong> => Conectividad</li>
+                            <li><strong>Tam</strong> => {% trans 'ar' %}</li>
+                            <li><strong>CF</strong> => {% trans 'cf' %}</li>
+                            <li><strong>EB</strong> => {% trans 'eb' %}</li>
+                            <li><strong>Conec</strong> => {% trans 'cn' %}</li>
                         </ul>
                     </td>
                 </tr>
@@ -864,9 +865,9 @@
                     <div class="col-lg-7">
                         <select id="ejeXGrafica1" class="form-control scatterSelector grafica1" name="RegioBiogeo" onchange="grafica1()">
                             <option value="null" selected="selected">Seleccione un eje</option>
-                            <option value="nm">Naturalidad</option>
-                            <option value="hh">Huella Humana</option>
-                            <option value="ie">Integridad espacial</option>
+                            <option value="nm">{% trans 'nm' %}</option>
+                            <option value="hh">{% trans 'hh' %}</option>
+                            <option value="ie">{% trans 'ie' %}</option>
                         </select>
                     </div>
                 </div>
@@ -877,9 +878,9 @@
                     <div class="col-lg-7">
                         <select id="ejeYGrafica1" class="form-control scatterSelector grafica1" name="RegioBiogeo" onchange="grafica1()">
                             <option value="null" selected="selected">Seleccione un eje</option>
-                            <option value="nm">Naturalidad</option>
-                            <option value="hh">Huella Humana</option>
-                            <option value="ie">Integridad espacial</option>
+                            <option value="nm">{% trans 'nm' %}</option>
+                            <option value="hh">{% trans 'hh' %}</option>
+                            <option value="ie">{% trans 'ie' %}</option>
                         </select>
                     </div>
                 </div>
@@ -893,9 +894,9 @@
                     <div class="col-lg-7">
                         <select id="ejeXGrafica2" class="form-control scatterSelector grafica2" name="RegioBiogeo" onchange="grafica2()">
                             <option value="null" selected="selected">Seleccione un eje</option>
-                            <option value="nm">Naturalidad</option>
-                            <option value="hh">Huella Humana</option>
-                            <option value="ie">Integridad espacial</option>
+                            <option value="nm">{% trans 'nm' %}</option>
+                            <option value="hh">{% trans 'hh' %}</option>
+                            <option value="ie">{% trans 'ie' %}</option>
                         </select>
                     </div>
                 </div>
@@ -906,9 +907,9 @@
                     <div class="col-lg-7">
                         <select id="ejeYGrafica2" class="form-control scatterSelector grafica2" name="RegioBiogeo" onchange="grafica2()">
                             <option value="null" selected="selected">Seleccione un eje</option>
-                            <option value="nm">Naturalidad</option>
-                            <option value="hh">Huella Humana</option>
-                            <option value="ie">Integridad espacial</option>
+                            <option value="nm">{% trans 'nm' %}</option>
+                            <option value="hh">{% trans 'hh' %}</option>
+                            <option value="ie">{% trans 'ie' %}</option>
                         </select>
                     </div>
                 </div>
@@ -922,9 +923,9 @@
                     <div class="col-lg-7">
                         <select id="ejeXGrafica3" class="form-control scatterSelector grafica3" name="RegioBiogeo" onchange="grafica3()">
                             <option value="null" selected="selected">Seleccione un eje</option>
-                            <option value="nm">Naturalidad</option>
-                            <option value="hh">Huella Humana</option>
-                            <option value="ie">Integridad espacial</option>
+                            <option value="nm">{% trans 'nm' %}</option>
+                            <option value="hh">{% trans 'hh' %}</option>
+                            <option value="ie">{% trans 'ie' %}</option>
                         </select>
                     </div>
                 </div>
@@ -935,9 +936,9 @@
                     <div class="col-lg-7">
                         <select id="ejeYGrafica3" class="form-control scatterSelector grafica3" name="RegioBiogeo" onchange="grafica3()">
                             <option value="null" selected="selected">Seleccione un eje</option>
-                            <option value="nm">Naturalidad</option>
-                            <option value="hh">Huella Humana</option>
-                            <option value="ie">Integridad espacial</option>
+                            <option value="nm">{% trans 'nm' %}</option>
+                            <option value="hh">{% trans 'hh' %}</option>
+                            <option value="ie">{% trans 'ie' %}</option>
                         </select>
                     </div>
                 </div>
@@ -960,9 +961,9 @@
                     <div class="col-lg-offset-3 col-lg-7">
                         <select id="selecGrafBar1" class="form-control graficaBarEjes barChartselector" name="RegioBiogeo" onchange="graficaBarras1()">
                             <option value="null" selected="selected">Seleccione un eje</option>
-                            <option value="nm">Naturalidad</option>
-                            <option value="hh">Huella Humana</option>
-                            <option value="ie">Integridad espacial</option>
+                            <option value="nm">{% trans 'nm' %}</option>
+                            <option value="hh">{% trans 'hh' %}</option>
+                            <option value="ie">{% trans 'ie' %}</option>
                         </select>
                     </div>
                 </div>
@@ -973,17 +974,17 @@
                     <div class="col-lg-offset-3 col-lg-7">
                         <select id="selecGrafBar2" class="form-control graficaBarCrite barChartselector" name="RegioBiogeo" onchange="graficaBarras2()">
                             <option value="null" selected="selected">Seleccione un criterio</option>
-                            <option value="cp">Composición</option>
-                            <option value="ce">Complejidad</option>
-                            <option value="sn">Senectud</option>
-                            <option value="hm">Microhábitats</option>
-                            <option value="dn">Dinamica</option>
-                            <option value="ha">Huella antigua</option>
-                            <option value="hr">Huella reciente</option>
-                            <option value="ar">Tamaño</option>
-                            <option value="cf">Continuidad forestal</option>
-                            <option value="eb">Efecto borde</option>
-                            <option value="cn">Conectividad</option>
+                            <option value="cp">{% trans 'cp' %}</option>
+                            <option value="ce">{% trans 'ce' %}</option>
+                            <option value="sn">{% trans 'sn' %}</option>
+                            <option value="hm">{% trans 'hm' %}</option>
+                            <option value="dn">{% trans 'dn' %}</option>
+                            <option value="ha">{% trans 'ha' %}</option>
+                            <option value="hr">{% trans 'hr' %}</option>
+                            <option value="ar">{% trans 'ar' %}</option>
+                            <option value="cf">{% trans 'cf' %}</option>
+                            <option value="eb">{% trans 'eb' %}</option>
+                            <option value="cn">{% trans 'cn' %}</option>
                         </select>
                     </div>
                 </div>

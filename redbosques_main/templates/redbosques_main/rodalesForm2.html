@@ -1,5 +1,6 @@
 {% extends "redbosques_main/base.html" %}
 {% load static %}
+{% load i18n %}
 {% block extra_css %}
 {% endblock %}
 {% block main %}
@@ -60,17 +61,17 @@
                     </tr>
                     <tr>
                         <td>
-                             <h4>NATURALIDAD</h4>
+                             <h4>{% trans 'nm' %}</h4>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <h5>Composición</h5>
+                            <h5>{% trans 'cp' %}</h5>
                         </td>
                     </tr>
                     <tr>
                         <td class="rodal_label numesparb">
-                            <label for="id_numesparb">Número de especies arbóreas</label>
+                            <label for="id_numesparb">{% trans 'ea' %}</label>
                             <div class="form-group has-warnings text-warning small warning">
                                 <p><i class="fas fa-exclamation-triangle fa-2x"></i> Warning: El valor esta fuera del rango normal de valores.</p>
                             </div>
@@ -99,13 +100,13 @@
         <!-- ######################################################################################## -->
                     <tr>
                         <td colspan="3">
-                            <h5>Complejidad estructural</h5>
+                            <h5>{% trans 'ce' %}</h5>
                         </td>
                     </tr>
 
                     <tr>
                         <td class="rodal_label areabasal">
-                            <label for="id_areabasal">Área basal</label>
+                            <label for="id_areabasal">{% trans 'ab' %}</label>
                             <div class="form-group has-warnings text-warning small warning">
                                 <p><i class="fas fa-exclamation-triangle fa-2x"></i> Warning: El valor esta fuera del rango normal de valores.</p>
                             </div>
@@ -133,7 +134,7 @@
 
                     <tr>
                         <td class="rodal_label volmadvivo">
-                            <label for="id_volmadvivo">Volumen de árboles vivos</label>
+                            <label for="id_volmadvivo">{% trans 'vv' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.volmadvivo.errors }}
                             </div>
@@ -156,7 +157,7 @@
                     </tr>
                     <tr>
                         <td class="rodal_label numclasdiam">
-                            <label for="id_numclasdiam">Número de clases diamétricas</label>
+                            <label for="id_numclasdiam">{% trans 'de' %}</label>
                             <div class="form-group has-warnings text-warning small warning">
                                 <p><i class="fas fa-exclamation-triangle fa-2x"></i> Warning: El valor esta fuera del rango normal de valores.</p>
                             </div>
@@ -183,7 +184,7 @@
                     </tr>
                     <tr>
                         <td class="rodal_label numestratos">
-                            <label for="id_numestratos">Número de estratos verticales</label>
+                            <label for="id_numestratos">{% trans 'ev' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.numestratos.errors }}
                             </div>
@@ -212,7 +213,7 @@
                     </tr>
                     <tr>
                         <td class="rodal_label abundpiesexcep">
-                            <label for="id_abundpiesexcep">Árboles excepcionales</label>
+                            <label for="id_abundpiesexcep">{% trans 'ae' %}</label>
                             <div class="form-group has-warnings text-warning small warning">
                                 <p><i class="fas fa-exclamation-triangle fa-2x"></i> Warning: El valor esta fuera del rango normal de valores.</p>
                             </div>
@@ -240,7 +241,7 @@
 
                     <tr>
                         <td class="rodal_label volmmpie">
-                            <label for="id_volmmpie">Volumen de madera muerta en pie</label>
+                            <label for="id_volmmpie">{% trans 'mp' %}</label>
                             <div class="form-group has-warnings text-warning small warning">
                                 <p><i class="fas fa-exclamation-triangle fa-2x"></i> Warning: El valor esta fuera del rango normal de valores.</p>
                             </div>
@@ -268,7 +269,7 @@
 
                     <tr>
                         <td class="rodal_label volmmsuelo">
-                            <label for="id_volmmsuelo">Volumen de madera muerta en suelo</label>
+                            <label for="id_volmmsuelo">{% trans 'ms' %}</label>
                             <div class="form-group has-warnings text-warning small warning">
                                 <p><i class="fas fa-exclamation-triangle fa-2x"></i> Warning: El valor esta fuera del rango normal de valores.</p>
                             </div>
@@ -296,7 +297,7 @@
 
                     <tr>
                         <td class="rodal_label volmmtotal">
-                            <label for="id_volmmtotal">Volumen de madera muerta total</label>
+                            <label for="id_volmmtotal">{% trans 'mm' %}</label>
                             <div class="form-group has-warnings text-warning small warning">
                                 <p><i class="fas fa-exclamation-triangle fa-2x"></i> Warning: El valor esta fuera del rango normal de valores.</p>
                             </div>
@@ -324,7 +325,7 @@
 
                     <tr>
                         <td class="rodal_label volmmprop">
-                            <label for="id_volmmprop">Proporción de madera muerta</label>
+                            <label for="id_volmmprop">{% trans 'pm' %}</label>
                             <div class="form-group has-warnings text-warning small warning">
                                 <p><i class="fas fa-exclamation-triangle fa-2x"></i> Warning: El valor esta fuera del rango normal de valores.</p>
                             </div>
@@ -367,13 +368,13 @@
         <!-- ######################################################################################## -->
                     <tr>
                         <td colspan="3">
-                            <h5>Microhábitats</h5>
+                            <h5>{% trans 'hm' %}</h5>
                         </td>
                     </tr>
 
                     <tr>
                         <td class="rodal_label nummicrohab">
-                            <label for="id_nummicrohab">Número de tipos de microhábitats en pies vivos</label>
+                            <label for="id_nummicrohab">{% trans 'mh' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.nummicrohab.errors }}
                             </div>
@@ -404,7 +405,7 @@
 
                     <tr>
                         <td class="rodal_label numfasessil">
-                            <label for="id_numfasessil">Fases silvogenéticas</label>
+                            <label for="id_numfasessil">{% trans 'cs' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.numfasessil.errors }}
                             </div>
@@ -429,7 +430,7 @@
         <!-- ######################################################################################## -->
                     <tr>
                         <td>
-                             <h4>HUELLA HUMANA</h4>
+                             <h4>{% trans 'hh' %}</h4>
                         </td>
                     </tr>
 
@@ -441,7 +442,7 @@
 
                     <tr>
                         <td class="rodal_label valpropbosc56">
-                            <label for="id_valpropbosc56_sel">Continuidad temporal</label>
+                            <label for="id_valpropbosc56_sel">{% trans 'tb' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valpropbosc56.errors }}
                             </div>
@@ -471,7 +472,7 @@
 
                     <tr>
                         <td class="rodal_label valagropasant">
-                            <label for="id_valagropasant_sel">Usos agropastorales antiguos</label>
+                            <label for="id_valagropasant_sel">{% trans 'ua' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valagropasant.errors }}
                             </div>
@@ -493,7 +494,7 @@
 
                     <tr>
                         <td class="rodal_label valforestant">
-                            <label for="id_valforestant_sel">Usos forestales antiguos</label>
+                            <label for="id_valforestant_sel">{% trans 'fa' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valforestant.errors }}
                             </div>
@@ -521,7 +522,7 @@
 
                     <tr>
                         <td class="rodal_label valforestrec">
-                            <label for="id_valforestrec_sel">Usos forestales recientes</label>
+                            <label for="id_valforestrec_sel">{% trans 'fr' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valforestrec.errors }}
                             </div>
@@ -543,7 +544,7 @@
 
                     <tr>
                         <td class="rodal_label valespinvas">
-                            <label for="id_valespinvas_sel">Especies invasoras</label>
+                            <label for="id_valespinvas_sel">{% trans 'ei' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valespinvas.errors }}
                             </div>
@@ -565,7 +566,7 @@
 
                     <tr>
                         <td class="rodal_label valfragment">
-                            <label for="id_valfragment_sel">Causas de fragmentación</label>
+                            <label for="id_valfragment_sel">{% trans 'fg' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valfragment.errors }}
                             </div>
@@ -587,7 +588,7 @@
 
                     <tr>
                         <td class="rodal_label valcaza">
-                            <label for="id_valcaza_sel">Actividad cinegética</label>
+                            <label for="id_valcaza_sel">{% trans 'cz' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valcaza.errors }}
                             </div>
@@ -609,7 +610,7 @@
 
                     <tr>
                         <td class="rodal_label valherbiv">
-                            <label for="id_valherbiv_sel">Herbívora y/o ramoneo</label>
+                            <label for="id_valherbiv_sel">{% trans 'hb' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valherbiv.errors }}
                             </div>
@@ -631,7 +632,7 @@
 
                     <tr>
                         <td class="rodal_label valfrecuent">
-                            <label for="id_valfrecuent_sel">Frecuentación</label>
+                            <label for="id_valfrecuent_sel">{% trans 'fc' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valfrecuent.errors }}
                             </div>
@@ -653,7 +654,7 @@
 
                     <tr>
                         <td class="rodal_label valdurabusos">
-                            <label for="id_valdurabusos_sel">Durabilidad de los usos</label>
+                            <label for="id_valdurabusos_sel">{% trans 'du' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valdurabusos.errors }}
                             </div>
@@ -677,13 +678,13 @@
         <!-- ######################################################################################## -->
                     <tr>
                         <td>
-                             <h4>INTEGRIDAD ESPACIAL</h4>
+                             <h4>{% trans 'ie' %}</h4>
                         </td>
                     </tr>
 
                     <tr>
                         <td class="rodal_label tamRodal">
-                            <label for="tamRodal">Tamaño del rodal</label>
+                            <label for="tamRodal">{% trans 'tr' %}</label>
                         </td>
                         <td class="rodal_data">
                            <input id="tamRodal" type="text" value="{{ areaHectareas }}" class="numEspArbDos form-control" disabled>
@@ -695,7 +696,7 @@
 
                     <tr>
                         <td class="rodal_label contManchaForest">
-                            <label for="contManchaForest">Continuidad de la mancha forestal</label>
+                            <label for="contManchaForest">{% trans 'cb' %}</label>
                         </td>
                         <td class="rodal_data">
                            <input id="contManchaForest" type="text" value="{{ contManchForestKM2 }}" class="numEspArbDos form-control" disabled>
@@ -707,7 +708,7 @@
 
                     <tr>
                         <td class="rodal_label densidadBosque">
-                            <label for="densidadBosque">Densidad de bosque</label>
+                            <label for="densidadBosque">{% trans 'db' %}</label>
                         </td>
                         <td class="rodal_data">
                             <input id="densidadBosque" type="text" value="{{ densBosquexcent }}" class="numEspArbDos form-control" disabled>
@@ -719,7 +720,7 @@
 
                     <tr>
                         <td class="rodal_label distCoreArea">
-                            <label for="distCoreArea">Distancia a la core área</label>
+                            <label for="distCoreArea">{% trans 'dc' %}</label>
                         </td>
                         <td class="rodal_data">
                            <input id="distCoreArea" type="text" value="{{ distCoreAreaKM }}" class="numEspArbDos form-control" disabled>

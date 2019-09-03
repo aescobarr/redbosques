@@ -1,5 +1,6 @@
 {% extends "redbosques_main/base.html" %}
 {% load static %}
+{% load i18n %}
 {% block extra_css %}
 {% endblock %}
 {% block main %}
@@ -119,7 +120,7 @@
     <div class="row">
         <div class="col-lg-12 ifnGraphCont">
             <div class="lv1 lv1Nat">
-                <span class="green-font"><i class="fas fa-caret-right fa-lg"></i>MADUREZ</span>
+                <span class="green-font"><i class="fas fa-caret-right fa-lg"></i>{% trans "nm" %}</span>
                 <div id="grafica_nm" class="ifnBarsGraph"></div>
             </div>
         </div>
@@ -127,7 +128,7 @@
     <div class="lv2 lv2Nat" style="display: none">
         <div class="row">
             <div class="col-lg-offset-1 col-lg-11 ifnGraphCont">
-                <span class="green-font"><i class="fas fa-caret-right fa-lg"></i>Composición</span>
+                <span class="green-font"><i class="fas fa-caret-right fa-lg"></i>{% trans 'cp' %}</span>
                 <div id="grafica_cp" class="ifnBarsGraph"></div>
             </div>
         </div>
@@ -135,11 +136,11 @@
     <div class="lv3 lv3Nat" style="display: none">
         <div class="row ">
             <div class="col-lg-offset-2 col-lg-5 ifnGraphCont">
-                <span>Especies arbóreas</span>
+                <span>{% trans 'ea' %}</span>
                 <div id="grafica_ea" class="ifnBarsGraph"></div>
             </div>
             <div class="col-lg-5 ifnGraphCont">
-                <span>Especies arbóreas - Valores Métricos</span>
+                <span>{% trans 'ea' %} - Valores Métricos</span>
                 <div id="grafica_ea_valMet" class="ifnBarsGraph"></div>
             </div>
         </div>
@@ -147,7 +148,7 @@
     <div class="lv2 lv2Nat" style="display: none">
         <div class="row">
             <div class="col-lg-offset-1 col-lg-11 ifnGraphCont">
-                <span class="green-font"><i class="fas fa-caret-right fa-lg"></i>Complejidad</span>
+                <span class="green-font"><i class="fas fa-caret-right fa-lg"></i>{% trans 'ce' %}</span>
                 <div id="grafica_ce" class="ifnBarsGraph"></div>
             </div>
         </div>
@@ -155,11 +156,11 @@
     <div class="lv3 lv3Nat" style="display: none">
         <div class="row">
             <div class="col-lg-offset-2 col-lg-5 ifnGraphCont">
-                <span>Area basmietrica</span>
+                <span>{% trans 'ab' %}</span>
                 <div id="grafica_ab" class="ifnBarsGraph"></div>
             </div>
             <div class="col-lg-5 ifnGraphCont">
-                <span>Area basmietrica - Valores métricos</span>
+                <span>{% trans 'ab' %} - Valores métricos</span>
                 <div id="grafica_ab_valMet" class="ifnBarsGraph"></div>
             </div>
         </div>
@@ -167,11 +168,11 @@
     <div>
         <div class="row lv3 lv3Nat" style="display: none">
             <div class="col-lg-offset-2 col-lg-5 ifnGraphCont">
-                <span>Diversidad estructural</span>
+                <span>{% trans 'de' %}</span>
                 <div id="grafica_de" class="ifnBarsGraph"></div>
             </div>
             <div class="col-lg-5 ifnGraphCont">
-                <span>Diversidad estructural - Valores métricos</span>
+                <span>{% trans 'de' %} - Valores métricos</span>
                 <div id="grafica_de_valMet" class="ifnBarsGraph"></div>
             </div>
         </div>
@@ -179,39 +180,39 @@
     <div class="lv2 lv2Nat" style="display: none">
         <div class="row">
             <div class="col-lg-offset-1 col-lg-11 ifnGraphCont">
-                <span class="green-font"><i class="fas fa-caret-right fa-lg"></i>Senectud</span>
+                <span class="green-font"><i class="fas fa-caret-right fa-lg"></i>{% trans 'sn' %}</span>
                 <div id="grafica_sn" class="ifnBarsGraph"></div>
             </div>
         </div>
     </div>
     <div class="row lv3 lv3Nat" style="display: none">
         <div class="col-lg-offset-2 col-lg-5 ifnGraphCont">
-            <span>Àrboles de tamaño excepcional</span>
+            <span>{% trans 'ae' %}</span>
             <div id="grafica_ae" class="ifnBarsGraph"></div>
         </div>
         <div class="col-lg-5 ifnGraphCont">
-            <span>Àrboles de tamaño excepcional - Valores métricos</span>
+            <span>{% trans 'ae' %} - Valores métricos</span>
             <div id="grafica_ae_valMet" class="ifnBarsGraph" ></div>
         </div>
     </div>
     <div class="lv3 lv3Nat" style="display: none">
         <div class="row">
             <div class="col-lg-offset-2 col-lg-5 ifnGraphCont">
-                <span>Abundancia de madera muerta</span>
+                <span>{% trans 'mm' %}</span>
                 <div id="grafica_mp" class="ifnBarsGraph"></div>
             </div>
             <div class="col-lg-5 ifnGraphCont">
-                <span>Abundancia de madera muerta - Valores métricos</span>
+                <span>{% trans 'mm' %} - Valores métricos</span>
                 <div id="grafica_mp_valMet" class="ifnBarsGraph"></div>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-offset-2 col-lg-5 ifnGraphCont">
-                <span>Proporción de madera muerta</span>
+                <span>{% trans 'pm' %}</span>
                 <div id="grafica_pi" class="ifnBarsGraph"></div>
             </div>
             <div class="col-lg-5 ifnGraphCont">
-                <span>Proporción de madera muerta - Valores métricos</span>
+                {% trans 'pm' %}<span> - Valores métricos</span>
                 <div id="grafica_pi_valMet" class="ifnBarsGraph"></div>
             </div>
         </div>

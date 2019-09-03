@@ -70,7 +70,8 @@ from django.core.files import File
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
 from django.template import RequestContext
-
+from django.utils import translation
+from django.utils.translation import gettext as _
 import logging
 
 def namedtuplefetchall(cursor):

@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -161,9 +162,9 @@
                             <thead>
                                 <tr class="headerTabla">
                                     <th style="width: auto"></th>
-                                    <th class="green-font" style="width: auto; text-align: center;">NATURALIDAD</th>
-                                    <th class="green-font" style="width: auto; text-align: center;">INTEGRIDAD ESPACIAL</th>
-                                    <th class="green-font" style="width: auto; text-align: center;">HUELLA HUMANA</th>
+                                    <th class="green-font" style="width: auto; text-align: center;">{% trans 'nm' %}</th>
+                                    <th class="green-font" style="width: auto; text-align: center;">{% trans 'ie' %}</th>
+                                    <th class="green-font" style="width: auto; text-align: center;">{% trans 'hh' %}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -180,7 +181,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-6">
-                    <h5>Naturalidad</h5>
+                    <h5>{% trans 'nm' %}</h5>
                     <div class="data-table tabla-datos"><!--         Naturalidad                       -->
                         <table class="table responsive" style="width: 100%;">
                         <thead>
@@ -193,75 +194,75 @@
                         </thead>
                         <tbody>
                             <tr class="lv1 lv1Nat">
-                                <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>NATURALIDAD</span></th>
+                                <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'nm' %}</span></th>
                                 <td id="_naturalidad" class="bgColorRod">{{ rodal.naturalidad.valor }}</td>
                                 <td class="bgColorRod"></td>
                                 <td class="bgColorRod"></td>
                             </tr>
                             <tr class="lv2 lv2Nat">
-                                <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Composición</span></th>
+                                <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'cp' %}</span></th>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_composicion" class="bgColorRod">{{ rodal.naturalidad.composicion.valor }}</td>
                                 <td class="bgColorRod"></td>
                             </tr>
                             <tr class="lv3 lv3Nat">
-                                <td class="identValores"><span>Especies arbóreas</span></td>
+                                <td class="identValores"><span>{% trans 'ea' %}</span></td>
                                 <td class="bgColorRod"></td>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_composicion_especies_arboreas" class="bgColorRod">{{ rodal.naturalidad.composicion.especies_arboreas.valor }}</td>
                             </tr>
                             <tr class="lv2 lv2Nat">
-                                <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Complejidad</span></th>
+                                <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'ce' %}</span></th>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_complejidad" class="bgColorRod">{{ rodal.naturalidad.complejidad.valor }}</td>
                                 <td class="bgColorRod"></td>
                             </tr>
                             <tr class="lv3 lv3Nat">
-                                <td class="identValores" ><span>Área basimétrica</span></td>
+                                <td class="identValores" ><span>{% trans 'ab' %}</span></td>
                                 <td class="bgColorRod"></td>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_complejidad_area_basimetrica" class="bgColorRod">{{ rodal.naturalidad.complejidad.area_basimetrica.valor }}</td>
                             </tr>
                             <tr class="lv3 lv3Nat">
-                                <td class="identValores"><span>Estratificación vertical</span></td>
+                                <td class="identValores"><span>{% trans 'ev' %}</span></td>
                                 <td class="bgColorRod"></td>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_complejidad_estratificacion_vertical" class="bgColorRod">{{ rodal.naturalidad.complejidad.estratificacion_vertical.valor }}</td>
                             </tr>
                             <tr class="lv3 lv3Nat">
-                                <td class="identValores"><span>Diversidad estructural</span></td>
+                                <td class="identValores"><span>{% trans 'de' %}</span></td>
                                 <td class="bgColorRod"></td>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_complejidad_diversidad_estructural" class="bgColorRod">{{ rodal.naturalidad.complejidad.diversidad_estructural.valor }}</td>
                             </tr>
 
                             <tr class="lv2 lv2Nat">
-                                <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Senectud</span></th>
+                                <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'sn' %}</span></th>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_senectud" class="bgColorRod">{{ rodal.naturalidad.senectud.valor }}</td>
                                 <td class="bgColorRod"></td>
                             </tr>
                             <tr class="lv3 lv3Nat">
-                                <td class="identValores"><span>Àrboles de tamaño excepcional</span></td>
+                                <td class="identValores"><span>{% trans 'ae' %}</span></td>
                                 <td class="bgColorRod"></td>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_senectud_arb_tam_excep" class="bgColorRod">{{ rodal.naturalidad.senectud.arb_tam_excep.valor }}</td>
                             </tr>
                             <tr class="lv3 lv3Nat">
-                                <td class="identValores"><span>Abundancia de madera muerta</span></td>
+                                <td class="identValores"><span>{% trans 'mm' %}</span></td>
                                 <td class="bgColorRod"></td>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_senectud_abund_mad_muerta" class="bgColorRod">{{ rodal.naturalidad.senectud.abund_mad_muerta.valor }}</td>
                             </tr>
                             <tr class="lv3 lv3Nat">
-                                <td class="identValores"><span>Proporción de madera muerta</span></td>
+                                <td class="identValores"><span>{% trans 'pm' %}</span></td>
                                 <td class="bgColorRod"></td>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_senectud_prop_madera_muerta" class="bgColorRod">{{ rodal.naturalidad.senectud.prop_madera_muerta.valor }}</td>
                             </tr>
 
                             <tr class="lv2 lv2Nat">
-                                <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Microhábitats</span></th>
+                                <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'hm' %}</span></th>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_micro_habitats" class="bgColorRod">{{ rodal.naturalidad.micro_habitats.valor }}</td>
                                 <td class="bgColorRod"></td>
@@ -274,13 +275,13 @@
                             </tr>
 
                             <tr class="lv2 lv2Nat">
-                                <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Dinámica</span></th>
+                                <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'dn' %}</span></th>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_dinamica" class="bgColorRod">{{ rodal.naturalidad.dinamica.valor }}</td>
                                 <td class="bgColorRod"></td>
                             </tr>
                             <tr class="lv3 lv3Nat">
-                                <td class="identValores"><span>Ciclo silvogenético</span></td>
+                                <td class="identValores"><span>{% trans 'cs' %}</span></td>
                                 <td class="bgColorRod"></td>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_dinamica_ciclo_silvogen" class="bgColorRod">{{ rodal.naturalidad.dinamica.ciclo_silvogen.valor }}</td>

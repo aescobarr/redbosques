@@ -1,0 +1,313 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-09-03 11:08+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: redbosques/settings.py:135
+msgid "Spanish"
+msgstr "Español"
+
+#: redbosques_main/templates/pdf_templates/pdf_template.html:164
+#: redbosques_main/templates/pdf_templates/pdf_template.html:183
+#: redbosques_main/templates/pdf_templates/pdf_template.html:196
+#: redbosques_main/templates/redbosques_main/comparador_ifn.html:123
+#: redbosques_main/templates/redbosques_main/comparador_new.html:198
+#: redbosques_main/templates/redbosques_main/comparador_new.html:800
+#: redbosques_main/templates/redbosques_main/comparador_new.html:814
+#: redbosques_main/templates/redbosques_main/comparador_new.html:822
+#: redbosques_main/templates/redbosques_main/comparador_new.html:868
+#: redbosques_main/templates/redbosques_main/comparador_new.html:881
+#: redbosques_main/templates/redbosques_main/comparador_new.html:897
+#: redbosques_main/templates/redbosques_main/comparador_new.html:910
+#: redbosques_main/templates/redbosques_main/comparador_new.html:926
+#: redbosques_main/templates/redbosques_main/comparador_new.html:939
+#: redbosques_main/templates/redbosques_main/comparador_new.html:964
+#: redbosques_main/templates/redbosques_main/editRodalFormFase1.html:392
+#: redbosques_main/templates/redbosques_main/rodalFormFase1.html:325
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:64
+msgid "nm"
+msgstr "Madurez"
+
+#: redbosques_main/templates/pdf_templates/pdf_template.html:165
+#: redbosques_main/templates/redbosques_main/comparador_new.html:680
+#: redbosques_main/templates/redbosques_main/comparador_new.html:802
+#: redbosques_main/templates/redbosques_main/comparador_new.html:816
+#: redbosques_main/templates/redbosques_main/comparador_new.html:870
+#: redbosques_main/templates/redbosques_main/comparador_new.html:883
+#: redbosques_main/templates/redbosques_main/comparador_new.html:899
+#: redbosques_main/templates/redbosques_main/comparador_new.html:912
+#: redbosques_main/templates/redbosques_main/comparador_new.html:928
+#: redbosques_main/templates/redbosques_main/comparador_new.html:941
+#: redbosques_main/templates/redbosques_main/comparador_new.html:966
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:681
+msgid "ie"
+msgstr "Integridad espacial"
+
+#: redbosques_main/templates/pdf_templates/pdf_template.html:166
+#: redbosques_main/templates/redbosques_main/comparador_new.html:462
+#: redbosques_main/templates/redbosques_main/comparador_new.html:801
+#: redbosques_main/templates/redbosques_main/comparador_new.html:815
+#: redbosques_main/templates/redbosques_main/comparador_new.html:869
+#: redbosques_main/templates/redbosques_main/comparador_new.html:882
+#: redbosques_main/templates/redbosques_main/comparador_new.html:898
+#: redbosques_main/templates/redbosques_main/comparador_new.html:911
+#: redbosques_main/templates/redbosques_main/comparador_new.html:927
+#: redbosques_main/templates/redbosques_main/comparador_new.html:940
+#: redbosques_main/templates/redbosques_main/comparador_new.html:965
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:433
+msgid "hh"
+msgstr "Huella humana"
+
+#: redbosques_main/templates/pdf_templates/pdf_template.html:202
+#: redbosques_main/templates/redbosques_main/comparador_ifn.html:131
+#: redbosques_main/templates/redbosques_main/comparador_new.html:217
+#: redbosques_main/templates/redbosques_main/comparador_new.html:821
+#: redbosques_main/templates/redbosques_main/comparador_new.html:977
+#: redbosques_main/templates/redbosques_main/editRodalFormFase1.html:397
+#: redbosques_main/templates/redbosques_main/rodalFormFase1.html:330
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:69
+msgid "cp"
+msgstr "Composición específica"
+
+#: redbosques_main/templates/pdf_templates/pdf_template.html:208
+#: redbosques_main/templates/redbosques_main/comparador_ifn.html:139
+#: redbosques_main/templates/redbosques_main/comparador_ifn.html:143
+#: redbosques_main/templates/redbosques_main/comparador_new.html:235
+#: redbosques_main/templates/redbosques_main/editRodalFormFase1.html:402
+#: redbosques_main/templates/redbosques_main/rodalFormFase1.html:335
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:74
+msgid "ea"
+msgstr "Especies arbóreas"
+
+#: redbosques_main/templates/pdf_templates/pdf_template.html:214
+#: redbosques_main/templates/redbosques_main/comparador_ifn.html:151
+#: redbosques_main/templates/redbosques_main/comparador_new.html:252
+#: redbosques_main/templates/redbosques_main/comparador_new.html:978
+#: redbosques_main/templates/redbosques_main/editRodalFormFase1.html:426
+#: redbosques_main/templates/redbosques_main/rodalFormFase1.html:359
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:103
+msgid "ce"
+msgstr "Complejidad estructural"
+
+#: redbosques_main/templates/pdf_templates/pdf_template.html:220
+#: redbosques_main/templates/redbosques_main/comparador_ifn.html:159
+#: redbosques_main/templates/redbosques_main/comparador_ifn.html:163
+#: redbosques_main/templates/redbosques_main/comparador_new.html:270
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:109
+msgid "ab"
+msgstr "Área basal"
+
+#: redbosques_main/templates/pdf_templates/pdf_template.html:226
+#: redbosques_main/templates/redbosques_main/comparador_new.html:287
+#: redbosques_main/templates/redbosques_main/editRodalFormFase1.html:454
+#: redbosques_main/templates/redbosques_main/rodalFormFase1.html:387
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:187
+msgid "ev"
+msgstr "Estratos verticales"
+
+#: redbosques_main/templates/pdf_templates/pdf_template.html:232
+#: redbosques_main/templates/redbosques_main/comparador_ifn.html:171
+#: redbosques_main/templates/redbosques_main/comparador_ifn.html:175
+#: redbosques_main/templates/redbosques_main/comparador_new.html:303
+#: redbosques_main/templates/redbosques_main/editRodalFormFase1.html:431
+#: redbosques_main/templates/redbosques_main/rodalFormFase1.html:364
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:160
+msgid "de"
+msgstr "Clases diamétricas"
+
+#: redbosques_main/templates/pdf_templates/pdf_template.html:239
+#: redbosques_main/templates/redbosques_main/comparador_ifn.html:183
+#: redbosques_main/templates/redbosques_main/comparador_new.html:322
+#: redbosques_main/templates/redbosques_main/comparador_new.html:823
+#: redbosques_main/templates/redbosques_main/comparador_new.html:979
+#: redbosques_main/templates/redbosques_main/editRodalFormFase1.html:478
+#: redbosques_main/templates/redbosques_main/rodalFormFase1.html:411
+msgid "sn"
+msgstr "Senectud"
+
+#: redbosques_main/templates/pdf_templates/pdf_template.html:245
+#: redbosques_main/templates/redbosques_main/comparador_ifn.html:190
+#: redbosques_main/templates/redbosques_main/comparador_ifn.html:194
+#: redbosques_main/templates/redbosques_main/comparador_new.html:338
+#: redbosques_main/templates/redbosques_main/editRodalFormFase1.html:483
+#: redbosques_main/templates/redbosques_main/rodalFormFase1.html:416
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:216
+msgid "ae"
+msgstr "Arboles excepcionales"
+
+#: redbosques_main/templates/pdf_templates/pdf_template.html:251
+#: redbosques_main/templates/redbosques_main/comparador_ifn.html:201
+#: redbosques_main/templates/redbosques_main/comparador_ifn.html:205
+#: redbosques_main/templates/redbosques_main/comparador_new.html:356
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:300
+msgid "mm"
+msgstr "Volumen de madera muerta total"
+
+#: redbosques_main/templates/pdf_templates/pdf_template.html:257
+#: redbosques_main/templates/redbosques_main/comparador_ifn.html:211
+#: redbosques_main/templates/redbosques_main/comparador_ifn.html:215
+#: redbosques_main/templates/redbosques_main/comparador_new.html:372
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:328
+msgid "pm"
+msgstr "Proporción de madera muerta"
+
+#: redbosques_main/templates/pdf_templates/pdf_template.html:264
+#: redbosques_main/templates/redbosques_main/comparador_new.html:389
+#: redbosques_main/templates/redbosques_main/comparador_new.html:824
+#: redbosques_main/templates/redbosques_main/comparador_new.html:980
+#: redbosques_main/templates/redbosques_main/editRodalFormFase1.html:553
+#: redbosques_main/templates/redbosques_main/rodalFormFase1.html:486
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:371
+msgid "hm"
+msgstr "Microhábitats"
+
+#: redbosques_main/templates/pdf_templates/pdf_template.html:277
+#: redbosques_main/templates/redbosques_main/comparador_new.html:427
+#: redbosques_main/templates/redbosques_main/comparador_new.html:825
+#: redbosques_main/templates/redbosques_main/comparador_new.html:981
+msgid "dn"
+msgstr "Dinámica"
+
+#: redbosques_main/templates/pdf_templates/pdf_template.html:283
+#: redbosques_main/templates/redbosques_main/comparador_new.html:444
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:408
+msgid "cs"
+msgstr "Fases silvogenéticas"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:408
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:377
+msgid "mh"
+msgstr "Dendromicrohábitats"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:481
+#: redbosques_main/templates/redbosques_main/comparador_new.html:830
+#: redbosques_main/templates/redbosques_main/comparador_new.html:982
+msgid "ha"
+msgstr "Huella antigua"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:498
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:445
+msgid "tb"
+msgstr "Continuidad temporal"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:514
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:475
+msgid "ua"
+msgstr "Usos agropastorales"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:530
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:497
+msgid "fa"
+msgstr "Usos forestales antiguos"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:548
+#: redbosques_main/templates/redbosques_main/comparador_new.html:831
+#: redbosques_main/templates/redbosques_main/comparador_new.html:983
+msgid "hr"
+msgstr "Huella reciente"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:565
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:525
+msgid "fr"
+msgstr "Usos forestales recientes"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:581
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:547
+msgid "ei"
+msgstr "Especies exoticas"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:597
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:569
+msgid "fg"
+msgstr "Causas de fragmentación"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:613
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:591
+msgid "cz"
+msgstr "Actividad cinegética"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:629
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:613
+msgid "hb"
+msgstr "Herbivoría y/o ramoneo"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:645
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:635
+msgid "fc"
+msgstr "Frecuentación"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:661
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:657
+msgid "du"
+msgstr "Durabilidad de usos"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:697
+#: redbosques_main/templates/redbosques_main/comparador_new.html:836
+#: redbosques_main/templates/redbosques_main/comparador_new.html:984
+msgid "ar"
+msgstr "Tamaño"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:714
+#: redbosques_main/templates/redbosques_main/comparador_new.html:837
+#: redbosques_main/templates/redbosques_main/comparador_new.html:985
+msgid "cf"
+msgstr "Continuidad forestal"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:731
+#: redbosques_main/templates/redbosques_main/comparador_new.html:838
+#: redbosques_main/templates/redbosques_main/comparador_new.html:986
+msgid "eb"
+msgstr "Efecto borde"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:748
+#: redbosques_main/templates/redbosques_main/comparador_new.html:839
+#: redbosques_main/templates/redbosques_main/comparador_new.html:987
+msgid "cn"
+msgstr "Conectividad"
+
+#: redbosques_main/templates/redbosques_main/editRodalFormFase1.html:506
+#: redbosques_main/templates/redbosques_main/rodalFormFase1.html:439
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:244
+msgid "mp"
+msgstr "Volumen de madera muerta en pie"
+
+#: redbosques_main/templates/redbosques_main/editRodalFormFase1.html:529
+#: redbosques_main/templates/redbosques_main/rodalFormFase1.html:462
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:272
+msgid "ms"
+msgstr "Volumen de madera muerta en suelo"
+
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:137
+msgid "vv"
+msgstr "Volumen de árboles vivos"
+
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:687
+msgid "tr"
+msgstr "Tamaño del rodal"
+
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:699
+msgid "cb"
+msgstr "Continuidad de la mancha forestal"
+
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:711
+msgid "db"
+msgstr "Densidad de bosque"
+
+#: redbosques_main/templates/redbosques_main/rodalesForm2.html:723
+msgid "dc"
+msgstr "Distancia a la core área"

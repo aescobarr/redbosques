@@ -132,8 +132,9 @@ class rodalFormFields(forms.ModelForm):
     def clean_lpeht_cod(self):
         cleaned_data = self.cleaned_data
         lpeht_cod_nombre = cleaned_data.get('lpeht_cod')
-        print(type(lpeht_cod_nombre).__name__)
-        lpeht_cod_val = TeLpeht.objects.get(nombre=lpeht_cod_nombre, seleccion=True)
+        #print(type(lpeht_cod_nombre).__name__)
+        lpeht_cod_val = TeLpeht.objects.get(cod=lpeht_cod_nombre.cod, seleccion=True)
+        #lpeht_cod_val = TeLpeht.objects.get(nombre=lpeht_cod_nombre, seleccion=True)
 
         return lpeht_cod_val
 

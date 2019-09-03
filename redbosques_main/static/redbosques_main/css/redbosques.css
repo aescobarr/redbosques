@@ -51,6 +51,7 @@ li.dropdown {
   min-width: 200px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
+  border-radius: 4px;
 }
 
 .dropdown-content a {
@@ -132,7 +133,7 @@ ul.nav-pills li.active a {
 
 .subfield{
     padding-right: 5%;
-    padding-left: 5%;
+    padding-left: 2.3%;
 }
 
 
@@ -841,4 +842,17 @@ td.errorAlert{
 .graphTitles{
     border-bottom: 1px solid gray;
     margin-bottom: 20px;
+}
+
+.banner{
+    position: absolute;
+    clip: rect(0px,1150px,350px,0px);
+    margin-bottom: 50px;
+}
+
+.intro{
+    margin-top: 370px;
+    margin-bottom: 50px;
+    font-size: 16px;
+    text-align: justify;
 }

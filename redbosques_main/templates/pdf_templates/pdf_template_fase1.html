@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -160,7 +161,7 @@
                             </thead>
                             <tbody>
                                 <tr class="lv3 lv3Nat">
-                                    <td colspan="3" class="identValores"><span>Especies arbóreas en el dosel</span></td>
+                                    <td colspan="3" class="identValores"><span>{% trans 'ea' %}</span></td>
                                     {% if valores.valspparb %}
                                         <td id="valspparb" class="bgColorRod valRodFase1">1 (SI)</td>
                                     {% elif valores.valspparb == False %}
@@ -171,7 +172,7 @@
                                 </tr>
 
                                 <tr class="lv3 lv3Nat">
-                                    <td colspan="3" class="identValores"><span>Diversidad estructural</span></td>
+                                    <td colspan="3" class="identValores"><span>{% trans 'de' %}</span></td>
                                     {% if valores.valmasa %}
                                         <td id="valmasa" class="bgColorRod valRodFase1">1 (SI)</td>
                                     {% elif valores.valmasa == False %}
@@ -181,7 +182,7 @@
                                     {% endif %}
                                 </tr>
                                 <tr class="lv3 lv3Nat">
-                                    <td colspan="3" class="identValores"><span>Estratos verticales arbóreos</span></td>
+                                    <td colspan="3" class="identValores"><span>{% trans 'ev' %}</span></td>
                                     {% if valores.valestratos %}
                                         <td id="valestratos" class="bgColorRod valRodFase1">1 (SI)</td>
                                     {% elif valores.valestratos == False %}
@@ -191,7 +192,7 @@
                                     {% endif %}
                                 </tr>
                                 <tr class="lv3 lv3Nat">
-                                    <td colspan="3" class="identValores"><span>Árboles excepcionales</span></td>
+                                    <td colspan="3" class="identValores"><span>{% trans 'ae' %}</span></td>
                                     {% if valores.valarboexcep %}
                                         <td id="valarboexcep" class="bgColorRod valRodFase1">1 (SI)</td>
                                     {% elif valores.valarboexcep == False %}
@@ -201,7 +202,7 @@
                                     {% endif %}
                                 </tr>
                                 <tr class="lv3 lv3Nat">
-                                    <td colspan="3" class="identValores"><span>Madera muerta en pie</span></td>
+                                    <td colspan="3" class="identValores"><span>{% trans 'mp' %}</span></td>
                                     {% if valores.valmmpie %}
                                         <td id="valmmpie" class="bgColorRod valRodFase1">1 (SI)</td>
                                     {% elif valores.valmmpie == False %}
@@ -211,7 +212,7 @@
                                     {% endif %}
                                 </tr>
                                 <tr class="lv3 lv3Nat">
-                                    <td colspan="3" class="identValores"><span>Madera muerta en suelo</span></td>
+                                    <td colspan="3" class="identValores"><span>{% trans 'ms' %}</span></td>
                                     {% if valores.valmmsuelo %}
                                         <td id="valmmsuelo" class="bgColorRod valRodFase1">1 (SI)</td>
                                     {% elif valores.valmmsuelo == False %}
@@ -221,7 +222,7 @@
                                     {% endif %}
                                 </tr>
                                 <tr class="lv3 lv3Nat">
-                                    <td colspan="3" class="identValores"><span>Microhábitats en pies vivos</span></td>
+                                    <td colspan="3" class="identValores"><span>{% trans 'hm' %}</span></td>
                                     {% if valores.valmicrohab %}
                                         <td id="valmicrohab" class="bgColorRod valRodFase1">1 (SI)</td>
                                     {% elif valores.valmicrohab == False %}
