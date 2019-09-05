@@ -921,19 +921,36 @@ def valorref_ajax(request):
     elif cordRod == 'medRod':
 
         dades_rodal2 = RodalValorres2.objects.all()
-        if idRegBiogeo is not None and idRegBiogeo != 'all':
-            dades_rodal2 = dades_rodal2.filter(regbio_cod=idRegBiogeo)
-        if idComAut is not None and idComAut != 'all':
-            dades_rodal2 = dades_rodal2.filter(comautonom_cod=idComAut)
-        if idHab is not None:
-            dades_rodal2 = dades_rodal2.filter(lpeht_cod__startswith=idHab)
-        if rodRef is not None and rodRef == '1':
+
+        if rodRef is not None and rodRef == 'True':
             dades_rodal2 = dades_rodal2.filter(rodalref=True)
-        if rodPrincip is not None:
-            dades_rodal2 = dades_rodal2.exclude(id_rodal=rodPrincip)
+            if idRegBiogeo is not None and idRegBiogeo != 'all':
+                dades_rodal2 = dades_rodal2.filter(regbio_cod=idRegBiogeo)
+            if idComAut is not None and idComAut != 'all':
+                dades_rodal2 = dades_rodal2.filter(comautonom_cod=idComAut)
+            if idHab is not None:
+                dades_rodal2 = dades_rodal2.filter(lpeht_cod__startswith=idHab)
+            #if rodRef is not None and rodRef == '1':
+                #dades_rodal2 = dades_rodal2.filter(rodalref=True)
+            if rodPrincip is not None:
+                dades_rodal2 = dades_rodal2.exclude(id_rodal=rodPrincip)
+        elif rodRef is None and rodRef == 'False':
+            dades_rodal2 = dades_rodal2.filter(rodalref=False)
+
+            if idRegBiogeo is not None and idRegBiogeo != 'all':
+                dades_rodal2 = dades_rodal2.filter(regbio_cod=idRegBiogeo)
+            if idComAut is not None and idComAut != 'all':
+                dades_rodal2 = dades_rodal2.filter(comautonom_cod=idComAut)
+            if idHab is not None:
+                dades_rodal2 = dades_rodal2.filter(lpeht_cod__startswith=idHab)
+            #if rodRef is not None and rodRef == '1':
+                #dades_rodal2 = dades_rodal2.filter(rodalref=True)
+            if rodPrincip is not None:
+                dades_rodal2 = dades_rodal2.exclude(id_rodal=rodPrincip)
 
         rodalNombre = [{'nombre': 'Todos los rodales'}]
         dades_rodal = dades_rodal2.values('indicador_cod').annotate(mitjana=Avg('valor'), stddev=StdDev('valor'))
+        print(dades_rodal)
         rodal_referencia = crearArbolMedia(dades_rodal)
 
         ### Grafica puntos
@@ -1441,7 +1458,7 @@ def crearArbolMedia(dades):
             if indicador_cod['mitjana'] == None:
                 cp_valor = "---"
             else:
-                cp_valor = round(indicador_cod['mitjana'])
+                cp_valor = round(indicador_cod['mitjana'], 2)
 
             if indicador_cod['stddev'] == None:
                 cp_valor_desv = "---"
@@ -1463,7 +1480,7 @@ def crearArbolMedia(dades):
             if indicador_cod['mitjana'] == None:
                 ce_valor = "---"
             else:
-                ce_valor = round(indicador_cod['mitjana'])
+                ce_valor = round(indicador_cod['mitjana'], 2)
 
             if indicador_cod['stddev'] == None:
                 ce_valor_desv = "---"
@@ -1514,7 +1531,7 @@ def crearArbolMedia(dades):
             if indicador_cod['mitjana'] == None:
                 sn_valor = "---"
             else:
-                sn_valor = round(indicador_cod['mitjana'])
+                sn_valor = round(indicador_cod['mitjana'], 2)
 
             if indicador_cod['stddev'] == None:
                 sn_valor_desv = "---"
@@ -1561,7 +1578,7 @@ def crearArbolMedia(dades):
             if indicador_cod['mitjana'] == None:
                 hm_valor = "---"
             else:
-                hm_valor = round(indicador_cod['mitjana'])
+                hm_valor = round(indicador_cod['mitjana'], 2)
 
             if indicador_cod['stddev'] == None:
                 hm_valor_desv = "---"
@@ -1584,7 +1601,7 @@ def crearArbolMedia(dades):
             if indicador_cod['mitjana'] == None:
                 dn_valor = "---"
             else:
-                dn_valor = round(indicador_cod['mitjana'])
+                dn_valor = round(indicador_cod['mitjana'], 2)
 
             if indicador_cod['stddev'] == None:
                 dn_valor_desv = "---"
@@ -1606,7 +1623,7 @@ def crearArbolMedia(dades):
             if indicador_cod['mitjana'] == None:
                 hh_valor = "---"
             else:
-                hh_valor = round(indicador_cod['mitjana'])
+                hh_valor = round(indicador_cod['mitjana'], 2)
 
             if indicador_cod['stddev'] == None:
                 hh_valor_desv = "---"
@@ -1617,7 +1634,7 @@ def crearArbolMedia(dades):
             if indicador_cod['mitjana'] == None:
                 ha_valor = "---"
             else:
-                ha_valor = round(indicador_cod['mitjana'])
+                ha_valor = round(indicador_cod['mitjana'], 2)
 
             if indicador_cod['stddev'] == None:
                 ha_valor_desv = "---"
@@ -1661,7 +1678,7 @@ def crearArbolMedia(dades):
             if indicador_cod['mitjana'] == None:
                 hr_valor = "---"
             else:
-                hr_valor = round(indicador_cod['mitjana'])
+                hr_valor = round(indicador_cod['mitjana'], 2)
 
             if indicador_cod['stddev'] == None:
                 hr_valor_desv = "---"
@@ -1751,7 +1768,7 @@ def crearArbolMedia(dades):
             if indicador_cod['mitjana'] == None:
                 ie_valor = "---"
             else:
-                ie_valor = round(indicador_cod['mitjana'])
+                ie_valor = round(indicador_cod['mitjana'], 2)
 
             if indicador_cod['stddev'] == None:
                 ie_valor_desv = "---"
@@ -1762,7 +1779,7 @@ def crearArbolMedia(dades):
             if indicador_cod['mitjana'] == None:
                 ar_valor = "---"
             else:
-                ar_valor = round(indicador_cod['mitjana'])
+                ar_valor = round(indicador_cod['mitjana'], 2)
 
             if indicador_cod['stddev'] == None:
                 ar_valor_desv = "---"
@@ -1773,7 +1790,7 @@ def crearArbolMedia(dades):
             if indicador_cod['mitjana'] == None:
                 cf_valor = "---"
             else:
-                cf_valor = round(indicador_cod['mitjana'])
+                cf_valor = round(indicador_cod['mitjana'], 2)
 
             if indicador_cod['stddev'] == None:
                 cf_valor_desv = "---"
@@ -1784,7 +1801,7 @@ def crearArbolMedia(dades):
             if indicador_cod['mitjana'] == None:
                 eb_valor = "---"
             else:
-                eb_valor = round(indicador_cod['mitjana'])
+                eb_valor = round(indicador_cod['mitjana'], 2)
 
             if indicador_cod['stddev'] == None:
                 eb_valor_desv = "---"
@@ -1795,7 +1812,7 @@ def crearArbolMedia(dades):
             if indicador_cod['mitjana'] == None:
                 cn_valor = "---"
             else:
-                cn_valor = round(indicador_cod['mitjana'])
+                cn_valor = round(indicador_cod['mitjana'], 2)
 
             if indicador_cod['stddev'] == None:
                 cn_valor_desv = "---"
@@ -4551,16 +4568,16 @@ def valorRodalParcelaIFN(request):
 
         data = []
 
-        cp = {'ind': 'cp', 'ifn': cp_parIFN, 'rod': cp_rod}
-        ea = {'ind': 'ea', 'ifn': ea_parIFN, 'rod': ea_rod}
-        ce = {'ind': 'ce', 'ifn': ce_parIFN, 'rod': ce_rod}
-        ab = {'ind': 'ab', 'ifn': ab_parIFN, 'rod': ab_rod}
-        de = {'ind': 'de', 'ifn': de_parIFN, 'rod': de_rod}
-        ae = {'ind': 'ae', 'ifn': ae_parIFN, 'rod': ae_rod}
-        mp = {'ind': 'mp', 'ifn': mp_parIFN, 'rod': mp_rod}
-        pi = {'ind': 'pi', 'ifn': pi_parIFN, 'rod': pi_rod}
-        nm = {'ind': 'nm', 'ifn': nm_parIFN, 'rod': nm_rod}
-        sn = {'ind': 'sn', 'ifn': sn_parIFN, 'rod': sn_rod}
+        cp = {'ind': 'cp', 'ifn': cp_parIFN, 'rod': cp_rod, 'cordText': _('CP_cord')}
+        ea = {'ind': 'ea', 'ifn': ea_parIFN, 'rod': ea_rod, 'cordText': _('EA_cord')}
+        ce = {'ind': 'ce', 'ifn': ce_parIFN, 'rod': ce_rod, 'cordText': _('CE_cord')}
+        ab = {'ind': 'ab', 'ifn': ab_parIFN, 'rod': ab_rod, 'cordText': _('AB_cord')}
+        de = {'ind': 'de', 'ifn': de_parIFN, 'rod': de_rod, 'cordText': _('DE_cord')}
+        ae = {'ind': 'ae', 'ifn': ae_parIFN, 'rod': ae_rod, 'cordText': _('AE_cord')}
+        mp = {'ind': 'mp', 'ifn': mp_parIFN, 'rod': mp_rod, 'cordText': _('MP_cord')}
+        pi = {'ind': 'pi', 'ifn': pi_parIFN, 'rod': pi_rod, 'cordText': _('PI_cord')}
+        nm = {'ind': 'nm', 'ifn': nm_parIFN, 'rod': nm_rod, 'cordText': _('NM_cord')}
+        sn = {'ind': 'sn', 'ifn': sn_parIFN, 'rod': sn_rod, 'cordText': _('SN_cord')}
 
         data.append({"cp": cp})
         data.append({"ea": ea})
@@ -4708,12 +4725,12 @@ def calcValMetIFN(parIFN_2, rod):
 
     data2 = []
 
-    data2.append({'ind': 'ab', "interv": abInterv, "valores": abValoresMetricos, "rodalValue": ab_rod_2, "intervEje": abInterv[0]['intervEje']})
-    data2.append({'ind': 'ea', "interv": eaInterv, "valores": eaValoresMetricos, "rodalValue": ea_rod_2, "intervEje": eaInterv[0]['intervEje']})
-    data2.append({'ind': 'de', "interv": deInterv, "valores": deValoresMetricos, "rodalValue": de_rod_2, "intervEje": deInterv[0]['intervEje']})
-    data2.append({'ind': 'ae', "interv": aeInterv, "valores": aeValoresMetricos, "rodalValue": ae_rod_2, "intervEje": aeInterv[0]['intervEje']})
-    data2.append({'ind': 'mp', "interv": mpInterv, "valores": mpValoresMetricos, "rodalValue": mp_rod_2, "intervEje": mpInterv[0]['intervEje']})
-    data2.append({'ind': 'pi', "interv": piInterv, "valores": piValoresMetricos, "rodalValue": pi_rod_2, "intervEje": piInterv[0]['intervEje']})
+    data2.append({'ind': 'ab', "interv": abInterv, "valores": abValoresMetricos, "rodalValue": ab_rod_2, "intervEje": abInterv[0]['intervEje'], 'cordText': _('AB_met_cord')})
+    data2.append({'ind': 'ea', "interv": eaInterv, "valores": eaValoresMetricos, "rodalValue": ea_rod_2, "intervEje": eaInterv[0]['intervEje'], 'cordText': _('EA_met_cord')})
+    data2.append({'ind': 'de', "interv": deInterv, "valores": deValoresMetricos, "rodalValue": de_rod_2, "intervEje": deInterv[0]['intervEje'], 'cordText': _('DE_met_cord')})
+    data2.append({'ind': 'ae', "interv": aeInterv, "valores": aeValoresMetricos, "rodalValue": ae_rod_2, "intervEje": aeInterv[0]['intervEje'], 'cordText': _('AE_met_cord')})
+    data2.append({'ind': 'mp', "interv": mpInterv, "valores": mpValoresMetricos, "rodalValue": mp_rod_2, "intervEje": mpInterv[0]['intervEje'], 'cordText': _('MP_met_cord')})
+    data2.append({'ind': 'pi', "interv": piInterv, "valores": piValoresMetricos, "rodalValue": pi_rod_2, "intervEje": piInterv[0]['intervEje'], 'cordText': _('PI_met_cord')})
 
     return data2
 

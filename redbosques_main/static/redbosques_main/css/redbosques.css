@@ -785,7 +785,7 @@ td.errorAlert{
 .graficTable{
     display: table;
     border: 1px solid gray;
-    margin-top: 2.5%;
+    margin: auto;
 }
 
 .graficTable td, .graficTable tr, .graficTable th{
@@ -836,7 +836,7 @@ td.errorAlert{
 }
 
 .ifnGraphCont{
-    height: 220px;
+    /*height: 220px;*/
 }
 
 .graphTitles{

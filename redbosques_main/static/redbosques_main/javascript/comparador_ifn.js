@@ -58,8 +58,9 @@ function load_rodal_ref(valRod, valComAut_Comp, valRegBio_Comp, idHabitat, idCom
             resetUITable();
         }else{
             resetUITable();
-            $('.graphsTree').addClass("asyncload-big");
-
+            //$('.graphsTree').addClass("asyncload-big");
+            $('.ifnGraphCont').css("height", "220px");
+            $('.spinner').addClass("asyncload-big");
             /*if(valRod == rodPrincip){
                 alert("La selección de rodales no es correcta");
                 $("#selector_rodales_comp").val('null');
@@ -78,11 +79,13 @@ function load_rodal_ref(valRod, valComAut_Comp, valRegBio_Comp, idHabitat, idCom
                     test = data.data;
                     valMet = data.valoresMetricos;
 
+
+
                     graficaTEST(test);
                     graficaValoresMetricos(valMet);
 
-
-                    $('.graphsTree').removeClass("asyncload-big");
+                    //$('.graphsTree').removeClass("asyncload-big");
+                    $('.spinner').removeClass("asyncload-big");
                 },
                 error: function(jqXHR, textStatus, errorThrown){
                     console.log(errorThrown);
@@ -109,6 +112,9 @@ var graficaTEST = function(test){
         ind = test[i][Object.keys(test[i])[0]]['ind'];
         parcelas = test[i][Object.keys(test[i])[0]]['ifn'];
         rodal = test[i][Object.keys(test[i])[0]]['rod'];
+        textCord = test[i][Object.keys(test[i])[0]]['cordText'];
+
+
 
         if (!parcelas['0.0']){ parcelas['0.0'] = 0; }
         if (!parcelas['1.0']){ parcelas['1.0'] = 0; }
@@ -134,11 +140,11 @@ var graficaTEST = function(test){
                 ["9", parcelas['9.0']],
                 ["10", parcelas['10.0']]
         ];
-        grafconst(ind, nombre, rodal);
+        grafconst(ind, nombre, rodal, textCord);
     }
 }
 
-var grafconst = function(ind, parcelas, rodal){
+var grafconst = function(ind, parcelas, rodal, textCord){
 
     indGrafica = 'grafica_' + ind;
 
@@ -153,7 +159,7 @@ var grafconst = function(ind, parcelas, rodal){
         },
         xAxis: {
             title: {
-                text: 'Puntuación'
+                text: textCord
             },
             type: 'category',
             labels: {
@@ -164,7 +170,7 @@ var grafconst = function(ind, parcelas, rodal){
             },
             plotLines: [{
                 color: '#339933',
-                width: 2,
+                width: 4,
                 value: Object.keys(rodal),
                 zIndex: 5,
                 events: {
@@ -183,7 +189,7 @@ var grafconst = function(ind, parcelas, rodal){
         yAxis: {
             min: 0,
             title: {
-                text: 'Cantidad'
+                text: 'nº de parcelas'
             }
         },
         plotOptions: {
@@ -214,6 +220,7 @@ var graficaValoresMetricos = function(valMet){
         indGrafica = 'grafica_' + valMet[i]['ind'] + '_valMet';
         valores = valMet[i]['valores'];
         rodal = Object.keys(valMet[i]['rodalValue'])[0]
+        textCord = valMet[i]["cordText"];
 
         if (!valores['0.0']){ valores['0.0'] = 0; }
         if (!valores['1.0']){ valores['1.0'] = 0; }
@@ -251,7 +258,7 @@ var graficaValoresMetricos = function(valMet){
             },
             xAxis: {
                 title: {
-                    text: 'Puntuación'
+                    text: textCord
                 },
                 type: 'category',
                 labels: {
@@ -263,8 +270,7 @@ var graficaValoresMetricos = function(valMet){
                 categories: valMet[i]['intervEje'],
                 plotLines: [{
                     color: '#339933',
-                    width: 2,
-                    value: 5,
+                    width: 4,
                     value: rodal,
                     zIndex: 5,
                     events: {
@@ -283,7 +289,7 @@ var graficaValoresMetricos = function(valMet){
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Cantidad'
+                    text: 'nº de parcelas'
                 }
             },
             plotOptions: {

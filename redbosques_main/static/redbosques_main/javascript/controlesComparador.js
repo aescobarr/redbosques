@@ -255,7 +255,7 @@ function resetUIRodalComp(){
     $('#selector_rodales_comp').empty();
     //$('#selector_rodales_comp').append('<option value="null" selected="selected">Rodal / Conjunto de rodales a comparar</option>');
     $('#selector_rodales_comp').append('<option value="null" selected="selected">----------</option>');
-    $('#selector_rodales_comp').append('<option value="medRod">Todos los rodales</option>');
+    $('#selector_rodales_comp').append('<option id="todosrodales" value="medRod">Todos los rodales</option>');
     //$('.bgColorRod').html('');
 }
 
@@ -434,8 +434,9 @@ $('#selector_rodales_comp').change(function(){
     var idRegBiogeo = $('#selector_RegBio_Comp').val();
     var valRod = $('#selector_rodales_comp option:selected').val();
     var rodPrincip = $('#selector_rodales option:selected').val();
+    var rodRef = $("input[name='boolRodRef']:checked").val();
 
-    load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod, rodPrincip);
+    load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod, rodPrincip, rodRef);
 });
 
 var getRodRefVal = function(){

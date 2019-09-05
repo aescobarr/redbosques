@@ -771,7 +771,9 @@ function rodalData(valorRodal, valRodComp){
             var idComAut = $('#selector_ComAut_Comp').val();
             var idRegBiogeo = $('#selector_RegBio_Comp').val();
             var valRod = $('#selector_rodales_comp option:selected').val();
-            load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod, rodPrincip);
+            var rodRef = $("input[name='boolRodRef']:checked").val();
+
+            load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod, rodPrincip, rodRef);
         }
 
         $('.data-table').addClass("asyncload-big");
@@ -837,7 +839,7 @@ function rodalData(valorRodal, valRodComp){
     }
 };
 
-function load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod, rodPrincip){
+function load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod, rodPrincip, rodRef){
     console.log(valRod);
     url = _rodal_ref_list;
     var params = [];
@@ -855,6 +857,10 @@ function load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod, rodPrincip){
     }
     if(rodPrincip != "null"){
         params.push('rodPrincip='+escape(rodPrincip));
+    }
+
+    if(rodRef != "null"){
+        params.push('rodRef='+escape(rodRef));
     }
 
     url = url + "?" + params.join('&');
@@ -940,6 +946,21 @@ function load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod, rodPrincip){
         }
     }
 };
+
+
+$('.boolRodRef').change(function(){
+
+    var rodRef = $("input[name='boolRodRef']:checked").val();
+
+    if (rodRef == 'True'){
+        console.log("true");
+        $('#todosrodales').text("Todos los rodales de referencia");
+    }else if(rodRef == 'False'){
+        $('#todosrodales').text("Todos los rodales");
+    }
+
+
+});
 
 /******************************** Grafiques ***********************************/
 function grafica1(){

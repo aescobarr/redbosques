@@ -97,7 +97,7 @@
                             <select id="selector_rodales_comp" class="form-control selector_rodal_Comp inputsFiltComp">
                             <!--<option value="null" selected="selected">Seleccione rodal/conjunto de rodales a comparar</option>-->
                             <option value="null" selected="selected">----------</option>
-                            <option value="medRod">Todos los rodales</option>
+                            <option id="todosrodales" value="medRod">Todos los rodales</option>
                             {% for rodal in listaRodalesComp %}
                                 <option class="rodal" value="{{ rodal.id_rodal }}">
                                     {% if rodal.rodalref %}
@@ -195,7 +195,7 @@
 
                     <!--         Naturalidad                       -->
                         <tr class="lv1 lv1Nat">
-                            <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans "nm" %}</span></th>
+                            <th id="popupNM" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans "nm" %}</span></th>
                             <td id="_naturalidad" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
@@ -788,12 +788,12 @@
 <div class="comp-graficas" style="display: none">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-offset-2 col-lg-8 grafica1Container">
+            <div class="grafica1Container">
 
         <table class="graficTable">
             <tbody>
                 <tr>
-                    <th rowspan="2">Ejes</th>
+                    <th rowspan="2">Ambitos</th>
                     <th colspan="3">Criterios</th>
                 </tr>
                 <tr>
