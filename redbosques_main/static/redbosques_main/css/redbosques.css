@@ -833,15 +833,12 @@ td.errorAlert{
     min-width: 310px;
     max-width: 435px;
     margin: 4%;
+    margin-bottom: 2%;
+    margin-top: 1%;
 }
 
 .ifnGraphCont{
     /*height: 220px;*/
-}
-
-.graphTitles{
-    border-bottom: 1px solid gray;
-    margin-bottom: 20px;
 }
 
 .banner{
@@ -856,3 +853,4 @@ td.errorAlert{
     font-size: 16px;
     text-align: justify;
 }
+

@@ -59,7 +59,7 @@ function load_rodal_ref(valRod, valComAut_Comp, valRegBio_Comp, idHabitat, idCom
         }else{
             resetUITable();
             //$('.graphsTree').addClass("asyncload-big");
-            $('.ifnGraphCont').css("height", "220px");
+            $('.ifnGraphCont').css("height", "315px");
             $('.spinner').addClass("asyncload-big");
             /*if(valRod == rodPrincip){
                 alert("La selección de rodales no es correcta");
@@ -111,10 +111,12 @@ var graficaTEST = function(test){
     for(i=0; i<test.length; i++){
         ind = test[i][Object.keys(test[i])[0]]['ind'];
         parcelas = test[i][Object.keys(test[i])[0]]['ifn'];
-        rodal = test[i][Object.keys(test[i])[0]]['rod'];
+        r = parseInt(Object.keys(test[i][Object.keys(test[i])[0]]['rod']));
         textCord = test[i][Object.keys(test[i])[0]]['cordText'];
 
-
+        console.log(r);
+        rodal = [r, 0];
+        console.log(rodal);
 
         if (!parcelas['0.0']){ parcelas['0.0'] = 0; }
         if (!parcelas['1.0']){ parcelas['1.0'] = 0; }
@@ -151,7 +153,7 @@ var grafconst = function(ind, parcelas, rodal, textCord){
     Highcharts.chart(indGrafica, {
         chart: {
             type: 'column',
-            height: 150,
+            height: 250,
         },
         exporting: { enabled: false },
         title: {
@@ -168,7 +170,7 @@ var grafconst = function(ind, parcelas, rodal, textCord){
                     fontFamily: 'Verdana, sans-serif'
                 }
             },
-            plotLines: [{
+            /*plotLines: [{
                 color: '#339933',
                 width: 4,
                 value: Object.keys(rodal),
@@ -184,7 +186,7 @@ var grafconst = function(ind, parcelas, rodal, textCord){
                         //alert("out");
                     }
                 }
-            }]
+            }]*/
         },
         yAxis: {
             min: 0,
@@ -209,7 +211,16 @@ var grafconst = function(ind, parcelas, rodal, textCord){
             name: ' ',
             data: parcelas,
             color: '#FF6600'
-        }]
+        },{
+        type: 'spline',
+        name: 'Average',
+        data: [rodal],
+        marker: {
+            lineWidth: 7,
+            lineColor: 'green',
+            fillColor: 'green'
+        }
+    }]
     });
 
 }
@@ -219,8 +230,12 @@ var graficaValoresMetricos = function(valMet){
     for(i=0; i<valMet.length; i++){
         indGrafica = 'grafica_' + valMet[i]['ind'] + '_valMet';
         valores = valMet[i]['valores'];
-        rodal = Object.keys(valMet[i]['rodalValue'])[0]
+        r = parseInt(Object.keys(valMet[i]['rodalValue'])[0]);
         textCord = valMet[i]["cordText"];
+        rodal = [r, 0];
+
+
+
 
         if (!valores['0.0']){ valores['0.0'] = 0; }
         if (!valores['1.0']){ valores['1.0'] = 0; }
@@ -250,7 +265,7 @@ var graficaValoresMetricos = function(valMet){
         Highcharts.chart(indGrafica, {
             chart: {
                 type: 'column',
-                height: 150,
+                height: 250,
             },
             exporting: { enabled: false },
             title: {
@@ -268,7 +283,7 @@ var graficaValoresMetricos = function(valMet){
                     }
                 },
                 categories: valMet[i]['intervEje'],
-                plotLines: [{
+                /*plotLines: [{
                     color: '#339933',
                     width: 4,
                     value: rodal,
@@ -284,7 +299,7 @@ var graficaValoresMetricos = function(valMet){
                             //alert("out");
                         }
                     }
-                }]
+                }]*/
             },
             yAxis: {
                 min: 0,
@@ -309,6 +324,15 @@ var graficaValoresMetricos = function(valMet){
                 name: ' ',
                 data: valores,
                 color: '#FF6600'
+            },{
+                type: 'spline',
+                name: 'Average',
+                data: [rodal],
+                marker: {
+                    lineWidth: 7,
+                    lineColor: 'green',
+                    fillColor: 'green'
+                }
             }]
         });
     }

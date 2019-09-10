@@ -88,7 +88,7 @@
                 <!-- **************************************************************************** -->
                 <!-- ************************** Rodales de comparación ************************** -->
                 <div class="col-lg-offset-1 col-lg-6">
-                    <label class="green-font">Parcelas IFN <i class="fas fa-circle colLeyRodComp"></i></label>
+                    <label class="green-font">Parcelas IFN <i class="fa fa-chart-bar colLeyRodComp"></i></label>
                     <br>
                     <select id="selector_ComAut_Comp" class="form-control selector_ComAut inputsFiltComp filtreParcela" name="ComunidadAutonoma">
                         <option value="null" selected="selected">Seleccione Comunidad autónoma</option>
@@ -118,13 +118,9 @@
 
 <div class="container graphsTree">
     <div class="row">
-        <div class="col-lg-12">
-            <h3 style="text-decoration: underline;">Ámbito</h3>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-lg-12 ifnGraphCont spinner">
             <div class="lv1 lv1Nat">
+                <h4 style="text-decoration: underline;">Ámbito</h4>
                 <span class="green-font"><i class="fas fa-caret-right fa-lg"></i>{% trans "nm" %}</span>
                 <div id="grafica_nm" class="ifnBarsGraph"></div>
             </div>
@@ -132,159 +128,107 @@
     </div>
     <div class="lv2 lv2Nat" style="display: none">
         <div class="row">
-            <div class="col-lg-offset-1 col-lg-11">
-                <h3 style="text-decoration: underline;">Criterio</h3>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-lg-offset-1 col-lg-11 ifnGraphCont">
+                <h4 style="text-decoration: underline;">Criterio</h4>
                 <span class="green-font"><i class="fas fa-caret-right fa-lg"></i>{% trans 'cp' %}</span>
                 <div id="grafica_cp" class="ifnBarsGraph"></div>
             </div>
         </div>
     </div>
-    <div class="lv3 lv3Nat" style="display: none">
-        <div class="row">
-            <div class="col-lg-offset-2 col-lg-5">
-                <h3 style="text-decoration: underline;">Indicador</h3>
+
+    <div class="row lv3 lv3Nat" style="display: none">
+        <div class="col-lg-offset-2 col-lg-5 ifnGraphCont">
+            <div class="graphTitles">
+                <h4 style="text-decoration: underline;">Indicador</h4>
             </div>
-            <div class="col-lg-5">
-                <h3 style="text-decoration: underline;">Indicador - Valores metricos</h3>
-            </div>
+            <span>{% trans 'ea' %}</span>
+            <div id="grafica_ea" class="ifnBarsGraph"></div>
         </div>
-        <div class="row ">
-            <div class="col-lg-offset-2 col-lg-5 ifnGraphCont">
-                <span>{% trans 'ea' %}</span>
-                <div id="grafica_ea" class="ifnBarsGraph"></div>
+        <div class="col-lg-5 ifnGraphCont">
+            <div class="graphTitles">
+                <h4 style="text-decoration: underline;">Indicador - Valores metricos</h4>
             </div>
-            <div class="col-lg-5 ifnGraphCont">
-                <span>{% trans 'ea' %} - Valores Métricos</span>
-                <div id="grafica_ea_valMet" class="ifnBarsGraph"></div>
-            </div>
+            <span>{% trans 'ea' %} - Valores Métricos</span>
+            <div id="grafica_ea_valMet" class="ifnBarsGraph"></div>
         </div>
     </div>
-    <div class="lv2 lv2Nat" style="display: none">
-        <div class="row">
-            <div class="col-lg-offset-1 col-lg-11">
-                <h3 style="text-decoration: underline;">Criterio</h3>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-offset-1 col-lg-11 ifnGraphCont">
-                <span class="green-font"><i class="fas fa-caret-right fa-lg"></i>{% trans 'ce' %}</span>
-                <div id="grafica_ce" class="ifnBarsGraph"></div>
-            </div>
+
+    <div class="row lv2 lv2Nat" style="display: none">
+        <div class="col-lg-offset-1 col-lg-11 ifnGraphCont">
+            <h4 style="text-decoration: underline;">Criterio</h4>
+            <span class="green-font"><i class="fas fa-caret-right fa-lg"></i>{% trans 'ce' %}</span>
+            <div id="grafica_ce" class="ifnBarsGraph"></div>
         </div>
     </div>
-    <div class="lv3 lv3Nat" style="display: none">
-        <div class="row">
-            <div class="col-lg-offset-2 col-lg-5">
-                <h3 style="text-decoration: underline;">Indicador</h3>
-            </div>
-            <div class="col-lg-5">
-                <h3 style="text-decoration: underline;">Indicador - Valores metricos</h3>
-            </div>
+    <div class="row lv3 lv3Nat" style="display: none">
+        <div class="col-lg-offset-2 col-lg-5 ifnGraphCont">
+            <h4 style="text-decoration: underline;">Indicador</h4>
+            <span>{% trans 'ab' %}</span>
+            <div id="grafica_ab" class="ifnBarsGraph"></div>
         </div>
-        <div class="row">
-            <div class="col-lg-offset-2 col-lg-5 ifnGraphCont">
-                <span>{% trans 'ab' %}</span>
-                <div id="grafica_ab" class="ifnBarsGraph"></div>
-            </div>
-            <div class="col-lg-5 ifnGraphCont">
-                <span>{% trans 'ab' %} - Valores métricos</span>
-                <div id="grafica_ab_valMet" class="ifnBarsGraph"></div>
-            </div>
+        <div class="col-lg-5 ifnGraphCont">
+            <h4 style="text-decoration: underline;">Indicador - Valores metricos</h4>
+            <span>{% trans 'ab' %} - Valores métricos</span>
+            <div id="grafica_ab_valMet" class="ifnBarsGraph"></div>
         </div>
     </div>
     <div>
-        <div class="lv3 lv3Nat" style="display: none">
-            <div class="row">
-                <div class="col-lg-offset-2 col-lg-5">
-                    <h3 style="text-decoration: underline;">Indicador</h3>
-                </div>
-                <div class="col-lg-5">
-                    <h3 style="text-decoration: underline;">Indicador - Valores metricos</h3>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-offset-2 col-lg-5 ifnGraphCont">
-                    <span>{% trans 'de' %}</span>
-                    <div id="grafica_de" class="ifnBarsGraph"></div>
-                </div>
-                <div class="col-lg-5 ifnGraphCont">
-                    <span>{% trans 'de' %} - Valores métricos</span>
-                    <div id="grafica_de_valMet" class="ifnBarsGraph"></div>
-                </div>
-            </div>
+    <div class="row lv3 lv3Nat" style="display: none">
+        <div class="col-lg-offset-2 col-lg-5 ifnGraphCont">
+            <h4 style="text-decoration: underline;">Indicador</h4>
+            <span>{% trans 'de' %}</span>
+            <div id="grafica_de" class="ifnBarsGraph"></div>
         </div>
+        <div class="col-lg-5 ifnGraphCont">
+            <h4 style="text-decoration: underline;">Indicador - Valores metricos</h4>
+            <span>{% trans 'de' %} - Valores métricos</span>
+            <div id="grafica_de_valMet" class="ifnBarsGraph"></div>
+        </div>
+    </div>
     </div>
     <div class="lv2 lv2Nat" style="display: none">
         <div class="row">
-            <div class="col-lg-offset-1 col-lg-5">
-                <h3 style="text-decoration: underline;">Criterio</h3>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-lg-offset-1 col-lg-11 ifnGraphCont">
+                <h4 style="text-decoration: underline;">Criterio</h4>
                 <span class="green-font"><i class="fas fa-caret-right fa-lg"></i>{% trans 'sn' %}</span>
                 <div id="grafica_sn" class="ifnBarsGraph"></div>
             </div>
         </div>
     </div>
-    <div class="lv3 lv3Nat" style="display: none">
-        <div class="row">
-            <div class="col-lg-offset-2 col-lg-5">
-                <h3 style="text-decoration: underline;">Indicador</h3>
-            </div>
-            <div class="col-lg-5">
-                <h3 style="text-decoration: underline;">Indicador - Valores metricos</h3>
-            </div>
-        </div>
+    <div class="row lv3 lv3Nat" style="display: none">
         <div class="col-lg-offset-2 col-lg-5 ifnGraphCont">
+            <h4 style="text-decoration: underline;">Indicador</h4>
             <span>{% trans 'ae' %}</span>
             <div id="grafica_ae" class="ifnBarsGraph"></div>
         </div>
         <div class="col-lg-5 ifnGraphCont">
+            <h4 style="text-decoration: underline;">Indicador - Valores metricos</h4>
             <span>{% trans 'ae' %} - Valores métricos</span>
             <div id="grafica_ae_valMet" class="ifnBarsGraph" ></div>
         </div>
     </div>
-    <div class="lv3 lv3Nat" style="display: none">
-        <div class="row">
-            <div class="col-lg-offset-2 col-lg-5">
-                <h3 style="text-decoration: underline;">Indicador</h3>
-            </div>
-            <div class="col-lg-5">
-                <h3 style="text-decoration: underline;">Indicador - Valores metricos</h3>
-            </div>
+    <div class="row lv3 lv3Nat" style="display: none">
+        <div class="col-lg-offset-2 col-lg-5 ifnGraphCont">
+            <h4 style="text-decoration: underline;">Indicador</h4>
+            <span>{% trans 'mm' %}</span>
+            <div id="grafica_mp" class="ifnBarsGraph"></div>
         </div>
-        <div class="row">
-            <div class="col-lg-offset-2 col-lg-5 ifnGraphCont">
-                <span>{% trans 'mm' %}</span>
-                <div id="grafica_mp" class="ifnBarsGraph"></div>
-            </div>
-            <div class="col-lg-5 ifnGraphCont">
-                <span>{% trans 'mm' %} - Valores métricos</span>
-                <div id="grafica_mp_valMet" class="ifnBarsGraph"></div>
-            </div>
+        <div class="col-lg-5 ifnGraphCont">
+            <h4 style="text-decoration: underline;">Indicador - Valores metricos</h4>
+            <span>{% trans 'mm' %} - Valores métricos</span>
+            <div id="grafica_mp_valMet" class="ifnBarsGraph"></div>
         </div>
-        <div class="row">
-            <div class="col-lg-offset-2 col-lg-5">
-                <h3 style="text-decoration: underline;">Indicador</h3>
-            </div>
-            <div class="col-lg-5">
-                <h3 style="text-decoration: underline;">Indicador - Valores metricos</h3>
-            </div>
+    </div>
+    <div class="row lv3 lv3Nat" style="display: none">
+        <div class="col-lg-offset-2 col-lg-5 ifnGraphCont">
+            <h4 style="text-decoration: underline;">Indicador</h4>
+            <span>{% trans 'pm' %}</span>
+            <div id="grafica_pi" class="ifnBarsGraph"></div>
         </div>
-        <div class="row">
-            <div class="col-lg-offset-2 col-lg-5 ifnGraphCont">
-                <span>{% trans 'pm' %}</span>
-                <div id="grafica_pi" class="ifnBarsGraph"></div>
-            </div>
-            <div class="col-lg-5 ifnGraphCont">
-                {% trans 'pm' %}<span> - Valores métricos</span>
-                <div id="grafica_pi_valMet" class="ifnBarsGraph"></div>
-            </div>
+        <div class="col-lg-5 ifnGraphCont">
+            <h4 style="text-decoration: underline;">Indicador - Valores metricos</h4>
+            {% trans 'pm' %}<span> - Valores métricos</span>
+            <div id="grafica_pi_valMet" class="ifnBarsGraph"></div>
         </div>
     </div>
 </div>
