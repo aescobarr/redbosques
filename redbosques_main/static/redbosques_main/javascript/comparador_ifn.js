@@ -198,7 +198,8 @@ var grafconst = function(ind, parcelas, rodal, textCord){
            series: {
              groupPadding: 0,
              pointPadding: 0.1,
-             borderWidth: 0
+             borderWidth: 0,
+             minPointLength: 3
            }
         },
         legend: {
@@ -311,15 +312,16 @@ var graficaValoresMetricos = function(valMet){
                series: {
                  groupPadding: 0,
                  pointPadding: 0.1,
-                 borderWidth: 0
+                 borderWidth: 0,
+                 minPointLength: 3
                }
             },
             legend: {
                 enabled: false
             },
-            /*tooltip: {
+            tooltip: {
                 pointFormat: 'Número de parcelas: <b>{point.y}</b>'
-            },*/
+            },
             series: [{
                 name: ' ',
                 data: valores,
@@ -387,3 +389,21 @@ $('.showAll').on("click", function(){
 $('.hideAll').on("click", function(){
     $('.lv2Nat').hide();
 });
+
+
+/*$(".popupInfo").click(function(){
+
+    $("#instruc").dialog({
+      modal: true,
+      buttons: {
+        Cerrar: function() {
+          $( this ).dialog( "close" );
+        }
+      },
+      draggable: false,
+      classes: {
+            "ui-dialog": "popupInstrucciones"
+      }
+    });
+
+});*/

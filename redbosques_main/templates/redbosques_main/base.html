@@ -71,7 +71,15 @@
                     <ul class="nav navbar-nav" style="text-align:center;">
                         <li class="menu-options active"><a href="/redbosques">INICIO<span class="sr-only">(current)</span></a></li>
                         <li class="menu-options active"><a href="{% url 'menu' %}">MENÚ PRINCIPAL<span class="sr-only">(current)</span></a></li>
-                        <li class="menu-options active"><a href="{% url 'herramientas' %}">MAPA<span class="sr-only">(current)</span></a></li>
+                        <li class="menu-options active dropdown">
+                            <a href="javascript:void(0)" class="dropbtn">MAPAS
+                                <span class="sr-only">(current)</span>
+                            </a>
+                            <div class="dropdown-content">
+                                <a href="{% url 'herramientas' %}#mapaFase1">Fase 1: Prospección</a>
+                                <a href="{% url 'herramientas' %}#mapaFase2">Fase 2: Inspección</a>
+                            </div>
+                        </li>
                         <li class="menu-options active dropdown">
                             <a href="javascript:void(0)" class="dropbtn">COMPARADORES
                                 <span class="sr-only">(current)</span>
