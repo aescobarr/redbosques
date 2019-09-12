@@ -154,15 +154,12 @@ var grafconst = function(ind, parcelas, rodal, textCord){
         chart: {
             type: 'column',
             height: 250,
+
         },
         exporting: { enabled: false },
-        title: {
-            text: ' '
-        },
-        xAxis: {
-            title: {
-                text: textCord
-            },
+        title: { text: ' ' },
+        xAxis: [{
+            title: { text: textCord },
             type: 'category',
             labels: {
                 style: {
@@ -170,38 +167,36 @@ var grafconst = function(ind, parcelas, rodal, textCord){
                     fontFamily: 'Verdana, sans-serif'
                 }
             },
-            /*plotLines: [{
-                color: '#339933',
-                width: 4,
-                value: Object.keys(rodal),
-                zIndex: 5,
-                events: {
-                    click: function () {
-                        //alert("HOLA");
-                    },
-                    mouseover: function () {
-                        //alert("in");
-                    },
-                    mouseout: function () {
-                        //alert("out");
-                    }
-                }
-            }]*/
-        },
-        yAxis: {
+        },{
+            title: { text: textCord + ' del rodal' },
+            alignTicks: true,
+            opposite: true,
+            tickAmount: 11,
+            /*tickInterval: 1*/
             min: 0,
-            title: {
-                text: 'nº de parcelas'
-            }
-        },
-        plotOptions: {
+            max: 10
+
+        }],
+        yAxis: [{
+            title: { text: 'nº de parcelas' },
+            min: 0
+        },{
+            title: { text: 'Histogram' },
+            opposite: true,
+            min: 0,
+            max: 10,
+            reversed: true,
+            visible: false
+        }
+        ],
+        /*plotOptions: {
            series: {
              groupPadding: 0,
              pointPadding: 0.1,
              borderWidth: 0,
              minPointLength: 3
            }
-        },
+        },*/
         legend: {
             enabled: false
         },
@@ -211,17 +206,23 @@ var grafconst = function(ind, parcelas, rodal, textCord){
         series: [{
             name: ' ',
             data: parcelas,
-            color: '#FF6600'
+            color: '#FF6600',
+            groupPadding: 0,
+            pointPadding: 0.1,
+            borderWidth: 0,
+            minPointLength: 3
         },{
-        type: 'spline',
-        name: 'Average',
-        data: [rodal],
-        marker: {
-            lineWidth: 7,
-            lineColor: 'green',
-            fillColor: 'green'
-        }
-    }]
+            name: 'Histogram',
+            type: 'scatter',
+            data: [rodal],
+            xAxis: 1,
+            yAxis: 1,
+            zIndex: -1,
+            marker: {
+                radius: 6,
+                fillColor: 'green'
+            }
+        }]
     });
 
 }
