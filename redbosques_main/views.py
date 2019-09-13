@@ -4493,14 +4493,24 @@ def valorRodalParcelaIFN(request):
 
 
 
-        if comAut != None and regBiogeo != None:
+        '''if comAut != None and regBiogeo != None:
             rod = RodalValorres.objects.filter(id=cordRod).filter(comautonom_cod=comAut).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
         elif comAut != None and regBiogeo == None:
             rod = RodalValorres.objects.filter(id=cordRod).filter(comautonom_cod=comAut).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
         elif comAut == None and regBiogeo != None:
             rod = RodalValorres.objects.filter(id=cordRod).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
         elif comAut == None and regBiogeo == None:
-            rod = RodalValorres.objects.filter(id=cordRod).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+            rod = RodalValorres.objects.filter(id=cordRod).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')'''
+
+        if comAut != None and regBiogeo != None:
+            rod = RodalValorres2.objects.filter(id_rodal=cordRod).filter(comautonom_cod=comAut).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+        elif comAut != None and regBiogeo == None:
+            rod = RodalValorres2.objects.filter(id_rodal=cordRod).filter(comautonom_cod=comAut).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+        elif comAut == None and regBiogeo != None:
+            rod = RodalValorres2.objects.filter(id_rodal=cordRod).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+        elif comAut == None and regBiogeo == None:
+            rod = RodalValorres2.objects.filter(id_rodal=cordRod).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+
 
         for p in parIFN:
             if p['indicador_cod'] == 'ab':

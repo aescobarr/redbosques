@@ -111,7 +111,7 @@ var graficaTEST = function(test){
     for(i=0; i<test.length; i++){
         ind = test[i][Object.keys(test[i])[0]]['ind'];
         parcelas = test[i][Object.keys(test[i])[0]]['ifn'];
-        r = parseInt(Object.keys(test[i][Object.keys(test[i])[0]]['rod']));
+        r = parseFloat(Object.keys(test[i][Object.keys(test[i])[0]]['rod']));
         textCord = test[i][Object.keys(test[i])[0]]['cordText'];
 
         console.log(r);
@@ -232,12 +232,10 @@ var graficaValoresMetricos = function(valMet){
     for(i=0; i<valMet.length; i++){
         indGrafica = 'grafica_' + valMet[i]['ind'] + '_valMet';
         valores = valMet[i]['valores'];
-        r = parseInt(Object.keys(valMet[i]['rodalValue'])[0]);
+        r = parseFloat(Object.keys(valMet[i]['rodalValue'])[0]);
+        //r = parseInt(Object.keys(valMet[i]['rodalValue'])[0]);
         textCord = valMet[i]["cordText"];
         rodal = [r, 0];
-
-
-
 
         if (!valores['0.0']){ valores['0.0'] = 0; }
         if (!valores['1.0']){ valores['1.0'] = 0; }
@@ -273,10 +271,8 @@ var graficaValoresMetricos = function(valMet){
             title: {
                 text: ' '
             },
-            xAxis: {
-                title: {
-                    text: textCord
-                },
+            xAxis: [{
+                title: {text: textCord},
                 type: 'category',
                 labels: {
                     style: {
@@ -285,38 +281,29 @@ var graficaValoresMetricos = function(valMet){
                     }
                 },
                 categories: valMet[i]['intervEje'],
-                /*plotLines: [{
-                    color: '#339933',
-                    width: 4,
-                    value: rodal,
-                    zIndex: 5,
-                    events: {
-                        click: function () {
-                            //alert("HOLA");
-                        },
-                        mouseover: function () {
-                            //alert("in");
-                        },
-                        mouseout: function () {
-                            //alert("out");
-                        }
-                    }
-                }]*/
-            },
-            yAxis: {
+            },{
+                title: { text: textCord + ' del rodal' },
+                type: 'category',
+                alignTicks: true,
+                opposite: true,
+                //tickAmount: 11,
+                /*tickInterval: 1*/
+                categories: valMet[i]['intervEje'],
+
+
+            }],
+            yAxis: [{
                 min: 0,
                 title: {
                     text: 'nº de parcelas'
                 }
-            },
-            plotOptions: {
-               series: {
-                 groupPadding: 0,
-                 pointPadding: 0.1,
-                 borderWidth: 0,
-                 minPointLength: 3
-               }
-            },
+            },{
+                title: { text: 'Histogram' },
+                opposite: true,
+                reversed: true,
+                visible: false
+            }],
+
             legend: {
                 enabled: false
             },
@@ -326,16 +313,23 @@ var graficaValoresMetricos = function(valMet){
             series: [{
                 name: ' ',
                 data: valores,
-                color: '#FF6600'
+                color: '#FF6600',
+                groupPadding: 0,
+                pointPadding: 0.1,
+                borderWidth: 0,
+                minPointLength: 3
             },{
-                type: 'spline',
-                name: 'Average',
+                name: 'Histogram',
+                type: 'scatter',
                 data: [rodal],
+                xAxis: 1,
+                yAxis: 1,
+                zIndex: -1,
                 marker: {
-                    lineWidth: 7,
-                    lineColor: 'green',
+                    radius: 6,
                     fillColor: 'green'
                 }
+
             }]
         });
     }
