@@ -82,7 +82,10 @@ function load_rodal_ref(valRod, valComAut_Comp, valRegBio_Comp, idHabitat, idCom
 
 
                     graficaTEST(test);
-                    graficaValoresMetricos(valMet);
+
+                    for(i=0; i<valMet.length; i++){
+                        graficaValoresMetricos(valMet[i]);
+                    }
 
                     //$('.graphsTree').removeClass("asyncload-big");
                     $('.spinner').removeClass("asyncload-big");
@@ -114,9 +117,7 @@ var graficaTEST = function(test){
         r = parseFloat(Object.keys(test[i][Object.keys(test[i])[0]]['rod']));
         textCord = test[i][Object.keys(test[i])[0]]['cordText'];
 
-        console.log(r);
         rodal = [r, 0];
-        console.log(rodal);
 
         if (!parcelas['0.0']){ parcelas['0.0'] = 0; }
         if (!parcelas['1.0']){ parcelas['1.0'] = 0; }
@@ -159,6 +160,7 @@ var grafconst = function(ind, parcelas, rodal, textCord){
         exporting: { enabled: false },
         title: { text: ' ' },
         xAxis: [{
+
             title: { text: textCord },
             type: 'category',
             labels: {
@@ -177,6 +179,7 @@ var grafconst = function(ind, parcelas, rodal, textCord){
             max: 10
 
         }],
+
         yAxis: [{
             title: { text: 'nº de parcelas' },
             min: 0
@@ -228,51 +231,63 @@ var grafconst = function(ind, parcelas, rodal, textCord){
 }
 
 
-var graficaValoresMetricos = function(valMet){
-    for(i=0; i<valMet.length; i++){
-        indGrafica = 'grafica_' + valMet[i]['ind'] + '_valMet';
-        valores = valMet[i]['valores'];
-        r = parseFloat(Object.keys(valMet[i]['rodalValue'])[0]);
-        //r = parseInt(Object.keys(valMet[i]['rodalValue'])[0]);
-        textCord = valMet[i]["cordText"];
-        rodal = [r, 0];
+var graficaValoresMetricos = function(valMetInd){
+    console.log(valMetInd);
+    var valMetInd = valMetInd;
+    //for(i=0; i<valMet.length; i++){
+    indGrafica = 'grafica_' + valMetInd['ind'] + '_valMet';
+    console.log(indGrafica)
+    valores = valMetInd['valores'];
+    r = parseFloat(Object.keys(valMetInd['rodalValue'])[0]);
+    //r = parseInt(Object.keys(valMetInd['rodalValue'])[0]);
+    textCord = valMetInd["cordText"];
+    rodal = [r, 0];
 
-        if (!valores['0.0']){ valores['0.0'] = 0; }
-        if (!valores['1.0']){ valores['1.0'] = 0; }
-        if (!valores['2.0']){ valores['2.0'] = 0; }
-        if (!valores['3.0']){ valores['3.0'] = 0; }
-        if (!valores['4.0']){ valores['4.0'] = 0; }
-        if (!valores['5.0']){ valores['5.0'] = 0; }
-        if (!valores['6.0']){ valores['6.0'] = 0; }
-        if (!valores['7.0']){ valores['7.0'] = 0; }
-        if (!valores['8.0']){ valores['8.0'] = 0; }
-        if (!valores['9.0']){ valores['9.0'] = 0; }
-        if (!valores['10.0']){ valores['10.0'] = 0; }
+    if (!valores['0.0']){ valores['0.0'] = 0; }
+    if (!valores['1.0']){ valores['1.0'] = 0; }
+    if (!valores['2.0']){ valores['2.0'] = 0; }
+    if (!valores['3.0']){ valores['3.0'] = 0; }
+    if (!valores['4.0']){ valores['4.0'] = 0; }
+    if (!valores['5.0']){ valores['5.0'] = 0; }
+    if (!valores['6.0']){ valores['6.0'] = 0; }
+    if (!valores['7.0']){ valores['7.0'] = 0; }
+    if (!valores['8.0']){ valores['8.0'] = 0; }
+    if (!valores['9.0']){ valores['9.0'] = 0; }
+    if (!valores['10.0']){ valores['10.0'] = 0; }
 
-        nombre = [["0", valores['0.0']],
-                ["1", valores['1.0']],
-                ["2", valores['2.0']],
-                ["3", valores['3.0']],
-                ["4", valores['4.0']],
-                ["5", valores['5.0']],
-                ["6", valores['6.0']],
-                ["7", valores['7.0']],
-                ["8", valores['8.0']],
-                ["9", valores['9.0']],
-                ["10", valores['10.0']]
-        ];
+    nombre = [["0", valores['0.0']],
+            ["1", valores['1.0']],
+            ["2", valores['2.0']],
+            ["3", valores['3.0']],
+            ["4", valores['4.0']],
+            ["5", valores['5.0']],
+            ["6", valores['6.0']],
+            ["7", valores['7.0']],
+            ["8", valores['8.0']],
+            ["9", valores['9.0']],
+            ["10", valores['10.0']]
+    ];
+
+    var tickintervals = Number((valMetInd['interv'][0]['interv'][0][1] - valMetInd['interv'][0]['interv'][0][0])/2).toFixed(1);
+    var tickintervalsRodal = parseFloat(tickintervals);
+    console.log(tickintervalsRodal);
+    var valMinEje = valMetInd['intervEje'][0][0];
+    var valMaxEje = valMetInd['intervEje'][10][0];
+    console.log(valMinEje);
+    console.log(valMaxEje);
+
 
         Highcharts.chart(indGrafica, {
             chart: {
                 type: 'column',
                 height: 250,
+
             },
             exporting: { enabled: false },
-            title: {
-                text: ' '
-            },
+            title: { text: ' ' },
             xAxis: [{
-                title: {text: textCord},
+
+                title: { text: textCord },
                 type: 'category',
                 labels: {
                     style: {
@@ -280,30 +295,36 @@ var graficaValoresMetricos = function(valMet){
                         fontFamily: 'Verdana, sans-serif'
                     }
                 },
-                categories: valMet[i]['intervEje'],
+                categories: valMetInd['intervEje'],
+                alignTicks: false,
+                startOnTick: true,
+                endOnTick: true
             },{
-                title: { text: textCord + ' del rodal' },
-                type: 'category',
-                alignTicks: true,
+                title: { text: ' del rodal' },
+                type: 'histogram',
+                alignTicks: false,
                 opposite: true,
-                //tickAmount: 11,
-                /*tickInterval: 1*/
-                categories: valMet[i]['intervEje'],
-
-
+                tickAmount: 11,
+                //tickInterval: valMinEje,
+                tickInterval: 2,
+                min: valMinEje,
+                max: valMaxEje,
+                startOnTick: true,
+                endOnTick: true
             }],
+
             yAxis: [{
-                min: 0,
-                title: {
-                    text: 'nº de parcelas'
-                }
+                title: { text: 'nº de parcelas' },
+                min: 0
             },{
                 title: { text: 'Histogram' },
                 opposite: true,
+                min: 0,
+                max: 10,
                 reversed: true,
                 visible: false
-            }],
-
+            }
+            ],
             legend: {
                 enabled: false
             },
@@ -312,16 +333,19 @@ var graficaValoresMetricos = function(valMet){
             },
             series: [{
                 name: ' ',
+                //type: 'histogram',
                 data: valores,
                 color: '#FF6600',
                 groupPadding: 0,
                 pointPadding: 0.1,
                 borderWidth: 0,
-                minPointLength: 3
+                minPointLength: 1,
+                //baseSeries: 's1',
             },{
                 name: 'Histogram',
                 type: 'scatter',
                 data: [rodal],
+                //id: 's1',
                 xAxis: 1,
                 yAxis: 1,
                 zIndex: -1,
@@ -329,10 +353,8 @@ var graficaValoresMetricos = function(valMet){
                     radius: 6,
                     fillColor: 'green'
                 }
-
             }]
         });
-    }
 }
 
 

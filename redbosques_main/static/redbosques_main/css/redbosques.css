@@ -134,6 +134,7 @@ ul.nav-pills li.active a {
 .subfield{
     padding-right: 5%;
     padding-left: 2.3%;
+    margin-bottom: 1.5%;
 }
 
 
@@ -427,7 +428,7 @@ body .mapa-selectores #mapid .leaflet-popup-content{
     margin-top: 15px;
 }
 
-.rodalSelected, .editRodalSelected, .rodalPDFselected, hr, h4{
+.rodalSelected, .editRodalSelected, .editRodalF1Selected, .rodalPDFselected, hr, h4{
     margin-left: 5px;
 }
 

@@ -6,22 +6,12 @@
 {% block main %}
 <div class="container-fluid subheader">
     <div class="row">
-        <div class="col-lg-12 subfield">
-
-                <h4>
-                    <a href="{% url 'index' %}">Inicio</a> /
-                    Menú
-                </h4>
-
-            <!--<h2>{{ herramientas }}</h2>-->
+        <div class="col-lg-8 col-lg-offset-2 subfield">
+            <h3 style="margin-top: 10px;">Administración de rodales</h3>
         </div>
     </div>
 </div>
-<div class="container menu-header">
-    <div class="row">
-        <h3>Menú principal</h3>
-    </div>
-</div>
+
 <div class="container menuOptions">
     <div class="row">
         <div class="col-lg-offset-4 col-lg-4">
@@ -47,7 +37,14 @@
                 </div>
             </div>
             <hr>-->
+
             <h4>Administrar rodales Fase 1</h4>
+            <div class="row">
+                <div class="col-lg-12">
+                    <a type="btn" href="{% url 'rodalFormFase1' %}" class="btn btn-selector-mapa">Entrada de nuevo rodal</a>
+                </div>
+            </div>
+
             <select class="form-control editRodalF1Selected">
                 <option value="" selected="selected">------</option>
                     {% for rodalF1 in rodalesFase1Selector %}
@@ -70,15 +67,16 @@
                     <button type="btn" class="btn btn-eliminar-rodal" onclick="eliminarRodalFase1()">Eliminar</button>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <a type="btn" href="{% url 'rodalFormFase1' %}" class="btn btn-selector-mapa">Entrada de nuevo rodal</a>
-                </div>
-            </div>
+
 
 
             <hr>
             <h4>Administrar rodales Fase 2</h4>
+            <div class="row">
+                <div class="col-lg-12">
+                    <a type="btn" href="{% url 'rodalForm' %}" class="btn btn-selector-mapa">Entrada de nuevo rodal</a>
+                </div>
+            </div>
             <select class="form-control editRodalSelected">
                 <option value="" selected="selected">------</option>
                     {% for rodal in rodalesSelectorEditor %}
@@ -101,11 +99,7 @@
                     <button type="btn" class="btn btn-eliminar-rodal" onclick="eliminarRodal()">Eliminar</button>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <a type="btn" href="{% url 'rodalForm' %}" class="btn btn-selector-mapa">Entrada de nuevo rodal</a>
-                </div>
-            </div>
+
             <hr>
             <a class="btn btn-selector-mapa" href="{% url 'logout' %}">Salir</a>
             {% if du and du.admin_institucion %}

@@ -1014,7 +1014,7 @@ var graficaEjes = function(datosEjes, rodalName, rodalNameRef){
             text: ' '
         },
         xAxis: [{
-            categories: ['Nat', 'HH', 'IE']
+            categories: ['Mad', 'HH', 'IE']
         }],
         yAxis: [{ // Primary yAxis
             labels: {
@@ -1506,7 +1506,7 @@ var graficaCritIe = function(datosCritIe, rodalName, rodalNameRef){
 var graficaScatter = function(rodalCord, rodalReferenciaCord, grafico, ejeXSelected, ejeYSelected){
 
     if(ejeXSelected == 'nm'){
-        ejeXSelected = 'Naturalidad';
+        ejeXSelected = 'Madurez';
     }else if(ejeXSelected == 'hh'){
         ejeXSelected = 'Huella Humana';
     }else if(ejeXSelected == 'ie'){
@@ -1514,7 +1514,7 @@ var graficaScatter = function(rodalCord, rodalReferenciaCord, grafico, ejeXSelec
     }
 
     if(ejeYSelected == 'nm'){
-        ejeYSelected = 'Naturalidad';
+        ejeYSelected = 'Madurez';
     }else if(ejeYSelected == 'hh'){
         ejeYSelected = 'Huella Humana';
     }else if(ejeYSelected == 'ie'){
