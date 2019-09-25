@@ -122,8 +122,26 @@ ul.nav-pills li.active a {
 
 .subheader h4 a, h4{
     color: #9ac635;
-
 }
+
+
+.subheaderFicha{
+    background-color: #dae6d1;
+    height: 80px;
+    border-top: 2px solid black;
+    border-bottom: 4px solid #9ac635;
+}
+
+.subheaderFicha h1{
+    vertical-align: text-bottom;
+}
+
+
+.subheaderFicha h4 a, h4{
+    color: #9ac635;
+}
+
+
 
 @media screen and (max-width: 768px) {
     h2, h3{

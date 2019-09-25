@@ -4504,12 +4504,27 @@ def valorRodalParcelaIFN(request):
 
         if comAut != None and regBiogeo != None:
             rod = RodalValorres2.objects.filter(id_rodal=cordRod).filter(comautonom_cod=comAut).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+            rodName = Rodal.objects.filter(id=cordRod).filter(comautonom_cod=comAut).filter(regbio_cod=regBiogeo).values('nombre')
+            print(rodName)
+
         elif comAut != None and regBiogeo == None:
             rod = RodalValorres2.objects.filter(id_rodal=cordRod).filter(comautonom_cod=comAut).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+            rodName = Rodal.objects.filter(id=cordRod).filter(comautonom_cod=comAut).values('nombre')
+            print(rodName)
+
         elif comAut == None and regBiogeo != None:
             rod = RodalValorres2.objects.filter(id_rodal=cordRod).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+            rodName = Rodal.objects.filter(id=cordRod).filter(regbio_cod=regBiogeo).values('nombre')
+            print(rodName)
+
         elif comAut == None and regBiogeo == None:
             rod = RodalValorres2.objects.filter(id_rodal=cordRod).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+            rodName = Rodal.objects.filter(id=cordRod).values('nombre')
+            print(rodName)
+
+
+        for n in rodName:
+            nombreRodal = n['nombre']
 
 
         for p in parIFN:
@@ -4602,7 +4617,7 @@ def valorRodalParcelaIFN(request):
 
         valoresMetricos = calcValMetIFN(parIFN_2, rod)
 
-    context = {'data': data, 'valoresMetricos': valoresMetricos}
+    context = {'data': data, 'valoresMetricos': valoresMetricos, 'nombreRodal': nombreRodal}
     return Response(context)
 
 

@@ -78,10 +78,11 @@ function load_rodal_ref(valRod, valComAut_Comp, valRegBio_Comp, idHabitat, idCom
                 success: function( data, textStatus, jqXHR ) {
                     test = data.data;
                     valMet = data.valoresMetricos;
+                    nombreRodal = data.nombreRodal;
 
 
 
-                    graficaTEST(test);
+                    graficaTEST(test, nombreRodal);
 
                     for(i=0; i<valMet.length; i++){
                         graficaValoresMetricos(valMet[i]);
@@ -184,7 +185,7 @@ var grafconst = function(ind, parcelas, rodal, textCord){
             title: { text: 'nº de parcelas' },
             min: 0
         },{
-            title: { text: 'Histogram' },
+            title: { text: ' ' },
             opposite: true,
             min: 0,
             max: 10,
@@ -213,9 +214,14 @@ var grafconst = function(ind, parcelas, rodal, textCord){
             groupPadding: 0,
             pointPadding: 0.1,
             borderWidth: 0,
-            minPointLength: 3
+            minPointLength: 3,
+            tooltip: {
+                useHTML: true,
+                headerFormat: '<span>Nº de parcelas: <b>{point.y}</b></span><br>',
+                pointFormat: '<span>Valor: <b>{point.x}</b></span>'
+            }
         },{
-            name: 'Histogram',
+            name: ' ',
             type: 'scatter',
             data: [rodal],
             xAxis: 1,
@@ -224,7 +230,13 @@ var grafconst = function(ind, parcelas, rodal, textCord){
             marker: {
                 radius: 6,
                 fillColor: 'green'
+            },
+            tooltip: {
+                useHTML: true,
+                headerFormat: '<span style="font-weight: bold; color: #339933">'+ nombreRodal +'</span><br>',
+                pointFormat: '<span>Valor: <b>{point.x}</b></span>'
             }
+
         }]
     });
 
@@ -232,11 +244,10 @@ var grafconst = function(ind, parcelas, rodal, textCord){
 
 
 var graficaValoresMetricos = function(valMetInd){
-    console.log(valMetInd);
     var valMetInd = valMetInd;
     //for(i=0; i<valMet.length; i++){
     indGrafica = 'grafica_' + valMetInd['ind'] + '_valMet';
-    console.log(indGrafica)
+
     valores = valMetInd['valores'];
     r = parseFloat(Object.keys(valMetInd['rodalValue'])[0]);
     //r = parseInt(Object.keys(valMetInd['rodalValue'])[0]);
@@ -270,92 +281,90 @@ var graficaValoresMetricos = function(valMetInd){
 
     var tickintervals = Number((valMetInd['interv'][0]['interv'][0][1] - valMetInd['interv'][0]['interv'][0][0])/2).toFixed(1);
     var tickintervalsRodal = parseFloat(tickintervals);
-    console.log(tickintervalsRodal);
+    //console.log(tickintervalsRodal);
     var valMinEje = valMetInd['intervEje'][0][0];
     var valMaxEje = valMetInd['intervEje'][10][0];
-    console.log(valMinEje);
-    console.log(valMaxEje);
+    //console.log(valMinEje);
+    //console.log(valMaxEje);
 
 
         Highcharts.chart(indGrafica, {
             chart: {
-                type: 'column',
-                height: 250,
+            type: 'column',
+            height: 250,
 
-            },
+        },
+            title: {text: ''},
             exporting: { enabled: false },
-            title: { text: ' ' },
+            legend: {enabled: false},
+
+        /* *********************************** EJE X *********************************** */
             xAxis: [{
-
                 title: { text: textCord },
-                type: 'category',
-                labels: {
-                    style: {
-                        fontSize: '10px',
-                        fontFamily: 'Verdana, sans-serif'
-                    }
-                },
+                id: 'ifn_x',
+                type: 'column',
                 categories: valMetInd['intervEje'],
-                alignTicks: false,
-                startOnTick: true,
-                endOnTick: true
-            },{
-                title: { text: ' del rodal' },
-                type: 'histogram',
-                alignTicks: false,
-                opposite: true,
-                tickAmount: 11,
-                //tickInterval: valMinEje,
-                tickInterval: 2,
-                min: valMinEje,
-                max: valMaxEje,
-                startOnTick: true,
-                endOnTick: true
-            }],
-
-            yAxis: [{
-                title: { text: 'nº de parcelas' },
-                min: 0
-            },{
-                title: { text: 'Histogram' },
-                opposite: true,
                 min: 0,
                 max: 10,
-                reversed: true,
-                visible: false
+            },{
+              id: 'rodal_x',
+              title: { text: textCord + ' del rodal' },
+              type: 'scatter',
+              //categories: [[0.2],[0.7],[1.2],[1.6],[2.1],[2.5],[3],[3.5],[3.9],[4.4],[4.8]],
+              pointStart: valMinEje,
+              //pointInterval: 1,
+              opposite: true,
+              min: 0,
+              max: valMaxEje,
+              allowDecimals: true
+            }],
+/* *********************************** EJE Y *********************************** */
+        yAxis: [{
+          	id: 'ifn_y',
+            title: { text: 'nº de parcelas'}
+        }, {
+          	id: 'rodal_y',
+          	title: {text: ' '},
+            opposite: true,
+            reversed: true,
+            visible: false
+        }],
+/* *********************************** DATOS *********************************** */
+        series: [{
+            name: ' ',
+            type: 'column',
+            xAxis: 'ifn_x',
+            yAxis: 'ifn_y',
+            data: valores,
+            color: '#FF6600',
+            groupPadding: 0,
+            pointPadding: 0.1,
+            borderWidth: 0,
+            minPointLength: 3,
+            tooltip: {
+                useHTML: true,
+                headerFormat: '<span>Nº de parcelas: <b>{point.y}</b></span><br>',
+                pointFormat: '<span>Valor: <b>{point.x}</b></span>'
             }
-            ],
-            legend: {
-                enabled: false
+        },{
+            name: ' ',
+            type: 'scatter',
+            xAxis: 'rodal_x',
+            yAxis: 'rodal_y',
+            data: [rodal],
+            marker: {
+                radius: 6,
+                fillColor: 'green'
             },
             tooltip: {
-                pointFormat: 'Número de parcelas: <b>{point.y}</b>'
-            },
-            series: [{
-                name: ' ',
-                //type: 'histogram',
-                data: valores,
-                color: '#FF6600',
-                groupPadding: 0,
-                pointPadding: 0.1,
-                borderWidth: 0,
-                minPointLength: 1,
-                //baseSeries: 's1',
-            },{
-                name: 'Histogram',
-                type: 'scatter',
-                data: [rodal],
-                //id: 's1',
-                xAxis: 1,
-                yAxis: 1,
-                zIndex: -1,
-                marker: {
-                    radius: 6,
-                    fillColor: 'green'
-                }
-            }]
-        });
-}
+                useHTML: true,
+                headerFormat: '<span style="font-weight: bold; color: #339933">'+ nombreRodal +'</span><br>',
+                pointFormat: '<span>Valor: <b>{point.x}</b></span>'
+            }
+        }]
+    });
+};
+
 
 
 function rodalData(valRod, valComAut_Comp, valRegBio_Comp){
