@@ -1,0 +1,377 @@
+{% extends "redbosques_main/base.html" %}
+{% load static %}
+{% load i18n %}
+{% block extra_css %}
+{% endblock %}
+{% block main %}
+<div class="container-fluid subheader">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 subfield">
+            <h3 style="margin-top: 10px;">Evaluación de la naturalidad</h3>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <p style="text-align:justify;">La evaluación de la naturalidad de los rodales es un proceso basado en el cálculo de varios indicadores agrupados en tres ámbitos diferentes:</p>
+            <ol type="a">
+                <li><b>madurez</b> forestal, en base a indicadores estructurales y dasométricos medidos en campo, ya sea de forma pericial en transectos o con parcelas forestales típicas; </li>
+                <li><b>huella humana</b>, como resultado de la identificación de usos y aprovechamientos, ya sean antiguos o recientes, en base al reconocimiento del rodal en campo y pudiendo ser complementado por documentación; y </li>
+                <li><b>integridad espacial</b>, en base a indicadores de paisaje que describen el contexto forestal donde se ubica el rodal.</li>
+            </ol>
+            <p style="text-align:justify;">Los indicadores de naturalidad para cada ámbito, su definición y agrupación en criterios, se pueden consultar <a style="color: red;" href="">aquí</a>.</p>
+            <p style="text-align:justify;">Para cada ámbito de evaluación, Redbosques combina los indicadores medidos como variables de campo o cartográficas en varios criterios, que a su vez se combinan para obtener un valor para cada ámbito. </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-bordered">
+                <thead>
+                    <th>Ámbito</th>
+                    <th>Criterio</th>
+                    <th>Indicador</th>
+                </thead>
+                <tbody>
+                    <tr class="madTab">
+                        <td rowspan="9" style="vertical-align: middle">Madurez</td>
+                        <td>Composición</td>
+                        <td>Especies arbóreas</td>
+                    </tr>
+                    <tr class="madTab">
+                        <td rowspan="3" style="vertical-align: middle">Complejidad estructural</td>
+                        <td>Área basal</td>
+                    </tr>
+                    <tr class="madTab">
+                        <td>Diversidad estructural</td>
+                    </tr>
+                    <tr class="madTab">
+                        <td>Estratificación vertical</td>
+                    </tr>
+                    <tr class="madTab">
+                        <td rowspan="3" style="vertical-align: middle">Senectud</td>
+                        <td>Árboles de tamaño excepcional</td>
+                    </tr>
+                    <tr class="madTab">
+                        <td>Abundancia de madera muerta</td>
+                    </tr>
+                    <tr class="madTab">
+                        <td>Proporción de madera muerta</td>
+                    </tr>
+                    <tr class="madTab">
+                        <td>Microhábitats</td>
+                        <td>Microhábitats en pies vivos</td>
+                    </tr>
+                    <tr class="madTab">
+                        <td>Dinámica</td>
+                        <td>Ciclo silvogenético</td>
+                    </tr>
+                    <tr class="hhTab">
+                        <td rowspan="10" style="vertical-align: middle">Huella humana</td>
+                        <td rowspan="3" style="vertical-align: middle">Huella antigua</td>
+                        <td>Continuidad temporal del bosque</td>
+                    </tr>
+                    <tr class="hhTab">
+                        <td>Usos agroforestales antiguos</td>
+                    </tr>
+                    <tr class="hhTab">
+                        <td>Usos forestales antiguos</td>
+                    </tr>
+                    <tr class="hhTab">
+                        <td rowspan="7" style="vertical-align: middle">Huella reciente</td>
+                        <td>Usos forestales recientes</td>
+                    </tr>
+                    <tr class="hhTab">
+                        <td>Especies invasoras</td>
+                    </tr>
+                    <tr class="hhTab">
+                        <td>Causas de fragmentación</td>
+                    </tr>
+                    <tr class="hhTab">
+                        <td>Caza</td>
+                    </tr>
+                    <tr class="hhTab">
+                        <td>Herbivoría y/o ramoneo</td>
+                    </tr>
+                    <tr class="hhTab">
+                        <td>Frecuentación / accesibilidad</td>
+                    </tr>
+                    <tr class="hhTab">
+                        <td>Durabilidad de los usos</td>
+                    </tr>
+                    <tr class="ieTab">
+                        <td rowspan="4" style="vertical-align: middle">Integridad espacial</td>
+                        <td>Tamaño</td>
+                        <td>Tamaño del rodal</td>
+                    </tr>
+                    <tr class="ieTab">
+                        <td>Continuidad forestal</td>
+                        <td>Continuidad de la mancha forestal</td>
+                    </tr>
+                    <tr class="ieTab">
+                        <td>Efecto borde</td>
+                        <td>Densidad de bosque </td>
+                    </tr>
+                    <tr class="ieTab">
+                        <td>Conectividad</td>
+                        <td>Distancia a la core área</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <p style="text-align:justify;">Estas sucesivas combinaciones no son más que medias ponderadas primero de los indicadores, y posteriormente
+                de los criterios, con asignación de pesos para cada indicador y criterio según su importancia relativa en
+                relación al ámbito a evaluar.</p>
+            <p style="text-align:justify;">De esta forma, por ejemplo, el valor de la madurez se formula de la siguiente manera, siendo a, b, c, d y e
+                cada uno de los pesos de criterio y siendo la suma de los pesos de los 5 criterios igual a 10:</p>
+
+
+            <div class="eq-c">
+                <i>Madurez</i> =
+                <div class="fraction">
+                    <span class="fup"><i>a·Composición</i> + <i>b·Complejidad</i> + <i>c·Senectud</i> + <i>d·Microhábitats</i> + <i>e·Dinámica</i></span>
+                    <span class="bar">/</span>
+                    <span class="fdn">10</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-bordered">
+                <thead>
+                    <th colspan="2">Ámbito</th>
+                    <th colspan="3">Criterios</th>
+                    <th colspan="3">Indicadores</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Valor</td>
+                        <td>Ámbito</td>
+                        <td>Peso</td>
+                        <td>Valor</td>
+                        <td>Criterio</td>
+                        <td>Peso</td>
+                        <td>Valor</td>
+                        <td>Indicador</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="9" style="vertical-align: middle">7.1</td>
+                        <td rowspan="9" style="vertical-align: middle">Madurez</td>
+                        <td>1</td>
+                        <td>5.0</td>
+                        <td>Composición</td>
+                        <td>10</td>
+                        <td>5</td>
+                        <td>Especies arbóreas</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3" style="vertical-align: middle">2</td>
+                        <td rowspan="3" style="vertical-align: middle">7.4</td>
+                        <td rowspan="3" style="vertical-align: middle">Complejidad estructural</td>
+                        <td>2</td>
+                        <td>7</td>
+                        <td>Àrea basal</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>Diversidad estructural</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>10</td>
+                        <td>Estratificación vertical</td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="3" style="vertical-align: middle">3</td>
+                        <td rowspan="3" style="vertical-align: middle">7.8</td>
+                        <td rowspan="3" style="vertical-align: middle">Senectud</td>
+                        <td>4</td>
+                        <td>10</td>
+                        <td>Àreas de tamaño excepcional</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>7</td>
+                        <td>Abundancia de madera muerta</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>3</td>
+                        <td>Proporción de madera muerta</td>
+                    </tr>
+
+                    <tr>
+                        <td>2</td>
+                        <td>7.0</td>
+                        <td>Microhábitats</td>
+                        <td>10</td>
+                        <td>7</td>
+                        <td>Microhábitats en pies vivos</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>7.0</td>
+                        <td>Dinámica</td>
+                        <td>10</td>
+                        <td>7</td>
+                        <td>Ciclo silvogenético</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="eq-c">
+                <i>Madurez</i> =
+                <div class="fraction">
+                    <span class="fup"><i>1,0·5,0</i> + <i>2·7,4</i> + <i>3·7,8</i> + <i>2·7,0</i> + <i>2·7,0</i></span>
+                    <span class="bar">/</span>
+                    <span class="fdn">10</span>
+                </div>
+                = <i>7,1</i>
+            </div>
+            <p style="text-align: justify;">De la misma manera se combinan los indicadores en criterios, como por ejemplo la senectud, donde f, g y h
+                cada uno de los pesos del indicador y siendo la suma de los pesos de los 3 indicadores igual a 10:</p>
+            <div class="eq-c">
+                <i>Senectud</i> =
+                <div class="fraction">
+                    <span class="fup"><i>&fnof; · Árboles excepcionales</i> + <i>g · Abundancia de madera muerta</i> + <i>h · Proporción de madera muerta</i></span>
+                    <span class="bar">/</span>
+                    <span class="fdn">10</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-bordered">
+                <thead>
+                    <th colspan="2">Ámbito</th>
+                    <th colspan="3">Criterios</th>
+                    <th colspan="3">Indicadores</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Valor</td>
+                        <td>Ámbito</td>
+                        <td>Peso</td>
+                        <td>Valor</td>
+                        <td>Criterio</td>
+                        <td>Peso</td>
+                        <td>Valor</td>
+                        <td>Indicador</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="9" style="vertical-align: middle">7.1</td>
+                        <td rowspan="9" style="vertical-align: middle">Madurez</td>
+                        <td>1</td>
+                        <td>5.0</td>
+                        <td>Composición</td>
+                        <td>10</td>
+                        <td>5</td>
+                        <td>Especies arbóreas</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3" style="vertical-align: middle">2</td>
+                        <td rowspan="3" style="vertical-align: middle">7.4</td>
+                        <td rowspan="3" style="vertical-align: middle">Complejidad estructural</td>
+                        <td>2</td>
+                        <td>7</td>
+                        <td>Àrea basal</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>Diversidad estructural</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>10</td>
+                        <td>Estratificación vertical</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3" style="vertical-align: middle">3</td>
+                        <td rowspan="3" style="vertical-align: middle">7.8</td>
+                        <td rowspan="3" style="vertical-align: middle">Senectud</td>
+                        <td>4</td>
+                        <td>10</td>
+                        <td>Àreas de tamaño excepcional</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>7</td>
+                        <td>Abundancia de madera muerta</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>3</td>
+                        <td>Proporción de madera muerta</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>7.0</td>
+                        <td>Microhábitats</td>
+                        <td>10</td>
+                        <td>7</td>
+                        <td>Microhábitats en pies vivos</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>7.0</td>
+                        <td>Dinámica</td>
+                        <td>10</td>
+                        <td>7</td>
+                        <td>Ciclo silvogenético</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="eq-c">
+                <i>Senectud</i> =
+                <div class="fraction">
+                    <span class="fup"><i>4·10,0</i> + <i>5·7,0</i> + <i>1·7,0</i></span>
+                    <span class="bar">/</span>
+                    <span class="fdn">10</span>
+                </div>
+                = <i>7,8</i>
+            </div>
+            <p style="text-align: justify">Previo a la combinación de indicadores a criterios y a ámbitos, las variables
+                de madurez tomadas en campo, ya sea en parcelas forestales o en transectos, se transforman en
+                indicadores con valores del 0 al 10. Lo mismo sucede con las variables de integridad espacial. Para ello,
+                se ha determinado para cada indicador dos valores umbral. Estos umbrales definen los valores que puede
+                tomar el indicador en cada caso, siendo el umbral inferior el dato de la variable a partir del cual el
+                valor es 0 y el umbral superior a partir del cual el dato es el valor 10. Estos umbrales pueden ser
+                diferente según el tipo de hábitat forestal considerado, o para grupos de ellos. Por ejemplo, para el
+                grupo de hábitats de color verde de la gráfica siguiente, 20 es el umbral inferior para el cual el valor
+                del indicador de área basal es 0 y 35 es el umbral superior para el cual corresponde el valor 10 para el
+                mismo indicador.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <img class="img-responsive" style="width: 40%" src="{% static 'redbosques_main/images/evalnatgraph.png' %}">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <p style="text-align: justify;">Como que esta herramienta pretende ser un sistema de evaluación de la naturalidad
+                para la identificación de Rodales de Referencia, los umbrales son valores exigentes de forma que el resultado
+                de la evaluación sea sensible a la identificación de los mejores ejemplos de rodales de alto valor de naturalidad.
+                Para el ámbito de la huella humana, el valor se asigna en función de las evidencias históricas de
+                usos y aprovechamientos detectados, de forma que cada una de pueda tomar valores del 0 al 10 según el
+                impacto en cuanto a alteración del hábitat.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

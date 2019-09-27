@@ -88,6 +88,8 @@ urlpatterns = [
     path('comparador_ifn/', views.comparadorIFN, name='comparador_ifn'),
     path('comparador_ifn/<int:id>/', views.comparadorIFN, name='comparador_ifn'),
     path('valorRodalParcelaIFN', views.valorRodalParcelaIFN, name='valorRodalParcelaIFN'),
+    path('herramientaRedbosques', views.herramRedbosques, name='herramRedbosques'),
+    path('evaluacionNaturalidad', views.evaluacionNaturalidad, name='evaluacionNat'),
     #path('valorrefIFN_ajax', views.valorrefIFN_ajax, name='valorrefIFN_ajax')
 
 ]

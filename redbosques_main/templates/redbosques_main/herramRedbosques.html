@@ -1,0 +1,89 @@
+{% extends "redbosques_main/base.html" %}
+{% load static %}
+{% load i18n %}
+{% block extra_css %}
+{% endblock %}
+{% block main %}
+<div class="container-fluid subheader">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 subfield">
+            <h3 style="margin-top: 10px;">Herramienta REDBOSQUES</h3>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <p style="text-align: justify;">El colectivo de profesionales de la administración pública relacionados con la gestión y la
+                planificación de hábitats, de la Red Natura 2000 y de otros espacios protegidos, así como la
+                comunidad científica, los propietarios forestales, las asociaciones conservacionistas…,
+                tienen una necesidad creciente en tener herramientas que permitan, por un lado, determinar de
+                manera sencilla <b>el grado de naturalidad</b> y el estado de conservación de un bosque cualquiera y,
+                por otro monitorizar y comparar su estado de conservación con otros bosques en base a unos
+                indicadores y criterios objetivos y comunes. <b>Redbosques</b> es una herramienta que implementa protocolos
+                de toma de datos en campo e identificación estandarizados y que permite además determinar
+                si un rodal debe formar parte de la <b>Red de Rodales de Referencia</b>, en el marco del
+                <b>proyecto LIFE Redbosques.</b>
+            </p>
+            <br>
+            <p style="text-align: justify;">Los <b>Rodales de Referencia</b> son fragmentos de bosque de elevado nivel de naturalidad (alta madurez y baja huella humana),
+                que pueden considerarse ejemplos de estados avanzados del ciclo silvogenético, para un determinado tipo de hábitat forestal.
+                Idealmente serían rodales maduros, pero dado el elevado grado de antropización del territorio mediterráneo,
+                frecuentemente son los ejemplos menos intervenidos disponibles para cada tipo de hábitat forestal.
+                Los rodales de referencia pueden servir de modelo para la evaluación del estado de conservación de los diferentes
+                tipos de hábitat forestal presentes en España.
+            </p>
+            <br>
+            <p style="text-align: justify;">En esta herramienta se calculan los indicadores de madurez, huella humana e integridad espacial,
+                que dan lugar al índice global de naturalidad, y que permiten seleccionar los Rodales de Referencia del
+                conjunto de rodales estudiados. Estos indicadores se calculan a partir de las variables medidas en
+                campo utilizando los protocolos elaborados por LIFE RedBosques, las cuales son ponderadas siguiendo
+                los criterios acordados en el manual de Evaluación de la Naturalidad.
+            </p>
+            <br>
+            <p style="text-align: justify;">La propuesta del procedimiento de identificación de estos rodales se ha llevado a cabo en el
+                marco del <a href="http://www.redbosques.eu/">Life REDBOSQUES</a>. Para ello se proponen dos fases de trabajo sucesivas:
+            </p>
+            <ul>
+                <li style="text-align: justify;"><b>Fase 1 de prospección:</b> se basa en una descripción simple, con indicadores cualitativos o semicuantitativos,
+                    que puede cumplimentarse de forma rápida según criterio experto. Permite una primera valoración
+                    del grado de madurez en una escala de 1 a 9. Se propone para ser utilizada por el personal de
+                    guardería y técnico, en una primera fase de identificación de rodales potencialmente interesantes.
+                </li>
+                <br>
+                <li style="text-align: justify;"><b>Fase 2 de identificación:</b> consiste en la descripción del rodal mediante un sistema de indicadores
+                    cuantitativos de la madurez en base a las características estructurales y de otros indicadores de
+                    huella humana. Esta fase precisa de mediciones sobre el terreno.
+                    Se proponen dos métodos alternativos: mediante parcelas de muestreo dasométricas, o bien mediante
+                    transectos y estima pericial, para utilizar cuando los medios materiales o humanos son limitados.
+                    Permite una evaluación completa de la naturalidad del rodal basada en la madurez forestal y que se
+                    complementa con la evolución de la huella humana y la integridad espacial.
+                </li>
+            </ul>
+            <br>
+            <p>El procedimiento completo de prospección (Fase 1) e identificación de rodales (Fase 2), así como los
+                protocolos de campo correspondientes, se pueden consultar <a href="http://www.redbosques.eu/B3_Definicion_rodales_referencia">aquí</a>.
+            </p>
+            <p><b>Redbosques</b> es una herramienta web que tiene las siguientes funcionalidades y módulos:</p>
+            <ol type="a">
+                <li>delimitación cartográfica del rodal a evaluar; </li>
+                <li>módulo de entrada de datos de un nuevo rodal, edición y cálculo de indicadores de naturalidad; </li>
+                <li>módulo de evaluación del grado de naturalidad y de comparación numérica y gráfica con
+                    otros rodales sean o no sean de referencia. </li>
+            </ol>
+
+            <p style="text-align: justify;">La aplicación se completa con un módulo de acceso restringido para el
+                ingreso de nuevos rodales por los usuarios autorizados.</p>
+
+            <p style="text-align: justify;">El objetivo de este proyecto es constituir una Red de Rodales de Referencia de ámbito nacional, con
+                ejemplos de rodales de alta naturalidad de cada uno de los tipos de bosque españoles.
+                La red se va completando de forma continuada gracias a las aportaciones de nuevos rodales por
+                parte de las administraciones públicas responsables de la gestión forestal y de la gestión de
+                áreas protegidas.</p>
+            <br>
+            <p>Si desea participar en la construcción de la Red de Rodales de Referencia diríjase a <a href="mailto:redbosques@fungobe.org">redbosques@fungobe.org</a></p>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

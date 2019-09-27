@@ -70,7 +70,13 @@
                 <div class="col-lg-6" style="margin-top: 4%">
                     <ul class="nav navbar-nav" style="text-align:center;">
                         <li class="menu-options active"><a href="/redbosques">INICIO<span class="sr-only">(current)</span></a></li>
-                        <li class="menu-options active"><a href="#">PROYECTO<span class="sr-only"></span></a></li>
+                        <li class="menu-options active dropdown">
+                            <a href="#">PROYECTO<span class="sr-only"></span></a>
+                            <div style="width: 235px;" class="dropdown-content">
+                                <a href="{% url 'herramRedbosques' %}">Herramienta REDBOSQUES</a>
+                                <a href="{% url 'evaluacionNat' %}">Evaluación de la naturalidad</a>
+                            </div>
+                        </li>
                         <li class="menu-options active"><a href="{% url 'menu' %}">ADMINISTRACIÓN DE RODALES<span class="sr-only">(current)</span></a></li>
                         <li class="menu-options active dropdown">
                             <a href="javascript:void(0)" class="dropbtn">MAPAS

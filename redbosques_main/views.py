@@ -4839,3 +4839,9 @@ def clasValMetricos(interv, valores):
     valMetPar.append(int_10)
 
     return valMetPar
+
+def herramRedbosques(request):
+    return render(request, 'redbosques_main/herramRedbosques.html')
+
+def evaluacionNaturalidad(request):
+    return render(request, 'redbosques_main/evaluacionNat.html')
