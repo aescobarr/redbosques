@@ -79,9 +79,6 @@ function load_rodal_ref(valRod, valComAut_Comp, valRegBio_Comp, idHabitat, idCom
                     test = data.data;
                     valMet = data.valoresMetricos;
                     nombreRodal = data.nombreRodal;
-
-
-
                     graficaTEST(test, nombreRodal);
 
                     for(i=0; i<valMet.length; i++){
@@ -242,14 +239,15 @@ var grafconst = function(ind, parcelas, rodal, textCord){
 
 }
 
-
+var valMetInd;
 var graficaValoresMetricos = function(valMetInd){
     var valMetInd = valMetInd;
     //for(i=0; i<valMet.length; i++){
     indGrafica = 'grafica_' + valMetInd['ind'] + '_valMet';
 
     valores = valMetInd['valores'];
-    r = parseFloat(Object.keys(valMetInd['rodalValue'])[0]);
+    r = valMetInd['rodalValue'][0];
+    //r = parseFloat(Object.keys(valMetInd['rodalValue'])[0]);
     //r = parseInt(Object.keys(valMetInd['rodalValue'])[0]);
     textCord = valMetInd["cordText"];
     rodal = [r, 0];
@@ -300,7 +298,7 @@ var graficaValoresMetricos = function(valMetInd){
 
         /* *********************************** EJE X *********************************** */
             xAxis: [{
-                title: { text: textCord },
+                title: { text: textCord + ' del IFN' },
                 id: 'ifn_x',
                 type: 'column',
                 categories: valMetInd['intervEje'],

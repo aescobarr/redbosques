@@ -725,6 +725,7 @@ class RodalValorres(models.Model):
     valor = models.FloatField(blank=True, null=True)
     indic_null = models.FloatField(blank=True, null=True)
     parent_cod = models.CharField(max_length=2, blank=True, null=True)
+    dato = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False  # Created from a view. Don't remove.

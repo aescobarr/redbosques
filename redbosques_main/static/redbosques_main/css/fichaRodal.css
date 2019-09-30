@@ -229,16 +229,17 @@ table {
 
 #spinner {
     display: none;
-    position: absolute;
-    width: 100%;
+    /*position: absolute;*/
     z-index: 1002;
     text-align:center;
     overflow: auto;
+    width: 220px;
 }
 
 #spinner h4{
     margin-bottom: 10px;
     border-bottom: none;
+    float: right;
 }
 
 .imagenRodal img{
@@ -253,4 +254,9 @@ table {
         display:block;
         page-break-before:always;
     }
+}
+
+#loader{
+    position: absolute;
+    width: 20%;
 }

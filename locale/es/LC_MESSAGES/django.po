@@ -372,7 +372,7 @@ msgstr "Valor Senectud"
 
 #: redbosques_main/views.py:4728
 msgid "AB_met_cord"
-msgstr "Área basal(m2/ha)"
+msgstr "Área basal (m2/ha)"
 
 #: redbosques_main/views.py:4729
 msgid "EA_met_cord"
@@ -384,11 +384,11 @@ msgstr "nº Clases diamétricas"
 
 #: redbosques_main/views.py:4731
 msgid "AE_met_cord"
-msgstr "nº Arboles excepcionales(pies/ha)"
+msgstr "nº Arboles excepcionales (pies/ha)"
 
 #: redbosques_main/views.py:4732
 msgid "MP_met_cord"
-msgstr "Volumen de madera muerta en pie(m3/ha)"
+msgstr "Volumen de madera muerta en pie (m3/ha)"
 
 #: redbosques_main/views.py:4733
 msgid "PI_met_cord"

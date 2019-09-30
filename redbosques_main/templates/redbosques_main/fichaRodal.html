@@ -14,11 +14,23 @@
     </div>
 </div>
 <div class="container">
+     <div class="row">
+        <div class="col-lg-offset-10 col-lg-2">
+                <div id="dwnButton">
+                    <a class="btn btn-selector-mapa" onclick="crearPDF(id_rodal,'{{ csrf_token }}')" rel=attachment><i class="far fa-file-pdf"></i> Descargar ficha</a>
+                </div>
+                <div id="spinner">
+                    <img id="loader" src="{% static 'redbosques_main/css/PDFLoader.gif' %}" />
+                    <h4>Generando PDF</h4>
+                </div>
+            </div>
+    </div>
     <div class="row">
         <div class="col-lg-12">
             <h4>Datos Generales</h4>
         </div>
     </div>
+
     <div class="row">
                 <div class="col-lg-12">
                     <table class="table responsive">
@@ -456,7 +468,7 @@
         </div>
     </div>
 </div>
-<div class="container botones">
+<!--<div class="container botones">
         <div class="row">
             <div class="col-lg-offset-1 col-lg-2">
                 <a class="btn btn-selector-mapa" href="{% url 'herramientas' %}">Volver al mapa</a>
@@ -476,7 +488,7 @@
                 <a class="btn btn-selector-mapa" href="{% url 'menu' %}">Volver al menú</a>
             </div>
         </div>
-</div>
+</div>-->
 
 {% endblock %}
 {% block extra_js %}

@@ -2068,7 +2068,7 @@ def login(request):
         if user is not None:
             # correct username and password login the user
             auth.login(request, user)
-            return redirect('herramientas')
+            return redirect('menu')
         else:
             try:
                 user = dUser.objects.get(username=username)
@@ -4503,24 +4503,26 @@ def valorRodalParcelaIFN(request):
             rod = RodalValorres.objects.filter(id=cordRod).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')'''
 
         if comAut != None and regBiogeo != None:
-            rod = RodalValorres2.objects.filter(id_rodal=cordRod).filter(comautonom_cod=comAut).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+            #rod = RodalValorres2.objects.filter(id_rodal=cordRod).filter(comautonom_cod=comAut).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+            rod = RodalValorres.objects.filter(id=cordRod).filter(comautonom_cod=comAut).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod', 'dato').annotate(total=Count('valor')).order_by('indicador_cod')
+            #rod = RodalValorres.objects.filter(id=cordRod).filter(comautonom_cod=comAut).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod', 'dato')
             rodName = Rodal.objects.filter(id=cordRod).filter(comautonom_cod=comAut).filter(regbio_cod=regBiogeo).values('nombre')
-            print(rodName)
-
         elif comAut != None and regBiogeo == None:
-            rod = RodalValorres2.objects.filter(id_rodal=cordRod).filter(comautonom_cod=comAut).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+            #rod = RodalValorres2.objects.filter(id_rodal=cordRod).filter(comautonom_cod=comAut).values('valor','indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+            rod = RodalValorres.objects.filter(id=cordRod).filter(comautonom_cod=comAut).values('valor', 'indicador_cod', 'dato').annotate(total=Count('valor')).order_by('indicador_cod')
+            #rod = RodalValorres.objects.filter(id=cordRod).filter(comautonom_cod=comAut).values('valor','indicador_cod', 'dato')
             rodName = Rodal.objects.filter(id=cordRod).filter(comautonom_cod=comAut).values('nombre')
-            print(rodName)
-
         elif comAut == None and regBiogeo != None:
-            rod = RodalValorres2.objects.filter(id_rodal=cordRod).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+            #rod = RodalValorres2.objects.filter(id_rodal=cordRod).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+            rod = RodalValorres.objects.filter(id=cordRod).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod', 'dato').annotate(total=Count('valor')).order_by('indicador_cod')
+            #rod = RodalValorres.objects.filter(id=cordRod).filter(regbio_cod=regBiogeo).values('valor','indicador_cod', 'dato')
             rodName = Rodal.objects.filter(id=cordRod).filter(regbio_cod=regBiogeo).values('nombre')
-            print(rodName)
-
         elif comAut == None and regBiogeo == None:
-            rod = RodalValorres2.objects.filter(id_rodal=cordRod).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+            #rod = RodalValorres2.objects.filter(id_rodal=cordRod).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
+            rod = RodalValorres.objects.filter(id=cordRod).values('valor', 'indicador_cod', 'dato').annotate(total=Count('valor')).order_by('indicador_cod')
+            #rod = RodalValorres.objects.filter(id=cordRod).values('valor', 'indicador_cod', 'dato')
             rodName = Rodal.objects.filter(id=cordRod).values('nombre')
-            print(rodName)
+
 
 
         for n in rodName:
@@ -4654,23 +4656,29 @@ def calcValMetIFN(parIFN_2, rod):
 
     for r in rod:
         if r['indicador_cod'] == 'ab':
-            val = r['valor']
-            ab_rod_2[val] = r['total']
+            val = r['dato']
+            #ab_rod_2[val] = r['total']
+            ab_rod_2[0] = val
         elif r['indicador_cod'] == 'ea':
-            val = r['valor']
-            ea_rod_2[val] = r['total']
+            val = r['dato']
+            #ea_rod_2[val] = r['total']
+            ea_rod_2[0] = val
         elif r['indicador_cod'] == 'de':
-            val = r['valor']
-            de_rod_2[val] = r['total']
+            val = r['dato']
+            #de_rod_2[val] = r['total']
+            de_rod_2[0] = val
         elif r['indicador_cod'] == 'ae':
-            val = r['valor']
-            ae_rod_2[val] = r['total']
+            val = r['dato']
+            #ae_rod_2[val] = r['total']
+            ae_rod_2[0] = val
         elif r['indicador_cod'] == 'mp':
-            val = r['valor']
-            mp_rod_2[val] = r['total']
+            val = r['dato']
+            #mp_rod_2[val] = r['total']
+            mp_rod_2[0] = val
         elif r['indicador_cod'] == 'pi':
-            val = r['valor']
-            pi_rod_2[val] = r['total']
+            val = r['dato']
+            #pi_rod_2[val] = r['total']
+            pi_rod_2[0] = val
 
     ab = {'ind': 'ab', 'ifn': ab_parIFN_2}
     ea = {'ind': 'ea', 'ifn': ea_parIFN_2}

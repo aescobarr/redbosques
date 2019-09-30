@@ -2,14 +2,29 @@
 {% load static %}
 {% block extra_css %}
     <link href="{% static 'redbosques_main/DataTables_Custom/datatables.min.css' %}" rel="stylesheet">
+    <style>
+        .subheader-adminUser{
+            background-color: #dae6d1;
+            border-top: 2px solid black;
+            border-bottom: 4px solid #9ac635;
+        }
+
+        .subfield-adminUser {
+            padding-right: 5%;
+            padding-left: 2.3%;
+        }
+
+    </style>
 {% endblock %}
 {% block main %}
-<div class="container menu-header">
+<div class="container-fluid subheader-adminUser">
     <div class="row">
-        <h3>Administración de usuarios</h3>
+        <div class="col-lg-8 col-lg-offset-2 subfield-adminUser">
+            <h3 style="margin-top: 10px;">Administración de usuarios</h3>
+        </div>
     </div>
 </div>
-<div class="container ">
+<div class="container">
     <div class="table-responsive">
         <table class="table table-condensed" id="user_admin_list" style="width:100%;"></table>
     </div>
@@ -27,6 +42,5 @@
     <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
     <script src="{% static 'redbosques_main/javascript/user_admin.js' %}"></script>
 {% endblock %}
-
 
 
