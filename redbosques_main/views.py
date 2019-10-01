@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRegbio, TeProvincia, RodalValoresAmbito, \
     WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht, Tesaurus, User, TeCategoria, FotosRodal, DocsRodal, \
     Institucion, DatosUsuario, AuthUser,TeMunicipi,TeIndicador, RodalProsp, WebMapaRodalProsp, DatosGeneralesRodal, \
-    FotosRodalProsp, DocsRodalProsp, RodalProspDatosgen, RodalProspValores, Parcelaifn3Valorres, RodalValorres
+    FotosRodalProsp, DocsRodalProsp, RodalProspDatosgen, RodalProspValores, Parcelaifn3Valorres, RodalValorres, \
+    RedbosquesRodalF2Ident
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.urls import reverse
@@ -22,10 +23,7 @@ from django.contrib import auth
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Point
 from osgeo import ogr
 import tempfile
-
-
 from django.contrib.auth import authenticate
-
 import pyproj
 from shapely.geometry import shape
 from shapely.ops import transform
@@ -36,7 +34,6 @@ from django.db import connection
 from collections import namedtuple
 from django.http import HttpResponseRedirect
 from django.http import Http404
-
 import ntpath
 import glob, os
 import magic
@@ -73,6 +70,7 @@ from django.template import RequestContext
 from django.utils import translation
 from django.utils.translation import gettext as _
 import logging
+import csv
 
 def namedtuplefetchall(cursor):
     #Return all rows from a cursor as a namedtuple
@@ -1112,8 +1110,6 @@ def datosGraficasBarras(dades, infoRodalBarCrite):
     print(dades)
 
 
-
-
 @api_view(['GET'])
 def setFiltrosRodal(request):
     idRod = request.query_params.get('idR', None)
@@ -1168,7 +1164,6 @@ def setFiltrosRodal(request):
     context = {'listaRodales': listaRodales}
     #return render(request, 'redbosques_main/comparador.html', context)
     return Response(context)
-
 
 
 def crearArbol(dades):
@@ -1431,6 +1426,7 @@ def crearArbol(dades):
         }
         #print(rodal_referencia)
         return rodal_referencia
+
 
 def crearArbolMedia(dades):
     print(dades)
@@ -1911,6 +1907,7 @@ def crearArbolMedia(dades):
 
     return rodal_referencia
 
+
 def crearArbolGraficos(dades):
     print(len(dades))
 
@@ -2052,6 +2049,7 @@ def crearArbolGraficos(dades):
     }
     #print(rodal_referencia)
     return rodal_graficos
+
 
 def login(request):
 
@@ -2206,8 +2204,6 @@ def editrodalForm(request, id=None):
     return render(request, 'redbosques_main/editrodalForm.html', context)
 
 
-
-
 @login_required(login_url="login/")
 def eliminarRodal(request, id=None):
     Rodal.objects.filter(id=id).delete()
@@ -2279,8 +2275,6 @@ def menuData(request):
     context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'rodalesSelector': rodalesSelector, 'du': du, 'rodalesSelectorEditor': rodalesSelectorEditor, 'datosGenFichaPDF': rodalesFicha, 'rodalesFase1Selector': rodalesFase1Selector}
 
     return context
-
-
 
 
 @login_required(login_url="login/")
@@ -2427,7 +2421,6 @@ def provFilt(request):
 
     context = {'municipios': municipios}
     return Response(context)
-
 
 
 @login_required(login_url="login/")
@@ -2751,8 +2744,6 @@ def mainImage(request, idRodal, fotoSelected):
     return Response(context)
 
 
-
-
 @login_required(login_url="login/")
 def uploadDocs(request, id):
 
@@ -2784,6 +2775,7 @@ def uploadDocs(request, id):
 
         context = {'listaFotos': docs, 'id': id_rodal}
         return render(request, 'redbosques_main/rodalesForm3.html', context)
+
 
 @api_view(['POST'])
 @login_required(login_url="login/")
@@ -2836,6 +2828,7 @@ def ccaa_ajax(request):
         for c in ccaa:
             data.append( { 'codigo': c.codigo, 'nombre_es': c.nombre_es } )
     return Response(data)
+
 
 @api_view(['GET'])
 def rodals_ajax(request):
@@ -2961,6 +2954,7 @@ def filtraxtipobosque(request):
 
     return Response(context)
 
+
 @api_view(['GET'])
 def filtraxhabitat(request):
     codiHabitat = request.query_params.get('idHab', None)
@@ -3081,7 +3075,6 @@ def filtrarxComAut(request):
     return Response(context)
 
 
-
 @api_view(['GET'])
 def filtrarxRegBiogeo(request):
     codiHabitat = request.query_params.get('idHab', None)
@@ -3169,6 +3162,7 @@ def filtrarxRegBiogeo(request):
     #context = {'regBiogeo': regBiogeo, 'rodales': rodales}
     context = {'rodales': rodales}
     return Response(context)
+
 
 @api_view(['GET'])
 def filtrarxRodRef(request):
@@ -3472,6 +3466,7 @@ def registration_complete(request):
 def contacto(request):
     return render(request, 'redbosques_main/contacto.html')
 
+
 @api_view(['GET','POST'])
 def crearPDF(request, id):
 
@@ -3639,6 +3634,7 @@ def verFichaRodal(request, id):
     context = {'rodal': rodalArbol, 'datosGenerales': datosGenerales, 'geojson_string': geojsoncollection_string, 'imagenRodal': imagenRodal}
     return render(request, 'redbosques_main/fichaRodal.html', context)
 
+
 def comparadorGraficos(request, id = None):
     init_params = {}
     if id is not None:
@@ -3716,6 +3712,7 @@ def comparadorGraficos(request, id = None):
         context = {'tiposDeBosque': tipoBosqueData, 'habitats': habitatData, 'init_params': init_params}
 
     return render(request, 'redbosques_main/comparadorGraficos.html', context)
+
 
 @login_required(login_url="login/")
 def rodalFormFase1(request, id=None):
@@ -3943,7 +3940,6 @@ def editRodalFormFase1(request, id=None):
     return render(request, 'redbosques_main/editRodalFormFase1.html', context)
 
 
-
 @login_required(login_url="login/")
 def eliminarRodalFase1(request, id=None):
     RodalProsp.objects.filter(id=id).delete()
@@ -4037,9 +4033,6 @@ def verFichaRodalFase1(request, id):
     return render(request, 'redbosques_main/fichaRodalFase1.html', context)
 
 
-
-
-
 ############################ CRUD Images/Docs ##################################
 
 @login_required(login_url="login/")
@@ -4088,6 +4081,7 @@ def uploadImageFase1(request, id):
 
         context = {'listaFotos': fotos, 'id': id_rodal}
         return render(request, 'redbosques_main/rodalesFormFase1_2.html', context)
+
 
 @api_view(['POST'])
 @login_required(login_url="login/")
@@ -4152,6 +4146,7 @@ def uploadDocsFase1(request, id):
 
         context = {'listaFotos': docs, 'id': id_rodal}
         return render(request, 'redbosques_main/rodalesFormFase1.html', context)
+
 
 @api_view(['POST'])
 @login_required(login_url="login/")
@@ -4339,98 +4334,6 @@ def comparadorIFN(request, id=None):
     return render(request, 'redbosques_main/comparador_ifn.html', context)
 
 
-
-'''def crearArbolrodalIFN(dades):
-
-    #######Asignación de los valores a las variables##########
-        for valor2 in dades:
-            if valor2.indicador_cod == 'nm':
-                if valor2.valor == None:
-                    nm_valor = "---"
-                else:
-                    nm_valor = round(valor2.valor, 2)
-
-            if valor2.indicador_cod == 'cp':
-                if valor2.valor == None:
-                    cp_valor = "---"
-                else:
-                    cp_valor = round(valor2.valor, 2)
-
-            if valor2.indicador_cod == 'ea':
-                if valor2.valor == None:
-                    ea_valor = "---"
-                else:
-                    ea_valor = round(valor2.valor)
-
-            if valor2.indicador_cod == 'ce':
-                if valor2.valor == None:
-                    ce_valor = "---"
-                else:
-                    ce_valor = round(valor2.valor, 2)
-
-            if valor2.indicador_cod == 'ab':
-                if valor2.valor == None:
-                    ab_valor = "---"
-                else:
-                    ab_valor = round(valor2.valor)
-
-            if valor2.indicador_cod == 'de':
-                if valor2.valor == None:
-                    de_valor = "---"
-                else:
-                    de_valor = round(valor2.valor)
-
-            if valor2.indicador_cod == 'sn':
-                if valor2.valor == None:
-                    sn_valor = "---"
-                else:
-                    sn_valor = round(valor2.valor, 2)
-
-            if valor2.indicador_cod == 'ae':
-                if valor2.valor == None:
-                    ae_valor = "---"
-                else:
-                    ae_valor = round(valor2.valor)
-
-            if valor2.indicador_cod == 'mp':
-                if valor2.valor == None:
-                    mp_valor = "---"
-                else:
-                    mp_valor = round(valor2.valor)
-
-            if valor2.indicador_cod == 'pi':
-                if valor2.valor == None:
-                    pi_valor = "---"
-                else:
-                    pi_valor = round(valor2.valor)
-
-    ######   Valores del rodal    #########
-        rodal_referencia = {
-            'naturalidad': {
-                'valor': nm_valor,
-                'composicion': {
-                    'valor': cp_valor,
-                    'especies_arboreas': {'valor': ea_valor}
-                },
-                'complejidad': {
-                    'valor': ce_valor,
-                    'area_basimetrica': {'valor': ab_valor},
-                    'diversidad_estructural': {'valor': de_valor}
-                },
-                'senectud': {
-                    'valor': sn_valor,
-                    'arb_tam_excep': {'valor': ae_valor},
-                    'abund_mad_muerta': {'valor': mp_valor},
-                    'prop_madera_muerta': {'valor': pi_valor}
-                }
-            }
-        }
-
-        return rodal_referencia
-
-'''
-
-
 @api_view(['GET'])
 def valorRodalParcelaIFN(request):
 
@@ -4440,6 +4343,13 @@ def valorRodalParcelaIFN(request):
     regBiogeo = request.query_params.get('regBiogeo', None)
     comAutComp = request.query_params.get('comAutComp', None)
     regBiogeoComp = request.query_params.get('regBiogeoComp', None)
+
+    print(cordRod)
+    print(habSel)
+    print(comAut)
+    print(regBiogeo)
+    print(comAutComp)
+    print(regBiogeoComp)
 
     ab_parIFN = {}
     cp_parIFN = {}
@@ -4476,17 +4386,17 @@ def valorRodalParcelaIFN(request):
 
     if cordRod != None:
 
-        if comAutComp != None and regBiogeoComp != None:
+        if comAutComp != 'None' and regBiogeoComp != 'None':
             parIFN = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).filter(comautonom_cod=comAutComp).filter(regbio_cod=regBiogeoComp).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
             parIFN_2 = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).filter(comautonom_cod=comAutComp).filter(regbio_cod=regBiogeoComp).values('dato', 'indicador_cod').order_by('indicador_cod', '-dato')
             #parIFN_2 = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).filter(comautonom_cod=comAutComp).filter(regbio_cod=regBiogeoComp).values('dato', 'indicador_cod').aggregate(Max('dato'))
-        elif comAutComp != None and regBiogeoComp == None:
+        elif comAutComp != 'None' and regBiogeoComp == 'None':
             parIFN = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).filter(comautonom_cod=comAutComp).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
             parIFN_2 = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).filter(comautonom_cod=comAutComp).values('dato', 'indicador_cod').order_by('indicador_cod', '-dato')
-        elif comAutComp == None and regBiogeoComp != None:
+        elif comAutComp == 'None' and regBiogeoComp != 'None':
             parIFN = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).filter(regbio_cod=regBiogeoComp).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
             parIFN_2 = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).filter(regbio_cod=regBiogeoComp).values('dato', 'indicador_cod').order_by('indicador_cod', '-dato')
-        elif comAutComp == None and regBiogeoComp == None:
+        elif comAutComp == 'None' and regBiogeoComp == 'None':
             parIFN = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
             parIFN_2 = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).values('dato', 'indicador_cod').order_by('indicador_cod', '-dato')
             parIFN_2_TEST = Parcelaifn3Valorres.objects.filter(lpeht_cod=habSel).values('dato', 'indicador_cod').annotate(total=Count('dato')).order_by('indicador_cod', '-dato')
@@ -4502,22 +4412,22 @@ def valorRodalParcelaIFN(request):
         elif comAut == None and regBiogeo == None:
             rod = RodalValorres.objects.filter(id=cordRod).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')'''
 
-        if comAut != None and regBiogeo != None:
+        if comAut != 'None' and regBiogeo != 'None':
             #rod = RodalValorres2.objects.filter(id_rodal=cordRod).filter(comautonom_cod=comAut).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
             rod = RodalValorres.objects.filter(id=cordRod).filter(comautonom_cod=comAut).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod', 'dato').annotate(total=Count('valor')).order_by('indicador_cod')
             #rod = RodalValorres.objects.filter(id=cordRod).filter(comautonom_cod=comAut).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod', 'dato')
             rodName = Rodal.objects.filter(id=cordRod).filter(comautonom_cod=comAut).filter(regbio_cod=regBiogeo).values('nombre')
-        elif comAut != None and regBiogeo == None:
+        elif comAut != 'None' and regBiogeo == 'None':
             #rod = RodalValorres2.objects.filter(id_rodal=cordRod).filter(comautonom_cod=comAut).values('valor','indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
             rod = RodalValorres.objects.filter(id=cordRod).filter(comautonom_cod=comAut).values('valor', 'indicador_cod', 'dato').annotate(total=Count('valor')).order_by('indicador_cod')
             #rod = RodalValorres.objects.filter(id=cordRod).filter(comautonom_cod=comAut).values('valor','indicador_cod', 'dato')
             rodName = Rodal.objects.filter(id=cordRod).filter(comautonom_cod=comAut).values('nombre')
-        elif comAut == None and regBiogeo != None:
+        elif comAut == 'None' and regBiogeo != 'None':
             #rod = RodalValorres2.objects.filter(id_rodal=cordRod).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
             rod = RodalValorres.objects.filter(id=cordRod).filter(regbio_cod=regBiogeo).values('valor', 'indicador_cod', 'dato').annotate(total=Count('valor')).order_by('indicador_cod')
             #rod = RodalValorres.objects.filter(id=cordRod).filter(regbio_cod=regBiogeo).values('valor','indicador_cod', 'dato')
             rodName = Rodal.objects.filter(id=cordRod).filter(regbio_cod=regBiogeo).values('nombre')
-        elif comAut == None and regBiogeo == None:
+        elif comAut == 'None' and regBiogeo == 'None':
             #rod = RodalValorres2.objects.filter(id_rodal=cordRod).values('valor', 'indicador_cod').annotate(total=Count('valor')).order_by('indicador_cod')
             rod = RodalValorres.objects.filter(id=cordRod).values('valor', 'indicador_cod', 'dato').annotate(total=Count('valor')).order_by('indicador_cod')
             #rod = RodalValorres.objects.filter(id=cordRod).values('valor', 'indicador_cod', 'dato')
@@ -4853,3 +4763,32 @@ def herramRedbosques(request):
 
 def evaluacionNaturalidad(request):
     return render(request, 'redbosques_main/evaluacionNat.html')
+
+
+def exportViewToCSV(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="listaDeRodales.csv"'
+    test = RedbosquesRodalF2Ident.objects.all()
+    writer = csv.writer(response)
+    writer.writerow(["id", "nombre", "ccaa", "provincia", "municipio", "tipobosque_cod", "tipobosque_nomb",
+                     "habitat_cod", "habitat_nomb", "hic_cod", "hic_nomb", "region_biograf", "spprinc_cod",
+                     "spprinc_nomb", "spprinc_fcc", "spcomp_cod", "spcomp_nomb", "spcomp_fcc", "nm_val", "ea_val", "ea",
+                     "ce_val", "ab_val", "ab", "vv", "de_val", "de", "ev_val", "ev", "sn_val", "ae_val", "ae", "mp",
+                     "ms", "mm_val", "mm", "pm_val", "pm", "hm_val", "mh_val", "mh", "dn_val", "cs_val", "cs", "hh_val",
+                     "ha_val", "tb_val", "tb", "ua_val", "ua", "fa_val", "fa", "hr_val", "fr_val", "fr", "ei_val",
+                     "ei", "fg_val", "fg", "cz_val", "cz", "hb_val", "hb", "fc_val", "fc", "du_val", "du", "ie_val",
+                     "ar_val", "tr", "cf_val", "cd", "eb_val", "db", "cn_val", "dc", "institucion_acro",
+                     "institucion_nomb", "trabajo", "rodal_ref"])
+
+    for rodal in test:
+
+        writer.writerow([rodal.id, rodal.nombre, rodal.ccaa, rodal.provincia, rodal.municipio, rodal.tipobosque_cod, rodal.tipobosque_nomb,
+                     rodal.habitat_cod, rodal.habitat_nomb, rodal.hic_cod, rodal.hic_nomb, rodal.region_biograf, rodal.spprinc_cod,
+                     rodal.spprinc_nomb, rodal.spprinc_fcc, rodal.spcomp_cod, rodal.spcomp_nomb, rodal.spcomp_fcc, rodal.nm_val, rodal.ea_val, rodal.ea,
+                     rodal.ce_val, rodal.ab_val, rodal.ab, rodal.vv, rodal.de_val, rodal.de, rodal.ev_val, rodal.ev, rodal.sn_val, rodal.ae_val, rodal.ae, rodal.mp,
+                     rodal.ms, rodal.mm_val, rodal.mm, rodal.pm_val, rodal.pm, rodal.hm_val, rodal.mh_val, rodal.mh, rodal.dn_val, rodal.cs_val, rodal.cs, rodal.hh_val,
+                     rodal.ha_val, rodal.tb_val, rodal.tb, rodal.ua_val, rodal.ua, rodal.fa_val, rodal.fa, rodal.hr_val, rodal.fr_val, rodal.fr, rodal.ei_val,
+                     rodal.ei, rodal.fg_val, rodal.fg, rodal.cz_val, rodal.cz, rodal.hb_val, rodal.hb, rodal.fc_val, rodal.fc, rodal.du_val, rodal.du, rodal.ie_val,
+                     rodal.ar_val, rodal.tr, rodal.cf_val, rodal.cd, rodal.eb_val, rodal.db, rodal.cn_val, rodal.dc, rodal.institucion_acro,
+                     rodal.institucion_nomb, rodal.trabajo, rodal.rodal_ref])
+    return response

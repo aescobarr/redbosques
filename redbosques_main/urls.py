@@ -90,6 +90,7 @@ urlpatterns = [
     path('valorRodalParcelaIFN', views.valorRodalParcelaIFN, name='valorRodalParcelaIFN'),
     path('herramientaRedbosques', views.herramRedbosques, name='herramRedbosques'),
     path('evaluacionNaturalidad', views.evaluacionNaturalidad, name='evaluacionNat'),
+    path('exportRodalsCSV', views.exportViewToCSV, name='exportViewToCSV')
     #path('valorrefIFN_ajax', views.valorrefIFN_ajax, name='valorrefIFN_ajax')
 
 ]

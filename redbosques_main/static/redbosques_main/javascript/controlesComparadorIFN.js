@@ -413,6 +413,10 @@ $('#selector_rodales').change(function(){
     load_rodal_ref(valRod, valComAut_Comp, valRegBio_Comp, idHabitat, idComAut, idRegBiogeo);
 });
 
+
+
+
+
 //$('#selector_rodales_comp').change(function(){
 $('.filtreParcela').change(function(){
     var valRod = $('#selector_rodales option:selected').val();

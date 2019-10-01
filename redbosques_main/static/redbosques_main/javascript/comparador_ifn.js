@@ -24,35 +24,56 @@ var unblockSelectores = function(){
 
 function load_rodal_ref(valRod, valComAut_Comp, valRegBio_Comp, idHabitat, idComAut, idRegBiogeo){
 
+    console.log(valRod);
+    console.log(valComAut_Comp);
+    console.log(valRegBio_Comp);
+    console.log(idHabitat);
+    console.log(idComAut);
+    console.log(idRegBiogeo);
+
     if(valRod != "null"){
         url = _rodal_IFN;
         var params = [];
 
         if(idHabitat != "null"){
             params.push('idHab='+escape(idHabitat));
+        }else{
+            params.push('idHab=None');
         }
 
         if(idComAut != "null"){
             params.push('comAut='+escape(idComAut));
+        }else{
+            params.push('comAut=None');
         }
 
         if(idRegBiogeo != "null"){
             params.push('regBiogeo='+escape(idRegBiogeo));
+        }else{
+            params.push('regBiogeo=None');
         }
 
         if(valComAut_Comp != "null"){
             params.push('comAutComp='+escape(valComAut_Comp));
+        }else{
+            params.push('comAutComp=None');
         }
 
         if(valRod != "null"){
             params.push('vr='+escape(valRod));
+        }else{
+            params.push('vr=None');
         }
 
         if(valRegBio_Comp != "null"){
             params.push('regBiogeoComp='+escape(valRegBio_Comp));
+        }else{
+            params.push('regBiogeoComp=None');
         }
 
         url = url + "?" + params.join('&');
+
+        console.log(url);
 
         if(valRod == "null"){
             resetUITable();
@@ -368,12 +389,16 @@ var graficaValoresMetricos = function(valMetInd){
 function rodalData(valRod, valComAut_Comp, valRegBio_Comp){
     //var rodPrincip = valRod;
     var idHabitat = $('#habitat').val();
-
     var idComAut = $('#selector_ComAut').val();
     var idRegBiogeo = $('#selector_RegBio').val();
+    var valComAut_Comp = $('#selector_ComAut_Comp').val();
+    var valRegBio_Comp = $('#selector_RegBio_Comp').val();
 
-    load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod);
+    //load_rodal_ref(valRod, idComAut, idRegBiogeo, idHabitat);
+    load_rodal_ref(valRod, valComAut_Comp, valRegBio_Comp, idHabitat, idComAut, idRegBiogeo);
+
 }
+
 
 
 $('.lv1').on("click", function(){
