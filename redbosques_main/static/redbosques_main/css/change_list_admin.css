@@ -1,0 +1,25 @@
+.t a:link{
+    display: block;
+    float: left;
+    padding: 8px 15px;
+    background: #9ac635;
+    font-weight: 400;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: white;
+    position: relative
+}
+
+.t a{
+    border-radius: 15px;
+    color: white;
+    text-decoration: none;
+}
+
+.t a:hover{
+    border-radius: 15px;
+    color: white;
+    text-decoration: none;
+    background: #8ab22f;
+}

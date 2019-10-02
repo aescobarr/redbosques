@@ -24,7 +24,6 @@ class InstitucionAdmin(admin.ModelAdmin):
 class RodalAdmin(admin.ModelAdmin):
     fields = ('datosrestringidos', 'metodo_cod', 'nombre', 'comautonom_cod', 'provincia_cod', 'municipio', 'propietario', 'fecha', 'equipo', 'lpeht_cod', 'hic_cod', 'regbio_cod', 'espprinc_cod', 'espcomp_cod', 'espprincip_h0', 'espcomp_h0', 'numesparb', 'areabasal', 'volmadvivo', 'numestratos', 'numclasdiam', 'abundpiesexcep', 'volmmpie', 'volmmsuelo', 'volmmprop', 'nummicrohab', 'numfasessil', 'valpropbosc56', 'valagropasant', 'valforestant', 'valforestrec', 'valespinvas', 'valfragment', 'valcaza', 'valherbiv', 'valfrecuent', 'valdurabusos', 'otroespflora', 'otrohics', 'otroinfo', 'notes', 'dateadded', 'volmmtotal', 'usuario', 'rodalref', 'fotoglobo', 'espprinc_fcc', 'espcomp_fcc', 'municipio1',)
     list_display = ('nombre', 'usuario', 'municipio1',)
-    actions = ["exportViewToCSV"]
     change_list_template = 'admin/redbosques/Rodal/change_list.html'
 
 

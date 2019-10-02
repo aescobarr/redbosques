@@ -3,10 +3,13 @@
 
 {% block extrastyle %}
   {{ block.super }}
-  <link rel="stylesheet" type="text/css" href="{% static "admin/css/changelists.css" %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'admin/css/changelists.css' %}">
   {% if cl.formset %}
-    <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}">
   {% endif %}
+    <!--<link href="{% static 'redbosques_main/bootstrap-3.3.7-dist/css/bootstrap.css' %}" rel="stylesheet">-->
+    <link rel="stylesheet" type="text/css" href="{% static 'redbosques_main/css/change_list_admin.css' %}">
+
   {% if cl.formset or action_form %}
     <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
   {% endif %}
@@ -21,6 +24,7 @@
 {% block extrahead %}
 {{ block.super }}
 {{ media.js }}
+<script src="{% static 'redbosques_main/fontawesome-free-5.3.1-web/js/all.js' %}"></script>
 {% endblock %}
 
 {% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-list{% endblock %}
@@ -38,13 +42,14 @@
 {% block coltype %}flex{% endblock %}
 
 {% block content %}
+    {% block test %}
+        <div class="t">
+            <a href="{% url 'exportViewToCSV' %}"><i class="fas fa-download"></i> Descargar CSV de Rodales</a>
+        </div>
+    {% endblock %}
+
   <div id="content-main">
-      {% block test %}
 
-        <div class="t"><a href="/admin/redbosques_main/rodal/add/" class="addlink">Añadir rodal</a></div>
-
-
-      {% endblock %}
     {% block object-tools %}
         <ul class="object-tools">
           {% block object-tools-items %}
