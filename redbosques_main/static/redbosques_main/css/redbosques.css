@@ -898,3 +898,20 @@ td.errorAlert{
     background-color: #ffe699;
 }
 
+.table.table-bordered.infoAmbitos {
+    border: 1px solid black;
+}
+
+.table.table-bordered.infoAmbitos tr th {
+    border: 1px solid black;
+}
+
+.table.table-bordered.infoAmbitos tr td {
+    border: 1px solid black;
+}
+
+.eq-c{
+    text-align: center;
+    margin-bottom: 25px;
+    margin-top: 25px;
+}
