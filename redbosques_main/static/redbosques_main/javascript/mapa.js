@@ -516,6 +516,17 @@ var updateMapData = function(){
             }
         }*/
 
+        if(codigo_subHabitat != null){
+            if (codigo_subHabitat.includes("&")){
+                codigo_subHabitat = codigo_subHabitat.replace(/&/gi, "%26");
+                console.log(codigo_subHabitat);
+            }
+        }
+
+
+
+
+
         if(id_rodal){
             url = url + '&cr=' + id_rodal;
         }else{
@@ -606,6 +617,14 @@ var subHabitatData = function(){
 
     var codiSubHabitat = getSubHabitat();
     var codiAmbito = getEje();
+
+    if(codiSubHabitat != null){
+        if (codiSubHabitat.includes("&")){
+            codiSubHabitat = codiSubHabitat.replace(/&/gi, "%26");
+            console.log(codiSubHabitat);
+        }
+    }
+
     urlSubHabitat = '/redbosques/subHabitatData';
     urlSubHabitat = urlSubHabitat+'?csh='+codiSubHabitat+ '&ca=' + codiAmbito;
     //console.log(urlSubHabitat);

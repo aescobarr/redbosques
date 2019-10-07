@@ -952,7 +952,7 @@ def valorref_ajax(request):
         rodal_referencia = crearArbolMedia(dades_rodal)
 
         ### Grafica puntos
-        dadesGraficosPuntos = dades_rodal2.filter(nivel='eje').values('id_rodal', 'indicador_cod', 'valor')
+        dadesGraficosPuntos = dades_rodal2.filter(nivel='eje').filter(lpeht_cod__startswith=idHab).values('id_rodal', 'indicador_cod', 'valor')
 
         idRodales = []
         for infRod in dadesGraficosPuntos:
