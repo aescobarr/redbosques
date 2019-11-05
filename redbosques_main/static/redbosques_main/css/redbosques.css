@@ -915,3 +915,7 @@ td.errorAlert{
     margin-bottom: 25px;
     margin-top: 25px;
 }
+
+.leaflet-control-layers-list{
+    text-align: left;
+}

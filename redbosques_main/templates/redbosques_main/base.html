@@ -77,7 +77,7 @@
                                 <a href="{% url 'evaluacionNat' %}">Evaluación de la naturalidad</a>
                             </div>
                         </li>
-                        <li class="menu-options active"><a href="{% url 'menu' %}">ADMINISTRACIÓN DE RODALES<span class="sr-only">(current)</span></a></li>
+
                         <li class="menu-options active dropdown">
                             <a href="javascript:void(0)" class="dropbtn">MAPAS
                                 <span class="sr-only">(current)</span>
@@ -98,6 +98,7 @@
                         </li>
 
                         <li class="menu-options active"><a href="{% url 'contacto' %}">CONTACTO<span class="sr-only">(current)</span></a></li>
+                        <li class="menu-options active"><a href="{% url 'menu' %}">ADMINISTRACIÓN DE RODALES<span class="sr-only">(current)</span></a></li>
                         {% if user.is_authenticated %}
                             <li class="userLogout">
                                 <p>Hola, {{ user.first_name }} | <a href="{% url 'logout' %}">Salir <i class="fas fa-sign-out-alt"></i></a></p>
@@ -168,7 +169,7 @@
     		    <div class="region region-footer-bottom-left">
                     <div id="block-block-1" class="block block-block">
                         <div class="content">
-                            <p>LIFE Redcapacita_2015 (LIFE15 GIE/ES/000809). Financiado por la Unión Europea a través del programa LIFE Gobernanza e Información Medioambientales 2015. Con el apoyo del MAPAMA a través de la Fundación Biodiversidad.<br>Este material refleja el punto de vista de los autores. La Comisión/EASME no es responsable de cualquier uso que se pueda hacer de esa información o de su contenido.</p>
+                            <p>LIFE Redcapacita_2015 (LIFE15 GIE/ES/000809). Financiado por la Unión Europea a través del programa LIFE Gobernanza e Información Medioambientales 2015. <br>Este material refleja el punto de vista de los autores. La Comisión/EASME no es responsable de cualquier uso que se pueda hacer de esa información o de su contenido.</p>
                         </div>
                     </div>
                 </div>

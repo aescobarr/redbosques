@@ -305,8 +305,8 @@ msgstr "REDBOSQUES: Herramienta de evaluación de rodales maduros"
 
 #: redbosques_main/templates/redbosques_main/index.html:17
 msgid "intro"
-msgstr "Redbosques es una aplicación web abierta que permite evaluar la madurez de rodales como componente \n"
-"esencial de la naturalidad de los hábitats forestales. Es una herramienta para gestores y científicos como \n"
+msgstr "Redbosques es una aplicación web abierta que permite evaluar la naturalidad en función de la madurez \n,"
+"la huella humana y la integridad espacial. Es una herramienta para gestores y científicos como \n"
 "soporte a la toma de decisiones para la gestión forestal y la búsqueda de referentes de alto valor de \n "
 "conservación."
 

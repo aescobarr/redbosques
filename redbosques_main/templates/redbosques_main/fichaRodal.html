@@ -1,4 +1,5 @@
 {% extends "redbosques_main/base.html" %}
+{% load i18n %}
 {% load static %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'redbosques_main/leaflet/leaflet.css' %}">
@@ -9,7 +10,7 @@
 <div class="container-fluid subheaderFicha">
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 subfield">
-            <h3 style="margin-top: 10px;">IDENTIFICACIÓN DE RODALES MADUROS DE REFERENCIA<br>Fase II: Inspección</h3>
+            <h3 style="margin-top: 10px;">IDENTIFICACIÓN DE RODALES MADUROS DE REFERENCIA<br>Fase II: Identificación</h3>
         </div>
     </div>
 </div>
@@ -151,7 +152,7 @@
     </div>
     <div class="row">
         <div class="col-lg-6">
-            <h4>Naturalidad</h4>
+            <h4>{% trans 'nm' %}</h4>
             <div class="data-table tabla-datos"><!--         Naturalidad                       -->
                 <table class="table responsive" style="width: 100%;">
                 <thead>
@@ -164,7 +165,7 @@
                 </thead>
                 <tbody>
                     <tr class="lv1 lv1Nat">
-                        <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>NATURALIDAD</span></th>
+                        <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'nm' %}</span></th>
                         <td id="_naturalidad" class="bgColorRod">{{ rodal.naturalidad.valor }}</td>
                         <td class="bgColorRod"></td>
                         <td class="bgColorRod"></td>

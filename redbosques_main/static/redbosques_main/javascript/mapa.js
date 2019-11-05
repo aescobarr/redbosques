@@ -87,31 +87,58 @@ $(document).ready(function() {
 
 
 
+            if (usuarioAut){
 
-            if (punt.imagen == null){
-                var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
-                '<b>' + punt.nombre + '</b><br><b>Hábitat: </b>' + punt.habitat_nom + '<br>' + '<b>Tipo de Bosque: </b>' + punt.tipobosque_nombre +
-                '<br><b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br><b>Región biogeográfica: </b>' + punt.regionBiogeo + '<br>' +
-                '<a href="/redbosques/fichaRodal/' + punt.id_rodal + '/"><b>Ficha </b></a>&nbsp;<b> Comparar con: </b><a href="/redbosques/comparador_new/' + punt.id_rodal + '/">Rodales</a> / ' +
-                '<a href="/redbosques/comparador_ifn/' + punt.id_rodal + '/">IFN</a><br><br>' +
-                '<div class="popup-table" style="text-align: center; width: 250px;"><table class="table"><tr><th>Ámbito</th>'+
-                '<th style="text-align: center;">Valor</th></tr><tr><td style="text-align: left;">Naturalidad</td><td>'+ punt.valor_nm +'</td></tr><tr>'+
-                '<td style="text-align: left;">Huella humana</td><td>'+ punt.valor_hh +'</td></tr><tr><td style="text-align: left;">Integridad Espacial</td><td>'+ punt.valor_ie +'</td></tr></table></div>' +
-                '<div class="imagenRodal"><img src="/static/redbosques_main/css/logo.png" alt="'+ punt.nombre +'" height="100"></div>'
-                );
+                if (punt.imagen == null){
+                    var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
+                    '<b>' + punt.nombre + '</b><br><b>Hábitat: </b>' + punt.habitat_nom + '<br>' + '<b>Tipo de Bosque: </b>' + punt.tipobosque_nombre +
+                    '<br><b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br><b>Región biogeográfica: </b>' + punt.regionBiogeo + '<br>' +
+                    '<a href="/redbosques/fichaRodal/' + punt.id_rodal + '/"><b>Ficha </b></a>&nbsp;<b> Comparar con: </b><a href="/redbosques/comparador_new/' + punt.id_rodal + '/">Rodales</a> / ' +
+                    '<a href="/redbosques/comparador_ifn/' + punt.id_rodal + '/">IFN</a><br><br>' +
+                    '<div class="popup-table" style="text-align: center; width: 250px;"><table class="table"><tr><th>Ámbito</th>'+
+                    '<th style="text-align: center;">Valor</th></tr><tr><td style="text-align: left;">Madurez</td><td>'+ punt.valor_nm +'</td></tr><tr>'+
+                    '<td style="text-align: left;">Huella humana</td><td>'+ punt.valor_hh +'</td></tr><tr><td style="text-align: left;">Integridad Espacial</td><td>'+ punt.valor_ie +'</td></tr></table></div>' +
+                    '<div class="imagenRodal"><img src="/static/redbosques_main/css/logo.png" alt="'+ punt.nombre +'" height="100"></div>'
+                    );
+                }else{
+                    var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
+                    '<b>' + punt.nombre + '</b><br><b>Hábitat: </b>' + punt.habitat_nom + '<br>' + '<b>Tipo de Bosque: </b>' + punt.tipobosque_nombre +
+                    '<br><b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br><b>Región biogeográfica: </b>' + punt.regionBiogeo + '<br>' +
+                    '<a href="/redbosques/fichaRodal/' + punt.id_rodal + '/"><b>Ficha </b></a>&nbsp;<b> Comparar con: </b><a href="/redbosques/comparador_new/' + punt.id_rodal + '/">Rodales</a> / ' +
+                    '<a href="/redbosques/comparador_ifn/' + punt.id_rodal + '/">IFN</a><br><br>' +
+                    '<div class="popup-table" style="text-align: center; width: 250px;"><table class="table"><tr><th>Ámbito</th>'+
+                    '<th style="text-align: center;">Valor</th></tr><tr><td style="text-align: left;">Madurez</td><td>'+ punt.valor_nm +'</td></tr><tr>'+
+                    '<td style="text-align: left;">Huella humana</td><td>'+ punt.valor_hh +'</td></tr><tr><td style="text-align: left;">Integridad Espacial</td><td>'+ punt.valor_ie +'</td></tr></table></div>' +
+                    '<div class="imagenRodal"><img src="/media/'+ punt.imagen +'" alt="'+ punt.nombre +'" width="250" height="150"></div>'
+                    );
+                }
             }else{
-                var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
-                '<b>' + punt.nombre + '</b><br><b>Hábitat: </b>' + punt.habitat_nom + '<br>' + '<b>Tipo de Bosque: </b>' + punt.tipobosque_nombre +
-                '<br><b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br><b>Región biogeográfica: </b>' + punt.regionBiogeo + '<br>' +
-                '<a href="/redbosques/fichaRodal/' + punt.id_rodal + '/"><b>Ficha </b></a>&nbsp;<b> Comparar con: </b><a href="/redbosques/comparador_new/' + punt.id_rodal + '/">Rodales</a> / ' +
-                '<a href="/redbosques/comparador_ifn/' + punt.id_rodal + '/">IFN</a><br><br>' +
-                '<div class="popup-table" style="text-align: center; width: 250px;"><table class="table"><tr><th>Ámbito</th>'+
-                '<th style="text-align: center;">Valor</th></tr><tr><td style="text-align: left;">Naturalidad</td><td>'+ punt.valor_nm +'</td></tr><tr>'+
-                '<td style="text-align: left;">Huella humana</td><td>'+ punt.valor_hh +'</td></tr><tr><td style="text-align: left;">Integridad Espacial</td><td>'+ punt.valor_ie +'</td></tr></table></div>' +
-                '<div class="imagenRodal"><img src="/media/'+ punt.imagen +'" alt="'+ punt.nombre +'" width="250" height="150"></div>'
-                );
-            }
 
+                if (punt.imagen == null){
+                    var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
+                    '<b>' + punt.nombre + '</b><br><b>Hábitat: </b>' + punt.habitat_nom + '<br>' + '<b>Tipo de Bosque: </b>' + punt.tipobosque_nombre +
+                    '<br><b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br><b>Región biogeográfica: </b>' + punt.regionBiogeo + '<br>' +
+                    '<b> Comparar con: </b><a href="/redbosques/comparador_new/' + punt.id_rodal + '/">Rodales</a> / ' +
+                    '<a href="/redbosques/comparador_ifn/' + punt.id_rodal + '/">IFN</a><br><br>' +
+                    '<div class="popup-table" style="text-align: center; width: 250px;"><table class="table"><tr><th>Ámbito</th>'+
+                    '<th style="text-align: center;">Valor</th></tr><tr><td style="text-align: left;">Madurez</td><td>'+ punt.valor_nm +'</td></tr><tr>'+
+                    '<td style="text-align: left;">Huella humana</td><td>'+ punt.valor_hh +'</td></tr><tr><td style="text-align: left;">Integridad Espacial</td><td>'+ punt.valor_ie +'</td></tr></table></div>' +
+                    '<div class="imagenRodal"><img src="/static/redbosques_main/css/logo.png" alt="'+ punt.nombre +'" height="100"></div>'
+                    );
+                }else{
+                    var marker = L.marker([punt.y,punt.x], {icon: current_icon}).bindPopup(
+                    '<b>' + punt.nombre + '</b><br><b>Hábitat: </b>' + punt.habitat_nom + '<br>' + '<b>Tipo de Bosque: </b>' + punt.tipobosque_nombre +
+                    '<br><b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br><b>Región biogeográfica: </b>' + punt.regionBiogeo + '<br>' +
+                    '<b> Comparar con: </b><a href="/redbosques/comparador_new/' + punt.id_rodal + '/">Rodales</a> / ' +
+                    '<a href="/redbosques/comparador_ifn/' + punt.id_rodal + '/">IFN</a><br><br>' +
+                    '<div class="popup-table" style="text-align: center; width: 250px;"><table class="table"><tr><th>Ámbito</th>'+
+                    '<th style="text-align: center;">Valor</th></tr><tr><td style="text-align: left;">Madurez</td><td>'+ punt.valor_nm +'</td></tr><tr>'+
+                    '<td style="text-align: left;">Huella humana</td><td>'+ punt.valor_hh +'</td></tr><tr><td style="text-align: left;">Integridad Espacial</td><td>'+ punt.valor_ie +'</td></tr></table></div>' +
+                    '<div class="imagenRodal"><img src="/media/'+ punt.imagen +'" alt="'+ punt.nombre +'" width="250" height="150"></div>'
+                    );
+                }
+
+            }
 
 
             llista_punts.push(marker);
@@ -194,11 +221,11 @@ $(document).ready(function() {
 
             var valFrase = null;
             if (punt.valor >= 1 && punt.valor <= 3){
-                valFrase = "Rodal con naturalidad baja"
+                valFrase = "Rodal con madurez baja"
             }else if (punt.valor >= 4 && punt.valor <= 6){
-                valFrase = "Rodal con tendencia a la naturalidad"
+                valFrase = "Rodal con tendencia a la madurez"
             }else if (punt.valor >= 7 && punt.valor <= 9){
-                valFrase = "Rodal con indicios consistentes de un nivel elevado de naturalidad"
+                valFrase = "Rodal con indicios consistentes de un nivel elevado de madurez"
             }
 
             if (punt.foto == null){
@@ -271,27 +298,29 @@ $(document).ready(function() {
 
     var baseLayers = {
 		"Bing maps": bing,
-		"Open street map": base,
 		"IGN": ign,
-		"Open cycle map": openCycle
+		"Open street map": base,
+		//"Open cycle map": openCycle
 	};
     var baseLayersFase1 = {
 		"Bing maps": bingFase1,
-		"Open street map": baseFase1,
 		"IGN": ignFase1,
-		"Open cycle map": openCycleFase1
+		"Open street map": baseFase1,
+		//"Open cycle map": openCycleFase1
 	};
 
     mymap = L.map('mapid', {
             center: [40.0000000, -4.0000000],
             zoom: 6,
-            layers: [base,bing,ign,openCycle]
+            //layers: [base,bing,ign,openCycle]
+            layers: [bing,base,ign]
     });
 
     mymapFase1 = L.map('mapidFase1', {
             center: [40.0000000, -4.0000000],
             zoom: 6,
-            layers: [baseFase1,bingFase1,ignFase1,openCycleFase1]
+            //layers: [baseFase1,bingFase1,ignFase1,openCycleFase1]
+            layers: [bingFase1,baseFase1,ignFase1]
     });
 
 

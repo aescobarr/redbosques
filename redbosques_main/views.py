@@ -3953,6 +3953,8 @@ def verFichaRodalFase1(request, id):
     valRod = RodalProspValores.objects.filter(id_rodal=id)
     imgRodal = FotosRodalProsp.objects.filter(id_rodal=id).filter(fotoprincipal="True")
 
+
+
     imagenRodal = []
     for i in imgRodal:
         imagenRodal = {
@@ -4028,8 +4030,7 @@ def verFichaRodalFase1(request, id):
     print(valores)
     print(imagenRodal)
 
-    context = {'datosGenerales': datosGenerales, 'geojson_string': geojsoncollection_string,
-               'imagenRodal': imagenRodal, 'valores': valores}
+    context = {'datosGenerales': datosGenerales, 'geojson_string': geojsoncollection_string, 'imagenRodal': imagenRodal, 'valores': valores}
     return render(request, 'redbosques_main/fichaRodalFase1.html', context)
 
 

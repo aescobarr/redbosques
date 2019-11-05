@@ -147,6 +147,14 @@
     var codi_rodalFase1;
     var zoomRodalFase1 = {{ coordenadas_rodal | safe }};
 
+    var usuarioAut;
+
+    {% if user.is_authenticated %}
+        var usuarioAut = true;
+    {% else %}
+        var usuarioAut = false;
+    {% endif %}
+
 
 
 </script>
