@@ -24,12 +24,12 @@ var unblockSelectores = function(){
 
 function load_rodal_ref(valRod, valComAut_Comp, valRegBio_Comp, idHabitat, idComAut, idRegBiogeo){
 
-    console.log(valRod);
+    /*console.log(valRod);
     console.log(valComAut_Comp);
     console.log(valRegBio_Comp);
     console.log(idHabitat);
     console.log(idComAut);
-    console.log(idRegBiogeo);
+    console.log(idRegBiogeo);*/
 
     if(valRod != "null"){
         url = _rodal_IFN;
@@ -73,7 +73,7 @@ function load_rodal_ref(valRod, valComAut_Comp, valRegBio_Comp, idHabitat, idCom
 
         url = url + "?" + params.join('&');
 
-        console.log(url);
+        //console.log(url);
 
         if(valRod == "null"){
             resetUITable();
@@ -180,7 +180,7 @@ var grafconst = function(ind, parcelas, rodal, textCord){
         title: { text: ' ' },
         xAxis: [{
 
-            title: { text: textCord },
+            title: { text: textCord + ' del IFN' },
             type: 'category',
             labels: {
                 style: {
@@ -200,7 +200,7 @@ var grafconst = function(ind, parcelas, rodal, textCord){
         }],
 
         yAxis: [{
-            title: { text: 'nº de parcelas' },
+            title: { text: 'nº de parcelas del IFN' },
             min: 0
         },{
             title: { text: ' ' },
@@ -340,7 +340,7 @@ var graficaValoresMetricos = function(valMetInd){
 /* *********************************** EJE Y *********************************** */
         yAxis: [{
           	id: 'ifn_y',
-            title: { text: 'nº de parcelas'}
+            title: { text: 'nº de parcelas del IFN'}
         }, {
           	id: 'rodal_y',
           	title: {text: ' '},

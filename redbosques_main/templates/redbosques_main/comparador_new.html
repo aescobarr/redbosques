@@ -132,7 +132,9 @@
 
                 </div>
                 <!-- **************************************************************************** -->
+
             </div>
+
         </div>
 </div>
 <div class="container menu-data-show">
@@ -166,15 +168,15 @@
                         <tr class="headerTabla">
                             <!--<th>Valores del Rodal</th>-->
                             <th></th>
-                            <th>Ámbito</th>
-                            <th>Criterio</th>
-                            <th>Indicador</th>
+                            <th>Ámbito(*)</th>
+                            <th>Criterio(*)</th>
+                            <th>Indicador(*)</th>
 
                             <!--<th>Valores de Referencia</th>-->
                             <th class="graf" style="display: none;"></th>
-                            <th class="graf" style="display: none;">Ámbito</th>
-                            <th class="graf" style="display: none;">Criterio</th>
-                            <th class="graf" style="display: none;">Indicador</th>
+                            <th class="graf" style="display: none;">Ámbito(*)</th>
+                            <th class="graf" style="display: none;">Criterio(*)</th>
+                            <th class="graf" style="display: none;">Indicador(*)</th>
                             <th class="aux" colspan="4"></th>
                             <th class="diff-col">Diferencia</th>
                         </tr>
@@ -764,6 +766,13 @@
             </div>
         </div>
     </div>
+    <div class="row">
+                <br>
+                <div class="col-lg-12">
+
+                    <p>(*)Los valores por ámbito, criterio y indicador están representados en una escala del 0 - 10</p>
+                </div>
+            </div>
 </div>
 
 <!--<div class="container tabla-datos-metrica" style="display: none">
@@ -775,7 +784,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-offset-2 col-lg-8" style="padding-left: 0px;">
-                <h3 style="margin-bottom: 20px;">Comparación por ámbitos y criterios</h3>
+                <h3 style="margin-bottom: 20px; text-align:center;">Comparador de rodales con los valores medios del Inventario Forestal Nacional</h3>
             </div>
         </div>
         <div class="row">
@@ -783,7 +792,7 @@
                 <table class="graficTable">
             <tbody>
                 <tr>
-                    <th rowspan="2">Ambitos</th>
+                    <th rowspan="2">Ámbitos</th>
                     <th colspan="3">Criterios</th>
                 </tr>
                 <tr>
@@ -809,7 +818,7 @@
                     <td>
                         <ul>
                             <li><strong>Comp</strong> => {% trans 'cp' %}</li>
-                            <li><strong>Compl</strong> => {% trans 'nm' %}</li>
+                            <li><strong>Compl</strong> => {% trans 'compl' %}</li>
                             <li><strong>Sen</strong> => {% trans 'sn' %}</li>
                             <li><strong>MicHab</strong> => {% trans 'hm' %}</li>
                             <li><strong>Din</strong> => {% trans 'dn' %}</li>
@@ -951,7 +960,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-offset-2 col-lg-8" style="padding-left: 0px;">
-                <h3 style="margin-bottom: 20px;">Ranking por ambito i ranking por critério</h3>
+                <h3 style="margin-bottom: 20px;">Ranking por ámbito i ranking por critério</h3>
             </div>
         </div>
     </div>
