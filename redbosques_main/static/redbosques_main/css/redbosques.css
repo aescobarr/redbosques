@@ -919,3 +919,11 @@ td.errorAlert{
 .leaflet-control-layers-list{
     text-align: left;
 }
+
+table > thead.grafico tr:first-child th{
+    border-top: none;
+}
+
+table thead.graf tr:first-child th{
+    border-top: none;
+}

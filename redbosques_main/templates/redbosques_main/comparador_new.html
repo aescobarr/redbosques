@@ -152,28 +152,41 @@
             <div class="table-loader"></div>
             <div>
                 <table class="table responsive">
-                    <thead>
+                    <thead class="grafico">
                         <th style="width: 25%"></th>
-                            <th colspan="3"style="width:30%; text-align: center;">
-                                <b class="green-font">Rodal</b>
-                                <!--<input type="text" class="form-control" placeholder="{{ infoRodal.nombre }}" readonly>-->
-                            </th>
-                            <th class="rodalRefer"></th>
+                        <th colspan="3"style="width:30%; text-align: center;">
+                            <b class="green-font">Rodal</b>
+                            <!--<input type="text" class="form-control" placeholder="{{ infoRodal.nombre }}" readonly>-->
+                        </th>
+                        <th class="rodalRefer"></th>
                         <th colspan="3" style="width:35%; text-align: center;">
                             <b class="green-font">Rodal / Conjunto de rodales</b>
+                        </th>
+                    </thead>
 
+                    <thead style="display: none;" class="graf">
+                        <th style="width: 25%"></th>
+                        <th colspan="4"style="width:30%; text-align: center;">
+                            <b class="green-font">Rodal</b>
+                            <!--<input type="text" class="form-control" placeholder="{{ infoRodal.nombre }}" readonly>-->
+                        </th>
+                        <th class="graf" style="display: none;"></th>
+                        <th colspan="4" style="width:35%; text-align: center;">
+                            <b class="green-font">Rodal / Conjunto de rodales</b>
                         </th>
                     </thead>
                     <thead>
                         <tr class="headerTabla">
                             <!--<th>Valores del Rodal</th>-->
                             <th></th>
+                            <th class="graf" style="display: none;">Valores métricos</th>
                             <th>Ámbito(*)</th>
                             <th>Criterio(*)</th>
                             <th>Indicador(*)</th>
 
                             <!--<th>Valores de Referencia</th>-->
                             <th class="graf" style="display: none;"></th>
+                            <th class="graf" style="display: none;">Valores métricos</th>
                             <th class="graf" style="display: none;">Ámbito(*)</th>
                             <th class="graf" style="display: none;">Criterio(*)</th>
                             <th class="graf" style="display: none;">Indicador(*)</th>
@@ -191,26 +204,27 @@
                                     {% trans "nm" %}
                                 </span>
                             </th>
+                            <td class="bgColorRod"></td>
                             <td id="_naturalidad" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
-                            <td class="bgColorRod"></td>
-
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf" colspan="2" style="display: none;"></td>
                             <td id="naturalidad" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
 
-
-                            <td class="grafico" colspan="4">
+                            <td class="grafico" colspan="5">
                                 <div class="divGraf naturalidad"></div>
-                                <!--<td id="naturalidad_dif" class="graf valGraf">---</td>-->
                             </td>
                             <td id="naturalidad_dif" class="diff-col">---</td>
 
                         </tr>
                         <tr class="lv2 lv2Nat" style="display: none">
                             <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i>
-                                <span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'cp' %}">{% trans 'cp' %}</span></th>
+                                <span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'cp' %}">{% trans 'cp' %}</span>
+                            </th>
+
+                            <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
                             <td id="_naturalidad_composicion" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
@@ -229,11 +243,16 @@
                         </tr>
                         <tr class="lv3 lv3Nat" style="display: none">
                             <td class="identValores" style="text-indent: 15px;" scope="row">
-                                <span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'ea' %}">{% trans 'ea' %}</span></td>
+                                <span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'ea' %}">{% trans 'ea' %}</span>
+                            </td>
+                            <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
                             <td id="_naturalidad_composicion_especies_arboreas" class="bgColorRod">---</td>
 
+                            <td class="graf" style="display: none;"></td>
+                            <td class="graf" style="display: none;"></td>
+                            <td class="graf" style="display: none;"></td>
                             <td class="graf" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
@@ -459,12 +478,13 @@
                     <!--         Huella Humana                     -->
                         <tr class="lv1 lv1Hh">
                             <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'hh' %}">{% trans 'hh' %}</span></th>
-
+                            <td class="bgColorRod"></td>
                                 <td id="_huellaHumana" class="bgColorRod">---</td>
 
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
 
+                            <td class="graf" style="display: none;"></td>
                             <td class="graf" style="display: none;"></td>
                             <td id="huellaHumana" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>

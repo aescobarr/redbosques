@@ -168,8 +168,8 @@ $('.val-graf.valores').on("click", function(){
     if($('.tabla-datos').attr('style','display: none')){
         $('.tabla-datos').attr('style','display: block')
     }
-     $('td.graf, th.graf').show();
-     $('td.grafico, th.aux').hide();
+     $('td.graf, th.graf, thead.graf').show();
+     $('td.grafico, th.aux, thead.grafico').hide();
      $('.tabla-datos-metrica').hide();
      $('.comp-graficas').hide();
 });
@@ -178,8 +178,8 @@ $('.val-graf.grafica').on("click", function(){
     if($('.tabla-datos').attr('style','display: none')){
         $('.tabla-datos').attr('style','display: block')
     }
-    $('td.graf, th.graf').hide();
-    $('td.grafico, th.aux').show();
+    $('td.graf, th.graf, thead.graf').hide();
+    $('td.grafico, th.aux, thead.grafico').show();
     $('.tabla-datos-metrica').hide();
     $('.comp-graficas').hide();
 });
