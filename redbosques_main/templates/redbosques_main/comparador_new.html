@@ -142,7 +142,6 @@
         <li class="active val-graf grafica"><a data-toggle="tab" href="#filtro-valGraficas">Gráfica/Valores</a></li>
         <li class="val-graf valores"><a data-toggle="tab" href="#filtro-valores">Valores</a></li>
         <li class="graf graficas"><a data-toggle="tab" href="#filtro-graficas">Gráficas</a></li>
-        <!--<li class="val-metr metrica"><a data-toggle="tab" href="#filtro-metrica">Valores métricos</a></li>-->
     </ul>
 </div>
 
@@ -163,7 +162,6 @@
                             <b class="green-font">Rodal / Conjunto de rodales</b>
                         </th>
                     </thead>
-
                     <thead style="display: none;" class="graf">
                         <th style="width: 25%"></th>
                         <th colspan="4"style="width:30%; text-align: center;">
@@ -177,16 +175,13 @@
                     </thead>
                     <thead>
                         <tr class="headerTabla">
-                            <!--<th>Valores del Rodal</th>-->
                             <th></th>
                             <th class="graf" style="display: none;">Valores métricos</th>
                             <th>Ámbito(*)</th>
                             <th>Criterio(*)</th>
                             <th>Indicador(*)</th>
-
-                            <!--<th>Valores de Referencia</th>-->
                             <th class="graf" style="display: none;"></th>
-                            <th class="graf" style="display: none;">Valores métricos</th>
+                            <th class="graf" style="display: none; width: 10%;">Valores métricos</th>
                             <th class="graf" style="display: none;">Ámbito(*)</th>
                             <th class="graf" style="display: none;">Criterio(*)</th>
                             <th class="graf" style="display: none;">Indicador(*)</th>
@@ -195,8 +190,7 @@
                         </tr>
                     </thead>
                     <tbody>
-
-                    <!--         Naturalidad                       -->
+<!-- ################################### Naturalidad ################################### -->
                         <tr class="lv1 lv1Nat">
                             <th id="popupNM" scope="row" class="green-font">
                                 <i class="fas fa-caret-right fa-lg"></i>
@@ -204,113 +198,121 @@
                                     {% trans "nm" %}
                                 </span>
                             </th>
-                            <td class="bgColorRod"></td>
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="_naturalidad" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
+                            <td class="bgColorRod"></td>
                             <td class="graf" style="display: none;"></td>
-                            <td class="graf" colspan="2" style="display: none;"></td>
+                            <td class="graf" style="display: none;"></td>
                             <td id="naturalidad" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
-
-                            <td class="grafico" colspan="5">
+                            <!--<td class="grafico"></td>-->
+                            <td class="grafico" colspan="4">
                                 <div class="divGraf naturalidad"></div>
                             </td>
                             <td id="naturalidad_dif" class="diff-col">---</td>
-
                         </tr>
                         <tr class="lv2 lv2Nat" style="display: none">
                             <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i>
                                 <span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'cp' %}">{% trans 'cp' %}</span>
                             </th>
-
-                            <td class="bgColorRod"></td>
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td id="_naturalidad_composicion" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
 
                             <td class="graf" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="naturalidad_composicion" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
-
+                            <!--<td class="grafico">-->
                             <td class="grafico" colspan="4">
                                 <div class="divGraf composicion"></div>
                             </td>
                             <td id="naturalidad_composicion_dif" class="diff-col">---</td>
-
-
                         </tr>
                         <tr class="lv3 lv3Nat" style="display: none">
                             <td class="identValores" style="text-indent: 15px;" scope="row">
                                 <span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'ea' %}">{% trans 'ea' %}</span>
                             </td>
-                            <td class="bgColorRod"></td>
+                            <!--<td class="bgColorRod"></td>-->
+                            <td class="graf bgColorRod valMet_ea" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
                             <td id="_naturalidad_composicion_especies_arboreas" class="bgColorRod">---</td>
 
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp valMetComp_ea" style="display: none;"></td>
                             <td class="graf" style="display: none;"></td>
-                            <td class="graf" style="display: none;"></td>
-                            <td class="graf" style="display: none;"></td>
-                            <td class="graf bgColorRodComp" style="display: none;"></td>
+                            <!--<td class="graf" style="display: none;"></td>-->
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="naturalidad_composicion_especies_arboreas" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
 
+                            <!--<td class="grafico"></td>-->
                             <td class="grafico" colspan="4">
                                 <div class="divGraf especies_arboreas"></div>
                             </td>
                             <td id="naturalidad_composicion_especies_arboreas_dif" class="diff-col">---</td>
                         </tr>
-
                         <tr class="lv2 lv2Nat" style="display: none">
                             <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i>
-                                <span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'ce' %}">{% trans 'ce' %}</span></th>
+                                <span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'ce' %}">{% trans 'ce' %}</span>
+                            </th>
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td id="_naturalidad_complejidad" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
 
                             <td class="graf" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="naturalidad_complejidad" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
 
+                            <!--<td class="grafico"></td>-->
                             <td class="grafico" colspan="4">
                                 <div class="divGraf complejidad"></div>
                             </td>
                             <td id="naturalidad_complejidad_dif" class="diff-col">---</td>
                         </tr>
-
-
                         <tr class="lv3 lv3Nat" style="display: none">
                             <td class="identValores" style="text-indent: 15px;">
-                                <span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'ab' %}">{% trans 'ab' %}</span></td>
+                                <span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'ab' %}">{% trans 'ab' %}</span>
+                            </td>
+                            <td class="graf bgColorRod valMet_ab" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
                             <td id="_naturalidad_complejidad_area_basimetrica" class="bgColorRod">---</td>
 
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp valMetComp_ab" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="naturalidad_complejidad_area_basimetrica" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
 
+                            <!--<td class="grafico"></td>-->
                             <td class="grafico" colspan="4">
                                 <div class="divGraf area_basimetrica"></div>
                             </td>
                             <td id="naturalidad_complejidad_area_basimetrica_dif" class="diff-col">---</td>
                         </tr>
-
                         <tr class="lv3 lv3Nat" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;"><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'ev' %}">{% trans 'ev' %}</span></td>
+                            <td class="identValores" style="text-indent: 15px;">
+                                <span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'ev' %}">{% trans 'ev' %}</span>
+                            </td>
+                            <td class="graf bgColorRod valMet_ev" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
                             <td id="_naturalidad_complejidad_estratificacion_vertical" class="bgColorRod">---</td>
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp valMetComp_ev" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="naturalidad_complejidad_estratificacion_vertical" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
 
+                            <!--<td class="grafico"></td>-->
                             <td class="grafico" colspan="4">
                                 <div class="divGraf estratificacion_vertical"></div>
                             </td>
@@ -319,15 +321,18 @@
                         </tr>
                         <tr class="lv3 lv3Nat" style="display: none">
                             <td class="identValores" style="text-indent: 15px;"><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'de' %}">{% trans 'de' %}</span></td>
+                            <td class="graf bgColorRod valMet_de" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
                             <td id="_naturalidad_complejidad_diversidad_estructural" class="bgColorRod">---</td>
 
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp valMetComp_de" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="naturalidad_complejidad_diversidad_estructural" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
 
+                            <!--<td class="grafico"></td>-->
                             <td class="grafico" colspan="4">
                                 <div class="divGraf diversidad_estructural"></div>
                             </td>
@@ -335,87 +340,94 @@
                             <td id="naturalidad_complejidad_diversidad_estructural_dif" class="diff-col">---</td>
 
                         </tr>
-
                         <tr class="lv2 lv2Nat" style="display: none">
                             <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'nm' %}">{% trans 'sn' %}</span></th>
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td id="_naturalidad_senectud" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
 
                             <td class="graf" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="naturalidad_senectud" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
-
+                            <!--<td class="grafico"></td>-->
                             <td class="grafico" colspan="4">
                                 <div class="divGraf senectud"></div>
                             </td>
                             <td id="naturalidad_senectud_dif" class="diff-col">---</td>
                         </tr>
-                    <tr class="lv3 lv3Nat" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;"><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'ae' %}">{% trans 'ae' %}</span></td>
+                        <tr class="lv3 lv3Nat" style="display: none">
+                            <td class="identValores" style="text-indent: 15px;">
+                                <span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'ae' %}">{% trans 'ae' %}</span>
+                            </td>
+                            <td class="graf bgColorRod valMet_ae" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
-
-                                <td id="_naturalidad_senectud_arb_tam_excep" class="bgColorRod">---</td>
-
+                            <td id="_naturalidad_senectud_arb_tam_excep" class="bgColorRod">---</td>
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp valMetComp_ae" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="naturalidad_senectud_arb_tam_excep" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
 
+                            <!--<td class="grafico"></td>-->
                             <td class="grafico" colspan="4">
                                 <div class="divGraf arb_tam_excep"></div>
                             </td>
 
                             <td id="naturalidad_senectud_arb_tam_excep_dif" class="diff-col">---</td>
-                    </tr>
-                    <tr class="lv3 lv3Nat" style="display: none">
+                        </tr>
+                        <tr class="lv3 lv3Nat" style="display: none">
                             <td class="identValores" style="text-indent: 15px;"><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'mm' %}">{% trans 'mm' %}</span></td>
+                            <td class="graf bgColorRod valMet_mm" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
-
-                                <td id="_naturalidad_senectud_abund_mad_muerta" class="bgColorRod">---</td>
-
+                            <td id="_naturalidad_senectud_abund_mad_muerta" class="bgColorRod">---</td>
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp valMetComp_mm" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="naturalidad_senectud_abund_mad_muerta" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
+                            <!--<td class="grafico"></td>-->
                             <td class="grafico" colspan="4">
                                 <div class="divGraf abund_mad_muerta"></div>
                             </td>
                             <td id="naturalidad_senectud_abund_mad_muerta_dif" class="diff-col">---</td>
-                    </tr>
+                        </tr>
                         <tr class="lv3 lv3Nat" style="display: none">
                             <td class="identValores" style="text-indent: 15px;"><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'pm' %}">{% trans 'pm' %}</span></td>
+                            <td class="graf bgColorRod valMet_pm" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
-
-                                <td id="_naturalidad_senectud_prop_madera_muerta" class="bgColorRod">---</td>
+                            <td id="_naturalidad_senectud_prop_madera_muerta" class="bgColorRod">---</td>
 
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp valMetComp_pm" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="naturalidad_senectud_prop_madera_muerta" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
+                            <!--<td class="grafico"></td>-->
                             <td class="grafico" colspan="4">
                                 <div class="divGraf prop_madera_muerta"></div>
                             </td>
                             <td id="naturalidad_senectud_prop_madera_muerta_dif" class="diff-col">---</td>
                         </tr>
-
                         <tr class="lv2 lv2Nat" style="display: none">
                             <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'nm' %}">{% trans 'hm' %}</span></th>
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="bgColorRod"></td>
-
-                                <td id="_naturalidad_micro_habitats" class="bgColorRod">---</td>
-
+                            <td id="_naturalidad_micro_habitats" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
 
                             <td class="graf" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="naturalidad_micro_habitats" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
 
+                            <!--<td class="grafico"></td><-->
                             <td class="grafico" colspan="4">
                                 <div class="divGraf micro_habitats"></div>
                             </td>
@@ -424,35 +436,36 @@
                         </tr>
                         <tr class="lv3 lv3Nat" style="display: none">
                             <td class="identValores" style="text-indent: 15px;"><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'mh' %}">{% trans 'mh' %}</span></td>
+                            <td class="graf bgColorRod valMet_mh" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
-
-                                <td id="_naturalidad_micro_habitats_mh_pies_vivos" class="bgColorRod">---</td>
+                            <td id="_naturalidad_micro_habitats_mh_pies_vivos" class="bgColorRod">---</td>
 
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp valMetComp_mh" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="naturalidad_micro_habitats_mh_pies_vivos" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
 
+                            <!--<td class="grafico"></td>-->
                             <td class="grafico" colspan="4">
                                 <div class="divGraf mh_pies_vivos"></div>
                             </td>
 
                             <td id="naturalidad_micro_habitats_mh_pies_vivos_dif" class="diff-col">---</td>
                         </tr>
-
                         <tr class="lv2 lv2Nat" style="display: none">
                             <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'nm' %}">{% trans 'dn' %}</span></th>
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="bgColorRod"></td>
-
-                                <td id="_naturalidad_dinamica" class="bgColorRod">---</td>
-
+                            <td id="_naturalidad_dinamica" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
-
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="naturalidad_dinamica" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
+                            <!--<td class="grafico"></td>-->
                             <td class="grafico" colspan="4">
                                 <div class="divGraf dinamica"></div>
                             </td>
@@ -460,51 +473,48 @@
                         </tr>
                         <tr class="lv3 lv3Nat" style="display: none">
                             <td class="identValores" style="text-indent: 15px;"><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'cs' %}">{% trans 'cs' %}</span></td>
+                            <td class="graf bgColorRod valMet_cs" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
-
-                                <td id="_naturalidad_dinamica_ciclo_silvogen" class="bgColorRod">---</td>
-
+                            <td id="_naturalidad_dinamica_ciclo_silvogen" class="bgColorRod">---</td>
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp valMetComp_cs" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="naturalidad_dinamica_ciclo_silvogen" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
+                            <!--<td class="grafico"></td>-->
                             <td class="grafico" colspan="4">
                                 <div class="divGraf ciclo_silvogen"></div>
                             </td>
                             <td id="naturalidad_dinamica_ciclo_silvogen_dif" class="col-diff">---</td>
                         </tr>
+<!-- ################################### FIN Naturalidad ################################### -->
 
-                    <!--         Huella Humana                     -->
+<!-- ################################### Huella Humana ################################### -->
                         <tr class="lv1 lv1Hh">
                             <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'hh' %}">{% trans 'hh' %}</span></th>
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
+                            <td id="_huellaHumana" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
-                                <td id="_huellaHumana" class="bgColorRod">---</td>
-
                             <td class="bgColorRod"></td>
-                            <td class="bgColorRod"></td>
-
                             <td class="graf" style="display: none;"></td>
                             <td class="graf" style="display: none;"></td>
                             <td id="huellaHumana" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
-
                             <td class="grafico" colspan="4">
                                <div class="divGraf huellaHumana"></div>
                             </td>
-
                             <td id="huellaHumana_dif" class="col-diff">---</td>
                         </tr>
                         <tr class="lv2 lv2Hh" style="display: none">
                             <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'nm' %}">{% trans 'ha' %}</span></th>
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="bgColorRod"></td>
-
-                                <td id="_huellaHumana_antigua" class="bgColorRod">---</td>
-
+                            <td id="_huellaHumana_antigua" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
-
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="huellaHumana_antigua" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
@@ -515,12 +525,12 @@
                         </tr>
                         <tr class="lv3 lv3Hh" style="display: none">
                             <td class="identValores" style="text-indent: 15px;" scope="row"><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'tb' %}">{% trans 'tb' %}</span></td>
+                            <td class="graf bgColorRod valMet_tb" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
-
-                                <td id="_huellaHumana_antigua_cont_temp" class="bgColorRod">---</td>
-
+                            <td id="_huellaHumana_antigua_cont_temp" class="bgColorRod">---</td>
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp valMetComp_tb" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="huellaHumana_antigua_cont_temp" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
@@ -531,12 +541,12 @@
                         </tr>
                         <tr class="lv3 lv3Hh" style="display: none">
                             <td class="identValores" style="text-indent: 15px;" scope="row"><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'ua' %}">{% trans 'ua' %}</span></td>
+                            <td class="graf bgColorRod valMet_ua" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
-
-                                <td id="_huellaHumana_antigua_usos_agropast" class="bgColorRod">---</td>
-
+                            <td id="_huellaHumana_antigua_usos_agropast" class="bgColorRod">---</td>
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp valMetComp_ua" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="huellaHumana_antigua_usos_agropast" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
@@ -547,12 +557,12 @@
                         </tr>
                         <tr class="lv3 lv3Hh" style="display: none">
                             <td class="identValores" style="text-indent: 15px;" scope="row"><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'fa' %}">{% trans 'fa' %}</span></td>
+                            <td class="graf bgColorRod valMet_fa" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
-
-                                <td id="_huellaHumana_antigua_usos_forestales" class="bgColorRod">---</td>
-
+                            <td id="_huellaHumana_antigua_usos_forestales" class="bgColorRod">---</td>
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp valMetComp_fa" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="huellaHumana_antigua_usos_forestales" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
@@ -561,17 +571,14 @@
                             </td>
                             <td id="huellaHumana_antigua_usos_forestales_dif" class="col-diff">---</td>
                         </tr>
-
-
                         <tr class="lv2 lv2Hh" style="display: none">
                             <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'hr' %}">{% trans 'hr' %}</span></th>
+                            <td class="graf bgColorRod" style="display: none;"></td>
                             <td class="bgColorRod"></td>
-
-                                <td id="_huellaHumana_reciente" class="bgColorRod">---</td>
-
+                            <td id="_huellaHumana_reciente" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
-
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="huellaHumana_reciente" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
@@ -582,12 +589,12 @@
                         </tr>
                         <tr class="lv3 lv3Hh" style="display: none">
                             <td class="identValores" style="text-indent: 15px;" scope="row"><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'fr' %}">{% trans 'fr' %}</span></td>
+                            <td class="graf bgColorRod valMet_fr" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
-
-                                <td id="_huellaHumana_reciente_usos_forestales" class="bgColorRod">---</td>
-
+                            <td id="_huellaHumana_reciente_usos_forestales" class="bgColorRod">---</td>
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp valMetComp_fr" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="huellaHumana_reciente_usos_forestales" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
@@ -598,12 +605,12 @@
                         </tr>
                         <tr class="lv3 lv3Hh" style="display: none">
                             <td class="identValores" style="text-indent: 15px;" scope="row"><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'ei' %}">{% trans 'ei' %}</span></td>
+                            <td class="graf bgColorRod valMet_ei" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
-
-                                <td id="_huellaHumana_reciente_especies_inv" class="bgColorRod">---</td>
-
+                            <td id="_huellaHumana_reciente_especies_inv" class="bgColorRod">---</td>
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp  valMetComp_ei" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="huellaHumana_reciente_especies_inv" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
@@ -612,30 +619,30 @@
                             </td>
                             <td id="huellaHumana_reciente_especies_inv_dif" class="col-diff">---</td>
                         </tr>
-                    <tr class="lv3 lv3Hh" style="display: none">
-                            <td class="identValores" style="text-indent: 15px;" scope="row"><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'fg' %}">{% trans 'fg' %}</span></td>
-                            <td class="bgColorRod"></td>
-                            <td class="bgColorRod"></td>
-
+                        <tr class="lv3 lv3Hh" style="display: none">
+                                <td class="identValores" style="text-indent: 15px;" scope="row"><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'fg' %}">{% trans 'fg' %}</span></td>
+                                <td class="graf bgColorRod valMet_fg" style="display: none;"></td>
+                                <td class="bgColorRod"></td>
+                                <td class="bgColorRod"></td>
                                 <td id="_huellaHumana_reciente_causa_fragment" class="bgColorRod">---</td>
-
-                            <td class="graf" style="display: none;"></td>
-                            <td class="graf bgColorRodComp" style="display: none;"></td>
-                            <td class="graf bgColorRodComp" style="display: none;"></td>
-                            <td id="huellaHumana_reciente_causa_fragment" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
-                            <td class="grafico" colspan="4">
-                               <div class="divGraf causa_fragment"></div>
-                            </td>
-                        <td id="huellaHumana_reciente_causa_fragment_dif" class="col-diff">---</td>
-                    </tr>
+                                <td class="graf" style="display: none;"></td>
+                                <td class="graf bgColorRodComp valMetComp_fg" style="display: none;"></td>
+                                <td class="graf bgColorRodComp" style="display: none;"></td>
+                                <td class="graf bgColorRodComp" style="display: none;"></td>
+                                <td id="huellaHumana_reciente_causa_fragment" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
+                                <td class="grafico" colspan="4">
+                                   <div class="divGraf causa_fragment"></div>
+                                </td>
+                            <td id="huellaHumana_reciente_causa_fragment_dif" class="col-diff">---</td>
+                        </tr>
                         <tr class="lv3 lv3Hh" style="display: none">
                             <td class="identValores" style="text-indent: 15px;" scope="row"><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'cz' %}">{% trans 'cz' %}</span></td>
+                            <td class="graf bgColorRod valMet_cz" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
-
-                                <td id="_huellaHumana_reciente_actv_cineget" class="bgColorRod">---</td>
-
+                            <td id="_huellaHumana_reciente_actv_cineget" class="bgColorRod">---</td>
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp valMetComp_cz" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="huellaHumana_reciente_actv_cineget" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
@@ -646,12 +653,12 @@
                         </tr>
                         <tr class="lv3 lv3Hh" style="display: none">
                             <td class="identValores" style="text-indent: 15px;" scope="row"><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'hb' %}">{% trans 'hb' %}</span></td>
+                            <td class="graf bgColorRod valMet_hb" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
-
-                                <td id="_huellaHumana_reciente_herv_rom" class="bgColorRod">---</td>
-
+                            <td id="_huellaHumana_reciente_herv_rom" class="bgColorRod">---</td>
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp valMetComp_hb" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="huellaHumana_reciente_herv_rom" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
@@ -662,12 +669,12 @@
                         </tr>
                         <tr class="lv3 lv3Hh" style="display: none">
                             <td class="identValores" style="text-indent: 15px;" scope="row"><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'fc' %}">{% trans 'fc' %}</span></td>
+                            <td class="graf bgColorRod valMet_fc" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
-
-                                <td id="_huellaHumana_reciente_frecuent" class="bgColorRod">---</td>
-
+                            <td id="_huellaHumana_reciente_frecuent" class="bgColorRod">---</td>
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp valMetComp_fc" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="huellaHumana_reciente_frecuent" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
@@ -678,12 +685,12 @@
                         </tr>
                         <tr class="lv3 lv3Hh" style="display: none">
                             <td class="identValores" style="text-indent: 15px;" scope="row"><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'du' %}">{% trans 'du' %}</span></td>
+                            <td class="graf bgColorRod valMet_du" style="display: none;"></td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
-
-                                <td id="_huellaHumana_reciente_durab_usos" class="bgColorRod">---</td>
-
+                            <td id="_huellaHumana_reciente_durab_usos" class="bgColorRod">---</td>
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp valMetComp_du" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="huellaHumana_reciente_durab_usos" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
@@ -692,17 +699,16 @@
                             </td>
                             <td id="huellaHumana_reciente_durab_usos_dif" class="col-diff">---</td>
                         </tr>
+<!-- ################################### FIN Huella Humana ################################### -->
 
-                 <!--         Integridad Espacial                  -->
-
+<!-- ################################### Integridad Espacial ################################### -->
                         <tr class="lv1 lv1Ie">
                             <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'ie' %}">{% trans 'ie' %}</span></th>
-
-                                <td id="_integridadEspacial" class="bgColorRod">---</td>
-
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
+                            <td id="_integridadEspacial" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
                             <td class="bgColorRod"></td>
-
+                            <td class="graf" style="display: none;"></td>
                             <td class="graf" style="display: none;"></td>
                             <td id="integridadEspacial" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
@@ -715,12 +721,11 @@
                         <tr class="lv2 lv2Ie" style="display: none">
                             <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'ar' %}">{% trans 'ar' %}</span></th>
                             <td class="bgColorRod"></td>
-
-                                <td id="_integridadEspacial_tamano" class="bgColorRod">---</td>
-
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
+                            <td id="_integridadEspacial_tamano" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
-
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="integridadEspacial_tamano" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
@@ -732,12 +737,11 @@
                         <tr class="lv2 lv2Ie" style="display: none">
                             <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'cf' %}">{% trans 'cf' %}</span></th>
                             <td class="bgColorRod"></td>
-
-                                <td id="_integridadEspacial_cont_forest" class="bgColorRod">---</td>
-
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
+                            <td id="_integridadEspacial_cont_forest" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
-
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="integridadEspacial_cont_forest" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
@@ -749,12 +753,11 @@
                         <tr class="lv2 lv2Ie" style="display: none">
                             <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'eb' %}">{% trans 'eb' %}</span></th>
                             <td class="bgColorRod"></td>
-
-                                <td id="_integridadEspacial_efect_borde" class="bgColorRod">---</td>
-
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
+                            <td id="_integridadEspacial_efect_borde" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
-
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="integridadEspacial_efect_borde" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
@@ -766,12 +769,11 @@
                         <tr class="lv2 lv2Ie" style="display: none">
                             <th style="text-indent: 15px;" scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{% trans 'cn' %}">{% trans 'cn' %}</span></th>
                             <td class="bgColorRod"></td>
-
-                                <td id="_integridadEspacial_conect" class="bgColorRod">---</td>
-
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
+                            <td id="_integridadEspacial_conect" class="bgColorRod">---</td>
                             <td class="bgColorRod"></td>
-
                             <td class="graf" style="display: none;"></td>
+                            <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
                             <td id="integridadEspacial_conect" class="graf valGraf bgColorRodComp" style="display: none;">---</td>
                             <td class="graf bgColorRodComp" style="display: none;"></td>
@@ -780,19 +782,18 @@
                             </td>
                             <td id="integridadEspacial_conect_dif" class="col-diff">---</td>
                         </tr>
-
+<!-- ################################### FIN Integridad Espacial ################################### -->
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
     <div class="row">
-                <br>
-                <div class="col-lg-12">
-
-                    <p>(*)Los valores por ámbito, criterio y indicador están representados en una escala del 0 - 10</p>
-                </div>
-            </div>
+        <br>
+        <div class="col-lg-12">
+            <p>(*)Los valores por ámbito, criterio y indicador están representados en una escala del 0 - 10</p>
+        </div>
+    </div>
 </div>
 
 <!--<div class="container tabla-datos-metrica" style="display: none">
@@ -800,7 +801,6 @@
 </div>-->
 
 <div class="comp-graficas" style="display: none">
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-offset-2 col-lg-8" style="padding-left: 0px;">

@@ -56,6 +56,21 @@ $('.hideAll').on("click", function(){
     $('.lv2Ie').hide();
 });
 
+var valoresMetricos = function(element){
+    jQuery.each(element, function(i, actual) {
+        console.log(element[i].valorunidad)
+        $('.valMet_' + element[i].indicador_cod).html(element[i].valorunidad);
+    });
+};
+
+var valoresMetricosComp = function(element){
+    jQuery.each(element, function(i, actual) {
+        console.log(element[i].valorunidad)
+        $('.valMetComp_' + element[i].indicador_cod).html(element[i].valorunidad);
+    });
+};
+
+
 /* Recorre l'arbre de dades del rodal a comparar */
 var recorreArbre = function(nom_pare, element){
       jQuery.each(element, function(i, actual) {
@@ -123,13 +138,9 @@ function calcDiferencia(){
     resComp = [];
     var test = rodal.naturalidad - rodRef.naturalidad;
 
-
     for(var key in rodRef) {
         var value = rodal["_"+key];
         var value2 = rodRef[key];
-
-
-
 
         if(isNaN(value) || isNaN(value2)){
             resta = null;
@@ -154,13 +165,10 @@ function calcDiferencia(){
                     $('#' + key+'_dif').css("background-color", "#9ac635");
                 }
             }
-
-
         }
         var elem = {};
         elem[key+'_dif'] = resta;
         resComp.push(elem);
-
     }
 }
 

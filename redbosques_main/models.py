@@ -822,3 +822,16 @@ class RedbosquesRodalF2Ident(models.Model):
     class Meta:
         managed = False  # Created from a view. Don't remove.
         db_table = 'Redbosques_rodal_f2ident'
+
+
+class Valoresconunidades(models.Model):
+    id_indicador_rodal = models.TextField(blank=True, null=True)
+    id_rodal = models.IntegerField(blank=True, null=True)
+    indicador_cod = models.TextField(blank=True, null=True)
+    valor = models.FloatField(blank=True, null=True)
+    unidades = models.CharField(max_length=15, blank=True, null=True)
+    valorunidad = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False  # Created from a view. Don't remove.
+        db_table = 'valoresConUnidades'

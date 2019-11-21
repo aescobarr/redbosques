@@ -3,7 +3,7 @@ from redbosques_main.models import WebMapa, Habitat, Rodal, RodalValorres2, TeRe
     WebMapaValAmb, WebCompData, WebCompDataValAmb, TeHic, TeLpeht, Tesaurus, User, TeCategoria, FotosRodal, DocsRodal, \
     Institucion, DatosUsuario, AuthUser,TeMunicipi,TeIndicador, RodalProsp, WebMapaRodalProsp, DatosGeneralesRodal, \
     FotosRodalProsp, DocsRodalProsp, RodalProspDatosgen, RodalProspValores, Parcelaifn3Valorres, RodalValorres, \
-    RedbosquesRodalF2Ident
+    RedbosquesRodalF2Ident, Valoresconunidades
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.urls import reverse
@@ -904,6 +904,25 @@ def valorref_ajax(request):
         #dadesGraficoBarrasCrite = RodalValorres2.objects.filter(id_rodal=cordRod).filter(nivel='crite').values('id_rodal', 'indicador_cod', 'valor')
         dadesGraficoBarras = RodalValorres2.objects.filter(id_rodal=cordRod).filter(Q(nivel='crite') | Q(nivel='eje')).values('id_rodal', 'indicador_cod', 'valor')
 
+        valMet = Valoresconunidades.objects.filter(id_rodal=rodPrincip).values('id_rodal', 'indicador_cod', 'valorunidad')
+
+        valoresMetricos = []
+        for x in valMet:
+            valoresMetricos.append({
+                'id_rodal': x['id_rodal'],
+                'indicador_cod': x['indicador_cod'],
+                'valorunidad': x['valorunidad']
+            })
+
+        valMetComp = Valoresconunidades.objects.filter(id_rodal=cordRod).values('id_rodal', 'indicador_cod', 'valorunidad')
+
+        valoresMetricosComp = []
+        for x in valMetComp:
+            valoresMetricosComp.append({
+                'id_rodal': x['id_rodal'],
+                'indicador_cod': x['indicador_cod'],
+                'valorunidad': x['valorunidad']
+            })
 
 
         idRodalesBarCrite = []
@@ -914,7 +933,7 @@ def valorref_ajax(request):
         infoRodalBarCrite = Rodal.objects.filter(id__in=idRodalesBarCrite).values('id', 'nombre')
         rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarras, infoRodalBarCrite)
 
-        context = {'rodal_referencia': rodal_referencia, 'rodalNombre': rodalNombre, 'rodalRefGraficos': rodalRefValNom, 'rodalRefGraficoPuntos': rodal_graficos_puntos, 'rodalRefChart' : rodal_graficos_barras, 'infoRodal': infoRodal}
+        context = {'rodal_referencia': rodal_referencia, 'rodalNombre': rodalNombre, 'rodalRefGraficos': rodalRefValNom, 'rodalRefGraficoPuntos': rodal_graficos_puntos, 'rodalRefChart' : rodal_graficos_barras, 'infoRodal': infoRodal, 'valoresMetricos': valoresMetricos, 'valoresMetricosComp': valoresMetricosComp}
 
     elif cordRod == 'medRod':
 
@@ -948,7 +967,7 @@ def valorref_ajax(request):
 
         rodalNombre = [{'nombre': 'Todos los rodales'}]
         dades_rodal = dades_rodal2.values('indicador_cod').annotate(mitjana=Avg('valor'), stddev=StdDev('valor'))
-        print(dades_rodal)
+        #print(dades_rodal)
         rodal_referencia = crearArbolMedia(dades_rodal)
 
         ### Grafica puntos
@@ -980,10 +999,29 @@ def valorref_ajax(request):
         infoRodalBarCrite = Rodal.objects.filter(id__in=idRodalesBarCrite).values('id', 'nombre').exclude(id=rodPrincip)
         rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarras, infoRodalBarCrite)
 
+        valMet = Valoresconunidades.objects.filter(id_rodal=rodPrincip).values('id_rodal', 'indicador_cod', 'valorunidad')
+
+        valoresMetricos = []
+        for x in valMet:
+            valoresMetricos.append({
+                'id_rodal': x['id_rodal'],
+                'indicador_cod': x['indicador_cod'],
+                'valorunidad': x['valorunidad']
+            })
 
 
-        context = {'rodal_referencia': rodal_referencia, 'rodalNombre': rodalNombre, 'rodalRefGraficos': rodalRefValNom, 'rodalRefGraficoPuntos': rodal_graficos_puntos, 'rodalRefChart': rodal_graficos_barras}
+        valMetComp = Valoresconunidades.objects.filter(id_rodal__in=idRodales).values('id_rodal', 'indicador_cod', 'valorunidad', 'valor').annotate(mitjana=Avg('valor'))
 
+        valoresMetricosComp = []
+        for x in valMetComp:
+            valoresMetricosComp.append({
+                'id_rodal': x['id_rodal'],
+                'indicador_cod': x['indicador_cod'],
+                'valorunidad': x['valorunidad'],
+                'mitjana': x['mitjana']
+            })
+
+        context = {'rodal_referencia': rodal_referencia, 'rodalNombre': rodalNombre, 'rodalRefGraficos': rodalRefValNom, 'rodalRefGraficoPuntos': rodal_graficos_puntos, 'rodalRefChart': rodal_graficos_barras, 'valoresMetricos': valoresMetricos, 'valoresMetricosComp': valoresMetricosComp}
 
     return Response(context)
 
@@ -998,7 +1036,7 @@ def valorRodal(request):
         context = {}
 
 
-    #if test is not None:
+
     if cordRod != None:
         if cordRod != 'medRod':
             dades_rodal2 = RodalValorres2.objects.filter(id_rodal=cordRod)
@@ -1032,6 +1070,18 @@ def valorRodal(request):
 
             infoRodalBarCrite = Rodal.objects.filter(id__in=idRodalesBarCrite).values('id', 'nombre')
 
+            valMet = Valoresconunidades.objects.filter(id_rodal=cordRod).values('id_rodal', 'indicador_cod', 'valorunidad')
+
+            valoresMetricos = []
+            for x in valMet:
+                valoresMetricos.append({
+                    'id_rodal': x['id_rodal'],
+                    'indicador_cod': x['indicador_cod'],
+                    'valorunidad': x['valorunidad']
+                })
+
+            print(valoresMetricos)
+
             #rodal_graficos_barras = datosGraficasBarras(dadesGraficoBarrasCrite, infoRodalBarCrite)
             rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarras, infoRodalBarCrite)
 
@@ -1059,11 +1109,8 @@ def valorRodal(request):
 
             rodal_graficos_puntos = datosGraficasPuntos(dadesGraficosPuntos, infoRodal)
 
-
-
             dadesGraficoBarras = RodalValorres2.objects.filter(lpeht_cod=habSel).filter(Q(nivel='crite') | Q(nivel='eje')).values('id_rodal', 'indicador_cod', 'valor')
             #dadesGraficoBarrasCrite = RodalValorres2.objects.filter(lpeht_cod=habSel).filter(nivel='crite').values('id_rodal', 'indicador_cod', 'valor')
-
 
             idRodalesBarCrite = []
             for infRod in dadesGraficoBarras:
@@ -1076,8 +1123,21 @@ def valorRodal(request):
 
             print(rodal_graficos_barras);
 
+            valMet = Valoresconunidades.objects.filter(id_rodal__in=idRodales).values('id_rodal', 'indicador_cod', 'valorunidad', 'valor').annotate(mitjana=Avg('valor'))
+
+            valoresMetricos = []
+            for x in valMet:
+                valoresMetricos.append({
+                    'id_rodal': x['id_rodal'],
+                    'indicador_cod': x['indicador_cod'],
+                    'valorunidad': x['valorunidad'],
+                    'mitjana': x['mitjana']
+                })
+
+            print(valoresMetricos)
+
         #rodal_referencia = crearArbol(dades_rodal2)
-        context = {'rodal': rodal_referencia, 'rodalNombre': rodalNombre, 'rodalGraficos': rodalValNom, 'rodalGraficoPuntos': rodal_graficos_puntos, 'rodalChart': rodal_graficos_barras}
+        context = {'rodal': rodal_referencia, 'rodalNombre': rodalNombre, 'rodalGraficos': rodalValNom, 'rodalGraficoPuntos': rodal_graficos_puntos, 'rodalChart': rodal_graficos_barras, 'valoresMetricos': valoresMetricos}
 
     return Response(context)
 

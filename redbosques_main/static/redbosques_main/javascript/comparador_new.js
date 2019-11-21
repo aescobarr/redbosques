@@ -795,8 +795,18 @@ function rodalData(valorRodal, valRodComp){
                     }
                 },
                 success: function( data, textStatus, jqXHR ) {
+
+                    console.log(data);
+
                     rodalSelData = data.rodal;
                     recorreRodal('', rodalSelData);
+
+                    valMet = data.valoresMetricos;
+                    valMetRef = data.valoresMetricosComp;
+                    console.log(valMet);
+
+                    valoresMetricos(valMet);
+                    valoresMetricosComp(valMetRef);
 
                     /*Graficas*/
                     rodalName = data.rodalNombre;
@@ -886,9 +896,19 @@ function load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod, rodPrincip, ro
                 }
             },
             success: function( data, textStatus, jqXHR ) {
+
                 rodalReferencia = data.rodal_referencia;
                 recorreArbre('', rodalReferencia);
                 //recorreRodal('', rodalSelData);
+
+
+                valMet = data.valoresMetricos;
+                valMetRef = data.valoresMetricosComp;
+                console.log(valMet);
+
+                valoresMetricos(valMet);
+                valoresMetricosComp(valMetRef);
+
 
                 /*----- Graficas ------*/
                 rodalNameRef = data.rodalNombre;
