@@ -3674,6 +3674,24 @@ def verFichaRodal(request, id):
             geojsoncollection_string = json.dumps({"type": "FeatureCollection", "features": buffer})
 
 
+    valMet = Valoresconunidades.objects.filter(id_rodal=id).values('id_rodal', 'indicador_cod', 'valorunidad')
+
+    valoresMetricos = []
+    for x in valMet:
+        if x['valorunidad']:
+            valoresMetricos.append({
+                'id_rodal': x['id_rodal'],
+                'indicador_cod': x['indicador_cod'],
+                'valorunidad': x['valorunidad']
+            })
+        else:
+            valoresMetricos.append({
+                'id_rodal': x['id_rodal'],
+                'indicador_cod': x['indicador_cod'],
+                'valorunidad': '---'
+            })
+
+    print(valoresMetricos)
 
     #########333############ FUNCIONA ###
     #paragraphs = ['first paragraph', 'second paragraph', 'third paragraph']
@@ -3691,7 +3709,7 @@ def verFichaRodal(request, id):
     print(geojsoncollection_string)
     print(imagenRodal)
 
-    context = {'rodal': rodalArbol, 'datosGenerales': datosGenerales, 'geojson_string': geojsoncollection_string, 'imagenRodal': imagenRodal}
+    context = {'rodal': rodalArbol, 'datosGenerales': datosGenerales, 'geojson_string': geojsoncollection_string, 'imagenRodal': imagenRodal, 'valoresMetricos': valoresMetricos}
     return render(request, 'redbosques_main/fichaRodal.html', context)
 
 

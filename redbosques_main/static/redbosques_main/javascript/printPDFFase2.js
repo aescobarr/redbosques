@@ -140,3 +140,15 @@ var crearPDF = function(id_rodal,token){
 
     });
 };
+
+var valoresMetricos = function(element){
+    jQuery.each(element, function(i, actual) {
+        console.log(element[i].valorunidad);
+        if(!element[i].valorunidad || element[i].valorunidad == null){
+            $('.valMet_' + element[i].indicador_cod).html('---');
+        }else{
+            $('.valMet_' + element[i].indicador_cod).html(element[i].valorunidad);
+        }
+
+    });
+};
