@@ -238,7 +238,7 @@ class rodalFormFields2(forms.ModelForm):
     abundpiesexcep = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos dotDel'}), required=True)
     volmmpie = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos calculo dotDel'}), required=True)
     volmmsuelo = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos calculo dotDel'}), required=True)
-    volmmprop = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
+    volmmprop = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
     volmmtotal = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos dotDel'}), required=True)
     nummicrohab = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
     numfasessil = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control numEspArbDos'}), required=True)
