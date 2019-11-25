@@ -187,6 +187,7 @@
                         <thead>
                             <tr class="headerTabla">
                                 <th style="width: auto"></th>
+                                <th style="width: auto; text-align: center;">Valores métricos</th>
                                 <th style="width: auto; text-align: center;">Ámbito</th>
                                 <th style="width: auto; text-align: center;">Criterio</th>
                                 <th style="width: auto; text-align: center;">Indicador</th>
@@ -195,6 +196,7 @@
                         <tbody>
                             <tr class="lv1 lv1Nat">
                                 <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'nm' %}</span></th>
+                                <td class="bgColorRod"></td>
                                 <td id="_naturalidad" class="bgColorRod">{{ rodal.naturalidad.valor }}</td>
                                 <td class="bgColorRod"></td>
                                 <td class="bgColorRod"></td>
@@ -202,11 +204,13 @@
                             <tr class="lv2 lv2Nat">
                                 <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'cp' %}</span></th>
                                 <td class="bgColorRod"></td>
+                                <td class="bgColorRod"></td>
                                 <td id="_naturalidad_composicion" class="bgColorRod">{{ rodal.naturalidad.composicion.valor }}</td>
                                 <td class="bgColorRod"></td>
                             </tr>
                             <tr class="lv3 lv3Nat">
                                 <td class="identValores"><span>{% trans 'ea' %}</span></td>
+                                <td class="bgColorRod valMet_ea">{{ valoresMetricosPDF["ea"] }}</td>
                                 <td class="bgColorRod"></td>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_composicion_especies_arboreas" class="bgColorRod">{{ rodal.naturalidad.composicion.especies_arboreas.valor }}</td>
@@ -214,23 +218,27 @@
                             <tr class="lv2 lv2Nat">
                                 <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'ce' %}</span></th>
                                 <td class="bgColorRod"></td>
+                                <td class="bgColorRod"></td>
                                 <td id="_naturalidad_complejidad" class="bgColorRod">{{ rodal.naturalidad.complejidad.valor }}</td>
                                 <td class="bgColorRod"></td>
                             </tr>
                             <tr class="lv3 lv3Nat">
                                 <td class="identValores" ><span>{% trans 'ab' %}</span></td>
+                                <td class="bgColorRod valMet_ab">{{ valoresMetricosPDF.ab }}</td>
                                 <td class="bgColorRod"></td>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_complejidad_area_basimetrica" class="bgColorRod">{{ rodal.naturalidad.complejidad.area_basimetrica.valor }}</td>
                             </tr>
                             <tr class="lv3 lv3Nat">
                                 <td class="identValores"><span>{% trans 'ev' %}</span></td>
+                                <td class="bgColorRod valMet_ev">{{ valoresMetricosPDF.ev }}</td>
                                 <td class="bgColorRod"></td>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_complejidad_estratificacion_vertical" class="bgColorRod">{{ rodal.naturalidad.complejidad.estratificacion_vertical.valor }}</td>
                             </tr>
                             <tr class="lv3 lv3Nat">
                                 <td class="identValores"><span>{% trans 'de' %}</span></td>
+                                <td class="bgColorRod valMet_de">{{ valoresMetricosPDF.de }}</td>
                                 <td class="bgColorRod"></td>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_complejidad_diversidad_estructural" class="bgColorRod">{{ rodal.naturalidad.complejidad.diversidad_estructural.valor }}</td>
@@ -241,21 +249,25 @@
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_senectud" class="bgColorRod">{{ rodal.naturalidad.senectud.valor }}</td>
                                 <td class="bgColorRod"></td>
+                                <td class="bgColorRod"></td>
                             </tr>
                             <tr class="lv3 lv3Nat">
                                 <td class="identValores"><span>{% trans 'ae' %}</span></td>
+                                <td class="bgColorRod valMet_ae">{{ valoresMetricosPDF.ae }}</td>
                                 <td class="bgColorRod"></td>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_senectud_arb_tam_excep" class="bgColorRod">{{ rodal.naturalidad.senectud.arb_tam_excep.valor }}</td>
                             </tr>
                             <tr class="lv3 lv3Nat">
                                 <td class="identValores"><span>{% trans 'mm' %}</span></td>
+                                <td class="bgColorRod valMet_mm">{{ valoresMetricosPDF.mm }}</td>
                                 <td class="bgColorRod"></td>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_senectud_abund_mad_muerta" class="bgColorRod">{{ rodal.naturalidad.senectud.abund_mad_muerta.valor }}</td>
                             </tr>
                             <tr class="lv3 lv3Nat">
                                 <td class="identValores"><span>{% trans 'pm' %}</span></td>
+                                <td class="bgColorRod valMet_pm">{{ valoresMetricosPDF.pm }}</td>
                                 <td class="bgColorRod"></td>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_senectud_prop_madera_muerta" class="bgColorRod">{{ rodal.naturalidad.senectud.prop_madera_muerta.valor }}</td>
@@ -264,11 +276,13 @@
                             <tr class="lv2 lv2Nat">
                                 <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'hm' %}</span></th>
                                 <td class="bgColorRod"></td>
+                                <td class="bgColorRod"></td>
                                 <td id="_naturalidad_micro_habitats" class="bgColorRod">{{ rodal.naturalidad.micro_habitats.valor }}</td>
                                 <td class="bgColorRod"></td>
                             </tr>
                             <tr class="lv3 lv3Nat">
                                 <td class="identValores" ><span>Microhábitats de pies vivos</span></td>
+                                <td class="bgColorRod valMet_mh">{{ valoresMetricosPDF.mh }}</td>
                                 <td class="bgColorRod"></td>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_micro_habitats_mh_pies_vivos" class="bgColorRod">{{ rodal.naturalidad.micro_habitats.mh_pies_vivos.valor }}</td>
@@ -277,11 +291,14 @@
                             <tr class="lv2 lv2Nat">
                                 <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>{% trans 'dn' %}</span></th>
                                 <td class="bgColorRod"></td>
+                                <td class="bgColorRod"></td>
+                                <td class="bgColorRod"></td>
                                 <td id="_naturalidad_dinamica" class="bgColorRod">{{ rodal.naturalidad.dinamica.valor }}</td>
                                 <td class="bgColorRod"></td>
                             </tr>
                             <tr class="lv3 lv3Nat">
                                 <td class="identValores"><span>{% trans 'cs' %}</span></td>
+                                <td class="bgColorRod valMet_cs">{{ valoresMetricosPDF.cs }}</td>
                                 <td class="bgColorRod"></td>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_dinamica_ciclo_silvogen" class="bgColorRod">{{ rodal.naturalidad.dinamica.ciclo_silvogen.valor }}</td>
@@ -297,6 +314,7 @@
                             <thead>
                                 <tr class="headerTabla">
                                     <th style="width: auto;"></th>
+                                    <th style="width: auto; text-align: center;">Valores métricos</th>
                                     <th style="width: auto; text-align: center;">Ámbito</th>
                                     <th style="width: auto; text-align: center;">Criterio</th>
                                     <th style="width: auto; text-align: center;">Indicador</th>
@@ -305,6 +323,7 @@
                             <tbody>
                                 <tr class="lv1 lv1Hh">
                                     <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>HUELLA HUMANA</span></th>
+                                    <td class="bgColorRod"></td>
                                     <td id="_huellaHumana" class="bgColorRod">{{ rodal.huellaHumana.valor }}</td>
                                     <td class="bgColorRod"></td>
                                     <td class="bgColorRod"></td>
@@ -312,23 +331,27 @@
                                 <tr class="lv2 lv2Hh">
                                     <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Antigua</span></th>
                                     <td class="bgColorRod"></td>
+                                    <td class="bgColorRod"></td>
                                     <td id="_huellaHumana_antigua" class="bgColorRod">{{ rodal.huellaHumana.antigua.valor }}</td>
                                     <td class="bgColorRod"></td>
                                 </tr>
                                 <tr class="lv3 lv3Hh">
                                     <td class="identValores"><span>Continuidad temporal</span></td>
+                                    <td class="bgColorRod valMet_tb">{{ valoresMetricosPDF.tb }}</td>
                                     <td class="bgColorRod"></td>
                                     <td class="bgColorRod"></td>
                                     <td id="_huellaHumana_antigua_cont_temp" class="bgColorRod">{{ rodal.huellaHumana.antigua.cont_temp.valor }}</td>
                                 </tr>
                                 <tr class="lv3 lv3Hh">
                                     <td class="identValores"><span>Usos agropastorales</span></td>
+                                    <td class="bgColorRod valMet_ua">{{ valoresMetricosPDF.ua }}</td>
                                     <td class="bgColorRod"></td>
                                     <td class="bgColorRod"></td>
                                     <td id="_huellaHumana_antigua_usos_agropast" class="bgColorRod">{{ rodal.huellaHumana.antigua.usos_agropast.valor }}</td>
                                 </tr>
                                 <tr class="lv3 lv3Hh">
                                     <td class="identValores"><span>Usos forestales</span></td>
+                                    <td class="bgColorRod valMet_fa">{{ valoresMetricosPDF.fa }}</td>
                                     <td class="bgColorRod"></td>
                                     <td class="bgColorRod"></td>
                                     <td id="_huellaHumana_antigua_usos_forestales" class="bgColorRod">{{ rodal.huellaHumana.antigua.usos_forestales.valor }}</td>
@@ -336,47 +359,55 @@
                                 <tr class="lv2 lv2Hh">
                                     <th scope="row" class="green-font"><i class="fas fa-caret-right fa-lg"></i><span>Reciente</span></th>
                                     <td class="bgColorRod"></td>
+                                    <td class="bgColorRod"></td>
                                     <td id="_huellaHumana_reciente" class="bgColorRod">{{ rodal.huellaHumana.reciente.valor }}</td>
                                     <td class="bgColorRod"></td>
                                 </tr>
                                 <tr class="lv3 lv3Hh">
                                     <td class="identValores"><span>Usos forestales</span></td>
+                                    <td class="bgColorRod valMet_fr">{{ valoresMetricosPDF.fr }}</td>
                                     <td class="bgColorRod"></td>
                                     <td class="bgColorRod"></td>
                                     <td id="_huellaHumana_reciente_usos_forestales" class="bgColorRod">{{ rodal.huellaHumana.reciente.usos_forestales.valor }}</td>
                                 </tr>
                                 <tr class="lv3 lv3Hh">
                                     <td class="identValores"><span>Especies invasoras</span></td>
+                                    <td class="bgColorRod valMet_ei">{{ valoresMetricosPDF.ei }}</td>
                                     <td class="bgColorRod"></td>
                                     <td class="bgColorRod"></td>
                                     <td id="_huellaHumana_reciente_especies_inv" class="bgColorRod">{{ rodal.huellaHumana.reciente.especies_inv.valor }}</td>
                                 </tr>
                                 <tr class="lv3 lv3Hh">
                                     <td class="identValores"><span>Causas de fragmentación</span></td>
+                                    <td class="bgColorRod valMet_fg">{{ valoresMetricosPDF.fg }}</td>
                                     <td class="bgColorRod"></td>
                                     <td class="bgColorRod"></td>
                                     <td id="_huellaHumana_reciente_causa_fragment" class="bgColorRod">{{ rodal.huellaHumana.reciente.causa_fragment.valor }}</td>
                                 </tr>
                                 <tr class="lv3 lv3Hh">
                                     <td class="identValores"><span>Actividad cinegética</span></td>
+                                    <td class="bgColorRod valMet_cz">{{ valoresMetricosPDF.cz }}</td>
                                     <td class="bgColorRod"></td>
                                     <td class="bgColorRod"></td>
                                     <td id="_huellaHumana_reciente_actv_cineget" class="bgColorRod">{{ rodal.huellaHumana.reciente.actv_cineget.valor }}</td>
                                 </tr>
                                 <tr class="lv3 lv3Hh">
                                     <td class="identValores"><span>Herbívora y/o ramoneo</span></td>
+                                    <td class="bgColorRod valMet_hb">{{ valoresMetricosPDF.hb }}</td>
                                     <td class="bgColorRod"></td>
                                     <td class="bgColorRod"></td>
                                     <td id="_huellaHumana_reciente_herv_rom" class="bgColorRod">{{ rodal.huellaHumana.reciente.herv_rom.valor }}</td>
                                 </tr>
                                 <tr class="lv3 lv3Hh">
                                     <td class="identValores"><span>Frecuentación</span></td>
+                                    <td class="bgColorRod valMet_fc">{{ valoresMetricosPDF.fc }}</td>
                                     <td class="bgColorRod"></td>
                                     <td class="bgColorRod"></td>
                                     <td id="_huellaHumana_reciente_frecuent" class="bgColorRod">{{ rodal.huellaHumana.reciente.frecuent.valor }}</td>
                                 </tr>
                                 <tr class="lv3 lv3Hh">
                                     <td class="identValores"><span>Durabilidad de los usos</span></td>
+                                    <td class="bgColorRod valMet_du">{{ valoresMetricosPDF.du }}</td>
                                     <td class="bgColorRod"></td>
                                     <td class="bgColorRod"></td>
                                     <td id="_huellaHumana_reciente_durab_usos" class="bgColorRod">{{ rodal.huellaHumana.reciente.durab_usos.valor }}</td>
@@ -507,6 +538,8 @@
     {% endif %}
 
     var id_rodal = {{ datosGenerales.id_rodal }};
+    var valoresMet = {{ valoresMetricosPDF | safe }}
+
 
 </script>
 <script src="{% static 'redbosques_main/javascript/jquery-3.3.1.min.js' %}"></script>

@@ -95,15 +95,13 @@ function disableSpinner() {
     document.getElementById('dwnButton').style.display = 'block'
 }
 
-var crearPDF = function(id_rodal,token){
+var crearPDF = function(id_rodal, token){
 
     enableSpinner();
     url = '/redbosques/crearPDF/' + id_rodal;
     var filename = "Nombre.pdf";
     var img = document.createElement('img');
     var imagen;
-
-
 
     leafletImage(map, function(err, canvas) {
         var dimensions = map.getSize();
@@ -139,16 +137,19 @@ var crearPDF = function(id_rodal,token){
         xhr.send(formData);
 
     });
+
+
+
 };
 
 var valoresMetricos = function(element){
     jQuery.each(element, function(i, actual) {
-        console.log(element[i].valorunidad);
         if(!element[i].valorunidad || element[i].valorunidad == null){
             $('.valMet_' + element[i].indicador_cod).html('---');
         }else{
             $('.valMet_' + element[i].indicador_cod).html(element[i].valorunidad);
         }
-
     });
 };
+
+

@@ -18,7 +18,7 @@
      <div class="row">
         <div class="col-lg-offset-10 col-lg-2">
                 <div id="dwnButton">
-                    <a class="btn btn-selector-mapa" onclick="crearPDF(id_rodal,'{{ csrf_token }}')" rel=attachment><i class="far fa-file-pdf"></i> Descargar ficha</a>
+                    <a class="btn btn-selector-mapa" onclick="crearPDF(id_rodal, '{{ csrf_token }}')" rel=attachment><i class="far fa-file-pdf"></i> Descargar ficha</a>
                 </div>
                 <div id="spinner">
                     <img id="loader" src="{% static 'redbosques_main/css/PDFLoader.gif' %}" />
@@ -258,7 +258,7 @@
                     </tr>
                     <tr class="lv3 lv3Nat">
                         <td class="identValores" ><span>{% trans 'mh' %}</span></td>
-                        <td class="bgColorRod" valMet_mh></td>
+                        <td class="bgColorRod valMet_mh"></td>
                         <td class="bgColorRod"></td>
                         <td class="bgColorRod"></td>
                         <td id="_naturalidad_micro_habitats_mh_pies_vivos" class="bgColorRod">{{ rodal.naturalidad.micro_habitats.mh_pies_vivos.valor }}</td>
@@ -527,7 +527,6 @@
 
 {% endblock %}
 {% block extra_js %}
-
 <script src="{% static 'redbosques_main/javascript/csrf_utils.js' %}"></script>
 <script src="{% static 'redbosques_main/javascript/leaflet-bing-layer.min.js' %}"></script>
 <script src='https://cdn.jsdelivr.net/npm/leaflet-image@0.4.0/leaflet-image.js'></script>

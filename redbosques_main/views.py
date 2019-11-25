@@ -3545,8 +3545,8 @@ def crearPDF(request, id):
     datgen = DatosGeneralesRodal.objects.filter(id_rodal=id)
     imgRodal = FotosRodal.objects.filter(id_rodal=id).filter(fotoprincipal="True")
 
-
-    if imgRodal is not None:
+    if imgRodal:
+    #if imgRodal is not None:
         imagenRodal = []
         for i in imgRodal:
             foto = i.foto.url
@@ -3592,10 +3592,20 @@ def crearPDF(request, id):
             'area': areaHect
         }
 
+    valMet = Valoresconunidades.objects.filter(id_rodal=id).values('id_rodal', 'indicador_cod', 'valorunidad')
+
+    valoresMetricos = []
+    for x in valMet:
+        valoresMetricos.append({
+            x['indicador_cod']: x['valorunidad']
+        })
+
+
+
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment'
     response['Content-Disposition'] = 'filename="RODAL.pdf"'
-    html_string = render_to_string("pdf_templates/pdf_template.html", {'rodal': rodalArbol, 'datosGenerales': datosGenerales, 'imagenMapa': imagenMapa, 'imagenRodal': imagenRodal, 'app_base_url': APP_BASE_URL, 'fotoRodal': foto})
+    html_string = render_to_string("pdf_templates/pdf_template.html", {'rodal': rodalArbol, 'datosGenerales': datosGenerales, 'imagenMapa': imagenMapa, 'imagenRodal': imagenRodal, 'app_base_url': APP_BASE_URL, 'fotoRodal': foto, 'valoresMetricosPDF': valoresMetricos})
     #response.write(HTML(string=html_string, base_url='http://127.0.0.1:8000/redbosques/crearPDF/91').write_pdf())
     #response.write(HTML(string=html_string).write_pdf())
     pdf_file = HTML(string=html_string, base_url=STATIC_PDF_ROOT).write_pdf()
