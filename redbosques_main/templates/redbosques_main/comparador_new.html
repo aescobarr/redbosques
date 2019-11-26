@@ -51,6 +51,7 @@
                 <!-- ************************** Rodal seleccionado ************************** -->
                 <div class="col-lg-offset-1 col-lg-4">
                     <label class="green-font">Rodal seleccionado (* = referencia) <i class="fas fa-circle colLeyRod"></i></label>
+                    <a target="_blank" class="btn green-font selector_rodal" onclick="fichaRodal()">Ver ficha</a>
                     <select id="selector_rodales" class="form-control selector_rodal inputsFiltComp">
                         <option value=None selected="selected">Seleccione rodal</option>
                         <!--<option value="medRod">Media del conjunto de rodales</option>-->
@@ -80,6 +81,7 @@
                 <!-- ************************** Rodales de comparación ************************** -->
                 <div class="col-lg-offset-1 col-lg-6">
                     <label class="green-font">Rodal de comparación (* = referencia) <i class="fas fa-circle colLeyRodComp"></i></label>
+                    <a target="_blank" class="btn green-font" onclick="fichaRodalComp()">Ver ficha</a>
                     <div class="row">
                         <div class="col-xs-6">
                             <select id="selector_rodales_comp" class="form-control selector_rodal_Comp inputsFiltComp">
@@ -139,9 +141,9 @@
 </div>
 <div class="container menu-data-show">
     <ul class="nav nav-tabs">
-        <li class="active val-graf grafica"><a data-toggle="tab" href="#filtro-valGraficas">Gráfica/Valores</a></li>
+        <li class="active val-graf grafica"><a data-toggle="tab" href="#filtro-valGraficas">Gráficas 1</a></li>
+        <li class="graf graficas"><a data-toggle="tab" href="#filtro-graficas">Gráficas 2</a></li>
         <li class="val-graf valores"><a data-toggle="tab" href="#filtro-valores">Valores</a></li>
-        <li class="graf graficas"><a data-toggle="tab" href="#filtro-graficas">Gráficas</a></li>
     </ul>
 </div>
 

@@ -2135,3 +2135,34 @@ function resetUITable(){
         $('.col-diff').removeAttr("style");
         $('.diff-col').removeAttr("style");
 }
+
+
+
+var fichaRodal = function(){
+    var rodalSelected = $('#selector_rodales').val();
+
+    if (rodalSelected === '' || rodalSelected === 'None' || rodalSelected === null || rodalSelected === 'null'){
+        alert("Por favor seleccione un rodal.")
+    }else{
+        //location.href = "/redbosques/fichaRodal/" + rodalSelected + "/";
+        window.open(
+            "/redbosques/fichaRodal/" + rodalSelected + "/",
+            '_blank' // <- This is what makes it open in a new window.
+        );
+    }
+}
+
+var fichaRodalComp = function(){
+    var rodalSelectedComp = $('#selector_rodales_comp').val();
+
+    if (rodalSelectedComp === ''|| rodalSelectedComp === 'None' || rodalSelectedComp === null || rodalSelectedComp === 'null' || rodalSelectedComp === 'medRod'){
+        alert("Por favor seleccione un rodal.")
+    }else{
+        //location.href = "/redbosques/fichaRodal/" + rodalSelectedComp + "/";
+        window.open(
+            "/redbosques/fichaRodal/" + rodalSelectedComp + "/",
+            '_blank' // <- This is what makes it open in a new window.
+        );
+
+    }
+}

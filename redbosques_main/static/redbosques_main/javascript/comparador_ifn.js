@@ -439,7 +439,19 @@ $('.hideAll').on("click", function(){
     $('.lv2Nat').hide();
 });
 
+var fichaRodal = function(){
+    var rodalSelected = $('#selector_rodales').val();
 
+    if (rodalSelected === '' || rodalSelected === 'None' || rodalSelected === null || rodalSelected === 'null'){
+        alert("Por favor seleccione un rodal.")
+    }else{
+        //location.href = "/redbosques/fichaRodal/" + rodalSelected + "/";
+        window.open(
+            "/redbosques/fichaRodal/" + rodalSelected + "/",
+            '_blank' // <- This is what makes it open in a new window.
+        );
+    }
+}
 /*$(".popupInfo").click(function(){
 
     $("#instruc").dialog({

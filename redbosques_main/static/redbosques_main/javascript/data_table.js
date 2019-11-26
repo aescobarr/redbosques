@@ -58,14 +58,12 @@ $('.hideAll').on("click", function(){
 
 var valoresMetricos = function(element){
     jQuery.each(element, function(i, actual) {
-        console.log(element[i].valorunidad)
         $('.valMet_' + element[i].indicador_cod).html(element[i].valorunidad);
     });
 };
 
 var valoresMetricosComp = function(element){
     jQuery.each(element, function(i, actual) {
-        console.log(element[i].valorunidad)
         $('.valMetComp_' + element[i].indicador_cod).html(element[i].valorunidad);
     });
 };

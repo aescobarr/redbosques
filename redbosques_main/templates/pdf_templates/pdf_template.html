@@ -210,7 +210,7 @@
                             </tr>
                             <tr class="lv3 lv3Nat">
                                 <td class="identValores"><span>{% trans 'ea' %}</span></td>
-                                <td class="bgColorRod valMet_ea">{{ valoresMetricosPDF["ea"] }}</td>
+                                <td class="bgColorRod valMet_ea">{{ valoresMetricosPDF.ea }}</td>
                                 <td class="bgColorRod"></td>
                                 <td class="bgColorRod"></td>
                                 <td id="_naturalidad_composicion_especies_arboreas" class="bgColorRod">{{ rodal.naturalidad.composicion.especies_arboreas.valor }}</td>
@@ -539,6 +539,7 @@
 
     var id_rodal = {{ datosGenerales.id_rodal }};
     var valoresMet = {{ valoresMetricosPDF | safe }}
+    console.log(valoresMet);
 
 
 </script>

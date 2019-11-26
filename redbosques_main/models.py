@@ -825,7 +825,7 @@ class RedbosquesRodalF2Ident(models.Model):
 
 
 class Valoresconunidades(models.Model):
-    id_indicador_rodal = models.TextField(blank=True, null=True)
+    id = models.TextField(primary_key=True)
     id_rodal = models.IntegerField(blank=True, null=True)
     indicador_cod = models.TextField(blank=True, null=True)
     valor = models.FloatField(blank=True, null=True)

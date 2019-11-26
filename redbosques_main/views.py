@@ -3592,13 +3592,48 @@ def crearPDF(request, id):
             'area': areaHect
         }
 
-    valMet = Valoresconunidades.objects.filter(id_rodal=id).values('id_rodal', 'indicador_cod', 'valorunidad')
+    '''valMet = Valoresconunidades.objects.filter(id_rodal=id).values('id_rodal', 'indicador_cod', 'valorunidad')
 
     valoresMetricos = []
     for x in valMet:
-        valoresMetricos.append({
-            x['indicador_cod']: x['valorunidad']
+        print(x)
+        valoresMetricos = {
+            'ab': x.indicador_cod["ab"],
+            'ae': x.indicador_cod["ae"]
+
+
+        }
+        
+    print(valoresMetricos)'''
+
+    valMet = Valoresconunidades.objects.filter(id_rodal=id).values('id_rodal', 'indicador_cod', 'valorunidad', 'valor')
+
+
+    valMet2 = []
+    for x in valMet:
+        valMet2.append({
+            'id_rodal': x['id_rodal'],
+            'indicador_cod': x['indicador_cod'],
+            'valorunidad': x['valorunidad']
         })
+
+
+
+
+    valoresMetricos = {}
+    t = 0
+    lenValeMet = len(valMet2)
+    claveVal = []
+    while t < lenValeMet:
+        if valMet2[t]['valorunidad']:
+            valoresMetricos[valMet2[t]['indicador_cod']] = valMet2[t]['valorunidad']
+        else:
+            valoresMetricos[valMet2[t]['indicador_cod']] = '---'
+
+
+        print(valoresMetricos)
+        t += 1
+        print(t)
 
 
 
