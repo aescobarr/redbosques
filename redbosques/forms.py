@@ -93,11 +93,11 @@ class rodalFormFields(forms.ModelForm):
     fecha = forms.DateField(label="Fecha", widget=DatePickerInput(format='%d/%m/%Y', attrs={'placeholder': 'Fecha'}))
     equipo = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Equipo de campo'}), required=True)
 
-    habLPEHT = TeLpeht.objects.filter(seleccion='True').filter(cod__contains='.').order_by('nombre')
+    habLPEHT = TeLpeht.objects.filter(seleccion='True').filter(cod__contains='.').order_by('cod')
     lpeht_cod = forms.ModelChoiceField(queryset=habLPEHT, widget=forms.Select(attrs={'class': 'form-control', 'value': ''}), empty_label="Hábitat CORINE (LPHE)", required=True)
 
 
-    habitatsHIC = TeHic.objects.order_by('nombre_es')
+    habitatsHIC = TeHic.objects.order_by('cod')
     hic_cod = forms.ModelChoiceField(queryset=habitatsHIC, widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Hábitat de interés comunitario HIC", required=True)
     regionesBiogeo = TeRegbio.objects.order_by('nombre_es')
     regbio_cod = forms.ModelChoiceField(queryset=regionesBiogeo, widget=forms.Select(attrs={'class': 'form-control'}),empty_label="Región biogeográfica", required=True)
@@ -494,9 +494,9 @@ class rodalFormFase1Fields(ModelForm):
     metodo_cod = forms.ModelChoiceField(queryset=metodos, widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Método", required=False)
     nombre = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del rodal'}), required=True)
     propietario = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Propietario'}), required=True)
-    habLPEHT = TeLpeht.objects.filter(seleccion='True').filter(cod__contains='.').order_by('nombre')
+    habLPEHT = TeLpeht.objects.filter(seleccion='True').filter(cod__contains='.').order_by('cod')
     lpeht_cod = forms.ModelChoiceField(queryset=habLPEHT, widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Hábitat CORINE (LPHE)", required=True)
-    habitatsHIC = TeHic.objects.order_by('nombre_es')
+    habitatsHIC = TeHic.objects.order_by('cod')
     hic_cod = forms.ModelChoiceField(queryset=habitatsHIC, widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Hábitat de interés comunitario HIC", required=True)
     regionesBiogeo = TeRegbio.objects.order_by('nombre_es')
     regbio_cod = forms.ModelChoiceField(queryset=regionesBiogeo, widget=forms.Select(attrs={'class': 'form-control'}),empty_label="Región biogeográfica", required=True)

@@ -42,12 +42,13 @@
             <div class="col-lg-offset-3 col-lg-7">
                 {{ form.datosrestringidos }}
                 {{ form.datosrestringidos.errors }}
-                <label for="datosRestringidos">Datos restringidos</label>
+                <label for="datosRestringidos">{% trans 'datosRestringidos' %}</label>
+                <!--<label for="datosRestringidos">Datos restringidos</label>-->
             </div>
         </div> <!-- Datos Restringidos -->
         <div class="row form-group">
             <div class="col-lg-offset-3 col-lg-7">
-                <h4>Datos generales y administrativos</h4>
+                <h4>{% trans 'datosGenYAdmin' %}</h4>
                 <div class="nombreRodal">
                     <div class="inputCont">
                         <div class="inputRodalField">
@@ -69,7 +70,7 @@
                     <div class="inputCont">
                         <div class="inputRodalField">
                             <select class="form-control selectBox" name="comautonom_cod_sel" id="id_comautonom" onchange="ccaa_rodalForm()">
-                                <option value="null" selected="selected">Comunidad Autónoma</option>
+                                <option value="null" selected="selected">{% trans 'comAutonoma' %}Comunidad Autónoma</option>
                                     {% for ca in comAut %}
                                         <option value="{{ ca.cod }}">{{ ca.nombre }}</option>
                                     {% endfor %}
@@ -92,7 +93,7 @@
                     <div class="inputCont">
                         <div class="inputRodalField">
                             <select class="form-control selectBox" name="provincia_cod_sel" id="id_provincia" onchange="prov_rodalForm()">
-                                <option value="null" selected="selected">Provincia</option>
+                                <option value="null" selected="selected">{% trans 'provincia' %}Provincia</option>
                                     {% for p in provincias %}
                                         <option class="provincia" value="{{ p.cod }}">{{ p.nombre }}</option>
                                     {% endfor %}
@@ -115,7 +116,7 @@
                     <div class="inputCont">
                         <div class="inputRodalField">
                             <select class="form-control selectBox" name="municipio_cod_sel" id="id_municipio_cod" onchange="muni_rodalForm()">
-                                <option value="null" selected="selected">Municipio</option>
+                                <option value="null" selected="selected">{% trans 'municipio' %}Municipio</option>
                                     {% for m in municipio %}
                                         <option class="municipio" value="{{ m.id }}">{{ m.nombre }}</option>
                                     {% endfor %}
@@ -182,7 +183,7 @@
         </div> <!-- Localización -->
         <div class="row form-group">
             <div class="col-lg-offset-3 col-lg-7">
-                <h4>Hábitat</h4>
+                <h4>{% trans 'habitat' %}Hábitat</h4>
                 <div class="inputCont">
                     <div class="inputRodalField">
                         <div class="habitatCorine">
@@ -240,7 +241,7 @@
         </div> <!-- Habitat -->
         <div class="row form-group">
             <div class="col-lg-offset-3 col-lg-7">
-                <h4>Muestreo</h4>
+                <h4>{% trans 'muestreo' %}Muestreo</h4>
                 <div class="inputCont">
                     <div class="inputRodalField">
                         <div class="fecha">
@@ -318,7 +319,7 @@
                     </tr>
                     <tr>
                         <td class="rodal_label valspparb">
-                            <label for="id_valspparb_sel">{% trans 'ea' %}</label>
+                            <label for="id_valspparb_sel">{% trans 'eaFase1' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valspparb.errors }}
                             </div>
@@ -347,7 +348,7 @@
                     </tr>
                     <tr>
                         <td class="rodal_label valmasa">
-                            <label for="id_valmasa_sel">{% trans 'de' %}</label>
+                            <label for="id_valmasa_sel">{% trans 'deFase1' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valmasa.errors }}
                             </div>
@@ -370,7 +371,7 @@
                     </tr> <!-- Diversidad estructural -->
                     <tr>
                         <td class="rodal_label valestratos">
-                            <label for="id_valestratos_sel">{% trans 'ev' %}</label>
+                            <label for="id_valestratos_sel">{% trans 'evFase1' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valestratos.errors }}
                             </div>
@@ -399,7 +400,7 @@
                     </tr>
                     <tr>
                         <td class="rodal_label valarboexcep">
-                            <label for="id_valarboexcep_sel">{% trans 'ae' %}</label>
+                            <label for="id_valarboexcep_sel">{% trans 'aeFase1' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valarboexcep.errors }}
                             </div>
@@ -422,7 +423,7 @@
                     </tr> <!-- Árboles excepcionales -->
                     <tr>
                         <td class="rodal_label valmmpie">
-                            <label for="id_valmmpie_sel">{% trans 'mp' %}</label>
+                            <label for="id_valmmpie_sel">{% trans 'mpFase1' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valmmpie.errors }}
                             </div>
@@ -445,7 +446,7 @@
                     </tr><!-- Volumen madera en pie -->
                     <tr>
                         <td class="rodal_label valmmsuelo">
-                            <label for="id_valmmsuelo_sel">{% trans 'ms' %}</label>
+                            <label for="id_valmmsuelo_sel">{% trans 'msFase1' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valmmsuelo.errors }}
                             </div>
@@ -474,7 +475,7 @@
                     </tr>
                     <tr>
                         <td class="rodal_label valmicrohab">
-                            <label for="id_valmicrohab_sel">Microhábitats en pies vivos</label>
+                            <label for="id_valmicrohab_sel">{% trans 'hmFase1' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valmicrohab.errors }}
                             </div>
@@ -500,7 +501,7 @@
 
                     <tr>
                         <td class="rodal_label valhuecos">
-                            <label for="id_valhuecos_sel">Huecos en el dosel</label>
+                            <label for="id_valhuecos_sel">{% trans 'hdFase1' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valhuecos.errors }}
                             </div>
@@ -524,7 +525,7 @@
 
                     <tr>
                         <td class="rodal_label valregen">
-                            <label for="id_valregen_sel">Regenerado avanzado</label>
+                            <label for="id_valregen_sel">{% trans 'regenAvanFase1' %}</label>
                             <div class="form-group has-errors text-danger small">
                                 {{ form.valregen.errors }}
                             </div>

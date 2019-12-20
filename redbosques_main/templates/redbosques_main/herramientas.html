@@ -1,5 +1,6 @@
 {% extends "redbosques_main/base.html" %}
 {% load static %}
+{% load i18n %}
 {% block extra_css %}
     <link href="{% static 'redbosques_main/leaflet/leaflet.css' %}" rel="stylesheet">
     <link href="{% static 'redbosques_main/Leaflet.markercluster-1.4.0/dist/MarkerCluster.css' %}" rel="stylesheet">
@@ -77,7 +78,7 @@
 
 
 <div class="container mapaFase1" style="display: None">
-    <h3 style="text-align: center;">Rodales identificados en la Fase de prospecciónen base a indicativos cualitativos</h3>
+    <h3 style="text-align: center;">{% trans 'titMapaFase1' %}</h3>
     <div class="row mapa-selectores">
         <div id="mapidFase1" class="col-lg-9"></div>
 
