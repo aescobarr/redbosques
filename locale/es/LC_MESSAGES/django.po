@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-11 15:15+0000\n"
+"POT-Creation-Date: 2020-01-21 11:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,9 +42,7 @@ msgstr ""
 #: redbosques_main/templates/pdf_templates/pdf_template.html:184
 #: redbosques_main/templates/pdf_templates/pdf_template.html:198
 #: redbosques_main/templates/redbosques_main/comparador_ifn.html:114
-#: redbosques_main/templates/redbosques_main/comparador_new.html:199
 #: redbosques_main/templates/redbosques_main/comparador_new.html:200
-#: redbosques_main/templates/redbosques_main/comparador_new.html:420
 #: redbosques_main/templates/redbosques_main/comparador_new.html:821
 #: redbosques_main/templates/redbosques_main/comparador_new.html:835
 #: redbosques_main/templates/redbosques_main/comparador_new.html:895
@@ -229,11 +227,94 @@ msgstr "Volumen de madera muerta en pie"
 msgid "ms"
 msgstr "Volumen de madera muerta en suelo"
 
+#: redbosques_main/templates/redbosques_main/comparador_new.html:199
+msgid "nmPopUp"
+msgstr ""
+"Conjunto de indicadores y criterios basados en atributos estructurales "
+"asociados a la edad del rodal."
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:220
+msgid "cpPopUp"
+msgstr ""
+"Diversidad de especies arbóreas presentes en el rodal en cualquier estadio "
+"de desarrollo."
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:240
+msgid "eaPopUp"
+msgstr "Número de especies arbóreas autóctonas presentes en el rodal"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:263
+msgid "cePopUp"
+msgstr ""
+"Conjunto de indicadores que describen la estructura vertical y horizontal "
+"del arbolado."
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:284
+msgid "abPopUp"
+msgstr "Grado de ocupación del espacio por el arbolado"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:305
+msgid "evPopUp"
+msgstr "Número de estratos verticales ocupados por vegetación arbórea. "
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:325
+msgid "dePopUp"
+msgstr ""
+"Número de clases diamétricas presentes en el rodal de cualquier especie "
+"arbórea."
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:346
+msgid "snPopUp"
+msgstr ""
+"Conjunto de indicadores de las etapas más avanzadas del ciclo natural del "
+"bosque."
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:365
+msgid "aePopUp"
+msgstr "Densidad de árboles vivos de tamaño excepcional."
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:385
+msgid "mmPopUp"
+msgstr "Volumen de madera muerta de gran tamaño en pie o en el suelo."
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:402
+msgid "pmPopUp"
+msgstr "Proporción de madera muerta en relación a los pies vivos"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:420
+msgid "hmPopUp"
+msgstr "Diversidad de hábitats propios de árboles vivos"
+
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:440
+msgid "mhPopUp"
+msgstr "Número de microhábitats distintos presentes en pies vivos. "
+
 #: redbosques_main/templates/redbosques_main/comparador_new.html:440
 #: redbosques_main/templates/redbosques_main/fichaRodal.html:260
 #: redbosques_main/templates/redbosques_main/rodalesForm2.html:363
 msgid "mh"
 msgstr "Dendromicrohábitats"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:460
+msgid "dnPopUp"
+msgstr "Describe las distintas etapas presentes de la dinámica natural del bosque."
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:477
+msgid "csPopUp"
+msgstr ""
+"Fases del ciclo silvogenético presentes en el rodal y completitud del ciclo "
+"silvogenético."
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:497
+msgid "hhPopUp"
+msgstr ""
+"Conjunto de indicadores y criterios basados en evidencias directas o "
+"indirectas de intervención antrópica antigua y reciente."
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:513
+msgid "haPopUp"
+msgstr "Indicadores de señales de huella humana anteriores al 1957"
 
 #: redbosques_main/templates/redbosques_main/comparador_new.html:513
 #: redbosques_main/templates/redbosques_main/comparador_new.html:851
@@ -243,10 +324,20 @@ msgid "ha"
 msgstr "Huella antigua"
 
 #: redbosques_main/templates/redbosques_main/comparador_new.html:529
+msgid "tbPopUp"
+msgstr "Proporción del rodal que ya era arbolado antes de 1957"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:529
 #: redbosques_main/templates/redbosques_main/fichaRodal.html:314
 #: redbosques_main/templates/redbosques_main/rodalesForm2.html:431
 msgid "tb"
 msgstr "Continuidad temporal"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:545
+msgid "uaPopUp"
+msgstr ""
+"Indicios sobre el terreno de huellas antiguas de uso agropastoral antes de "
+"1957"
 
 #: redbosques_main/templates/redbosques_main/comparador_new.html:545
 #: redbosques_main/templates/redbosques_main/fichaRodal.html:321
@@ -255,10 +346,22 @@ msgid "ua"
 msgstr "Usos agropastorales"
 
 #: redbosques_main/templates/redbosques_main/comparador_new.html:561
+msgid "faPopUp"
+msgstr ""
+"Indicios sobre el terreno de huellas antiguas de usos forestales antes de "
+"1957"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:561
 #: redbosques_main/templates/redbosques_main/fichaRodal.html:328
 #: redbosques_main/templates/redbosques_main/rodalesForm2.html:483
 msgid "fa"
 msgstr "Usos forestales antiguos"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:577
+msgid "hrPopUp"
+msgstr ""
+"Conjunto de indicadores de señales de huella humana posteriores al 1957 "
+"observables sobre el terreno."
 
 #: redbosques_main/templates/redbosques_main/comparador_new.html:577
 #: redbosques_main/templates/redbosques_main/comparador_new.html:852
@@ -268,10 +371,20 @@ msgid "hr"
 msgstr "Huella reciente"
 
 #: redbosques_main/templates/redbosques_main/comparador_new.html:593
+msgid "frPopUp"
+msgstr ""
+"Indicios de usos forestales constatables sobre el terreno posteriores a 1957."
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:593
 #: redbosques_main/templates/redbosques_main/fichaRodal.html:342
 #: redbosques_main/templates/redbosques_main/rodalesForm2.html:511
 msgid "fr"
 msgstr "Usos forestales recientes"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:609
+msgid "eiPopUp"
+msgstr ""
+"Abundancia relativa del dosel arbóreo ocupado por especies arbóreas exóticas."
 
 #: redbosques_main/templates/redbosques_main/comparador_new.html:609
 #: redbosques_main/templates/redbosques_main/fichaRodal.html:349
@@ -280,10 +393,22 @@ msgid "ei"
 msgstr "Especies exoticas"
 
 #: redbosques_main/templates/redbosques_main/comparador_new.html:625
+msgid "fgPopUp"
+msgstr ""
+"Fragmentación según la tipología de uso o tipo de cubierta en el rodal o en "
+"su perímetro inmediato."
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:625
 #: redbosques_main/templates/redbosques_main/fichaRodal.html:356
 #: redbosques_main/templates/redbosques_main/rodalesForm2.html:555
 msgid "fg"
 msgstr "Causas de fragmentación"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:641
+msgid "czPopUp"
+msgstr ""
+"Intensidad  de prácticas de caza a partir de las distintas tipologías y "
+"signos de actividad."
 
 #: redbosques_main/templates/redbosques_main/comparador_new.html:641
 #: redbosques_main/templates/redbosques_main/fichaRodal.html:363
@@ -292,10 +417,22 @@ msgid "cz"
 msgstr "Actividad cinegética"
 
 #: redbosques_main/templates/redbosques_main/comparador_new.html:657
+msgid "hbPopUp"
+msgstr ""
+"Impacto de los daños por ramoneo y herbivoría producida por animales "
+"silvestres o domésticos."
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:657
 #: redbosques_main/templates/redbosques_main/fichaRodal.html:370
 #: redbosques_main/templates/redbosques_main/rodalesForm2.html:599
 msgid "hb"
 msgstr "Herbivoría y/o ramoneo"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:673
+msgid "fcPopUp"
+msgstr ""
+"Accesibilidad del rodal según distancia a caminos y grado de conocimiento de "
+"la ruta de acceso."
 
 #: redbosques_main/templates/redbosques_main/comparador_new.html:673
 #: redbosques_main/templates/redbosques_main/fichaRodal.html:377
@@ -304,10 +441,26 @@ msgid "fc"
 msgstr "Frecuentación"
 
 #: redbosques_main/templates/redbosques_main/comparador_new.html:689
+msgid "duPopUp"
+msgstr ""
+"Riesgo de cambio de usos basada en la categoría de protección en la que se "
+"halla el rodal."
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:689
 #: redbosques_main/templates/redbosques_main/fichaRodal.html:384
 #: redbosques_main/templates/redbosques_main/rodalesForm2.html:643
 msgid "du"
 msgstr "Durabilidad de usos"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:708
+msgid "iePopUp"
+msgstr ""
+"Conjunto de indicadores y criterios que informan del contexto espacial en el "
+"que se encuentra el rodal."
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:724
+msgid "arPopUp"
+msgstr "Superficie ocupada por el rodal maduro."
 
 #: redbosques_main/templates/redbosques_main/comparador_new.html:724
 #: redbosques_main/templates/redbosques_main/comparador_new.html:857
@@ -317,6 +470,10 @@ msgid "ar"
 msgstr "Tamaño"
 
 #: redbosques_main/templates/redbosques_main/comparador_new.html:740
+msgid "cfPopUp"
+msgstr "Superficie forestal arbolada en continuo en donde se halla rodal."
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:740
 #: redbosques_main/templates/redbosques_main/comparador_new.html:858
 #: redbosques_main/templates/redbosques_main/comparador_new.html:1020
 #: redbosques_main/templates/redbosques_main/fichaRodal.html:422
@@ -324,11 +481,19 @@ msgid "cf"
 msgstr "Continuidad forestal"
 
 #: redbosques_main/templates/redbosques_main/comparador_new.html:756
+msgid "ebPopUp"
+msgstr "Porcentaje de bosque alrededor del rodal en un radio de 5 km."
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:756
 #: redbosques_main/templates/redbosques_main/comparador_new.html:859
 #: redbosques_main/templates/redbosques_main/comparador_new.html:1021
 #: redbosques_main/templates/redbosques_main/fichaRodal.html:428
 msgid "eb"
 msgstr "Efecto borde"
+
+#: redbosques_main/templates/redbosques_main/comparador_new.html:772
+msgid "cnPopUp"
+msgstr "Distancia e interconexión a grandes manchas de bosque."
 
 #: redbosques_main/templates/redbosques_main/comparador_new.html:772
 #: redbosques_main/templates/redbosques_main/comparador_new.html:860
@@ -386,9 +551,11 @@ msgstr "¿Hay huecos (>200m2) por caída de árboles?"
 msgid "regenAvanFase1"
 msgstr "¿Ocupación del regenerado mayor de 5%?"
 
-#: redbosques_main/templates/redbosques_main/herramientas.html:80
+#: redbosques_main/templates/redbosques_main/herramientas.html:81
 msgid "titMapaFase1"
-msgstr "Rodales identificados en la Fase de prospección en base a indicadores cualitativos"
+msgstr ""
+"Rodales identificados en la Fase de prospección en base a indicadores "
+"cualitativos"
 
 #: redbosques_main/templates/redbosques_main/index.html:8
 msgid "tituloHerram"
