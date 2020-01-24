@@ -2312,15 +2312,20 @@ def menuData(request):
 
 
     rodalesSelectorEditor = []
-
+    rodalesSelectorEditorFase1 = []
     if du.admin_institucion:
         usDat = DatosUsuario.objects.filter(institucion_id=du.institucion_id).values('user_id')
 
         usuarios = AuthUser.objects.filter(id__in=usDat).values('id')
         rodals_list_2 = Rodal.objects.filter(usuario__in=usuarios).exclude(geom__isnull=True).values('id', 'nombre').order_by('nombre')
 
+        rodal_list_fase1 = RodalProsp.objects.filter(usuario__in=usuarios).exclude(geom__isnull=True).values('id', 'nombre').order_by('nombre')
+
         for test in rodals_list_2:
             rodalesSelectorEditor.append({'id_rodal': test['id'], 'nombre': test['nombre']})
+
+        for f2 in rodal_list_fase1:
+            rodalesSelectorEditorFase1.append({'id_rodal': f2['id'], 'nombre': f2['nombre']})
 
 
     else:
@@ -2328,11 +2333,17 @@ def menuData(request):
         usuarios = AuthUser.objects.filter(id__in=usDat).values('id')
         rodals_list_2 = Rodal.objects.filter(usuario__in=usuarios).exclude(geom__isnull=True).values('id', 'nombre').order_by('nombre')
 
+        rodal_list_fase1 = RodalProsp.objects.filter(usuario__in=usuarios).exclude(geom__isnull=True).values('id', 'nombre').order_by('nombre')
+
+
         for test in rodals_list_2:
             rodalesSelectorEditor.append({'id_rodal': test['id'], 'nombre': test['nombre']})
 
+        for f2 in rodal_list_fase1:
+            rodalesSelectorEditorFase1.append({'id_rodal': f2['id'], 'nombre': f2['nombre']})
 
-    context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'rodalesSelector': rodalesSelector, 'du': du, 'rodalesSelectorEditor': rodalesSelectorEditor, 'datosGenFichaPDF': rodalesFicha, 'rodalesFase1Selector': rodalesFase1Selector}
+
+    context = {'herramientas': 'Herramienta de evaluación de rodales maduros', 'rodalesSelector': rodalesSelector, 'du': du, 'rodalesSelectorEditor': rodalesSelectorEditor, 'datosGenFichaPDF': rodalesFicha, 'rodalesFase1Selector': rodalesFase1Selector, 'rodalesSelectorEditorFase1': rodalesSelectorEditorFase1}
 
     return context
 

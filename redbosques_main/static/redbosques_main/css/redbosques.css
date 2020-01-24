@@ -873,6 +873,11 @@ td.errorAlert{
     text-align: justify;
 }
 
+.intro2{
+    font-size: 16px;
+    text-align: justify;
+}
+
 .fraction {
     display: inline-block;
     vertical-align: middle;

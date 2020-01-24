@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-21 11:58+0000\n"
+"POT-Creation-Date: 2020-01-23 11:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -180,7 +180,7 @@ msgstr "Arboles excepcionales"
 #: redbosques_main/templates/redbosques_main/fichaRodal.html:238
 #: redbosques_main/templates/redbosques_main/rodalesForm2.html:286
 msgid "mm"
-msgstr "Volumen de madera muerta total"
+msgstr "Abundancia de madera muerta"
 
 #: redbosques_main/templates/pdf_templates/pdf_template.html:269
 #: redbosques_main/templates/redbosques_main/comparador_ifn.html:215
@@ -285,7 +285,6 @@ msgstr "Proporción de madera muerta en relación a los pies vivos"
 msgid "hmPopUp"
 msgstr "Diversidad de hábitats propios de árboles vivos"
 
-
 #: redbosques_main/templates/redbosques_main/comparador_new.html:440
 msgid "mhPopUp"
 msgstr "Número de microhábitats distintos presentes en pies vivos. "
@@ -298,7 +297,8 @@ msgstr "Dendromicrohábitats"
 
 #: redbosques_main/templates/redbosques_main/comparador_new.html:460
 msgid "dnPopUp"
-msgstr "Describe las distintas etapas presentes de la dinámica natural del bosque."
+msgstr ""
+"Describe las distintas etapas presentes de la dinámica natural del bosque."
 
 #: redbosques_main/templates/redbosques_main/comparador_new.html:477
 msgid "csPopUp"
@@ -321,7 +321,7 @@ msgstr "Indicadores de señales de huella humana anteriores al 1957"
 #: redbosques_main/templates/redbosques_main/comparador_new.html:1017
 #: redbosques_main/templates/redbosques_main/fichaRodal.html:307
 msgid "ha"
-msgstr "Huella antigua"
+msgstr "Huella humana antigua"
 
 #: redbosques_main/templates/redbosques_main/comparador_new.html:529
 msgid "tbPopUp"
@@ -368,7 +368,7 @@ msgstr ""
 #: redbosques_main/templates/redbosques_main/comparador_new.html:1018
 #: redbosques_main/templates/redbosques_main/fichaRodal.html:335
 msgid "hr"
-msgstr "Huella reciente"
+msgstr "Huella humana reciente"
 
 #: redbosques_main/templates/redbosques_main/comparador_new.html:593
 msgid "frPopUp"
@@ -551,26 +551,41 @@ msgstr "¿Hay huecos (>200m2) por caída de árboles?"
 msgid "regenAvanFase1"
 msgstr "¿Ocupación del regenerado mayor de 5%?"
 
+#: redbosques_main/templates/redbosques_main/herramientas.html:25
+msgid "titMapaFase2"
+msgstr "Rodales identificados en base a indicadores cuantitativos"
+
 #: redbosques_main/templates/redbosques_main/herramientas.html:81
 msgid "titMapaFase1"
-msgstr ""
-"Rodales identificados en la Fase de prospección en base a indicadores "
-"cualitativos"
+msgstr "Rodales prospectados en base a indicadores cualitativos"
 
 #: redbosques_main/templates/redbosques_main/index.html:8
 msgid "tituloHerram"
 msgstr "REDBOSQUES: Herramienta de evaluación de rodales maduros"
 
-#: redbosques_main/templates/redbosques_main/index.html:16
+#: redbosques_main/templates/redbosques_main/index.html:18
 msgid "intro"
 msgstr ""
-"Redbosques es una aplicación web abierta que permite evaluar la naturalidad "
-"en función de la madurez \n"
-",la huella humana y la integridad espacial. Es una herramienta para gestores "
-"y científicos como \n"
-"soporte a la toma de decisiones para la gestión forestal y la búsqueda de "
-"referentes de alto valor de \n"
-" conservación."
+"Esta es una aplicación web abierta que permite evaluar la naturalidad de "
+"rodales de bosque en función de la madurez,la huella humana y la integridad "
+"espacial. Estos parámetros son calculados a partir de las variables "
+"recogidas encampo mediante la metodología propuesta por RedBosques."
+
+#: redbosques_main/templates/redbosques_main/index.html:23
+msgid "defRodRef"
+msgstr "B3 Definición rodales referencia"
+
+#: redbosques_main/templates/redbosques_main/index.html:28
+msgid "introBis"
+msgstr ""
+"La web contiene un geoportal que permite visualizar los rodales prospectados "
+"y consultar las variables recogidas en campo. Además permite comparar "
+"rodales entre sí, y rodales con el promedio del Inventario Forestal "
+"Nacional. </br></br> Los rodales con mayor madurez en cada tipo de bosque se "
+"han identificado como 'rodales de referencia',conformando la Red de Rodales "
+"de Referencia. </br></br>RedBosques es una herramienta de soporte a la toma "
+"de decisiones para gestores y científicos,útil para la gestión forestal y la "
+"búsqueda de referentes de alto valor de conservación."
 
 #: redbosques_main/templates/redbosques_main/rodalFormFase1.html:45
 msgid "datosRestringidos"

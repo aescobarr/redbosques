@@ -796,14 +796,14 @@ function rodalData(valorRodal, valRodComp){
                 },
                 success: function( data, textStatus, jqXHR ) {
 
-                    console.log(data);
+                    //console.log(data);
 
                     rodalSelData = data.rodal;
                     recorreRodal('', rodalSelData);
 
                     valMet = data.valoresMetricos;
                     valMetRef = data.valoresMetricosComp;
-                    console.log(valMet);
+                    //console.log(valMet);
 
                     valoresMetricos(valMet);
                     valoresMetricosComp(valMetRef);
@@ -850,7 +850,7 @@ function rodalData(valorRodal, valRodComp){
 };
 
 function load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod, rodPrincip, rodRef){
-    console.log(valRod);
+    //console.log(valRod);
     url = _rodal_ref_list;
     var params = [];
     if(idHabitat != "null"){
@@ -904,7 +904,7 @@ function load_rodal_ref(idHabitat, idComAut, idRegBiogeo, valRod, rodPrincip, ro
 
                 valMet = data.valoresMetricos;
                 valMetRef = data.valoresMetricosComp;
-                console.log(valMet);
+                //console.log(valMet);
 
                 valoresMetricos(valMet);
                 valoresMetricosComp(valMetRef);
@@ -991,7 +991,6 @@ function grafica1(){
     var ejesXYNom = {}
     var ejeXSelected = $(ejeX).val();
     var ejeYSelected = $(ejeY).val();
-
 
     if(ejeXSelected != "null" && ejeYSelected != "null"){
         rodalGraf = [];
@@ -1096,23 +1095,32 @@ function setBars(barGraphDataSize, optionSelected){
 
 function setPoints(dotsGraphDataSize, ejeOptionSelected){
     var rodalVal = [];
+    var rodalValX = [];
+    var rodalValY = [];
     var rodalReferenciaValX = [];
     var rodalReferenciaValY = [];
     var rodalNombre = null;
     rodalReferenciaNombres = [];
     var pointsData = [];
 
+    //console.log(dotsGraphDataSize);
+
+/* AQUIIIIIIIIIII
+
     /*Rodal inicial*/
     for (i=0; i<dotsGraphDataSize; i++){
-        for (t=0; t<ejeOptionSelected.length; t++){
-            if(dotsGraphData[0][i][0]['rodal']['eje'] == ejeOptionSelected[t]){
-                rodalVal.push(dotsGraphData[0][i][0]['rodal']['valor']);
-            }
-        }
-        if(rodalNombre == null){
-            rodalNombre = dotsGraphData[0][i][0]['rodal']['name'];
+        if(dotsGraphData[0][i][0]['rodal']['eje'] == ejeOptionSelected[0]){
+            rodalValX.push(dotsGraphData[0][i][0]['rodal']);
         }
     }
+
+    for (i=0; i<dotsGraphDataSize; i++){
+        if(dotsGraphData[0][i][0]['rodal']['eje'] == ejeOptionSelected[1]){
+            rodalValY.push(dotsGraphData[0][i][0]['rodal']);
+        }
+    }
+    console.log(rodalValX);
+    console.log(rodalValY);
 
     /*Rodal con el que comparamos*/
     for (i=0; i<dotsGraphDataSize; i++){
@@ -1153,13 +1161,16 @@ function setPoints(dotsGraphDataSize, ejeOptionSelected){
     }
 
     rodal2 = {
-        'name': rodalNombre,
-        'val': rodalVal,
-        'x': rodalVal[0],
-        'y': rodalVal[1],
+        'name': rodalValX[0].name,
+        //'val': rodalVal,
+        'xAmb': rodalValX[0].eje,
+        'YAmb': rodalValY[0].eje,
+        'x': rodalValX[0].valor,
+        'y': rodalValY[0].valor,
         'color': '#339933'
     }
 
+    console.log(rodal2);
 
     pointsData.push(rodal2, rodalReferencia2);
     return pointsData;
@@ -1170,10 +1181,15 @@ function setCoordenadas(rodalGraf, rodalReferenciaGraf){
     var rRefXY = [];
     var coordenadasRodales = [];
 
+
+
+
     rXY = [{
         'name': rodalGraf.name,
         'x': rodalGraf.x,
-        'y': rodalGraf.y
+        'y': rodalGraf.y,
+        'xAmb': rodalGraf.xAmb,
+        'yAmb': rodalGraf.YAmb,
     }];
 
     for(r=0; r<rodalReferenciaGraf.length; r++){
@@ -1682,6 +1698,14 @@ var graficaCritIe = function(datosCritIe, rodalName, rodalNameRef){
 
 var graficaScatter = function(rodalCord, rodalReferenciaCord, grafico, ejeXSelected, ejeYSelected){
 
+
+    console.log(rodalCord);
+    console.log(rodalReferenciaCord);
+    console.log(grafico);
+    console.log(ejeXSelected);
+    console.log(ejeYSelected);
+
+
     var rodRefName;
 
     if(ejeXSelected == 'nm'){
@@ -1753,7 +1777,7 @@ var graficaScatter = function(rodalCord, rodalReferenciaCord, grafico, ejeXSelec
     tooltip: {
         formatter: function(){
             var nombreRodal = this.point.name;
-            return '<b>' + nombreRodal + '</b><br>Eje X: ' + this.x + '<br> Eje Y: ' + this.y;
+            return '<b>' + nombreRodal + '</b><br>' + ejeXSelected + ': ' + this.x + '<br>' + ejeYSelected + ': ' + this.y;
         }
     },
     plotOptions: {

@@ -954,6 +954,7 @@ function setPoints(dotsGraphDataSize, ejeOptionSelected){
         'color': '#339933'
     }
 
+    console.log(rodal2, rodalReferencia2);
 
     pointsData.push(rodal2, rodalReferencia2);
     return pointsData;
@@ -1505,6 +1506,9 @@ var graficaCritIe = function(datosCritIe, rodalName, rodalNameRef){
 
 var graficaScatter = function(rodalCord, rodalReferenciaCord, grafico, ejeXSelected, ejeYSelected){
 
+
+
+
     if(ejeXSelected == 'nm'){
         ejeXSelected = 'Madurez';
     }else if(ejeXSelected == 'hh'){
@@ -1634,8 +1638,10 @@ var graficaScatterDefault = function(){
 
     $("#ejeXGrafica1").val('null');
     $("#ejeYGrafica1").val('null');
+
     $("#ejeXGrafica2").val('null');
     $("#ejeYGrafica2").val('null');
+
     $("#ejeXGrafica3").val('null');
     $("#ejeYGrafica3").val('null');
 

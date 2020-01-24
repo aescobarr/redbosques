@@ -7,7 +7,7 @@
 <div class="container-fluid subheader">
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 subfield">
-            <h3 style="margin-top: 10px;">Comparador de rodales y parcelas IFN</h3>
+            <h3 style="margin-top: 10px;">Comparador de rodales y parcelas del Inventario Forestal Nacional (IFN3)</h3>
         </div>
     </div>
 </div>
@@ -49,7 +49,9 @@
                 <!-- ************************** Rodal seleccionado ************************** -->
                 <div class="col-lg-offset-1 col-lg-4">
                     <label class="green-font">Rodal seleccionado (* = referencia) <i class="fas fa-circle colLeyRod"></i></label>
-                    <a target="_blank" class="btn green-font selector_rodal" onclick="fichaRodal()">Ver ficha</a>
+                    {% if user.is_authenticated %}
+                        <a target="_blank" class="btn green-font selector_rodal" onclick="fichaRodal()">Ver ficha</a>
+                    {% endif %}
                     <select id="selector_rodales" class="form-control selector_rodal inputsFiltComp">
                         <option value=None selected="selected">Seleccione un rodal</option>
                         <!--<option value="medRod">Media del conjunto de rodales</option>-->

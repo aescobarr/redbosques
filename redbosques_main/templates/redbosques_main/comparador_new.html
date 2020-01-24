@@ -51,7 +51,9 @@
                 <!-- ************************** Rodal seleccionado ************************** -->
                 <div class="col-lg-offset-1 col-lg-4">
                     <label class="green-font">Rodal seleccionado (* = referencia) <i class="fas fa-circle colLeyRod"></i></label>
-                    <a target="_blank" class="btn green-font selector_rodal" onclick="fichaRodal()">Ver ficha</a>
+                    {% if user.is_authenticated %}
+                        <a target="_blank" class="btn green-font selector_rodal" onclick="fichaRodal()">Ver ficha</a>
+                    {% endif %}
                     <select id="selector_rodales" class="form-control selector_rodal inputsFiltComp">
                         <option value=None selected="selected">Seleccione rodal</option>
                         <!--<option value="medRod">Media del conjunto de rodales</option>-->
@@ -81,7 +83,9 @@
                 <!-- ************************** Rodales de comparación ************************** -->
                 <div class="col-lg-offset-1 col-lg-6">
                     <label class="green-font">Rodal de comparación (* = referencia) <i class="fas fa-circle colLeyRodComp"></i></label>
-                    <a target="_blank" class="btn green-font" onclick="fichaRodalComp()">Ver ficha</a>
+                    {% if user.is_authenticated %}
+                        <a target="_blank" class="btn green-font" onclick="fichaRodalComp()">Ver ficha</a>
+                    {% endif %}
                     <div class="row">
                         <div class="col-xs-6">
                             <select id="selector_rodales_comp" class="form-control selector_rodal_Comp inputsFiltComp">
@@ -982,7 +986,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-offset-2 col-lg-8" style="padding-left: 0px;">
-                <h3 style="margin-bottom: 20px;">Ranking por ámbito i ranking por critério</h3>
+                <h3 style="margin-bottom: 20px;">Ranking por ámbito i ranking por criterio</h3>
             </div>
         </div>
     </div>

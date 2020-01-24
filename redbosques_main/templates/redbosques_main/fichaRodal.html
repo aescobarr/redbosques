@@ -15,8 +15,9 @@
     </div>
 </div>
 <div class="container">
-     <div class="row">
-        <div class="col-lg-offset-10 col-lg-2">
+    {% if user.is_authenticated %}
+        <div class="row">
+            <div class="col-lg-offset-10 col-lg-2">
                 <div id="dwnButton">
                     <a class="btn btn-selector-mapa" onclick="crearPDF(id_rodal, '{{ csrf_token }}')" rel=attachment><i class="far fa-file-pdf"></i> Descargar ficha</a>
                 </div>
@@ -25,7 +26,9 @@
                     <h4>Generando PDF</h4>
                 </div>
             </div>
-    </div>
+        </div>
+    {% endif %}
+
     <div class="row">
         <div class="col-lg-12">
             <h4>Datos Generales</h4>
@@ -147,7 +150,7 @@
         </div>
     <div class="row">
         <div class="col-lg-12">
-            <h4>Valoración de la madurez</h4>
+            <h4>Valoración de la naturalidad</h4>
         </div>
     </div>
     <div class="row">

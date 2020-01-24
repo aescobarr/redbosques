@@ -70,7 +70,7 @@
                     <div class="inputCont">
                         <div class="inputRodalField">
                             <select class="form-control selectBox" name="comautonom_cod_sel" id="id_comautonom" onchange="ccaa_rodalForm()">
-                                <option value="null" selected="selected">{% trans 'comAutonoma' %}Comunidad Autónoma</option>
+                                <option value="null" selected="selected">{% trans 'comAutonoma' %}</option>
                                     {% for ca in comAut %}
                                         <option value="{{ ca.cod }}">{{ ca.nombre }}</option>
                                     {% endfor %}
@@ -93,7 +93,7 @@
                     <div class="inputCont">
                         <div class="inputRodalField">
                             <select class="form-control selectBox" name="provincia_cod_sel" id="id_provincia" onchange="prov_rodalForm()">
-                                <option value="null" selected="selected">{% trans 'provincia' %}Provincia</option>
+                                <option value="null" selected="selected">{% trans 'provincia' %}</option>
                                     {% for p in provincias %}
                                         <option class="provincia" value="{{ p.cod }}">{{ p.nombre }}</option>
                                     {% endfor %}
@@ -116,7 +116,7 @@
                     <div class="inputCont">
                         <div class="inputRodalField">
                             <select class="form-control selectBox" name="municipio_cod_sel" id="id_municipio_cod" onchange="muni_rodalForm()">
-                                <option value="null" selected="selected">{% trans 'municipio' %}Municipio</option>
+                                <option value="null" selected="selected">{% trans 'municipio' %}</option>
                                     {% for m in municipio %}
                                         <option class="municipio" value="{{ m.id }}">{{ m.nombre }}</option>
                                     {% endfor %}
@@ -550,7 +550,7 @@
                             </div>
                         </td>
                         <td class="rodal_data">
-                            <input type="text" name="volarrodal" class="form-control" required="" id="id_volarrodal_val">
+                            <input type="text" name="volarrodal" class="form-control" required="" id="id_volarrodal_val" readonly>
                             {{ form.volarrodal }}
                         </td>
                     </tr>
