@@ -92,7 +92,7 @@ def menu(request):
     du = None
     try:
         du = DatosUsuario.objects.get(user=current_user)
-        print(du)
+        
     except DatosUsuario.DoesNotExist:
         pass
 
@@ -447,7 +447,8 @@ def rodalDataProsp(request):
             'habitat_nom': r.habitat_nom,
             'tipodebosque': r.tipobosque,
             'valor': r.volarrodal,
-            'foto': r.foto
+            'foto': r.foto,
+            'area': r.area
         })
 
     context = {'rodalData': rodalData}
@@ -458,7 +459,7 @@ def rodalDataProsp(request):
 def ambitoData(request):
 
     codiAmbito = request.query_params.get('ca', None)
-    #print(codiAmbito)
+
 
     rodalData = []
     rod = WebMapa.objects.filter(eje_cod=codiAmbito).order_by('nombre')
@@ -544,7 +545,7 @@ def datos_mapa(request):
             'foto': t.foto
         })
 
-    #print(rodalesFase1)
+
 
     context = {'llista_punts': llista_punts, 'llista_habitats': llista_habitats, 'llista_punts_RodalsProsp': rodalesFase1}
     return Response(context)
@@ -853,7 +854,7 @@ def valorRef(request):
 
 
             if not dades_rodal2:
-                print(dades_rodal2)
+
                 context = {'rodal_referencia': "No hay resultados"}
             else:
                 rodal_referencia = crearArbolMedia(dades_rodal2)
@@ -967,7 +968,7 @@ def valorref_ajax(request):
 
         rodalNombre = [{'nombre': 'Todos los rodales'}]
         dades_rodal = dades_rodal2.values('indicador_cod').annotate(mitjana=Avg('valor'), stddev=StdDev('valor'))
-        #print(dades_rodal)
+
         rodal_referencia = crearArbolMedia(dades_rodal)
 
         ### Grafica puntos
@@ -1080,7 +1081,7 @@ def valorRodal(request):
                     'valorunidad': x['valorunidad']
                 })
 
-            print(valoresMetricos)
+
 
             #rodal_graficos_barras = datosGraficasBarras(dadesGraficoBarrasCrite, infoRodalBarCrite)
             rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarras, infoRodalBarCrite)
@@ -1121,7 +1122,7 @@ def valorRodal(request):
             #rodal_graficos_barras = datosGraficasBarras(dadesGraficoBarrasCrite)
             rodal_graficos_barras = datosGraficasPuntos(dadesGraficoBarras, infoRodalBarCrite)
 
-            print(rodal_graficos_barras);
+
 
             valMet = Valoresconunidades.objects.filter(id_rodal__in=idRodales).values('id_rodal', 'indicador_cod', 'valorunidad', 'valor').annotate(mitjana=Avg('valor'))
 
@@ -1134,7 +1135,7 @@ def valorRodal(request):
                     'mitjana': x['mitjana']
                 })
 
-            print(valoresMetricos)
+
 
         #rodal_referencia = crearArbol(dades_rodal2)
         context = {'rodal': rodal_referencia, 'rodalNombre': rodalNombre, 'rodalGraficos': rodalValNom, 'rodalGraficoPuntos': rodal_graficos_puntos, 'rodalChart': rodal_graficos_barras, 'valoresMetricos': valoresMetricos}
@@ -1143,7 +1144,7 @@ def valorRodal(request):
 
 def datosGraficasPuntos(dades, infoRodal):
 
-    #print(infoRodal)
+
 
     id_rodales = []
     lista = []
@@ -1162,7 +1163,7 @@ def datosGraficasPuntos(dades, infoRodal):
                             'valor': i['valor']
                         })
 
-    #print(lista)
+
 
     return(lista)
 
@@ -1484,18 +1485,15 @@ def crearArbol(dades):
                 'conect': {'valor': cn_valor}
             }
         }
-        #print(rodal_referencia)
+
         return rodal_referencia
 
 
 def crearArbolMedia(dades):
-    print(dades)
+
     for indicador_cod in dades:
         #json1 = json.dumps(indicador_cod, ensure_ascii=False)
-        #print(indicador_cod.keys(),'->', indicador_cod.values())
-        #print(indicador_cod['indicador_cod'])
-        #print(indicador_cod['mitjana'])
-        #print(indicador_cod['stddev'])
+
 
         ev_valor_desv = None
 
@@ -1969,7 +1967,7 @@ def crearArbolMedia(dades):
 
 
 def crearArbolGraficos(dades):
-    print(len(dades))
+
 
     lista = []
     ind = None
@@ -2068,7 +2066,7 @@ def crearArbolGraficos(dades):
 
     list2.extend(lista)
 
-    #print(list2)
+
 
 ######   Valores del rodal    #########
     rodal_graficos = {
@@ -2107,7 +2105,7 @@ def crearArbolGraficos(dades):
             'conect': {'valor': cn_valor}
         }
     }
-    #print(rodal_referencia)
+
     return rodal_graficos
 
 
@@ -2277,7 +2275,7 @@ def menuData(request):
     du = None
     try:
         du = DatosUsuario.objects.get(user=current_user)
-        print(du)
+
     except DatosUsuario.DoesNotExist:
         pass
 
@@ -2326,8 +2324,6 @@ def menuData(request):
 
         for f2 in rodal_list_fase1:
             rodalesSelectorEditorFase1.append({'id_rodal': f2['id'], 'nombre': f2['nombre']})
-
-
     else:
         usDat = DatosUsuario.objects.filter(id=du.id).values('user_id')
         usuarios = AuthUser.objects.filter(id__in=usDat).values('id')
@@ -2470,7 +2466,7 @@ def comAutFilt(request):
             'nombre': m.nombre
         })
 
-    print(municipios)
+
 
     context = {'provincias': provincias, 'municipios': municipios}
     return Response(context)
@@ -2480,7 +2476,7 @@ def comAutFilt(request):
 def provFilt(request):
     idProv = request.query_params.get('id', None)
     test = idProv.split(".", 2)
-    print(test[1])
+
     muni = TeMunicipi.objects.filter(codprov=test[1]).order_by('nombre')
 
     municipios = []
@@ -2499,7 +2495,7 @@ def rodalForm2(request, id=None):
 
     adminInstitucion = request.user.datosusuario.admin_institucion
     #du = DatosUsuario.objects.get(user=current_user)
-    #print(du)
+
 
     datos = get_object_or_404(Rodal, id=id)
     geom = datos.geom
@@ -2595,12 +2591,6 @@ def rodalForm2(request, id=None):
     distCoreArea = cursor.fetchall()
     ##############################################
 
-    # print("Área: " + str(round(area/10000, 1)) + " ha")
-    # print("Continuidad mancha forestal: " + str(round(contManchForest[0][0]/100, 2)) + " km2")
-    # print("Densidad de bosque: " + str(densBosque[0][0]) + " %")
-    # print("Distancia a la core área: " + str(round(distCoreArea[0][0]/1000, 1)) + " Km")
-
-
     areaHectareas = round(area / 10000, 1)
 
     if contManchForest[0][0] == None:
@@ -2624,10 +2614,7 @@ def rodalForm2(request, id=None):
     # densBosquexcent = round(densBosque[0][0] / 100, 2)
     # distCoreAreaKM = round(distCoreArea[0][0] / 1000, 2)
 
-    # print("Área: " + str(areaHectareas) + " ha")
-    # print("Continuidad mancha forestal: " + str(contManchForestKM2) + " km2")
-    # print("Densidad de bosque: " + str(densBosquexcent) + " %")
-    # print("Distancia a la core área: " + str(distCoreAreaKM) + " Km")
+
 
     valMedios = TeIndicador.objects.filter(val_alerta__isnull=False).values('variable_rodal', 'val_alerta')
 
@@ -3032,7 +3019,7 @@ def filtraxhabitat(request):
     rodalReferencia = request.query_params.get('rodRef', None)
     rodalesTable = WebCompDataValAmb.objects.all()
 
-    #print(rodalReferencia)
+
 
     if(codiHabitat == 'null'):
         comunAut = rodalesTable.filter(eje_cod='nm').filter(rodalref=rodalReferencia or None).distinct().values('ccaa_nom', 'ccaa_nombre')
@@ -3089,7 +3076,7 @@ def filtrarxComAut(request):
     codiComaut = request.query_params.get('comAut', None)
     rodalReferencia = request.query_params.get('rodRef', None)
 
-    #print(rodalReferencia)
+
     rodalesTable = WebCompDataValAmb.objects.all()
 
     if rodalReferencia == None:
@@ -3241,11 +3228,6 @@ def filtrarxRodRef(request):
     codiComaut = request.query_params.get('comAut', None)
     codiregBiogeo = request.query_params.get('regBiogeo', None)
     rodalReferencia = request.query_params.get('rodRef', None)
-
-    #print(codiHabitat)
-    #print(codiComaut)
-    #print(codiregBiogeo)
-    #print(rodalReferencia)
 
 
     rodalesTable = WebCompDataValAmb.objects.all()
@@ -3541,9 +3523,9 @@ def contacto(request):
 @api_view(['GET','POST'])
 def crearPDF(request, id):
 
-    #print(request.query_params.get('imagen', None))
+
     #test = request.query_params.get('img', None)
-    #print(test)
+
 
     imagenMapa = request.data['image']
 
@@ -3607,7 +3589,7 @@ def crearPDF(request, id):
 
     valoresMetricos = []
     for x in valMet:
-        print(x)
+        
         valoresMetricos = {
             'ab': x.indicador_cod["ab"],
             'ae': x.indicador_cod["ae"]
@@ -3615,7 +3597,7 @@ def crearPDF(request, id):
 
         }
         
-    print(valoresMetricos)'''
+    '''
 
     valMet = Valoresconunidades.objects.filter(id_rodal=id).values('id_rodal', 'indicador_cod', 'valorunidad', 'valor')
 
@@ -3642,11 +3624,7 @@ def crearPDF(request, id):
             valoresMetricos[valMet2[t]['indicador_cod']] = '---'
 
 
-        print(valoresMetricos)
         t += 1
-        print(t)
-
-
 
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment'
@@ -3747,7 +3725,7 @@ def verFichaRodal(request, id):
                 'valorunidad': '---'
             })
 
-    print(valoresMetricos)
+
 
     #########333############ FUNCIONA ###
     #paragraphs = ['first paragraph', 'second paragraph', 'third paragraph']
@@ -3760,10 +3738,7 @@ def verFichaRodal(request, id):
     #response.write(HTML(string=html_string).write_pdf(response))
     #return response
     ####################################################
-    print(rodalArbol)
-    print(datosGenerales)
-    print(geojsoncollection_string)
-    print(imagenRodal)
+
 
     context = {'rodal': rodalArbol, 'datosGenerales': datosGenerales, 'geojson_string': geojsoncollection_string, 'imagenRodal': imagenRodal, 'valoresMetricos': valoresMetricos}
     return render(request, 'redbosques_main/fichaRodal.html', context)
@@ -4021,8 +3996,7 @@ def editRodalFormFase1(request, id=None):
             try:
                 json_marker = request.POST["marker_string"]
                 json_marker_dict = json.loads(json_marker)
-                print(json_marker)
-                print(json_marker_dict)
+
 
                 #if hasattr(json_marker_dict, 'geometry'):
                 #if (json_marker_dict).has_key('geometry'):
@@ -4030,7 +4004,7 @@ def editRodalFormFase1(request, id=None):
                     geometria = json.dumps(json_marker_dict["geometry"])
                 else:
                     geometria = json.dumps(json_marker_dict)
-                print(geometria)
+
 
                 feature_marker = GEOSGeometry(geometria)
                 feature_marker.transform(25830)
@@ -4122,6 +4096,7 @@ def verFichaRodalFase1(request, id):
             'otroespflora': dg.otroespflora,
             'otrohics': dg.otrohics,
             'otroinfo': dg.otroinfo,
+            'area': dg.area
         }
 
 
@@ -4159,10 +4134,6 @@ def verFichaRodalFase1(request, id):
             'volarrodal': v.volarrodal
 
         }
-
-    print(datosGenerales)
-    print(valores)
-    print(imagenRodal)
 
     context = {'datosGenerales': datosGenerales, 'geojson_string': geojsoncollection_string, 'imagenRodal': imagenRodal, 'valores': valores}
     return render(request, 'redbosques_main/fichaRodalFase1.html', context)
@@ -4358,6 +4329,7 @@ def crearPDFFase1(request, id):
             'otroespflora': dg.otroespflora,
             'otrohics': dg.otrohics,
             'otroinfo': dg.otroinfo,
+            'area': dg.area
         }
 
     valores = []
@@ -4478,13 +4450,6 @@ def valorRodalParcelaIFN(request):
     regBiogeo = request.query_params.get('regBiogeo', None)
     comAutComp = request.query_params.get('comAutComp', None)
     regBiogeoComp = request.query_params.get('regBiogeoComp', None)
-
-    print(cordRod)
-    print(habSel)
-    print(comAut)
-    print(regBiogeo)
-    print(comAutComp)
-    print(regBiogeoComp)
 
     ab_parIFN = {}
     cp_parIFN = {}

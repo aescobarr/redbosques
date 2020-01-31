@@ -15,10 +15,10 @@ $(document).ready(function() {
 
     var bing = L.tileLayer.bing('AisLQm3JkrOKysYfF9FiIkwkH-kIryIOeJcEs4JV-Qb9fgdBZk3tM4NmTe-e94Zr');
 
-    var openCycle = L.tileLayer('https://tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=dda4faab5df24211a8d46b5b607f51d6', {
+    /*var openCycle = L.tileLayer('https://tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=dda4faab5df24211a8d46b5b607f51d6', {
         attribution: 'Maps &copy; <a href="https://www.thunderforest.com">Thunderforest</a>, Data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
         maxZoom: 22
-    });
+    });*/
 
     var ign = new L.TileLayer('http://www.ign.es/wmts/mapa-raster?service=WMTS&request=GetTile&version=1.0.0&layers=&styles=&tilematrixSet=GoogleMapsCompatible&format=image/jpeg&height=256&width=256&layer=MTN&style=default&tilematrix={z}&tilerow={y}&tilecol={x}',
       {
@@ -32,14 +32,15 @@ $(document).ready(function() {
 		"Bing maps": bing,
 		"Open street map": base,
 		"IGN": ign,
-		"Open cycle map": openCycle
+		//"Open cycle map": openCycle
 	};
 
 
     var map = L.map('map', {
         center: [40.0000000, -4.0000000],
         zoom: 6,
-        layers: [base,bing,ign,openCycle]
+        layers: [base,bing,ign]
+        //layers: [base,bing,ign,openCycle]
     });
 
 
@@ -172,3 +173,23 @@ var blockUnblockSubmit = function(string_json){
         $("#btnSubmitForm").prop("disabled", false);
     }
 };
+
+var changeDecimalDelimiter = $("[class*='dotDel']");
+var dotDel = function(){
+    var test = parseFloat(val.replace(',', '.'));
+}
+
+for(d=0; d<changeDecimalDelimiter.length; d++){
+    changeDecimalDelimiter[d].addEventListener('input', evt => {
+        var val = evt.target.value;
+        var fieldName = evt.target.name;
+        console.log(val);
+        modDelim(val, fieldName);
+    });
+}
+
+var modDelim = function(val, fieldName){
+    var test = val.replace(',', '.');
+    console.log(test);
+    $('#id_' + fieldName).val(test);
+}

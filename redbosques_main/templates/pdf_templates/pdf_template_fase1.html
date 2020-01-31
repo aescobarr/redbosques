@@ -135,6 +135,15 @@
                                     {% endif %}
                                 </td>
                             </tr>
+                            <tr>
+                        <td class="TablaDatosGen" colspan="6">Área:
+                            {% if datosGenerales.area %}
+                                <b>{{ datosGenerales.area }} ha</b>
+                            {% else %}
+                                <b>-</b>
+                            {% endif %}
+                        </td>
+                    </tr>
                         </tbody>
                     </table>
                 </div>

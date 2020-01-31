@@ -511,7 +511,6 @@ class DatosUsuario(models.Model):
 
 
 class RodalProsp(models.Model):
-
     id = models.AutoField(primary_key=True, max_length=100)
     geom = models.GeometryField(blank=True, null=True, srid=25830)
     datosrestringidos = models.BooleanField(blank=True, null=True)
@@ -566,6 +565,7 @@ class WebMapaRodalProsp(models.Model):
     volarrodal = models.IntegerField(blank=True, null=True)
     tipobosque = models.CharField(max_length=1, blank=True, null=True)
     foto = models.CharField(max_length=100, blank=True, null=True)
+    area = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False  # Created from a view. Don't remove.
@@ -662,6 +662,7 @@ class RodalProspDatosgen(models.Model):
     otroinfo = models.CharField(max_length=1000, blank=True, null=True)
     municipio_id = models.IntegerField(blank=True, null=True)
     nombre = models.CharField(max_length=255, blank=True, null=True)
+    area = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False  # Created from a view. Don't remove.
@@ -682,6 +683,7 @@ class RodalProspValores(models.Model):
     valhuecos = models.BooleanField(blank=True, null=True)
     valregen = models.BooleanField(blank=True, null=True)
     volarrodal = models.IntegerField(blank=True, null=True)
+    area = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False  # Created from a view. Don't remove.

@@ -38,14 +38,15 @@ $(document).ready(function() {
 		"Bing maps": bing,
 		"Open street map": base,
 		"IGN": ign,
-		"Open cycle map": openCycle
+		//"Open cycle map": openCycle
 	};
 
 
 	var map = L.map('map', {
             center: [40.0000000, -4.0000000],
             zoom: 6,
-            layers: [base,bing,ign,openCycle]
+            layers: [base,bing,ign]
+            //layers: [base,bing,ign,openCycle]
     });
 
     L.control.layers(baseLayers).addTo(map);

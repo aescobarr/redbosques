@@ -13,7 +13,8 @@ from django.contrib import messages
 from redbosques.settings import MAX_UPLOAD_SIZE, MAX_UPLOAD_DOC_SIZE
 import itertools
 from django.forms import Textarea
-
+from django.core.validators import RegexValidator
+import re
 #from django.utils.translation import gettext as _
 
 
@@ -488,6 +489,11 @@ class rodalFormFields3Doc(ModelForm):
             raise ValidationError("No se pudo leer el documento cargado")
 
 
+
+        
+
+
+
 class rodalFormFase1Fields(ModelForm):
     datosrestringidos = forms.BooleanField(widget=forms.CheckboxInput(attrs={'id': 'datosRestringidos'}), required=False)
     metodos = Tesaurus.objects.filter().order_by('cod', 'nombre_es')
@@ -507,9 +513,9 @@ class rodalFormFase1Fields(ModelForm):
     otroespflora = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}), required=False)
     otrohics = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}), required=False)
     otroinfo = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}), required=False)
-    #hhantigua = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}), required=False)
-    #hhreciente = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}), required=False)
+    area = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control dotDel', 'placeholder': 'Área'}),required=False)
 
+    #nombre = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del rodal'}),required=True)
 
     class Meta:
         model = RodalProsp
@@ -517,7 +523,7 @@ class rodalFormFase1Fields(ModelForm):
                   'municipio1', 'propietario', 'lpeht_cod', 'hic_cod', 'regbio_cod', 'fecha', 'equipo', 'tiempoempl',
                   'tipobosque', 'otroespflora', 'otrohics', 'otroinfo', 'valspparb','valmasa', 'valestratos',
                   'valarboexcep', 'valmmpie', 'valmmsuelo', 'valmicrohab', 'valhuecos', 'valregen', 'hhantigua',
-                  'volarrodal', 'hhreciente', 'notes')
+                  'volarrodal', 'hhreciente', 'notes', 'area',)
 
         widgets = {
             'comautonom_cod': forms.HiddenInput(),
@@ -536,6 +542,17 @@ class rodalFormFase1Fields(ModelForm):
             'hhreciente': forms.HiddenInput(),
             'volarrodal': forms.HiddenInput(),
         }
+
+    def clean_area(self):
+        cleaned_data = self.cleaned_data
+        area = cleaned_data.get('area', False)
+
+        if area >= 0:
+            return area
+        else:
+            raise ValidationError("El valor introducido es incorrecto.")
+
+
 
 
 class rodalFormFieldsFase1Foto(ModelForm):

@@ -153,6 +153,23 @@
                     </div>
                 </div>
 
+                <div class="area">
+                    <div class="inputCont">
+                        <div class="inputRodalField">
+                            {{ form.area }}
+                            {% if form.area.errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ form.area.errors }} ha
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="errorIcon">
+                            {% if form.area.errors %}
+                                <p><i class="fas fa-exclamation-circle fa-2x"></i></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
 
                 <div class="tipoBosque">
                     <div class="inputCont">
