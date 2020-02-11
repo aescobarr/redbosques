@@ -1,0 +1,40 @@
+{% extends "redbosques_main/base.html" %}
+{% load static %}
+{% load i18n %}
+{% block main %}
+<div class="container-fluid subheader">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 subfield">
+            <h3 style="margin-top: 10px;">{% trans 'tituloHerram' %}</h3>
+        </div>
+    </div>
+</div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <img class="banner" style="width: 100%" src="{% static 'redbosques_main/images/indexImage.jpg' %}">
+                    <p class="intro">
+                        <span>
+                            {% trans 'intro' %}
+                            <br>
+                        </span>
+                        <br>
+                        <span>
+                            <a href="http://redbosques.eu/B3_Definicion_rodales_referencia">{% trans 'defRodRef' %}</a>
+                            <br>
+                        </span>
+                        <br>
+                        <span class="intro2">
+                            {% trans 'introBis' %}
+                        </span>
+                    </p>
+
+                    <p>
+
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
