@@ -270,7 +270,7 @@ $(document).ready(function() {
                     '<br><b>Comunidad Autónoma: </b>' + punt.Comunidad_autonoma + '<br>' +
                     '<b>Área: </b>' + punt.area + '<br>' +
                     //'<b>Valor: </b>' + punt.valor +' - '+ valFrase + '<br>' + '<a href="/redbosques/fichaRodalFase1/' + punt.id_rodal + '/"><b>Ficha </b></a>' +
-                    '<b>' + valFrase +'</b><br>' + 
+                    '<b>' + valFrase +'</b><br>' +
                     '<div class="imagenRodal"><img src="/media/'+ punt.foto +'" alt="'+ punt.nombre +'" width="250" height="150"></div>'
                     );
                 }
@@ -287,6 +287,7 @@ $(document).ready(function() {
 
 //####################CAPAS##############################//
 
+    /*
     var base = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
             maxZoom: 15,
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
@@ -294,12 +295,32 @@ $(document).ready(function() {
                 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             id: 'mapbox.streets'
     });
-    var baseFase1 = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+    */
+
+    var base = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        attribution: '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
+        tileSize: 512,
+        maxZoom: 15,
+        zoomOffset: -1,
+        id: 'mapbox/streets-v11',
+        accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
+    });
+
+    /*var baseFase1 = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
             maxZoom: 15,
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
                 '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
                 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             id: 'mapbox.streets'
+    });*/
+
+    var baseFase1 = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        attribution: '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
+        tileSize: 512,
+        maxZoom: 15,
+        zoomOffset: -1,
+        id: 'mapbox/streets-v11',
+        accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
     });
 
     var bing = L.tileLayer.bing('AisLQm3JkrOKysYfF9FiIkwkH-kIryIOeJcEs4JV-Qb9fgdBZk3tM4NmTe-e94Zr');
@@ -347,7 +368,7 @@ $(document).ready(function() {
 
     mymap = L.map('mapid', {
             center: [40.0000000, -4.0000000],
-            zoom: 6,
+            zoom: 4,
             maxZoom: 12,
             //layers: [base,bing,ign,openCycle]
             layers: [bing,base,ign]
@@ -355,7 +376,7 @@ $(document).ready(function() {
 
     mymapFase1 = L.map('mapidFase1', {
             center: [40.0000000, -4.0000000],
-            zoom: 6,
+            zoom: 4,
             maxZoom: 12,
             //layers: [baseFase1,bingFase1,ignFase1,openCycleFase1]
             layers: [bingFase1,baseFase1,ignFase1]
@@ -452,8 +473,8 @@ $(document).ready(function() {
     if(zoomRodal){
         zoomCoordenadasRodal(zoomRodal);
     }else{
-        mymap.setView([40.0000000, -4.0000000], 6);
-        mymapFase1.setView([40.0000000, -4.0000000], 6);
+        mymap.setView([40.0000000, -4.0000000], 4);
+        mymapFase1.setView([40.0000000, -4.0000000], 4);
     }
 
 
