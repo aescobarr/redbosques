@@ -367,16 +367,16 @@ $(document).ready(function() {
 	};
 
     mymap = L.map('mapid', {
-            center: [40.0000000, -4.0000000],
-            zoom: 4,
+            center: [35.92339621252174, -7.07689803685896],
+            zoom: 5,
             maxZoom: 12,
             //layers: [base,bing,ign,openCycle]
             layers: [bing,base,ign]
     });
 
     mymapFase1 = L.map('mapidFase1', {
-            center: [40.0000000, -4.0000000],
-            zoom: 4,
+            center: [35.92339621252174, -7.07689803685896],
+            zoom: 5,
             maxZoom: 12,
             //layers: [baseFase1,bingFase1,ignFase1,openCycleFase1]
             layers: [bingFase1,baseFase1,ignFase1]
@@ -473,8 +473,8 @@ $(document).ready(function() {
     if(zoomRodal){
         zoomCoordenadasRodal(zoomRodal);
     }else{
-        mymap.setView([40.0000000, -4.0000000], 4);
-        mymapFase1.setView([40.0000000, -4.0000000], 4);
+        mymap.setView([35.92339621252174, -7.07689803685896], 5);
+        mymapFase1.setView([35.92339621252174, -7.07689803685896], 5);
     }
 
 
@@ -897,7 +897,7 @@ var limpiarFiltros = function(){
     $('.selector_rodal').prop('selectedIndex',0);
 
     //Per que tornin a sortir tots els registres al mapa
-    mymap.setView([40.0000000, -4.0000000], 6);
+    mymap.setView([35.92339621252174, -7.07689803685896], 5);
     updateMapData();
     //habitatData();
     //subHabitatData();
@@ -1012,7 +1012,7 @@ var limpiarFiltrosProsp = function(){
     $('.selector_rodal_prospeccio').prop('selectedIndex',0);
 
     //Per que tornin a sortir tots els registres al mapa
-    mymapFase1.setView([40.0000000, -4.0000000], 6);
+    mymapFase1.setView([35.92339621252174, -7.07689803685896], 5);
     updateMapDataProsp();
     //habitatData();
     //subHabitatData();
