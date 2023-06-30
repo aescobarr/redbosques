@@ -18,12 +18,66 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
+                    <hr>
+                    <p>
+                        Per facilitar l’avaluació de la maduresa d’un rodal en el marc dels ajuts per
+                        l'<b>establiment de reserves forestals en rodals senescents, madurs i premadurs</b>, forestals
+                        en el marc dels <a href="https://canalempresa.gencat.cat/ca/integraciodepartamentaltramit/tramit/PerTemes/23520-ajuts-a-serveis-ecosistemics-per-a-la-gestio-forestal-sostenible-en-finques-de-titularitat-privada-2023">“Ajuts per incentivar els serveis ecosistèmics per a la gestió
+                        forestal sostenible en finques de titularitat privada per a l’any 2023”</a>, es posa a
+                        disposició dels usuaris una versió simplificada de l’eina <a href="http://redbosques.creaf.cat/redbosques/">Redbosques</a>. Amb aquesta
+                        versió es poden entrar les variables de camp obtingudes a escala de rodal, obtenir la fitxa amb
+                        les dades de maduresa i descarregar-la en format pdf.
+                    </p>
+
+                    <h3>Registre</h3>
+                    <p>El formulari per registrar-se es troba a: <a href="http://redbosques-ordre.creaf.cat/redbosques/register">http://redbosques-ordre.creaf.cat/redbosques/register</a>
+                    <p>Per poder entrar les dades del rodal cal estar registrat com a institució “Ajuts a l’establiment
+                    de Reserves Forestals”, i omplir la resta de camps obligatoris (correu, usuari i contrasenya). Fins
+                    que l’usuari no rep un correu amb la confirmació de l’alta no té permisos per entrar dades.</p>
+                    <p>Per entrar les dades, finalment, cal “Iniciar sessió” amb el nom d’usuari i contrasenya.</p>
+
+                    <h3>Entrada de dades del rodal</h3>
+                    <p>Per entrar les dades del rodal cal accedir a l’opció  “Administración de rodales”: <a href="http://redbosques-ordre.creaf.cat/redbosques/menu">http://redbosques-ordre.creaf.cat/redbosques/menu</a></p>
+                    <p>
+                        Cal clicar sobre <b>“Entrada de nuevo rodal Fase 2”</b> i entrar totes les dades obligatòries del
+                        formulari. És necessari incloure el perímetre del rodal en format “shape” en un fitxer zip que
+                        contingui tots els fitxers (* shp, *.dbf, *.spx) amb el sistema de referència WGS84/EPSG:4326.
+                    </p>
+
+                    <p>
+                        L’usuari es pot inventar les dades petjada humana perquè no son necessàries per a l’avaluació de
+                        la maduresa en el context dels ”Ajuts”.
+                    </p>
+
+                    <p>
+                        Una vegada entrades totes les dades es pot accedir a la fitxa i obtenir el valor de maduresa.
+                        Per això cal anar a “Administración de rodales”. Triar el rodal que s’ha entrat i clicar sobre
+                        “ver ficha”. A més de veure les dades en pantalla es pot descarregar la fitxa en format pdf
+                        clicant sobre “Descargar ficha”.
+                    </p>
+
+                    <h3>Material i mètodes per fer l’avaluació de la maduresa</h3>
+                    <ul>
+                        <li>
+                            la Maduresa d’un rodal s’avalua utilitzant el protocol de mostreig de la fase II del Life
+                            Redbosques a escala de rodal que es pot descarregar a:
+                            <a href="https://redbosques.eu/wp-content/uploads/2022/01/RedBosques_Fase2IdentificacionParcelas_Manual_v6.190226-1.pdf">https://redbosques.eu/wp-content/uploads/2022/01/RedBosques_Fase2IdentificacionParcelas_Manual_v6.190226-1.pdf</a>.
+                            En aquest mateix protocol es descriu també la metodologia de càlcul de les variables
+                            d’estructura que permet respondre als 9 indicadors de maduresa.
+                        </li>
+                        <li>
+                            La corresponent fitxa de camp es pot descarregar a: <a href="https://redbosques.eu/wp-content/uploads/2022/01/RedBosques_Fase2IdentificacionParcelas_Ficha_v6.190226-1.pdf">https://redbosques.eu/wp-content/uploads/2022/01/RedBosques_Fase2IdentificacionParcelas_Ficha_v6.190226-1.pdf</a>
+                            Les variables calculades a partir del mostreig de camp es transformen en indicadors amb
+                            valors entre 0 i 10 que al seu torn s’agrupen en criteris. Els detalls es poden trobar a
+                            <a href="https://redbosques.eu/wp-content/uploads/2022/01/RED-DE-RODALES-DE-REFERENCIA-final-1.pdf">https://redbosques.eu/wp-content/uploads/2022/01/RED-DE-RODALES-DE-REFERENCIA-final-1.pdf</a>
+                        </li>
+                    <!--
                     <p>Bienvenido/a a <strong>RedBosques</strong>, la herramienta para la gestión de la información de la red de rodales de referencia de España.</p>
                     <p>Se consideran <strong>rodales de referencia</strong> aquellos con mayor valor de <strong>naturalidad</strong> para cada tipo de hábitat. RedBosques permite <strong>evaluar la naturalidad</strong> de rodales de bosque en función de su madurez, huella humana e integridad espacial.</p>
                     <ul>
                         <li>Si desea conocer en detalle <strong>cómo funciona</strong> esta herramienta, acceda a la sección <a href="http://redbosques.creaf.cat/redbosques/herramientaRedbosques">HERRAMIENTA</a></li>
-                        <!--<li>Si desea visualizar la <strong>localización</strong> de los rodales prospectados e identificados, acceda a la sección <a href="http://redbosques.creaf.cat/redbosques/herramientas#mapaFase1">MAPAS</a>. Puede acceder a la información de cada rodal clicando en cada uno de ellos.</li>
-                        <li>En la sección COMPARADORES puede <strong>comparar</strong> las características de un rodal con <a href="http://redbosques.creaf.cat/redbosques/comparador_new/">todos los rodales de referencia</a> correspondientes a ese hábitat, o <a href="http://redbosques.creaf.cat/redbosques/comparador_ifn/">con los valores del Inventario Forestal Nacional.</a></li>-->
+                        <li>Si desea visualizar la <strong>localización</strong> de los rodales prospectados e identificados, acceda a la sección <a href="http://redbosques.creaf.cat/redbosques/herramientas#mapaFase1">MAPAS</a>. Puede acceder a la información de cada rodal clicando en cada uno de ellos.</li>
+                        <li>En la sección COMPARADORES puede <strong>comparar</strong> las características de un rodal con <a href="http://redbosques.creaf.cat/redbosques/comparador_new/">todos los rodales de referencia</a> correspondientes a ese hábitat, o <a href="http://redbosques.creaf.cat/redbosques/comparador_ifn/">con los valores del Inventario Forestal Nacional.</a></li>
                         <li>Si desea aportar información o ponerse en contacto con los administradores de la herramienta, acceda a la sección <a href="http://redbosques.creaf.cat/redbosques/contacto/">CONTACTO.</a></li>
                     </ul>
                     <p>
@@ -35,6 +89,7 @@
                     <p>
                         En <a href="http://www.redbosques.eu/B3_Definicion_rodales_referencia">este enlace</a> puede conocer en detalle el procedimiento para la identificación de rodales de referencia y descargar los manuales y fichas normalizadas.
                     </p>
+                    -->
                 </div>
             </div>
         </div>
