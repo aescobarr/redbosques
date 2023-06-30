@@ -92,7 +92,7 @@ def menu(request):
     du = None
     try:
         du = DatosUsuario.objects.get(user=current_user)
-        
+
     except DatosUsuario.DoesNotExist:
         pass
 
@@ -2777,7 +2777,7 @@ def deleteImage(request, id):
     for r in rd:
         id_rodal = r['id_rodal']
         '''rodalFotos.append({
-            'id_rodal': 
+            'id_rodal':
         })'''
 
     #id_rodal = rodalFotos[0].id_rodal
@@ -2845,7 +2845,7 @@ def deleteDoc(request, id):
     for d in rd:
         id_rodal = d['id_rodal']
         '''rodalFotos.append({
-            'id_rodal': 
+            'id_rodal':
         })'''
 
     if request.method == 'POST':
@@ -3530,7 +3530,7 @@ def crearPDF(request, id):
     imagenMapa = request.data['image']
 
     logger = logging.getLogger('weasyprint')
-    logger.addHandler(logging.FileHandler('/tmp/weasyprint.log'))
+    logger.addHandler(logging.FileHandler('/tmp/weasyprint_rbordre.log'))
 
     dades_rodal = RodalValorres2.objects.filter(id_rodal=id)
     info_rodal = WebCompDataValAmb.objects.filter(id_rodal=id).filter(eje_cod="nm")
@@ -3589,14 +3589,14 @@ def crearPDF(request, id):
 
     valoresMetricos = []
     for x in valMet:
-        
+
         valoresMetricos = {
             'ab': x.indicador_cod["ab"],
             'ae': x.indicador_cod["ae"]
 
 
         }
-        
+
     '''
 
     valMet = Valoresconunidades.objects.filter(id_rodal=id).values('id_rodal', 'indicador_cod', 'valorunidad', 'valor')
@@ -3985,7 +3985,7 @@ def editRodalFormFase1(request, id=None):
 
     if request.method == 'POST':
         form = rodalFormFase1Fields(request.POST or None, instance=datos)
-        
+
 
         current_user = request.user.id
         user = AuthUser.objects.get(id=current_user)
@@ -4199,7 +4199,7 @@ def deleteImageFase1(request, id):
     for r in rd:
         id_rodal = r['id_rodal']
         '''rodalFotos.append({
-            'id_rodal': 
+            'id_rodal':
         })'''
 
     if request.method == 'POST':
@@ -4264,7 +4264,7 @@ def deleteDocFase1(request, id):
     for d in rd:
         id_rodal = d['id_rodal']
         '''rodalFotos.append({
-            'id_rodal': 
+            'id_rodal':
         })'''
 
     if request.method == 'POST':
