@@ -297,13 +297,9 @@ $(document).ready(function() {
     });
     */
 
-    var base = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        attribution: '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
-        tileSize: 512,
-        maxZoom: 15,
-        zoomOffset: -1,
-        id: 'mapbox/streets-v11',
-        accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
+    var base = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
     });
 
     /*var baseFase1 = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -322,13 +318,7 @@ $(document).ready(function() {
         id: 'mapbox/streets-v11',
         accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
     });
-
-    var bing = L.tileLayer.bing('AisLQm3JkrOKysYfF9FiIkwkH-kIryIOeJcEs4JV-Qb9fgdBZk3tM4NmTe-e94Zr');
-    var bingFase1 = L.tileLayer.bing('AisLQm3JkrOKysYfF9FiIkwkH-kIryIOeJcEs4JV-Qb9fgdBZk3tM4NmTe-e94Zr');
-
-    //var bing = L.tileLayer.bing({bingKey:'AisLQm3JkrOKysYfF9FiIkwkH-kIryIOeJcEs4JV-Qb9fgdBZk3tM4NmTe-e94Zr', maxNativeZoom: 13, maxZoom: 13});
-    //var bingFase1 = L.tileLayer.bing({bingKey:'AisLQm3JkrOKysYfF9FiIkwkH-kIryIOeJcEs4JV-Qb9fgdBZk3tM4NmTe-e94Zr', maxNativeZoom: 13, maxZoom: 13});
-
+        
     var openCycle = L.tileLayer('https://tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=dda4faab5df24211a8d46b5b607f51d6',{
         attribution: 'Maps &copy; <a href="https://www.thunderforest.com">Thunderforest</a>, Data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
         maxZoom: 15
@@ -353,14 +343,12 @@ $(document).ready(function() {
         attribution: 'Capa Raster CC BY 4.0 <a href="http://www.ign.es/web/ign/portal">ign.es</a>'
       });
 
-    var baseLayers = {
-		"Bing maps": bing,
+    var baseLayers = {		
 		"IGN": ign,
 		"Open street map": base,
 		//"Open cycle map": openCycle
 	};
-    var baseLayersFase1 = {
-		"Bing maps": bingFase1,
+    var baseLayersFase1 = {		
 		"IGN": ignFase1,
 		"Open street map": baseFase1,
 		//"Open cycle map": openCycleFase1
@@ -369,17 +357,15 @@ $(document).ready(function() {
     mymap = L.map('mapid', {
             center: [35.92339621252174, -7.07689803685896],
             zoom: 5,
-            maxZoom: 12,
-            //layers: [base,bing,ign,openCycle]
-            layers: [bing,base,ign]
+            maxZoom: 12,            
+            layers: [base,ign]
     });
 
     mymapFase1 = L.map('mapidFase1', {
             center: [35.92339621252174, -7.07689803685896],
             zoom: 5,
-            maxZoom: 12,
-            //layers: [baseFase1,bingFase1,ignFase1,openCycleFase1]
-            layers: [bingFase1,baseFase1,ignFase1]
+            maxZoom: 12,            
+            layers: [baseFase1,ignFase1]
     });
 
 
