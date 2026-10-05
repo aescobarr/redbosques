@@ -302,6 +302,11 @@ $(document).ready(function() {
         attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
     });
 
+    var base2 = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+    });
+
     /*var baseFase1 = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
             maxZoom: 15,
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
@@ -350,7 +355,7 @@ $(document).ready(function() {
 	};
     var baseLayersFase1 = {		
 		"Mapa Base de España - IGNBaseTodo": ignFase1,
-		"Open street map": baseFase1,
+		"Open street map": base2,
 		//"Open cycle map": openCycleFase1
 	};
 
@@ -365,7 +370,7 @@ $(document).ready(function() {
             center: [35.92339621252174, -7.07689803685896],
             zoom: 5,
             maxZoom: 12,            
-            layers: [baseFase1,ignFase1]
+            layers: [base2,ignFase1]
     });
 
 
@@ -1148,11 +1153,3 @@ var redirectFaseMap = function(){
         }
 
     }
-
-
-
-
-
-
-
-
