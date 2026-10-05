@@ -1,3 +1,4 @@
+import { ign_todo } from "./modules/maps.js";
 var map;
 $(document).ready(function() {
     var base = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -10,6 +11,7 @@ $(document).ready(function() {
         maxZoom: 22
     });
 
+    /*
     var ign = new L.TileLayer('http://www.ign.es/wmts/mapa-raster?service=WMTS&request=GetTile&version=1.0.0&layers=&styles=&tilematrixSet=GoogleMapsCompatible&format=image/jpeg&height=256&width=256&layer=MTN&style=default&tilematrix={z}&tilerow={y}&tilecol={x}',
       {
         maxZoom: 18,
@@ -17,6 +19,8 @@ $(document).ready(function() {
         continuousWorld: true,
         attribution: 'Capa Raster CC BY 4.0 <a href="http://www.ign.es/web/ign/portal">ign.es</a>'
       });
+    */
+    var ign = new L.tileLayer(ign_todo.url, ign_todo.propiedades);
 
     var baseLayers = {		
 		"Open street map": base,
