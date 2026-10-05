@@ -328,28 +328,28 @@ $(document).ready(function() {
         maxZoom: 15
     });
 
-    var ign = new L.TileLayer('http://www.ign.es/wmts/mapa-raster?service=WMTS&request=GetTile&version=1.0.0&layers=&styles=&tilematrixSet=GoogleMapsCompatible&format=image/jpeg&height=256&width=256&layer=MTN&style=default&tilematrix={z}&tilerow={y}&tilecol={x}',
+    var ign = new L.TileLayer('https://tms-ign-base.idee.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg',
+    {
+      maxZoom: 20,
+      minZoom: 0,
+      continuousWorld: true,
+      attribution: '&copy; <a href="https://www.ign.es/web/ca/ide-area-nodo-ide-ign">Mapa Base de España - IGNBaseTodo</a>'
+    });
+    var ignFase1 = new L.TileLayer('https://tms-ign-base.idee.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg',
       {
-        maxZoom: 15,
+        maxZoom: 20,
         minZoom: 0,
         continuousWorld: true,
-        attribution: 'Capa Raster CC BY 4.0 <a href="http://www.ign.es/web/ign/portal">ign.es</a>'
-      });
-    var ignFase1 = new L.TileLayer('http://www.ign.es/wmts/mapa-raster?service=WMTS&request=GetTile&version=1.0.0&layers=&styles=&tilematrixSet=GoogleMapsCompatible&format=image/jpeg&height=256&width=256&layer=MTN&style=default&tilematrix={z}&tilerow={y}&tilecol={x}',
-      {
-        maxZoom: 15,
-        minZoom: 0,
-        continuousWorld: true,
-        attribution: 'Capa Raster CC BY 4.0 <a href="http://www.ign.es/web/ign/portal">ign.es</a>'
+        attribution: '&copy; <a href="https://www.ign.es/web/ca/ide-area-nodo-ide-ign">Mapa Base de España - IGNBaseTodo</a>'
       });
 
     var baseLayers = {		
-		"IGN": ign,
+		"Mapa Base de España - IGNBaseTodo": ign,
 		"Open street map": base,
 		//"Open cycle map": openCycle
 	};
     var baseLayersFase1 = {		
-		"IGN": ignFase1,
+		"Mapa Base de España - IGNBaseTodo": ignFase1,
 		"Open street map": baseFase1,
 		//"Open cycle map": openCycleFase1
 	};
