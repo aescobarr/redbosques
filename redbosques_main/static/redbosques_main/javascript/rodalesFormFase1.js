@@ -14,18 +14,17 @@ $(document).ready(function() {
         attribution: 'Maps &copy; <a href="https://www.thunderforest.com">Thunderforest</a>, Data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
         maxZoom: 22
     });*/
-
-    var ign = new L.TileLayer('http://www.ign.es/wmts/mapa-raster?service=WMTS&request=GetTile&version=1.0.0&layers=&styles=&tilematrixSet=GoogleMapsCompatible&format=image/jpeg&height=256&width=256&layer=MTN&style=default&tilematrix={z}&tilerow={y}&tilecol={x}',
-      {
-        maxZoom: 18,
-        minZoom: 0,
-        continuousWorld: true,
-        attribution: 'Capa Raster CC BY 4.0 <a href="http://www.ign.es/web/ign/portal">ign.es</a>'
-      });
+    var ign = new L.TileLayer('https://tms-ign-base.idee.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg',
+    {
+      maxZoom: 20,
+      minZoom: 0,
+      continuousWorld: true,
+      attribution: '&copy; <a href="https://www.ign.es/web/ca/ide-area-nodo-ide-ign">Mapa Base de España - IGNBaseTodo</a>'
+    });
 
     var baseLayers = {
 		"Open street map": base,
-		"IGN": ign,
+		"Mapa Base de España - IGNBaseTodo": ign,
 		//"Open cycle map": openCycle
 	};
 
