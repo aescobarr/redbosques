@@ -9,7 +9,7 @@ Esta obra tiene una licencia [CC BY-NC-SA 4.0](https://creativecommons.org/licen
 
 ## Base de datos
 
-### Comas, L., Vayreda J. (2025). Script de creación de la base de datos de le red de rodales Redbosques [redbosques2025](https://github.com/aescobarr/redbosques). Life Redbosques; CREAF; FUNGOBE.
+### Comas, L., Vayreda J. (2025). Script de creación de la base de datos de la red de rodales Redbosques [redbosques2025](https://github.com/aescobarr/redbosques). Life Redbosques; CREAF; FUNGOBE.
 
 La base de datos se encuentra en la carpeta /scripts del repositorio. Se trata de un fichero zip que contiene:
 
